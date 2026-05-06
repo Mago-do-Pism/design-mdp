@@ -1,0 +1,426 @@
+/* Admin-specific overrides */
+
+.admin-content { padding: 40px 84px 64px; }
+@media (max-width: 900px) { .admin-content { padding: 32px 24px; } }
+
+.admin-content .section-title {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 22px;
+  letter-spacing: 0.444px;
+  color: var(--brand-blue);
+  margin: 0 0 32px;
+}
+
+/* ─────────── KPI grid (Tela de Início) ─────────── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 412px));
+  gap: 24px;
+  max-width: 848px;
+}
+@media (max-width: 900px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+}
+
+.kpi-card {
+  background: var(--neutral-150);
+  border-radius: 10px;
+  padding: 32px;
+  min-height: 161px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+.kpi-value {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: 0.3px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.kpi-label {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: 0.444px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.kpi-stars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.kpi-stars svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--brand-blue);
+}
+
+.kpi-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 36px;
+  margin-bottom: 8px;
+}
+.kpi-bars span {
+  width: 12px;
+  border-radius: 3px;
+  background: var(--brand-blue);
+  display: block;
+}
+.kpi-bars .b1 { height: 50%; opacity: 0.5; }
+.kpi-bars .b2 { height: 80%; opacity: 0.75; }
+.kpi-bars .b3 { height: 100%; }
+
+.kpi-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-blue);
+  margin-bottom: 8px;
+}
+.kpi-icon svg { width: 28px; height: 28px; }
+.kpi-icon.warn { color: var(--color-danger); }
+
+/* ─────────── Toolbar (search + button) ─────────── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 36px;
+  max-width: 1086px;
+}
+.search-field {
+  position: relative;
+  flex: 1;
+  max-width: 364px;
+}
+.search-field input {
+  width: 100%;
+  height: 47px;
+  padding: 0 14px 0 44px;
+  background: var(--neutral-0);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-primary);
+}
+.search-field input::placeholder { color: var(--text-muted); }
+.search-field input:focus {
+  outline: none;
+  border-color: var(--brand-blue);
+}
+.search-field svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+}
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--brand-blue);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.icon-btn:hover { background: var(--brand-blue-dark); }
+.icon-btn svg { width: 20px; height: 20px; }
+
+.btn-primary.compact {
+  height: 40px;
+  padding: 0 22px;
+  font-size: 14px;
+  margin-left: auto;
+}
+
+/* ─────────── Data table (Alunos / Equipe) ─────────── */
+.data-table {
+  width: 100%;
+  max-width: 1086px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: var(--font-body);
+}
+.data-table thead th {
+  background: var(--neutral-150);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.4px;
+  color: var(--text-muted);
+  text-align: left;
+  padding: 18px 22px;
+  white-space: nowrap;
+}
+.data-table thead th:first-child { border-radius: 10px 0 0 10px; }
+.data-table thead th:last-child { border-radius: 0 10px 10px 0; }
+.data-table thead th.center { text-align: center; }
+
+.data-table tbody td {
+  padding: 16px 22px;
+  background: var(--neutral-0);
+  border-bottom: 1px solid var(--border-default);
+  font-size: 14px;
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+.data-table tbody tr:last-child td { border-bottom: 0; }
+.data-table tbody tr:hover td { background: var(--neutral-100); }
+
+.cell-user {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.cell-user-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--neutral-200) center / cover no-repeat;
+  flex-shrink: 0;
+  box-shadow: 0 0 2px rgba(95,95,95,0.25);
+}
+.cell-user-name {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-primary);
+}
+.cell-mail {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.cell-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.cell-rating svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--brand-blue);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  border: 2px solid currentColor;
+}
+.tag.green { color: var(--color-success); }
+.tag.blue { color: var(--brand-blue); }
+.tag.purple { color: var(--color-warn); }
+.tag-row {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.row-actions { display: inline-flex; gap: 14px; align-items: center; }
+.row-actions a, .row-actions button {
+  width: 28px; height: 28px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.row-actions svg { width: 20px; height: 20px; }
+.row-actions .edit { color: var(--text-muted); }
+.row-actions .edit:hover { color: var(--brand-blue); }
+.row-actions .del { color: var(--color-danger); }
+
+/* ─────────── Course tile (Admin /Tela-de-Cursos) — uses .course-tile from platform.css ─────────── */
+.admin-course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+  gap: 24px;
+  max-width: 1086px;
+}
+
+/* ─────────── Module options (Tela de Módulos) ─────────── */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 356px));
+  gap: 24px;
+  max-width: 1116px;
+}
+@media (max-width: 1100px) { .module-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .module-grid { grid-template-columns: 1fr; } }
+
+.module-card {
+  background: var(--neutral-0);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  padding: 22px 26px;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.module-card:hover {
+  border-color: var(--brand-blue);
+  transform: translateY(-2px);
+}
+.module-card-name {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.3px;
+  color: var(--text-primary);
+  margin: 0;
+}
+.module-card-meta {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.module-card-arrow {
+  color: var(--brand-blue);
+  flex-shrink: 0;
+}
+.module-card-arrow svg { width: 22px; height: 22px; }
+
+/* ─────────── Profile shell (admin perfil) ─────────── */
+.profile-tabs {
+  font-family: var(--font-body);
+}
+.profile-tab {
+  background: transparent;
+  border: 0;
+  padding: 12px 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  letter-spacing: 0.3px;
+}
+.profile-tab.is-active {
+  color: var(--brand-blue);
+  border-bottom-color: var(--brand-blue);
+}
+.profile-tab:hover { color: var(--text-primary); }
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 316px;
+}
+.profile-photo {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 12px;
+}
+.avatar-stack {
+  position: relative;
+  width: 132px;
+  height: 132px;
+}
+.avatar-blob {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: var(--neutral-200) center / cover no-repeat;
+  box-shadow: 0 0 12px rgba(14,147,242,0.18);
+}
+.avatar-edit {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--brand-blue);
+  color: white;
+  border: 3px solid var(--neutral-50);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.avatar-edit svg { width: 16px; height: 16px; }
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field-label {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  color: var(--text-muted);
+}
+.field input {
+  height: 50px;
+  padding: 0 16px;
+  background: var(--neutral-0);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-primary);
+}
+.field input:focus { outline: none; border-color: var(--brand-blue); }
+.field input:disabled { background: var(--neutral-100); color: var(--text-muted); }
+
+.form-section-title {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text-primary);
+  margin: 24px 0 0;
+  letter-spacing: 0.3px;
+}
+
+.btn-text-danger {
+  background: transparent;
+  border: 0;
+  color: var(--color-danger);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  text-align: left;
+  width: max-content;
+  padding: 8px 0;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+}
+.btn-text-danger:hover { text-decoration: underline; }
+
+.row-actions { display: inline-flex; gap: 14px; align-items: center; }

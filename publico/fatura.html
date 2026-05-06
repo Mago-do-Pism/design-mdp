@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
+<title>Fatura · Mago do Pism</title>
+</head><body><div class="pub-shell">
+
+<header class="pub-header">
+  <img src="../assets/logo-azul.png" alt="Mago do Pism"/>
+  <span class="pub-title">Fatura · Curso Intensivo Mago do Pism</span>
+  <span class="pub-help">Precisa de ajuda? <a href="#" style="color:var(--brand-blue); font-weight:600;">(31) 99876-1234</a></span>
+</header>
+
+<main class="pub-content">
+  <div style="width:100%; max-width:1100px;">
+    <div style="text-align:center; margin-bottom:24px;">
+      <span style="display:inline-block; padding:4px 12px; background:rgba(14,147,242,0.10); color:var(--brand-blue); border-radius:999px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Fatura · INV-2026-0427</span>
+      <h1 style="font-family:var(--font-display); font-weight:600; font-size:24px; color:var(--neutral-900); margin:0 0 4px;">Olá, Cassia! Sua fatura está pronta.</h1>
+      <p style="font-size:13px; color:var(--text-muted); margin:0;">Mensalidade <strong>Maio/2026</strong> · vencimento em <strong>15/05/2026</strong> · escolha como prefere pagar abaixo.</p>
+    </div>
+
+    <div class="checkout-shell">
+      <div>
+        <section class="sec-card" style="margin-bottom:20px;">
+          <h3 class="sec-card-title">Forma de pagamento</h3>
+          <div class="method-grid" id="methodGrid" style="grid-template-columns:repeat(2,1fr);">
+            <div class="method is-selected" data-method="pix">
+              <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11v3a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-3"/><path d="M21 7H3"/><circle cx="7" cy="11" r="1"/></svg></div>
+              <div><strong>Pix</strong><em>Confirmação imediata · sem taxa</em></div>
+            </div>
+            <div class="method" data-method="boleto">
+              <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+              <div><strong>Boleto bancário</strong><em>Compensa em 1-2 dias úteis</em></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="sec-card" id="paymentBlock">
+          <!-- preenchido por JS -->
+        </section>
+
+        <div style="margin-top:18px; padding:14px 16px; background:rgba(39,133,86,0.06); border-left:3px solid var(--color-success); border-radius:6px; font-size:12px; color:var(--text-secondary); display:flex; gap:10px; align-items:center;">
+          <span style="font-size:18px;">🔒</span>
+          <div>Pagamento seguro processado via <strong>Banco Inter</strong>. Após a confirmação você recebe o recibo no e-mail cadastrado.</div>
+        </div>
+      </div>
+
+      <aside class="summary">
+        <h3>Detalhes da fatura</h3>
+
+        <div style="display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--neutral-200);">
+          <div style="width:44px; height:44px; border-radius:8px; background:var(--brand-blue); color:white; display:flex; align-items:center; justify-content:center; font-weight:700;">A</div>
+          <div>
+            <div style="font-weight:700; color:var(--neutral-900); font-size:13px;">Arthur dos Santos Alves</div>
+            <div style="font-size:11px; color:var(--text-muted);">3º ano · Curso Intensivo</div>
+          </div>
+        </div>
+
+        <div class="summary-line"><span>Mensalidade Maio/2026</span><span>R$ 200,00</span></div>
+        <div class="summary-line"><span>Material complementar</span><span>R$ 25,00</span></div>
+
+        <div class="summary-total">
+          <span class="label">Total a pagar</span>
+          <span class="value">R$ 225,00</span>
+        </div>
+        <p style="font-size:11px; color:var(--text-muted); margin:8px 0 0;">Vencimento: <strong>15/05/2026</strong> · Parcela 5 de 9</p>
+
+        <h3 style="font-family:var(--font-akagi); font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin:22px 0 10px; border-top:1px solid var(--neutral-200); padding-top:18px;">Cobrado de</h3>
+        <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">
+          <strong style="color:var(--neutral-900);">Cassia Regina dos Santos Alves</strong><br/>
+          CPF 084.566.677-01<br/>
+          Rua Bahia, 1148 — sala 504<br/>
+          Centro · Belo Horizonte/MG
+        </div>
+
+        <h3 style="font-family:var(--font-akagi); font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin:22px 0 10px; border-top:1px solid var(--neutral-200); padding-top:18px;">Beneficiário</h3>
+        <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">
+          <strong style="color:var(--neutral-900);">Mago do Pism Cursos LTDA</strong><br/>
+          CNPJ 50.123.456/0001-77<br/>
+          matricula@magodopism.com.br
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+</div>
+<script>
+(function(){
+  const grid = document.getElementById('methodGrid');
+  const block = document.getElementById('paymentBlock');
+
+  const PIX_HTML = `
+    <h3 class="sec-card-title">Pagar com Pix</h3>
+    <div class="pix-block">
+      <div class="pix-qr" aria-label="QR Code Pix"></div>
+      <div style="text-align:center;">
+        <div style="font-weight:700; font-size:14px; color:var(--neutral-900);">R$ 225,00 — Mensalidade Maio/2026</div>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">QR Code expira em <strong>23h 58min</strong></div>
+      </div>
+      <code class="pix-code">00020126360014BR.GOV.BCB.PIX0114004566677-01030-5204000053039865802BR5925MAGO DO PISM CURSOS LTDA6009BELO HORIZONTE62070503***6304B12F</code>
+      <button class="pub-btn outline" id="copyPix" style="width:100%;">📋 Copiar código Pix Copia & Cola</button>
+    </div>
+    <div style="margin-top:14px; font-size:11px; color:var(--text-muted); text-align:center;">Abra o app do seu banco · escolha pagar com Pix · escaneie o QR ou cole o código.</div>
+  `;
+
+  const BOLETO_HTML = `
+    <h3 class="sec-card-title">Pagar com Boleto bancário</h3>
+    <div style="display:flex; flex-direction:column; gap:18px; padding:8px 0;">
+      <div style="display:flex; align-items:center; gap:14px; padding:14px 16px; background:var(--neutral-100); border-radius:10px;">
+        <div style="width:48px; height:48px; border-radius:10px; background:var(--brand-blue); color:white; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:24px;height:24px;"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-weight:700; color:var(--neutral-900); font-size:14px;">Boleto Banco Inter</div>
+          <div style="font-size:12px; color:var(--text-muted);">Vencimento <strong>15/05/2026</strong> · valor R$ 225,00</div>
+        </div>
+      </div>
+
+      <div>
+        <label style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; font-weight:700;">Linha digitável</label>
+        <div style="display:flex; gap:8px; margin-top:6px;">
+          <code id="barcodeLine" style="flex:1; min-width:0; padding:12px 14px; background:var(--neutral-100); border-radius:8px; font-size:12px; font-family:monospace; color:var(--neutral-900); word-break:break-all;">07795.69001 87654.123451 67890.123456 7 89150000022500</code>
+          <button class="pub-btn outline" id="copyBoleto" style="white-space:nowrap;">Copiar</button>
+        </div>
+      </div>
+
+      <div style="height:64px; background: repeating-linear-gradient(90deg, #000 0 2px, transparent 2px 4px, #000 4px 7px, transparent 7px 8px, #000 8px 10px, transparent 10px 13px); border-radius:6px;"></div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="pub-btn primary" style="flex:1;">📥 Baixar boleto (PDF)</button>
+        <button class="pub-btn outline" style="flex:1;">📧 Enviar por e-mail</button>
+      </div>
+
+      <div style="font-size:11px; color:var(--text-muted); padding:10px 14px; background:rgba(255,201,15,0.10); border-left:3px solid #FFC90F; border-radius:6px;">
+        <strong style="color:var(--neutral-900);">Atenção:</strong> boletos compensam em 1-2 dias úteis. Para confirmação imediata, prefira o Pix.
+      </div>
+    </div>
+  `;
+
+  function render(method){
+    block.innerHTML = method === 'pix' ? PIX_HTML : BOLETO_HTML;
+    const cp = document.getElementById('copyPix');
+    if (cp) cp.addEventListener('click', () => {
+      const code = document.querySelector('.pix-code')?.textContent || '';
+      if (navigator.clipboard) navigator.clipboard.writeText(code);
+      cp.textContent = '✓ Código copiado';
+      setTimeout(()=> cp.textContent = '📋 Copiar código Pix Copia & Cola', 1800);
+    });
+    const cb = document.getElementById('copyBoleto');
+    if (cb) cb.addEventListener('click', () => {
+      const code = document.getElementById('barcodeLine')?.textContent || '';
+      if (navigator.clipboard) navigator.clipboard.writeText(code);
+      cb.textContent = '✓ Copiado';
+      setTimeout(()=> cb.textContent = 'Copiar', 1800);
+    });
+  }
+  grid.querySelectorAll('.method').forEach(el => el.addEventListener('click', () => {
+    grid.querySelectorAll('.method').forEach(x => x.classList.remove('is-selected'));
+    el.classList.add('is-selected');
+    render(el.dataset.method);
+  }));
+  render('pix');
+})();
+</script>
+</body></html>

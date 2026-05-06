@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Clientes · Secretaria · Mago do Pism</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
+</head><body><div class="app-shell"><aside class="sidebar">
+    <div class="sidebar-logo" role="img" aria-label="Mago do Pism" style="background:url('../assets/logo-azul.png') center/contain no-repeat; filter:brightness(0) invert(1);"></div>
+    <nav class="sidebar-nav">
+      <a href="painel.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Painel</span></a><a href="clientes.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2.3 1.5-4 3.7-4 1.6 0 2.8.9 3.3 2.2"/></svg><span>Clientes</span></a><a href="formularios.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></svg><span>Formulários</span></a><a href="faturas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg><span>Contas a Receber</span></a><a href="inadimplentes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.8" fill="currentColor"/></svg><span>Inadimplência</span></a><a href="cobranca.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg><span>Régua de Cobrança</span></a>
+    </nav>
+  </aside><main class="main"><div class="sec-page">
+<nav class="sec-breadcrumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><a href="painel.html">Principal</a><span class="sep">/</span><span>Clientes</span></nav>
+<div class="sec-page-head">
+  <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2.3 1.5-4 3.7-4 1.6 0 2.8.9 3.3 2.2"/></svg>Clientes</h1>
+  <div class="sec-actions">
+    <button class="sec-btn dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar Cliente</button>
+    <button class="sec-btn outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18M3 12h18M3 17h12"/></svg>Importação em Lote</button>
+    <button class="sec-btn outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>Exportar dados</button>
+  </div>
+</div>
+
+<div style="margin-bottom:14px;"><label class="sec-toggle"><input type="checkbox" checked><span class="switch"></span>Habilitar notificações para novos clientes</label></div>
+
+<div class="sec-filters">
+  <div class="sec-filters-row cols-3">
+    <div class="sec-filter"><label>Status</label><select><option>Todos</option><option>Ativo</option><option>Inadimplente</option></select></div>
+    <div class="sec-filter"><label>Notificações de Recebíveis</label><select><option>Todos</option></select></div>
+    <div class="sec-filter"><label>Cobrança de Inadimplência</label><select><option>Todos</option></select></div>
+  </div>
+  <div class="sec-search">
+    <input placeholder="🔎 Filtrar por nome, CPF ou e-mail..."/>
+    <div class="sec-show">Mostrar <select><option>10</option><option>25</option><option>50</option></select> entradas</div>
+  </div>
+</div>
+
+<section class="sec-table-card">
+  <table class="sec-table">
+    <thead><tr><th class="col-check"><input type="checkbox"></th><th><span class="sortable">Responsável</span></th><th>Aluno vinculado</th><th>Contato</th><th>Tipo</th><th>Status</th><th>Notificações</th><th class="col-actions">Ações</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><input type="checkbox"></td>
+        <td><a href="cliente-detalhe.html" style="color:var(--brand-blue);font-weight:700;text-decoration:none;">Higino Reis Lira</a><div style="font-size:11px;color:#999;">074.871.486-37</div></td>
+        <td><div style="font-weight:600;">João Pedro Lira</div><div style="font-size:11px;color:#999;">3º ano · Cursinho</div></td>
+        <td><div>higinolira@hotmail.com</div><div style="font-size:11px;color:#999;">(31) 99876-1234</div></td>
+        <td><span class="pill info">PESSOA FÍSICA</span></td>
+        <td><span class="pill dot success">Ativo</span></td>
+        <td><span style="color:var(--color-success);">📧</span> <span style="color:var(--color-success);">💬</span></td>
+        <td class="col-actions">
+          <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="ico-btn" title="Cobrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></button>
+          <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </td>
+      </tr><tr>
+        <td><input type="checkbox"></td>
+        <td><a href="cliente-detalhe.html" style="color:var(--brand-blue);font-weight:700;text-decoration:none;">Estefani Paula Oliveira Blumer</a><div style="font-size:11px;color:#999;">036.051.386-21</div></td>
+        <td><div style="font-weight:600;">Sofia Blumer</div><div style="font-size:11px;color:#999;">3º ano · Cursinho</div></td>
+        <td><div>estefani.blumer@gmail.com</div><div style="font-size:11px;color:#999;">(31) 98765-3456</div></td>
+        <td><span class="pill info">PESSOA FÍSICA</span></td>
+        <td><span class="pill dot success">Ativo</span></td>
+        <td><span style="color:var(--color-success);">📧</span> <span style="color:var(--color-success);">💬</span></td>
+        <td class="col-actions">
+          <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="ico-btn" title="Cobrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></button>
+          <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </td>
+      </tr><tr>
+        <td><input type="checkbox"></td>
+        <td><a href="cliente-detalhe.html" style="color:var(--brand-blue);font-weight:700;text-decoration:none;">Wander Miguel Neto</a><div style="font-size:11px;color:#999;">956.463.876-91</div></td>
+        <td><div style="font-weight:600;">Rafael Neto</div><div style="font-size:11px;color:#999;">3º ano · Cursinho</div></td>
+        <td><div>wander.neto@gmail.com</div><div style="font-size:11px;color:#999;">(31) 99123-4567</div></td>
+        <td><span class="pill info">PESSOA FÍSICA</span></td>
+        <td><span class="pill dot danger">Inadimplente</span></td>
+        <td><span style="color:var(--color-success);">📧</span> <span style="color:var(--color-success);">💬</span></td>
+        <td class="col-actions">
+          <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="ico-btn" title="Cobrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></button>
+          <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </td>
+      </tr><tr>
+        <td><input type="checkbox"></td>
+        <td><a href="cliente-detalhe.html" style="color:var(--brand-blue);font-weight:700;text-decoration:none;">Lidici de Melo Sampaio</a><div style="font-size:11px;color:#999;">039.734.466-01</div></td>
+        <td><div style="font-weight:600;">Beatriz Sampaio</div><div style="font-size:11px;color:#999;">3º ano · Cursinho</div></td>
+        <td><div>lidicimelo@gmail.com</div><div style="font-size:11px;color:#999;">(31) 99654-7890</div></td>
+        <td><span class="pill info">PESSOA FÍSICA</span></td>
+        <td><span class="pill dot success">Ativo</span></td>
+        <td><span style="color:var(--color-success);">📧</span> <span style="color:var(--color-success);">💬</span></td>
+        <td class="col-actions">
+          <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="ico-btn" title="Cobrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></button>
+          <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </td>
+      </tr><tr>
+        <td><input type="checkbox"></td>
+        <td><a href="cliente-detalhe.html" style="color:var(--brand-blue);font-weight:700;text-decoration:none;">Adauto Rampini Junior</a><div style="font-size:11px;color:#999;">072.983.917-63</div></td>
+        <td><div style="font-weight:600;">Vitor Rampini</div><div style="font-size:11px;color:#999;">3º ano · Cursinho</div></td>
+        <td><div>adauto.rampini@gmail.com</div><div style="font-size:11px;color:#999;">(31) 98321-5678</div></td>
+        <td><span class="pill info">PESSOA FÍSICA</span></td>
+        <td><span class="pill dot success">Ativo</span></td>
+        <td><span style="color:var(--color-success);">📧</span> <span style="color:var(--color-success);">💬</span></td>
+        <td class="col-actions">
+          <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="ico-btn" title="Cobrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></button>
+          <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </td>
+      </tr><tr>
+        <td><input type="checkbox"></td>
+        <td><a href="cliente-detalhe.html" style="color:var(--brand-blue);font-weight:700;text-decoration:none;">Adelaide Schittini de Oliveira Rosas</a><div style="font-size:11px;color:#999;">000.062.859-87</div></td>
+        <td><div style="font-weight:600;">Helena Rosas</div><div style="font-size:11px;color:#999;">3º ano · Cursinho</div></td>
+        <td><div>luciane.rosas@gmail.com</div><div style="font-size:11px;color:#999;">(31) 99543-2109</div></td>
+        <td><span class="pill solid-dark">PESSOA JURÍDICA</span></td>
+        <td><span class="pill dot success">Ativo</span></td>
+        <td><span style="color:var(--color-success);">📧</span> <span style="color:var(--color-success);">💬</span></td>
+        <td class="col-actions">
+          <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="ico-btn" title="Cobrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></button>
+          <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </td>
+      </tr><tr>
+        <td><input type="checkbox"></td>
+        <td><a href="cliente-detalhe.html" style="color:var(--brand-blue);font-weight:700;text-decoration:none;">Adelany Recéputi Netto da Costa</a><div style="font-size:11px;color:#999;">073.946.270-09</div></td>
+        <td><div style="font-weight:600;">Manuela da Costa</div><div style="font-size:11px;color:#999;">3º ano · Cursinho</div></td>
+        <td><div>are.recputi@gmail.com</div><div style="font-size:11px;color:#999;">(31) 99812-6543</div></td>
+        <td><span class="pill info">PESSOA FÍSICA</span></td>
+        <td><span class="pill dot danger">Inadimplente</span></td>
+        <td><span style="color:var(--color-success);">📧</span> <span style="color:var(--color-success);">💬</span></td>
+        <td class="col-actions">
+          <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="ico-btn" title="Cobrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></button>
+          <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </td>
+      </tr><tr>
+        <td><input type="checkbox"></td>
+        <td><a href="cliente-detalhe.html" style="color:var(--brand-blue);font-weight:700;text-decoration:none;">Cassia Regina dos Santos Alves</a><div style="font-size:11px;color:#999;">063.118.765-33</div></td>
+        <td><div style="font-weight:600;">Arthur dos Santos Alves</div><div style="font-size:11px;color:#999;">3º ano · Cursinho</div></td>
+        <td><div>cassiaalvesf340@gmail.com</div><div style="font-size:11px;color:#999;">(31) 99234-1098</div></td>
+        <td><span class="pill info">PESSOA FÍSICA</span></td>
+        <td><span class="pill dot success">Ativo</span></td>
+        <td><span style="color:var(--color-success);">📧</span> <span style="color:var(--color-success);">💬</span></td>
+        <td class="col-actions">
+          <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="ico-btn" title="Cobrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></button>
+          <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </td>
+      </tr><tr>
+        <td><input type="checkbox"></td>
+        <td><a href="cliente-detalhe.html" style="color:var(--brand-blue);font-weight:700;text-decoration:none;">Ana Paula Pires Barbosa Marcolino</a><div style="font-size:11px;color:#999;">097.412.385-44</div></td>
+        <td><div style="font-weight:600;">Marcela Pires Marcolino</div><div style="font-size:11px;color:#999;">3º ano · Cursinho</div></td>
+        <td><div>apmarcolino@gmail.com</div><div style="font-size:11px;color:#999;">(31) 98432-7654</div></td>
+        <td><span class="pill info">PESSOA FÍSICA</span></td>
+        <td><span class="pill dot success">Ativo</span></td>
+        <td><span style="color:var(--color-success);">📧</span> <span style="color:var(--color-success);">💬</span></td>
+        <td class="col-actions">
+          <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="ico-btn" title="Cobrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></button>
+          <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </td>
+      </tr><tr>
+        <td><input type="checkbox"></td>
+        <td><a href="cliente-detalhe.html" style="color:var(--brand-blue);font-weight:700;text-decoration:none;">Vânia Ferreira Coelho</a><div style="font-size:11px;color:#999;">124.587.963-22</div></td>
+        <td><div style="font-weight:600;">Maria Paula Ferreira Coelho</div><div style="font-size:11px;color:#999;">3º ano · Cursinho</div></td>
+        <td><div>vania.coelho@gmail.com</div><div style="font-size:11px;color:#999;">(31) 99876-3210</div></td>
+        <td><span class="pill info">PESSOA FÍSICA</span></td>
+        <td><span class="pill dot success">Ativo</span></td>
+        <td><span style="color:var(--color-success);">📧</span> <span style="color:var(--color-success);">💬</span></td>
+        <td class="col-actions">
+          <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="ico-btn" title="Cobrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></button>
+          <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="sec-pagination">
+    <div>Mostrando 1 a 10 de 30 entradas</div>
+    <div class="pages"><a href="#">Anterior</a><a class="active">1</a><a href="#">2</a><a href="#">3</a><span class="ellipsis">...</span><a href="#">Próximo</a></div>
+  </div>
+</section>
+</div></main></div></body></html>

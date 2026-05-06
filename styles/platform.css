@@ -1,0 +1,282 @@
+/* Plataforma layout — sidebar + content shell shared by Alunos and Admin screens */
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  min-height: 100vh;
+  background: var(--neutral-50);
+}
+@media (max-width: 900px) {
+  .app-shell { grid-template-columns: 1fr; }
+  .sidebar { position: sticky; top: 0; z-index: 20; }
+}
+
+/* ─────────── Sidebar ─────────── */
+.sidebar {
+  background: var(--brand-blue);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 0 24px;
+  min-height: 100vh;
+  box-shadow: 4px 0 24px rgba(14,147,242,0.15);
+}
+.sidebar-logo {
+  width: 130px;
+  height: 100px;
+  margin: 0 auto 28px;
+  background: url("../assets/logo-azul.png") center / contain no-repeat;
+  filter: brightness(0) invert(1); /* white logo */
+}
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 28px;
+  color: rgba(255,255,255,0.92);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.2px;
+  border-left: 3px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  cursor: pointer;
+}
+.sidebar-item:hover { background: rgba(255,255,255,0.08); }
+.sidebar-item.is-active {
+  background: rgba(0,0,0,0.10);
+  border-left-color: white;
+  color: white;
+}
+.sidebar-item svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+.sidebar-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid rgba(255,255,255,0.18);
+  padding-top: 14px;
+  margin-top: 14px;
+}
+
+/* ─────────── Content ─────────── */
+.content {
+  padding: 52px 64px 64px;
+  max-width: 100%;
+  overflow: hidden;
+}
+@media (max-width: 900px) { .content { padding: 32px 24px; } }
+
+.section-title {
+  font-family: var(--font-akagi);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 22px;
+  letter-spacing: 0.3px;
+  color: var(--brand-blue);
+  margin: 0 0 24px;
+}
+.section-title + .section-title { margin-top: 40px; }
+
+/* ─────────── Generic cards ─────────── */
+.card {
+  background: var(--neutral-0);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
+  padding: 24px;
+}
+
+/* ─────────── Course tile ─────────── */
+.course-tile {
+  position: relative;
+  background: var(--neutral-0);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.course-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
+.course-tile-img {
+  aspect-ratio: 254 / 320;
+  background: var(--neutral-300);
+  background-size: cover;
+  background-position: center;
+}
+.course-tile-body {
+  padding: 14px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.course-tile-title {
+  font-family: var(--font-akagi);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.6px;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin: 0;
+}
+.course-tile-sub {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+.progress-bar {
+  position: relative;
+  height: 16px;
+  background: var(--neutral-250);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+.progress-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--brand-blue);
+  border-radius: var(--radius-pill);
+}
+.progress-bar > em {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 11px;
+  font-style: normal;
+  color: var(--text-secondary);
+  letter-spacing: 0.4px;
+}
+
+/* ─────────── Course card (compact, no thumb) ─────────── */
+.course-card {
+  background: var(--neutral-150);
+  border-radius: var(--radius-xl);
+  padding: 24px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+  transition: background 0.15s ease;
+  cursor: pointer;
+}
+.course-card:hover { background: var(--neutral-200); }
+.course-card.has-content { justify-content: space-between; }
+.course-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+  margin-top: 30%;
+}
+.course-card-title {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text-primary);
+  margin: 0;
+}
+.course-card-sub {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+.course-card-foot {
+  font-family: var(--font-akagi);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* ─────────── Banner ─────────── */
+.banner {
+  background: var(--neutral-0);
+  border-radius: var(--radius-xl);
+  padding: 32px 36px;
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+.banner-date {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 0 0 24px;
+}
+.banner-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.15;
+  letter-spacing: 0.5px;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--neutral-950);
+  margin: 0 0 18px;
+}
+.banner-body {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--text-primary);
+  margin: 0 auto;
+  max-width: 540px;
+}
+.banner-body em {
+  font-style: normal;
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 18px;
+}
+.dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(14,147,242,0.35);
+  transition: width 0.2s ease;
+}
+.dots span.is-active {
+  width: 22px;
+  border-radius: 4px;
+  background: var(--brand-blue);
+}
+
+/* Index back button overlay (per screen) */
+.back-home {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 99;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.95);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-soft);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-blue);
+}

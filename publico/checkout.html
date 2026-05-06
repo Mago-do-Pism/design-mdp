@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Pagamento · Mago do Pism</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
+</head><body><div class="pub-shell">
+<header class="pub-header"><img src="../assets/logo-azul.png" alt="Mago do Pism"/><span class="pub-title">Matrícula 2026 · Curso Intensivo Mago do Pism</span><span class="pub-help">Precisa de ajuda? <a href="#" style="color:var(--brand-blue); font-weight:600;">(31) 99876-1234</a></span></header>
+<div class="pub-stepper"><div class="pub-stepper-inner"><div class="pub-step is-done"><span class="dot">✓</span><span>Cadastro</span></div><div class="pub-step is-done"><span class="dot">✓</span><span>Contrato</span></div><div class="pub-step is-active"><span class="dot">3</span><span>Pagamento</span></div></div></div>
+<main class="pub-content">
+  <div style="width:100%; max-width:1100px;">
+    <div style="text-align:center; margin-bottom:24px;">
+      <h1 style="font-family:var(--font-display); font-weight:600; font-size:24px; color:var(--neutral-900); margin:0 0 4px;">Última etapa: pagamento da matrícula</h1>
+      <p style="font-size:13px; color:var(--text-muted); margin:0;">Sua matrícula é confirmada após o pagamento da taxa + 1ª mensalidade.</p>
+    </div>
+
+    <div class="checkout-shell">
+      <div>
+        <section class="sec-card" style="margin-bottom:20px;">
+          <h3 class="sec-card-title">Forma de pagamento</h3>
+          <div class="method-grid" id="methodGrid" style="grid-template-columns:repeat(3,1fr);">
+            <div class="method is-selected" data-method="pix">
+              <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11v3a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-3"/><path d="M21 7H3"/><circle cx="7" cy="11" r="1"/></svg></div>
+              <div><strong>Pix</strong><em>À vista ou 9x · sem taxa</em></div>
+            </div>
+            <div class="method" data-method="cartao">
+              <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+              <div><strong>Cartão de crédito</strong><em>1 a 9x · acréscimo 4,99%</em></div>
+            </div>
+            <div class="method" data-method="boleto">
+              <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+              <div><strong>Boleto bancário</strong><em>À vista ou 9x · 1-2 dias úteis</em></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="sec-card" style="margin-bottom:20px;">
+          <h3 class="sec-card-title">Forma de parcelamento</h3>
+          <div class="installments" id="installments"></div>
+          <p style="font-size:11px; color:var(--text-muted); margin:12px 0 0;">As parcelas serão cobradas todo dia 15, a partir do mês seguinte à matrícula.</p>
+        </section>
+
+        <section class="sec-card">
+          <h3 class="sec-card-title">Pagar com Pix</h3>
+          <div class="pix-block">
+            <div class="pix-qr" aria-label="QR Code Pix"></div>
+            <div style="text-align:center;">
+              <div style="font-weight:700; font-size:14px; color:var(--neutral-900);">R$ 329,00 — Taxa de matrícula + 1ª parcela</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">QR Code expira em <strong>14:58</strong></div>
+            </div>
+            <code class="pix-code">00020126360014BR.GOV.BCB.PIX0114004566677-01030-5204000053039865802BR5925MAGO DO PISM CURSOS LTDA6009BELO HORIZONTE62070503***6304B12F</code>
+            <button class="pub-btn outline" style="width:100%;">📋 Copiar código Pix Copia & Cola</button>
+          </div>
+
+          <div style="margin-top:18px; padding:14px 16px; background:rgba(39,133,86,0.06); border-left:3px solid var(--color-success); border-radius:6px; font-size:12px; color:var(--text-secondary);">
+            <strong style="color:var(--color-success);">⚡ Pix instantâneo:</strong> assim que o banco confirmar o pagamento, sua matrícula é ativada e o aluno recebe o acesso à plataforma por e-mail.
+          </div>
+        </section>
+      </div>
+
+      <aside class="summary">
+        <h3>Resumo da matrícula</h3>
+        <div style="display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--neutral-200);">
+          <div style="width:44px; height:44px; border-radius:8px; background:var(--brand-blue); color:white; display:flex; align-items:center; justify-content:center; font-weight:700;">A</div>
+          <div>
+            <div style="font-weight:700; color:var(--neutral-900); font-size:13px;">Arthur dos Santos Alves</div>
+            <div style="font-size:11px; color:var(--text-muted);">3º ano · Curso Intensivo</div>
+          </div>
+        </div>
+
+        <div class="summary-line"><span>Curso Intensivo 2026 · 9× R$ 240,00</span><span>R$ 2.160,00</span></div>
+        <div class="summary-line"><span>Taxa de matrícula</span><span>R$ 89,00</span></div>
+
+        <div class="summary-total">
+          <span class="label">A pagar agora</span>
+          <span class="value">R$ 329,00</span>
+        </div>
+        <p style="font-size:11px; color:var(--text-muted); margin:8px 0 0;">Próxima cobrança: <strong>15/06/2026</strong> · R$ 240,00 (parcela 2 de 9)</p>
+
+        <div style="margin-top:18px; padding:12px 14px; background:var(--neutral-100); border-radius:8px; display:flex; align-items:center; gap:10px;">
+          <span style="font-size:18px;">🔒</span>
+          <div style="font-size:11px; color:var(--text-secondary); line-height:1.4;">Pagamento processado via Stripe e Banco Inter. Seus dados estão protegidos.</div>
+        </div>
+
+        <div style="text-align:center; margin-top:14px;">
+          <a href="contrato.html" style="font-size:12px; color:var(--text-muted); text-decoration:none;">← Voltar ao contrato</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+</div>
+<script>
+(function(){
+  const PLANS = {
+    pix:    [{n:1,label:'1x à vista',sub:'R$ 2.249,00 · sem taxa'},{n:9,label:'9x',sub:'R$ 240,00/mês'}],
+    boleto: [{n:1,label:'1x à vista',sub:'R$ 2.249,00 · sem taxa'},{n:9,label:'9x',sub:'R$ 240,00/mês'}],
+    cartao: [1,2,3,4,5,6,7,8,9].map(n => ({
+      n, label: n===1 ? '1x à vista' : n+'x',
+      sub: n===1 ? 'R$ 2.249,00' : 'R$ '+ (2360/n).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}) +'/mês'
+    }))
+  };
+  const grid = document.getElementById('methodGrid');
+  const list = document.getElementById('installments');
+  function render(method){
+    const opts = PLANS[method];
+    list.style.gridTemplateColumns = 'repeat(' + Math.min(opts.length,5) + ',1fr)';
+    list.innerHTML = opts.map((o,i)=>`<div class="opt${(method!=='cartao'&&o.n===9)||(method==='cartao'&&o.n===9)?' is-selected':''}"><strong>${o.label}</strong><span>${o.sub}</span></div>`).join('');
+    list.querySelectorAll('.opt').forEach(el=>el.addEventListener('click',()=>{
+      list.querySelectorAll('.opt').forEach(x=>x.classList.remove('is-selected'));
+      el.classList.add('is-selected');
+    }));
+  }
+  grid.querySelectorAll('.method').forEach(el=>el.addEventListener('click',()=>{
+    grid.querySelectorAll('.method').forEach(x=>x.classList.remove('is-selected'));
+    el.classList.add('is-selected');
+    render(el.dataset.method);
+  }));
+  render('pix');
+})();
+</script>
+</body></html>

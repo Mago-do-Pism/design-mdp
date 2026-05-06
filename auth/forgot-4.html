@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Senha alterada · Mago do Pism</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      background: var(--neutral-0);
+      display: grid;
+      grid-template-columns: minmax(0, 926fr) minmax(0, 514fr);
+    }
+    @media (max-width: 900px) { body { grid-template-columns: 1fr; } .auth-hero { display: none; } }
+    .auth-hero {
+      position: relative;
+      background: linear-gradient(rgba(14,147,242,0.6), rgba(14,147,242,0.6)), url("../assets/login-bg.jpg") center / cover no-repeat;
+      min-height: 100vh;
+    }
+    .auth-pane { display: flex; align-items: center; justify-content: center; padding: 64px 40px; }
+    .auth-form { width: 100%; max-width: 364px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+    .auth-logo { width: 250px; height: 200px; background: url("../assets/logo-azul.png") center / contain no-repeat; }
+    .auth-form .btn-primary { width: 100%; }
+    .auth-illust { width: 300px; height: 300px; display: flex; align-items: center; justify-content: center; }
+    .success-msg {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 22px;
+      letter-spacing: 0.444px;
+      text-align: center;
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .hero-tag { position: absolute; bottom: 48px; left: 0; right: 0; text-align: center; font-family: "Quicksand", sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.8px; color: white; opacity: 0.85; }
+    .back-home { position: fixed; top: 16px; left: 16px; z-index: 10; padding: 8px 14px; background: rgba(255,255,255,0.92); border-radius: var(--radius-pill); box-shadow: var(--shadow-soft); font-size: 13px; font-weight: 600; color: var(--brand-blue); }
+    @keyframes pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .check-anim { animation: pop 0.6s cubic-bezier(.2,1.6,.4,1) both; }
+  </style>
+</head>
+<body>
+
+  <div class="auth-hero"><div class="hero-tag">LOGAR</div></div>
+
+  <div class="auth-pane">
+    <form class="auth-form" onsubmit="event.preventDefault(); window.location='login.html'">
+      <div class="auth-logo" role="img" aria-label="Mago do Pism"></div>
+
+      <!-- Simplified "Ok" character illustration — placeholder for the Freepik vector in source -->
+      <div class="auth-illust" aria-hidden="true">
+        <svg viewBox="0 0 300 300" width="100%" height="100%">
+          <!-- floor -->
+          <ellipse cx="150" cy="220" rx="140" ry="72" fill="#f5f5f5" />
+          <ellipse cx="135" cy="240" rx="60" ry="20" fill="#e0e0e0" />
+          <ellipse cx="190" cy="248" rx="74" ry="22" fill="#e0e0e0" opacity="0.7" />
+          <!-- big check circle -->
+          <g class="check-anim" transform="translate(170,90)">
+            <circle cx="55" cy="55" r="58" fill="#0E93F2" />
+            <circle cx="55" cy="55" r="58" fill="none" stroke="#ffffff" stroke-opacity="0.25" stroke-width="3" />
+            <path d="M30 58 L48 76 L80 38" fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+          </g>
+          <!-- character (simplified celebrating silhouette) -->
+          <g transform="translate(80,80)">
+            <!-- head -->
+            <ellipse cx="35" cy="22" rx="20" ry="24" fill="#F5C9A8" />
+            <!-- hair -->
+            <path d="M16 20 Q14 -2 36 0 Q56 2 54 22 Q50 8 35 8 Q22 6 16 20Z" fill="#3A2A1A" />
+            <!-- smile -->
+            <path d="M28 28 Q35 32 42 28" stroke="#3A2A1A" stroke-width="2" fill="none" stroke-linecap="round" />
+            <!-- eyes -->
+            <circle cx="28" cy="20" r="1.6" fill="#3A2A1A" />
+            <circle cx="42" cy="20" r="1.6" fill="#3A2A1A" />
+            <!-- shirt -->
+            <path d="M10 50 Q12 44 22 42 L48 42 Q58 44 60 50 L62 110 L8 110 Z" fill="#0E93F2" />
+            <!-- arms (one raised) -->
+            <rect x="-2" y="44" width="14" height="38" rx="6" fill="#F5C9A8" transform="rotate(-30 5 60)" />
+            <rect x="58" y="44" width="14" height="38" rx="6" fill="#F5C9A8" transform="rotate(20 65 60)" />
+            <!-- pants -->
+            <rect x="14" y="108" width="20" height="48" fill="#37474F" rx="3" />
+            <rect x="36" y="108" width="20" height="48" fill="#37474F" rx="3" />
+            <!-- shoes -->
+            <ellipse cx="24" cy="160" rx="11" ry="5" fill="#263238" />
+            <ellipse cx="46" cy="160" rx="11" ry="5" fill="#263238" />
+          </g>
+          <!-- plants -->
+          <g transform="translate(248,200)">
+            <path d="M0 30 Q-12 10 -4 0 Q6 12 0 30 Z" fill="#278556" />
+            <path d="M2 30 Q14 10 22 6 Q16 24 6 30 Z" fill="#278556" opacity="0.85" />
+          </g>
+          <g transform="translate(20,210)">
+            <path d="M0 30 Q-10 12 -2 2 Q8 14 0 30 Z" fill="#278556" />
+            <path d="M2 30 Q12 12 20 8 Q14 24 6 30 Z" fill="#278556" opacity="0.85" />
+          </g>
+        </svg>
+      </div>
+
+      <p class="success-msg">Senha alterada com sucesso!</p>
+      <button class="btn-primary" type="submit">Finalizar</button>
+    </form>
+  </div>
+</body>
+</html>

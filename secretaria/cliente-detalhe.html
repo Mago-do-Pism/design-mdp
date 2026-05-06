@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Cliente · Secretaria · Mago do Pism</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
+</head><body><div class="app-shell"><aside class="sidebar">
+    <div class="sidebar-logo" role="img" aria-label="Mago do Pism" style="background:url('../assets/logo-azul.png') center/contain no-repeat; filter:brightness(0) invert(1);"></div>
+    <nav class="sidebar-nav">
+      <a href="painel.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Painel</span></a><a href="clientes.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2.3 1.5-4 3.7-4 1.6 0 2.8.9 3.3 2.2"/></svg><span>Clientes</span></a><a href="formularios.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></svg><span>Formulários</span></a><a href="faturas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg><span>Contas a Receber</span></a><a href="inadimplentes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.8" fill="currentColor"/></svg><span>Inadimplência</span></a><a href="cobranca.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg><span>Régua de Cobrança</span></a>
+    </nav>
+  </aside><main class="main"><div class="sec-page">
+<nav class="sec-breadcrumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><a href="painel.html">Principal</a><span class="sep">/</span><a href="painel.html">Clientes</a><span class="sep">/</span><span>Cassia Regina dos Santos Alves</span></nav>
+<div class="sec-page-head">
+  <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>Cassia Regina dos Santos Alves <span class="pill dot success" style="margin-left:12px; vertical-align:middle;">Ativo</span></h1>
+  <div class="sec-actions">
+    <button class="sec-btn outline">Enviar cobrança</button>
+    <button class="sec-btn dark">Adicionar fatura</button>
+  </div>
+</div>
+
+<div class="sec-detail-grid" style="grid-template-columns:1fr;">
+  <div>
+    <div class="sec-tabs">
+      <button class="sec-tab is-active" data-tab="dados">Dados</button>
+      <button class="sec-tab" data-tab="faturas">Faturas</button>
+      <button class="sec-tab" data-tab="aluno">Aluno vinculado</button>
+      <button class="sec-tab" data-tab="historico">Histórico de cobranças</button>
+      <button class="sec-tab" data-tab="documentos">Documentos</button>
+    </div>
+
+    <!-- TAB: Dados -->
+    <section class="sec-tab-panel is-active" data-panel="dados">
+      <section class="sec-card">
+        <div style="display:flex; align-items:center; margin-bottom:18px;">
+          <h3 class="sec-card-title" style="margin:0;">Dados do responsável</h3>
+          <button class="sec-btn outline" style="margin-left:auto; height:32px; padding:0 14px; font-size:12px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+            Editar
+          </button>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:16px 28px;">
+          <div class="sec-field"><label>Nome completo</label><input value="Cassia Regina dos Santos Alves" readonly/></div>
+          <div class="sec-field"><label>Status</label><input value="Ativo desde 15/01/2025" readonly/></div>
+          <div class="sec-field"><label>CPF</label><input value="063.118.765-33" readonly/></div>
+          <div class="sec-field"><label>RG</label><input value="MG-12.345.678" readonly/></div>
+          <div class="sec-field"><label>E-mail</label><input value="cassiaalvesf340@gmail.com" readonly/></div>
+          <div class="sec-field"><label>Telefone (WhatsApp)</label><input value="(31) 99234-1098" readonly/></div>
+          <div class="sec-field"><label>CEP</label><input value="30130-100" readonly/></div>
+          <div class="sec-field"><label>Cidade / UF</label><input value="Belo Horizonte / MG" readonly/></div>
+          <div class="sec-field" style="grid-column:1 / -1;"><label>Endereço</label><input value="R. Alagoas, 1314 — Funcionários" readonly/></div>
+        </div>
+      </section>
+
+      <section class="sec-card" style="margin-top:20px;">
+        <h3 class="sec-card-title">Aluno(s) vinculado(s)</h3>
+        <div style="display:flex; gap:14px; align-items:center; padding:12px 0;">
+          <div style="width:44px; height:44px; border-radius:50%; background:var(--brand-blue); color:white; display:flex; align-items:center; justify-content:center; font-weight:700;">A</div>
+          <div style="flex:1;">
+            <div style="font-weight:700; color:var(--neutral-900); font-size:14px;">Arthur dos Santos Alves</div>
+            <div style="font-size:12px; color:var(--text-muted);">3º ano · Curso Intensivo 2026 · Matrícula #2026-0142</div>
+          </div>
+          <span class="pill dot success">Ativo</span>
+        </div>
+      </section>
+    </section>
+
+    <!-- TAB: Faturas -->
+    <section class="sec-tab-panel" data-panel="faturas" hidden>
+    <div class="sec-kpis" style="grid-template-columns:repeat(3,1fr); margin-bottom:20px;">
+      <div class="kpi"><div class="kpi-value success">R$ 1.800,00</div><div class="kpi-label">Pago em 2026</div></div>
+      <div class="kpi"><div class="kpi-value danger">R$ 225,00</div><div class="kpi-label">Em aberto</div></div>
+      <div class="kpi"><div class="kpi-value">9</div><div class="kpi-label">Faturas geradas</div></div>
+    </div>
+
+    <section class="sec-card" style="padding:0;">
+      <div style="padding:18px 24px; border-bottom:1px solid var(--border-default); display:flex; align-items:center;">
+        <h3 class="sec-card-title" style="margin:0;">Faturas do aluno: Arthur dos Santos Alves</h3>
+        <span style="margin-left:auto; font-size:12px; color:var(--text-muted);">Plano anual · 9× R$ 200,00</span>
+      </div>
+      <table class="sec-table">
+        <thead><tr><th>Fatura</th><th>Vencimento</th><th>Pagamento</th><th class="num">Valor</th><th>Método</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><a href="fatura.html" class="strong" style="color:var(--brand-blue);">#Arthur-1</a></td><td>15/02/2026</td><td>12/02/2026</td><td class="num strong">R$ 200,00</td><td>PIX</td><td><span class="pill success">PAGO</span></td></tr><tr><td><a href="fatura.html" class="strong" style="color:var(--brand-blue);">#Arthur-2</a></td><td>15/03/2026</td><td>15/03/2026</td><td class="num strong">R$ 200,00</td><td>Cartão</td><td><span class="pill success">PAGO</span></td></tr><tr><td><a href="fatura.html" class="strong" style="color:var(--brand-blue);">#Arthur-3</a></td><td>15/04/2026</td><td>12/04/2026</td><td class="num strong">R$ 200,00</td><td>PIX</td><td><span class="pill success">PAGO</span></td></tr><tr><td><a href="fatura.html" class="strong" style="color:var(--brand-blue);">#Arthur-4</a></td><td>15/05/2026</td><td>—</td><td class="num strong">R$ 225,00</td><td>Boleto</td><td><span class="pill danger">EM ABERTO</span></td></tr><tr><td><a href="fatura.html" class="strong" style="color:var(--brand-blue);">#Arthur-5</a></td><td>15/06/2026</td><td>—</td><td class="num strong">R$ 200,00</td><td>—</td><td><span class="pill muted">PENDENTE</span></td></tr><tr><td><a href="fatura.html" class="strong" style="color:var(--brand-blue);">#Arthur-6</a></td><td>15/07/2026</td><td>—</td><td class="num strong">R$ 200,00</td><td>—</td><td><span class="pill muted">PENDENTE</span></td></tr><tr><td><a href="fatura.html" class="strong" style="color:var(--brand-blue);">#Arthur-7</a></td><td>15/08/2026</td><td>—</td><td class="num strong">R$ 200,00</td><td>—</td><td><span class="pill muted">PENDENTE</span></td></tr><tr><td><a href="fatura.html" class="strong" style="color:var(--brand-blue);">#Arthur-8</a></td><td>15/09/2026</td><td>—</td><td class="num strong">R$ 200,00</td><td>—</td><td><span class="pill muted">PENDENTE</span></td></tr><tr><td><a href="fatura.html" class="strong" style="color:var(--brand-blue);">#Arthur-9</a></td><td>15/10/2026</td><td>—</td><td class="num strong">R$ 200,00</td><td>—</td><td><span class="pill muted">PENDENTE</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+    </section>
+
+    <!-- TAB: Aluno vinculado -->
+    <section class="sec-tab-panel" data-panel="aluno" hidden>
+      <section class="sec-card">
+        <div style="display:flex; align-items:center; margin-bottom:18px;">
+          <h3 class="sec-card-title" style="margin:0;">Arthur dos Santos Alves</h3>
+          <span class="pill dot success" style="margin-left:auto;">Matriculado</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:16px 28px;">
+          <div class="sec-field"><label>Matrícula</label><input value="#2026-0142" readonly/></div>
+          <div class="sec-field"><label>Turma</label><input value="3º ano · Curso Intensivo" readonly/></div>
+          <div class="sec-field"><label>Data de nascimento</label><input value="22/04/2008" readonly/></div>
+          <div class="sec-field"><label>CPF</label><input value="148.227.116-50" readonly/></div>
+          <div class="sec-field"><label>Escola atual</label><input value="Colégio Magnum Agostiniano" readonly/></div>
+          <div class="sec-field"><label>Início do plano</label><input value="15/02/2026" readonly/></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- TAB: Histórico de cobranças -->
+    <section class="sec-tab-panel" data-panel="historico" hidden>
+      <section class="sec-card" style="padding:0;">
+        <div style="padding:18px 24px; border-bottom:1px solid var(--border-default);">
+          <h3 class="sec-card-title" style="margin:0;">Linha do tempo de comunicações</h3>
+        </div>
+        <ul style="list-style:none; margin:0; padding:0;">
+          <li style="padding:16px 24px; border-bottom:1px solid var(--border-default); display:flex; gap:14px;">
+            <div style="width:36px; height:36px; border-radius:50%; background:rgba(14,147,242,0.12); color:var(--brand-blue); display:flex; align-items:center; justify-content:center;">📧</div>
+            <div style="flex:1;"><div style="font-weight:600; font-size:13px;">E-mail enviado · Lembrete de vencimento</div><div style="font-size:11px; color:var(--text-muted);">15/05/2026 · 09:02 · entregue, aberto</div></div>
+            <span class="pill success">Aberto</span>
+          </li>
+          <li style="padding:16px 24px; border-bottom:1px solid var(--border-default); display:flex; gap:14px;">
+            <div style="width:36px; height:36px; border-radius:50%; background:rgba(39,133,86,0.12); color:var(--color-success); display:flex; align-items:center; justify-content:center;">💬</div>
+            <div style="flex:1;"><div style="font-weight:600; font-size:13px;">WhatsApp enviado · Cobrança fatura #Arthur-4</div><div style="font-size:11px; color:var(--text-muted);">17/05/2026 · 14:21 · respondido</div></div>
+            <span class="pill success">Respondido</span>
+          </li>
+          <li style="padding:16px 24px; display:flex; gap:14px;">
+            <div style="width:36px; height:36px; border-radius:50%; background:rgba(208,62,62,0.12); color:var(--color-danger); display:flex; align-items:center; justify-content:center;">📞</div>
+            <div style="flex:1;"><div style="font-weight:600; font-size:13px;">Ligação registrada · Negociou novo prazo (25/05)</div><div style="font-size:11px; color:var(--text-muted);">19/05/2026 · 10:48 · operadora: Júlia</div></div>
+            <span class="pill warn">Acordo</span>
+          </li>
+        </ul>
+      </section>
+    </section>
+
+    <!-- TAB: Documentos -->
+    <section class="sec-tab-panel" data-panel="documentos" hidden>
+      <section class="sec-card">
+        <h3 class="sec-card-title">Documentos arquivados</h3>
+        <ul style="list-style:none; margin:0; padding:0;">
+          <li style="display:flex; gap:12px; align-items:center; padding:14px 0; border-bottom:1px solid var(--border-default);">
+            <div style="width:38px; height:38px; border-radius:8px; background:rgba(14,147,242,0.1); color:var(--brand-blue); display:flex; align-items:center; justify-content:center;">📄</div>
+            <div style="flex:1;"><div style="font-weight:600; font-size:13px;">Contrato de matrícula 2026 — assinado.pdf</div><div style="font-size:11px; color:var(--text-muted);">Assinado em 12/01/2026 · ZapSign</div></div>
+            <button class="sec-btn outline" style="height:32px; padding:0 14px; font-size:12px;">Baixar</button>
+          </li>
+          <li style="display:flex; gap:12px; align-items:center; padding:14px 0; border-bottom:1px solid var(--border-default);">
+            <div style="width:38px; height:38px; border-radius:8px; background:rgba(14,147,242,0.1); color:var(--brand-blue); display:flex; align-items:center; justify-content:center;">📄</div>
+            <div style="flex:1;"><div style="font-weight:600; font-size:13px;">RG do responsável.pdf</div><div style="font-size:11px; color:var(--text-muted);">Enviado em 12/01/2026</div></div>
+            <button class="sec-btn outline" style="height:32px; padding:0 14px; font-size:12px;">Baixar</button>
+          </li>
+          <li style="display:flex; gap:12px; align-items:center; padding:14px 0;">
+            <div style="width:38px; height:38px; border-radius:8px; background:rgba(14,147,242,0.1); color:var(--brand-blue); display:flex; align-items:center; justify-content:center;">📄</div>
+            <div style="flex:1;"><div style="font-weight:600; font-size:13px;">Comprovante de residência.pdf</div><div style="font-size:11px; color:var(--text-muted);">Enviado em 12/01/2026</div></div>
+            <button class="sec-btn outline" style="height:32px; padding:0 14px; font-size:12px;">Baixar</button>
+          </li>
+        </ul>
+      </section>
+    </section>
+  </div>
+</div>
+</div></main></div>
+<script>
+(function(){
+  const tabs = document.querySelectorAll('.sec-tab[data-tab]');
+  const panels = document.querySelectorAll('.sec-tab-panel[data-panel]');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('is-active'));
+    t.classList.add('is-active');
+    const key = t.dataset.tab;
+    panels.forEach(p => {
+      const on = p.dataset.panel === key;
+      p.hidden = !on;
+      p.classList.toggle('is-active', on);
+    });
+  }));
+})();
+</script>
+</body></html>

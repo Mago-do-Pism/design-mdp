@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>E-mail enviado · Mago do Pism</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      background: var(--neutral-0);
+      display: grid;
+      grid-template-columns: minmax(0, 926fr) minmax(0, 514fr);
+    }
+    @media (max-width: 900px) { body { grid-template-columns: 1fr; } .auth-hero { display: none; } }
+    .auth-hero {
+      position: relative;
+      background: linear-gradient(rgba(14,147,242,0.6), rgba(14,147,242,0.6)), url("../assets/forgot-bg.jpg") center / cover no-repeat;
+      min-height: 100vh;
+    }
+    .auth-pane { display: flex; align-items: center; justify-content: center; padding: 64px 40px; }
+    .auth-form { width: 100%; max-width: 364px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+    .auth-logo { width: 250px; height: 200px; background: url("../assets/logo-azul.png") center / contain no-repeat; }
+    .auth-form .input, .auth-form .btn-primary { width: 100%; }
+    .auth-illust {
+      width: 300px; height: 300px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .recover-instructions {
+      font-family: "Nunito Sans", var(--font-body);
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 21px;
+      letter-spacing: 0.3px;
+      text-align: center;
+      color: var(--text-muted);
+      margin: 0;
+      max-width: 276px;
+    }
+    .hero-tag { position: absolute; bottom: 48px; left: 0; right: 0; text-align: center; font-family: "Quicksand", sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.8px; color: white; opacity: 0.85; }
+    .back-home { position: fixed; top: 16px; left: 16px; z-index: 10; padding: 8px 14px; background: rgba(255,255,255,0.92); border-radius: var(--radius-pill); box-shadow: var(--shadow-soft); font-size: 13px; font-weight: 600; color: var(--brand-blue); }
+  </style>
+</head>
+<body>
+
+  <div class="auth-hero"><div class="hero-tag">LOGAR</div></div>
+
+  <div class="auth-pane">
+    <form class="auth-form" onsubmit="event.preventDefault(); window.location='forgot-3.html'">
+      <div class="auth-logo" role="img" aria-label="Mago do Pism"></div>
+      <!-- Simplified mailbox illustration — placeholder for the Freepik vector in the Figma source -->
+      <div class="auth-illust" aria-hidden="true">
+        <svg viewBox="0 0 300 300" width="100%" height="100%">
+          <!-- floor -->
+          <ellipse cx="150" cy="218" rx="126" ry="73" fill="#f5f5f5" />
+          <!-- shadows -->
+          <ellipse cx="130" cy="245" rx="60" ry="17" fill="#e0e0e0" />
+          <ellipse cx="200" cy="252" rx="72" ry="20" fill="#e0e0e0" opacity="0.7" />
+          <!-- mailbox post -->
+          <rect x="125" y="160" width="10" height="80" fill="#455A64" rx="2" />
+          <!-- mailbox body -->
+          <rect x="80" y="100" width="100" height="70" rx="35" fill="#0E93F2" />
+          <rect x="80" y="135" width="100" height="35" fill="#0E93F2" />
+          <!-- mailbox door -->
+          <rect x="100" y="115" width="50" height="40" rx="6" fill="#1686D8" />
+          <circle cx="142" cy="135" r="3" fill="#fcfcfc" />
+          <!-- flag -->
+          <rect x="178" y="95" width="4" height="35" fill="#D03E3E" />
+          <rect x="180" y="95" width="14" height="14" fill="#D03E3E" />
+          <!-- paper plane -->
+          <g transform="translate(35,55) rotate(-8)">
+            <path d="M0 25 L78 0 L60 38 L48 28 L42 50 L34 32 Z" fill="#fcfcfc" stroke="#0E93F2" stroke-width="2" stroke-linejoin="round" />
+            <path d="M48 28 L60 38 L42 50 Z" fill="#dedede" />
+          </g>
+          <!-- character (simplified silhouette) -->
+          <g transform="translate(155,80)">
+            <ellipse cx="35" cy="20" rx="20" ry="22" fill="#FFCFAE" />
+            <rect x="22" y="38" width="26" height="40" rx="6" fill="#0E93F2" />
+            <rect x="20" y="76" width="30" height="40" fill="#263238" rx="3" />
+            <rect x="18" y="115" width="14" height="30" fill="#37474F" rx="2" />
+            <rect x="36" y="115" width="14" height="30" fill="#37474F" rx="2" />
+            <!-- arm waving -->
+            <rect x="48" y="42" width="8" height="30" rx="4" fill="#FFCFAE" transform="rotate(20 52 57)" />
+          </g>
+          <!-- plant -->
+          <g transform="translate(228,212)">
+            <path d="M0 35 Q-10 10 -2 0 Q8 12 0 35 Z" fill="#278556" />
+            <path d="M2 35 Q14 14 24 8 Q18 26 6 35 Z" fill="#278556" opacity="0.85" />
+            <rect x="-8" y="34" width="22" height="14" rx="2" fill="#8a5a3b" />
+          </g>
+        </svg>
+      </div>
+      <p class="recover-instructions">Você receberá um e-mail para alterar sua senha</p>
+      <button class="btn-primary" type="submit">Concluir</button>
+    </form>
+  </div>
+</body>
+</html>

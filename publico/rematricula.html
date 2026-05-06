@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
+<title>Rematrícula · Mago do Pism</title>
+</head><body><div class="pub-shell">
+<header class="pub-header">
+  <img src="../assets/logo-azul.png" alt="Mago do Pism"/>
+  <span class="pub-title">Rematrícula 2026 · Curso Intensivo Mago do Pism</span>
+  <span class="pub-help">Precisa de ajuda? <a href="#" style="color:var(--brand-blue); font-weight:600;">(31) 99876-1234</a></span>
+</header>
+
+<div class="pub-stepper">
+  <div class="pub-stepper-inner">
+    <div class="pub-step is-active"><span class="dot">1</span><span>Confirmação</span></div>
+    <div class="pub-step"><span class="dot">2</span><span>Contrato</span></div>
+    <div class="pub-step"><span class="dot">3</span><span>Pagamento</span></div>
+  </div>
+</div>
+
+<main class="pub-content">
+  <div class="pub-card" style="max-width:720px;">
+    <h1>Rematrícula</h1>
+    <p class="pub-sub">Informe o CPF do responsável financeiro e a gente recupera os dados do aluno cadastrado em 2025. ✨</p>
+
+    <div class="pub-form-grid" style="grid-template-columns:1fr auto;">
+      <div class="pub-field"><label>CPF do responsável<span class="req">*</span></label><input id="cpfInput" placeholder="000.000.000-00" maxlength="14" autocomplete="off"/></div>
+      <div style="display:flex; align-items:flex-end;">
+        <button id="btnSearch" class="pub-btn primary" style="height:46px;">Buscar →</button>
+      </div>
+    </div>
+
+    <div id="result" style="display:none; margin-top:28px;">
+      <div style="padding:16px 20px; background: linear-gradient(135deg, rgba(39,133,86,0.06), rgba(14,147,242,0.06)); border:1px solid rgba(39,133,86,0.20); border-left:3px solid var(--color-success); border-radius:10px; display:flex; align-items:center; gap:12px;">
+        <div style="width:32px; height:32px; border-radius:50%; background:var(--color-success); color:white; display:flex; align-items:center; justify-content:center; flex-shrink:0;">✓</div>
+        <div>
+          <div style="font-weight:700; color:var(--neutral-900); font-size:14px;">Cadastro encontrado</div>
+          <div style="font-size:12px; color:var(--text-muted);">Confira os dados abaixo. Algo mudou? Edite os campos antes de continuar.</div>
+        </div>
+      </div>
+
+      <h3 style="font-family:var(--font-akagi); font-size:13px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin:28px 0 14px;">Responsável financeiro</h3>
+      <div class="pub-form-grid">
+        <div class="pub-field full"><label>Nome completo</label><input value="Cassia Regina dos Santos Alves"/></div>
+        <div class="pub-field"><label>CPF</label><input id="cpfFilled" value="" readonly style="background:var(--neutral-100);"/></div>
+        <div class="pub-field"><label>RG</label><input value="MG-15.842.336"/></div>
+        <div class="pub-field"><label>E-mail</label><input type="email" value="cassiaalvesf340@gmail.com"/></div>
+        <div class="pub-field"><label>Telefone (WhatsApp)</label><input value="(31) 99234-1098"/></div>
+        <div class="pub-field"><label>CEP</label><input value="30130-110"/></div>
+        <div class="pub-field"><label>Cidade / UF</label><input value="Belo Horizonte / MG" readonly/></div>
+        <div class="pub-field full"><label>Endereço</label><input value="Rua Bahia, 1148 — Sala 504 — Centro"/></div>
+      </div>
+
+      <h3 style="font-family:var(--font-akagi); font-size:13px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin:28px 0 14px;">Aluno(a)</h3>
+      <div class="pub-form-grid">
+        <div class="pub-field full"><label>Nome completo do aluno</label><input value="Arthur dos Santos Alves"/></div>
+        <div class="pub-field"><label>E-mail do aluno (Gmail)<span class="req">*</span></label><input type="email" value="arthur.salves@gmail.com" pattern=".+@gmail\.com" title="Use um e-mail @gmail.com"/></div>
+        <div class="pub-field"><label>Série em 2026<span class="req">*</span></label><select><option>3º ano EM — Curso Intensivo</option><option>2º ano EM — Pré-Vestibular</option><option>1º ano EM — Reforço</option></select></div>
+      </div>
+
+      <div style="margin-top:24px; padding:14px 16px; background:rgba(255,201,15,0.10); border-left:3px solid #FFC90F; border-radius:8px;">
+        <div style="font-weight:700; font-size:13px; color:var(--neutral-900); margin-bottom:4px;">⚡ Bônus aluno antigo</div>
+        <div style="font-size:12px; color:var(--text-secondary);">Você ganha <strong>R$ 89,00 de desconto</strong> na taxa de matrícula por ser aluno renovante.</div>
+      </div>
+
+      <div class="pub-actions">
+        <a href="escolha.html" class="pub-btn outline">← Voltar</a>
+        <a href="contrato.html" class="pub-btn primary large">Confirmar e ir ao contrato →</a>
+      </div>
+    </div>
+
+    <div id="notFound" style="display:none; margin-top:28px;">
+      <div style="padding:16px 20px; background: rgba(208,62,62,0.06); border:1px solid rgba(208,62,62,0.20); border-left:3px solid var(--color-danger); border-radius:10px; display:flex; align-items:center; gap:12px;">
+        <div style="width:32px; height:32px; border-radius:50%; background:var(--color-danger); color:white; display:flex; align-items:center; justify-content:center; flex-shrink:0;">!</div>
+        <div>
+          <div style="font-weight:700; color:var(--neutral-900); font-size:14px;">CPF não encontrado</div>
+          <div style="font-size:12px; color:var(--text-muted);">Não localizamos uma matrícula ativa em 2025 com esse CPF. Você pode <a href="cadastro.html" style="color:var(--brand-blue); font-weight:600;">fazer uma nova matrícula</a> ou checar com a secretaria.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script>
+(function(){
+  const inp = document.getElementById('cpfInput');
+  const btn = document.getElementById('btnSearch');
+  const result = document.getElementById('result');
+  const notFound = document.getElementById('notFound');
+  const cpfFilled = document.getElementById('cpfFilled');
+
+  // simple CPF mask
+  inp.addEventListener('input', () => {
+    let v = inp.value.replace(/\D/g,'').slice(0,11);
+    v = v.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    inp.value = v;
+  });
+
+  function search(){
+    const cpf = inp.value.replace(/\D/g,'');
+    if (cpf.length !== 11){ inp.focus(); return; }
+    // demo: any CPF starting with even digit "finds", odd "not found"
+    if (parseInt(cpf[0],10) % 2 === 0) {
+      cpfFilled.value = inp.value;
+      result.style.display = 'block';
+      notFound.style.display = 'none';
+      result.scrollIntoView({behavior:'smooth', block:'start'});
+    } else {
+      result.style.display = 'none';
+      notFound.style.display = 'block';
+    }
+  }
+  btn.addEventListener('click', search);
+  inp.addEventListener('keydown', e => { if (e.key==='Enter'){ e.preventDefault(); search(); }});
+})();
+</script>
+</body></html>

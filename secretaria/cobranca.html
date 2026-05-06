@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Régua de Cobrança · Secretaria · Mago do Pism</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
+</head><body><div class="app-shell"><aside class="sidebar">
+    <div class="sidebar-logo" role="img" aria-label="Mago do Pism" style="background:url('../assets/logo-azul.png') center/contain no-repeat; filter:brightness(0) invert(1);"></div>
+    <nav class="sidebar-nav">
+      <a href="painel.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Painel</span></a><a href="clientes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2.3 1.5-4 3.7-4 1.6 0 2.8.9 3.3 2.2"/></svg><span>Clientes</span></a><a href="formularios.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></svg><span>Formulários</span></a><a href="faturas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg><span>Contas a Receber</span></a><a href="inadimplentes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.8" fill="currentColor"/></svg><span>Inadimplência</span></a><a href="cobranca.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg><span>Régua de Cobrança</span></a>
+    </nav>
+  </aside><main class="main"><div class="sec-page">
+<nav class="sec-breadcrumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><a href="painel.html">Principal</a><span class="sep">/</span><span>Régua de Cobrança</span></nav>
+<div class="sec-page-head">
+  <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg>Régua de Cobrança</h1>
+  <div class="sec-actions">
+    <button class="sec-btn outline">Duplicar régua</button>
+    <button class="sec-btn dark">Salvar alterações</button>
+  </div>
+</div>
+
+<div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:24px;">
+  <aside>
+    <section class="sec-card">
+      <h3 class="sec-card-title">Réguas configuradas</h3>
+      <ul class="sec-list-radio">
+        <li class="is-active"><span class="title">Régua padrão Cursinho</span><span class="meta">7 etapas · 248 alunos</span></li>
+        <li><span class="title">Régua Pré-IFNMG</span><span class="meta">5 etapas · 132 alunos</span></li>
+        <li><span class="title">Régua intensiva (60+ dias)</span><span class="meta">4 etapas · 24 alunos</span></li>
+        <li class="muted"><span class="title">Régua manual</span><span class="meta">desativada</span></li>
+      </ul>
+      <button class="sec-btn outline" style="width:100%; margin-top:12px;">+ Nova régua</button>
+    </section>
+
+    <section class="sec-card" style="margin-top:20px;">
+      <h3 class="sec-card-title">Variáveis disponíveis</h3>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <code class="var-chip">{{aluno}}</code><code class="var-chip">{{responsavel}}</code><code class="var-chip">{{valor}}</code><code class="var-chip">{{vencimento}}</code><code class="var-chip">{{dias_atraso}}</code><code class="var-chip">{{link_pagamento}}</code><code class="var-chip">{{pix_copia_cola}}</code>
+      </div>
+    </section>
+  </aside>
+
+  <div>
+    <section class="sec-card" style="padding:0;">
+      <div style="padding:18px 24px; display:flex; align-items:center; border-bottom:1px solid var(--border-default);">
+        <h3 class="sec-card-title" style="margin:0;">Régua padrão Cursinho — 7 etapas</h3>
+        <label class="sec-toggle" style="margin-left:auto;"><input type="checkbox" checked><span class="switch"></span>Ativa</label>
+      </div>
+
+      <ol class="sec-steps">
+        <li>
+          <div class="step-rail"><span class="step-pin">D-3</span><span class="step-line"></span></div>
+          <div class="step-card">
+            <div class="step-head"><strong>Lembrete amigável</strong><span class="pill info">E-mail</span></div>
+            <p class="step-msg">Olá {{responsavel}}! Lembramos que a mensalidade do {{aluno}} vence em 3 dias ({{vencimento}}). Valor: {{valor}}. Pague pelo Pix ou link: {{link_pagamento}}.</p>
+            <div class="step-actions">
+              <button class="ico-btn" title="Editar">✎</button>
+              <button class="ico-btn" title="Duplicar">⎘</button>
+              <button class="ico-btn" title="Remover">×</button>
+            </div>
+          </div>
+        </li><li>
+          <div class="step-rail"><span class="step-pin">D-1</span><span class="step-line"></span></div>
+          <div class="step-card">
+            <div class="step-head"><strong>Aviso véspera</strong><span class="pill info">WhatsApp</span></div>
+            <p class="step-msg">Oi, tudo bem? 💚 A mensalidade do {{aluno}} vence amanhã. Acesse {{link_pagamento}} para pagar com Pix.</p>
+            <div class="step-actions">
+              <button class="ico-btn" title="Editar">✎</button>
+              <button class="ico-btn" title="Duplicar">⎘</button>
+              <button class="ico-btn" title="Remover">×</button>
+            </div>
+          </div>
+        </li><li>
+          <div class="step-rail"><span class="step-pin">D+0</span><span class="step-line"></span></div>
+          <div class="step-card">
+            <div class="step-head"><strong>Vence hoje</strong><span class="pill info">WhatsApp + E-mail</span></div>
+            <p class="step-msg">A fatura de {{valor}} do {{aluno}} vence hoje. Caso já tenha pago, desconsidere.</p>
+            <div class="step-actions">
+              <button class="ico-btn" title="Editar">✎</button>
+              <button class="ico-btn" title="Duplicar">⎘</button>
+              <button class="ico-btn" title="Remover">×</button>
+            </div>
+          </div>
+        </li><li>
+          <div class="step-rail"><span class="step-pin">D+3</span><span class="step-line"></span></div>
+          <div class="step-card">
+            <div class="step-head"><strong>Primeira cobrança</strong><span class="pill info">WhatsApp</span></div>
+            <p class="step-msg">Olá {{responsavel}}, identificamos que a fatura do {{aluno}} ({{valor}}) está em atraso há {{dias_atraso}} dias. Posso te ajudar?</p>
+            <div class="step-actions">
+              <button class="ico-btn" title="Editar">✎</button>
+              <button class="ico-btn" title="Duplicar">⎘</button>
+              <button class="ico-btn" title="Remover">×</button>
+            </div>
+          </div>
+        </li><li>
+          <div class="step-rail"><span class="step-pin">D+7</span><span class="step-line"></span></div>
+          <div class="step-card">
+            <div class="step-head"><strong>Cobrança formal</strong><span class="pill info">E-mail</span></div>
+            <p class="step-msg">Prezado(a) {{responsavel}}, a fatura de {{valor}} encontra-se em atraso há {{dias_atraso}} dias. Solicitamos a regularização.</p>
+            <div class="step-actions">
+              <button class="ico-btn" title="Editar">✎</button>
+              <button class="ico-btn" title="Duplicar">⎘</button>
+              <button class="ico-btn" title="Remover">×</button>
+            </div>
+          </div>
+        </li><li>
+          <div class="step-rail"><span class="step-pin">D+15</span><span class="step-line"></span></div>
+          <div class="step-card">
+            <div class="step-head"><strong>Negociação</strong><span class="pill info">WhatsApp + Ligação</span></div>
+            <p class="step-msg">Vamos encontrar a melhor forma de regularizar? Temos opções de parcelamento. Responda este WhatsApp.</p>
+            <div class="step-actions">
+              <button class="ico-btn" title="Editar">✎</button>
+              <button class="ico-btn" title="Duplicar">⎘</button>
+              <button class="ico-btn" title="Remover">×</button>
+            </div>
+          </div>
+        </li><li>
+          <div class="step-rail"><span class="step-pin">D+30</span><span class="step-line"></span></div>
+          <div class="step-card">
+            <div class="step-head"><strong>Suspensão de acesso</strong><span class="pill info">E-mail + Sistema</span></div>
+            <p class="step-msg">Comunicamos a suspensão temporária do acesso à plataforma do {{aluno}} a partir de hoje, até regularização da pendência.</p>
+            <div class="step-actions">
+              <button class="ico-btn" title="Editar">✎</button>
+              <button class="ico-btn" title="Duplicar">⎘</button>
+              <button class="ico-btn" title="Remover">×</button>
+            </div>
+          </div>
+        </li>
+      </ol>
+
+      <div style="padding:16px 24px; border-top:1px solid var(--border-default);">
+        <button class="sec-btn outline" style="width:100%;">+ Adicionar etapa</button>
+      </div>
+    </section>
+
+    <section class="sec-card" style="margin-top:20px;">
+      <h3 class="sec-card-title">Desempenho últimos 30 dias</h3>
+      <div class="sec-kpis" style="grid-template-columns:repeat(4,1fr);">
+        <div class="kpi"><div class="kpi-value">1.428</div><div class="kpi-label">Mensagens enviadas</div></div>
+        <div class="kpi"><div class="kpi-value success">R$ 8.940,00</div><div class="kpi-label">Recuperado</div></div>
+        <div class="kpi"><div class="kpi-value">62%</div><div class="kpi-label">Taxa de resposta</div></div>
+        <div class="kpi"><div class="kpi-value success">3,2 dias</div><div class="kpi-label">Tempo médio até pagar</div></div>
+      </div>
+    </section>
+  </div>
+</div>
+</div></main></div></body></html>

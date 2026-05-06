@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Assinar contrato · Mago do Pism</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
+<style>
+  .zs-pub-wrap { width:100%; max-width:980px; margin:0 auto; }
+  .zs-greeting { background:white; border:1px solid var(--border-default); border-radius:12px; padding:22px 26px; margin-bottom:18px; display:flex; gap:18px; align-items:center; }
+  .zs-greeting .ava { width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg, #0E93F2, #4ab8ff); color:white; display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-family:var(--font-akagi); font-size:18px; flex-shrink:0; }
+  .zs-greeting h1 { margin:0 0 3px; font-family:var(--font-display); font-weight:600; font-size:20px; color:var(--neutral-900); }
+  .zs-greeting p { margin:0; font-size:13px; color:var(--text-secondary); line-height:1.5; }
+  .zs-greeting p strong { color:var(--neutral-900); }
+
+  /* Status strip */
+  .zs-status-strip { display:grid; grid-template-columns: repeat(3, 1fr); gap:0; background:white; border:1px solid var(--border-default); border-radius:10px; overflow:hidden; margin-bottom:18px; }
+  .zs-status-strip .ss-item { padding:14px 18px; display:flex; align-items:center; gap:12px; border-right:1px solid var(--neutral-200); position:relative; }
+  .zs-status-strip .ss-item:last-child { border-right:0; }
+  .zs-status-strip .ss-item .ic { width:32px; height:32px; border-radius:50%; background:var(--neutral-100); color:var(--text-muted); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .zs-status-strip .ss-item .ic svg { width:14px; height:14px; }
+  .zs-status-strip .ss-item.is-done .ic { background:rgba(39,133,86,0.12); color:var(--color-success); }
+  .zs-status-strip .ss-item.is-active .ic { background:rgba(14,147,242,0.14); color:var(--brand-blue); animation:pulse-dot 1.6s ease-in-out infinite; }
+  @keyframes pulse-dot { 0%,100%{ box-shadow:0 0 0 0 rgba(14,147,242,0.4);} 60%{ box-shadow:0 0 0 8px rgba(14,147,242,0);} }
+  .zs-status-strip .ss-item .meta .l { font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.4px; font-weight:600; }
+  .zs-status-strip .ss-item .meta .t { font-size:13px; color:var(--neutral-900); font-weight:600; }
+
+  /* Widget container */
+  .zs-widget-card { background:white; border:1px solid var(--border-default); border-radius:12px; overflow:hidden; box-shadow:0 4px 20px rgba(15,42,82,0.06); }
+  .zs-widget-head { display:flex; align-items:center; gap:12px; padding:14px 22px; background:linear-gradient(180deg, #fafdff, #f3f9fe); border-bottom:1px solid var(--border-default); }
+  .zs-widget-head .zs-mark { width:30px; height:30px; border-radius:6px; background:#0E93F2; color:white; display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; font-family:var(--font-akagi); flex-shrink:0; letter-spacing:-0.3px; }
+  .zs-widget-head .zs-info { flex:1; min-width:0; }
+  .zs-widget-head .zs-info strong { display:block; font-size:13px; color:var(--neutral-900); font-family:var(--font-akagi); }
+  .zs-widget-head .zs-info span { font-size:11px; color:var(--text-muted); font-family:var(--font-mono); }
+  .zs-widget-head .zs-secure { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:var(--color-success); padding:5px 10px; background:rgba(39,133,86,0.08); border-radius:999px; }
+  .zs-widget-head .zs-secure svg { width:11px; height:11px; }
+
+  /* Iframe area (mock) */
+  .zs-iframe-mock { position:relative; height:760px; background:#f5f7fa; border-bottom:1px solid var(--border-default); display:flex; flex-direction:column; }
+  .zs-mock-toolbar { padding:10px 22px; background:white; border-bottom:1px solid var(--neutral-200); display:flex; align-items:center; gap:14px; font-size:12px; color:var(--text-secondary); }
+  .zs-mock-toolbar .pages { display:inline-flex; align-items:center; gap:6px; }
+  .zs-mock-toolbar .pages button { background:transparent; border:1px solid var(--border-default); width:26px; height:26px; border-radius:4px; cursor:pointer; color:var(--text-secondary); display:inline-flex; align-items:center; justify-content:center; }
+  .zs-mock-toolbar .pages button svg { width:12px; height:12px; }
+  .zs-mock-toolbar .zoom { margin-left:auto; display:inline-flex; gap:4px; align-items:center; }
+  .zs-mock-toolbar .zoom button { background:transparent; border:1px solid var(--border-default); width:26px; height:26px; border-radius:4px; cursor:pointer; }
+
+  .zs-mock-body { flex:1; overflow:auto; padding:24px; display:flex; justify-content:center; }
+  .zs-mock-paper { background:white; width:100%; max-width:680px; padding:48px 56px; box-shadow:0 1px 3px rgba(0,0,0,0.08); border:1px solid var(--neutral-200); font-family:"Times New Roman", Georgia, serif; font-size:13px; line-height:1.7; color:#222; min-height:920px; position:relative; }
+  .zs-mock-paper h2 { font-size:16px; text-align:center; text-transform:uppercase; margin:0 0 28px; letter-spacing:0.3px; }
+  .zs-mock-paper h3 { font-size:13.5px; margin:22px 0 8px; }
+  .zs-mock-paper p { margin:0 0 11px; text-align:justify; }
+  .zs-mock-paper ol { padding-left:22px; margin:0 0 11px; }
+  .zs-mock-paper .filled { background:#fffbe1; padding:0 3px; border-radius:2px; }
+
+  /* Sign zone */
+  .zs-sign-zone { margin-top:34px; padding:18px 22px; background:#fffaf0; border:2px dashed #f4b740; border-radius:8px; text-align:center; }
+  .zs-sign-zone strong { display:block; font-family:var(--font-display); font-size:14px; color:#a76a07; margin-bottom:4px; }
+  .zs-sign-zone p { margin:0 0 12px; font-family:var(--font-display); font-size:12px; color:#a76a07; }
+  .zs-sign-zone .sign-btn { background:#0E93F2; color:white; border:0; padding:11px 28px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; font-family:var(--font-display); display:inline-flex; align-items:center; gap:7px; }
+  .zs-sign-zone .sign-btn svg { width:14px; height:14px; }
+  .zs-sign-zone .sign-btn:hover { background:#0a7ed3; }
+
+  /* Footer */
+  .zs-widget-foot { padding:12px 22px; background:var(--neutral-50); display:flex; align-items:center; justify-content:space-between; gap:14px; font-size:11px; color:var(--text-muted); flex-wrap:wrap; }
+  .zs-widget-foot .left { display:inline-flex; align-items:center; gap:8px; }
+  .zs-widget-foot .left svg { width:12px; height:12px; }
+
+  /* Event log (dev / debug visible) */
+  .zs-event-log { background:#0f172a; color:#e2e8f0; border-radius:10px; margin-top:18px; padding:16px 20px; font-family:var(--font-mono); font-size:11.5px; line-height:1.8; max-height:200px; overflow:auto; }
+  .zs-event-log .lh { color:#64748b; margin-bottom:8px; font-size:10.5px; text-transform:uppercase; letter-spacing:0.5px; display:flex; gap:8px; align-items:center; }
+  .zs-event-log .lh .ld { width:6px; height:6px; border-radius:50%; background:#22c55e; animation:pulse-dot2 1.6s infinite; }
+  @keyframes pulse-dot2 { 0%,100%{ opacity:1;} 50%{ opacity:0.3;} }
+  .zs-event-log .ev { display:flex; gap:10px; }
+  .zs-event-log .ev .ts { color:#64748b; }
+  .zs-event-log .ev .lvl { color:#22c55e; }
+  .zs-event-log .ev .lvl.info { color:#7dd3fc; }
+  .zs-event-log .ev .lvl.warn { color:#fbbf24; }
+  .zs-event-log .ev .msg { color:#e2e8f0; }
+  .zs-event-log .ev .msg .k { color:#7dd3fc; }
+  .zs-event-log .ev .msg .s { color:#86efac; }
+
+  /* Toast for sign event */
+  .zs-toast { position:fixed; bottom:24px; right:24px; max-width:380px; background:white; border:1px solid var(--color-success); border-left:4px solid var(--color-success); border-radius:8px; padding:14px 18px; box-shadow:0 8px 30px rgba(15,42,82,0.18); display:none; align-items:flex-start; gap:12px; z-index:50; }
+  .zs-toast.show { display:flex; animation:slideup .3s ease; }
+  @keyframes slideup { from{ transform:translateY(20px); opacity:0;} to{ transform:translateY(0); opacity:1;} }
+  .zs-toast .ic { width:32px; height:32px; border-radius:50%; background:rgba(39,133,86,0.12); color:var(--color-success); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .zs-toast .ic svg { width:16px; height:16px; }
+  .zs-toast strong { display:block; font-size:13px; color:var(--neutral-900); margin-bottom:2px; }
+  .zs-toast span { font-size:12px; color:var(--text-secondary); }
+  .zs-toast a { display:inline-block; margin-top:8px; font-size:12px; color:var(--brand-blue); font-weight:600; }
+</style>
+</head><body><div class="pub-shell">
+<header class="pub-header"><img src="../assets/logo-azul.png" alt="Mago do Pism"/><span class="pub-title">Matrícula 2026 · Curso Intensivo Mago do Pism</span><span class="pub-help">Precisa de ajuda? <a href="#" style="color:var(--brand-blue); font-weight:600;">(31) 99876-1234</a></span></header>
+<div class="pub-stepper"><div class="pub-stepper-inner"><div class="pub-step is-done"><span class="dot">✓</span><span>Cadastro</span></div><div class="pub-step is-active"><span class="dot">2</span><span>Contrato</span></div><div class="pub-step"><span class="dot">3</span><span>Pagamento</span></div></div></div>
+
+<main class="pub-content" style="padding-bottom:32px;">
+<div class="zs-pub-wrap">
+
+  <div class="zs-greeting">
+    <div class="ava">CR</div>
+    <div>
+      <h1>Olá, Cassia 👋</h1>
+      <p>Seu contrato de matrícula do <strong>Curso Intensivo PISM 2026</strong> está pronto. Leia com atenção e clique em <strong>Assinar</strong> ao final — leva 2 minutinhos.</p>
+    </div>
+  </div>
+
+  <div class="zs-status-strip">
+    <div class="ss-item is-done">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="meta"><div class="l">Recebido</div><div class="t">Documento carregado</div></div>
+    </div>
+    <div class="ss-item is-active">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+      <div class="meta"><div class="l">Etapa atual</div><div class="t">Aguardando sua assinatura</div></div>
+    </div>
+    <div class="ss-item">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+      <div class="meta"><div class="l">Próximo</div><div class="t">PDF assinado por e-mail</div></div>
+    </div>
+  </div>
+
+  <!--
+    ============================================================
+    Widget ZapSign embutido (iframe)
+    ============================================================
+    Em produção, substituir todo o bloco .zs-iframe-mock por:
+
+    <iframe
+      id="zs-widget"
+      src="https://app.zapsign.com.br/verificar/abc4f7a1-92be-4d33-b7a8-1aaf785dd335"
+      width="100%" height="800px"
+      allow="camera"
+      style="border:0; display:block;">
+    </iframe>
+
+    O bloco abaixo é uma simulação visual para o protótipo.
+    -->
+
+  <section class="zs-widget-card">
+    <div class="zs-widget-head">
+      <div class="zs-mark">ZS</div>
+      <div class="zs-info">
+        <strong>Assinatura segura via ZapSign</strong>
+        <span>token: abc4f7a1-…-1aaf785dd335</span>
+      </div>
+      <div class="zs-secure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Conexão criptografada · ICP-Brasil</div>
+    </div>
+
+    <div class="zs-iframe-mock" aria-label="Iframe ZapSign (mock)">
+      <div class="zs-mock-toolbar">
+        <div class="pages">
+          <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span style="font-family:var(--font-mono); font-size:11px;">Página 1 de 3</span>
+          <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+        <span style="font-family:var(--font-mono); font-size:10.5px; color:var(--text-muted);">contrato-pism-intensivo.pdf · 184 KB</span>
+        <div class="zoom">
+          <button>−</button>
+          <span style="font-size:11px; padding:0 4px;">100%</span>
+          <button>+</button>
+        </div>
+      </div>
+
+      <div class="zs-mock-body">
+        <div class="zs-mock-paper">
+          <h2>Contrato de Prestação de Serviços Educacionais — 2026</h2>
+          <p><strong>CONTRATANTE:</strong> <span class="filled">Cassia Regina dos Santos Alves</span>, brasileira, portadora do CPF <span class="filled">063.118.765-33</span>, residente e domiciliada à <span class="filled">Rua Alagoas, 1314, Funcionários, Belo Horizonte/MG</span>, na qualidade de responsável financeiro pelo aluno <span class="filled">Arthur dos Santos Alves</span>.</p>
+          <p><strong>CONTRATADA:</strong> Mago do Pism Cursos Preparatórios LTDA, CNPJ 45.678.901/0001-23, com sede em Belo Horizonte/MG.</p>
+
+          <h3>Cláusula 1ª — Do objeto</h3>
+          <p>O presente contrato tem como objeto a prestação de serviços educacionais relativos ao <span class="filled">Curso Intensivo PISM 2026 — Turma manhã</span>, ministrado em ambiente virtual e presencial, com início em <span class="filled">01/06/2026</span> e término em <span class="filled">31/05/2027</span>.</p>
+
+          <h3>Cláusula 2ª — Do valor e da forma de pagamento</h3>
+          <p>O valor total dos serviços é de <span class="filled">R$ 8.190,00</span>, a ser pago em <span class="filled">9</span> parcelas mensais e sucessivas de <span class="filled">R$ 910,00</span>, com vencimento todo dia <span class="filled">10</span>.</p>
+
+          <h3>Cláusula 3ª — Do reajuste</h3>
+          <p>Em caso de renovação para o ano letivo seguinte, o valor poderá ser reajustado de acordo com o IPCA acumulado nos últimos 12 meses, mediante comunicação prévia de 60 dias.</p>
+
+          <h3>Cláusula 4ª — Da rescisão</h3>
+          <p>Este contrato poderá ser rescindido por qualquer das partes mediante comunicação por escrito com antecedência mínima de 30 dias.</p>
+
+          <div class="zs-sign-zone">
+            <strong>✍️ Sua assinatura aqui</strong>
+            <p>Ao clicar em assinar, você concorda com os termos acima · MP 2.200-2/2001</p>
+            <button class="sign-btn" id="signBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Assinar contrato
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="zs-widget-foot">
+      <span class="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Documento auditável · IP, geolocalização e horário registrados na assinatura</span>
+      <span>Powered by <strong style="color:#0E93F2;">ZapSign</strong></span>
+    </div>
+  </section>
+
+  <details style="margin-top:18px;">
+    <summary style="cursor:pointer; font-size:12px; color:var(--text-muted); padding:6px 0; user-select:none;">🛠 Eventos do widget (debug · só visível em dev)</summary>
+    <div class="zs-event-log" id="evlog">
+      <div class="lh"><span class="ld"></span>window.onmessage · escutando postMessage do iframe</div>
+      <div class="ev"><span class="ts">14:32:08</span><span class="lvl info">[load]</span><span class="msg">→ <span class="k">'zs-doc-loaded'</span> · iframe carregou o documento</span></div>
+      <div class="ev"><span class="ts">14:32:11</span><span class="lvl info">[view]</span><span class="msg">scroll até página 2 · 32% lido</span></div>
+      <div class="ev"><span class="ts">14:32:34</span><span class="lvl info">[view]</span><span class="msg">scroll até página 3 · 100% lido</span></div>
+      <div class="ev" id="ev-sign" style="display:none;"><span class="ts" id="ev-sign-ts">--:--:--</span><span class="lvl">[signed]</span><span class="msg">→ <span class="k">'zs-doc-signed'</span> · disparando webhook → <span class="s">/api/zapsign/webhook</span></span></div>
+      <div class="ev" id="ev-ready" style="display:none;"><span class="ts" id="ev-ready-ts">--:--:--</span><span class="lvl">[ready]</span><span class="msg">→ <span class="k">'zs-signed-file-ready'</span> · PDF final disponível para download</span></div>
+    </div>
+  </details>
+
+</div>
+</main>
+
+<div class="zs-toast" id="toast">
+  <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+  <div>
+    <strong>Contrato assinado com sucesso!</strong>
+    <span>Você receberá o PDF assinado por e-mail em alguns segundos.</span>
+    <a href="fatura.html">Ir para o pagamento →</a>
+  </div>
+</div>
+
+</div>
+
+<script>
+  // ===========================================================
+  // Listener oficial do widget ZapSign
+  // ===========================================================
+  // Em produção, este listener responde aos eventos postados
+  // pelo iframe https://app.zapsign.com.br/verificar/{TOKEN}
+  // ===========================================================
+  window.onmessage = function(e){
+    if (e.data === 'zs-doc-loaded') {
+      console.log('[ZapSign] Doc loaded in iframe');
+    }
+    if (e.data === 'zs-doc-signed') {
+      console.log('[ZapSign] Doc signed by signer');
+      onSignedSuccess();
+    }
+    if (e.data === 'zs-signed-file-ready') {
+      console.log('[ZapSign] Signed PDF ready to download');
+      // fetch('/api/zapsign/finalize', { method:'POST', body: JSON.stringify({...}) });
+    }
+  };
+
+  // Mock: clicar no botão simula o evento 'zs-doc-signed'
+  document.getElementById('signBtn').addEventListener('click', () => {
+    window.postMessage('zs-doc-signed', '*');
+    setTimeout(() => window.postMessage('zs-signed-file-ready', '*'), 1400);
+  });
+
+  function onSignedSuccess() {
+    document.getElementById('toast').classList.add('show');
+    const now = new Date();
+    const t = now.toTimeString().slice(0,8);
+    const sg = document.getElementById('ev-sign');
+    const rd = document.getElementById('ev-ready');
+    sg.style.display = 'flex';
+    document.getElementById('ev-sign-ts').textContent = t;
+    setTimeout(() => {
+      rd.style.display = 'flex';
+      const t2 = new Date().toTimeString().slice(0,8);
+      document.getElementById('ev-ready-ts').textContent = t2;
+    }, 1400);
+    document.querySelectorAll('.ss-item').forEach((el, i) => {
+      el.classList.remove('is-active');
+      if (i <= 2) el.classList.add('is-done');
+    });
+  }
+</script>
+
+</body></html>

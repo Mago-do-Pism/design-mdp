@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mago do Pism — Importação Figma</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@400;500;600&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/tokens.css" />
+  <style>
+    body {
+      background: linear-gradient(180deg, #fafafa 0%, #f0f0f0 100%);
+      min-height: 100vh;
+      padding: 96px 32px 96px;
+    }
+    .index-hero {
+      max-width: 980px;
+      margin: 0 auto 64px;
+      text-align: left;
+    }
+    .index-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+    .index-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 56px;
+      line-height: 1.05;
+      letter-spacing: -1.5px;
+      color: var(--neutral-900);
+      margin: 0 0 18px;
+    }
+    .index-title em {
+      font-style: normal;
+      color: var(--brand-blue);
+    }
+    .index-sub {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--text-secondary);
+      max-width: 720px;
+      margin: 0;
+    }
+    .index-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+    }
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      background: rgba(14,147,242,0.08);
+      color: var(--brand-blue);
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .meta-chip.warn {
+      background: rgba(151,71,255,0.10);
+      color: var(--color-warn);
+    }
+    .meta-chip.muted {
+      background: rgba(0,0,0,0.04);
+      color: var(--text-secondary);
+    }
+
+    .phase {
+      max-width: 1280px;
+      margin: 0 auto 80px;
+    }
+    .phase-header {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border-default);
+      margin-bottom: 32px;
+    }
+    .phase-number {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--brand-blue);
+      letter-spacing: 0.2em;
+      font-weight: 500;
+    }
+    .phase-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 28px;
+      letter-spacing: -0.5px;
+      color: var(--neutral-900);
+      margin: 0;
+    }
+    .phase-count {
+      margin-left: auto;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .screen-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+      gap: 28px;
+    }
+    .screen-card {
+      background: var(--neutral-0);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .screen-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(95,95,95,0.30);
+    }
+    .screen-thumb {
+      aspect-ratio: 1440 / 1024;
+      background: var(--neutral-150);
+      overflow: hidden;
+      position: relative;
+    }
+    .screen-thumb iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1440px;
+      height: 1024px;
+      transform-origin: top left;
+      transform: scale(0.305);
+      border: 0;
+      pointer-events: none;
+    }
+    .screen-meta {
+      padding: 18px 22px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .screen-meta-text { flex: 1; min-width: 0; }
+    .screen-meta-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--neutral-900);
+      margin: 0 0 2px;
+    }
+    .screen-meta-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .screen-meta a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      background: var(--brand-blue);
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .screen-meta a:hover { background: var(--brand-blue-dark); }
+
+    .placeholder-card {
+      background: repeating-linear-gradient(135deg, #f5f5f5 0 12px, #fafafa 12px 24px);
+      border: 1px dashed var(--border-default);
+      border-radius: var(--radius-xl);
+      min-height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-align: center;
+      padding: 24px;
+    }
+    .placeholder-card strong {
+      color: var(--text-secondary);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .footer {
+      max-width: 980px;
+      margin: 80px auto 0;
+      padding: 24px 0;
+      border-top: 1px solid var(--border-default);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <header class="index-hero">
+    <div class="index-eyebrow">Importação · Curso do Mago — Web</div>
+    <h1 class="index-title">Mago do Pism <em>— design system</em><br />importado do Figma</h1>
+    <p class="index-sub">
+      295 frames divididos em 4 fases. Esta página é o índice navegável: cada cartão abre uma tela em alta fidelidade,
+      reconstruída a partir da pseudo-JSX e dos assets do arquivo Figma anexado.
+      As fontes proprietárias (AkagiPro, Othello MT, Libertad) ainda usam substitutos do Google Fonts até você anexar os arquivos originais.
+    </p>
+    <div class="index-meta">
+      <span class="meta-chip">Cor primária · #0E93F2</span>
+      <span class="meta-chip muted">Type · Montserrat / Quicksand</span>
+      <span class="meta-chip muted">Layout · 1440 base, responsivo</span>
+      <span class="meta-chip warn">Tweaks ✱ — toggle pelo painel superior</span>
+    </div>
+  </header>
+
+  <!-- ═════════════════════ PHASE 1 — AUTENTICAÇÃO ═════════════════════ -->
+  <section class="phase" id="autenticacao">
+    <div class="phase-header">
+      <span class="phase-number">FASE 01</span>
+      <h2 class="phase-title">Autenticação</h2>
+      <span class="phase-count">5 telas · concluído</span>
+    </div>
+    <div class="screen-grid">
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="auth/login.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Tela de Login</p>
+            <p class="screen-meta-sub">/Autentica-o/Tela-de-Login · 1:38</p>
+          </div>
+          <a href="auth/login.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="auth/forgot-1.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Esqueci a senha · Pedir e-mail</p>
+            <p class="screen-meta-sub">/Autentica-o/Esqueci-minha-senha · 2:69</p>
+          </div>
+          <a href="auth/forgot-1.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="auth/forgot-2.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Esqueci a senha · E-mail enviado</p>
+            <p class="screen-meta-sub">/Autentica-o/Esqueci-minha-senha2 · 261:6</p>
+          </div>
+          <a href="auth/forgot-2.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="auth/forgot-3.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Esqueci a senha · Nova senha</p>
+            <p class="screen-meta-sub">/Autentica-o/Esqueci-minha-senha3 · 2:76</p>
+          </div>
+          <a href="auth/forgot-3.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="auth/forgot-4.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Esqueci a senha · Sucesso</p>
+            <p class="screen-meta-sub">/Autentica-o/Esqueci-minha-senha4 · 2:226</p>
+          </div>
+          <a href="auth/forgot-4.html">Abrir →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ═════════════════════ PHASE 2 — PLATAFORMA ALUNOS ═════════════════════ -->
+  <section class="phase" id="alunos">
+    <div class="phase-header">
+      <span class="phase-number">FASE 02</span>
+      <h2 class="phase-title">Plataforma · Alunos</h2>
+      <span class="phase-count">4 telas-chave · estado base</span>
+    </div>
+    <div class="screen-grid">
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="alunos/inicio.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Tela de Início</p>
+            <p class="screen-meta-sub">Avisos · jornada · ações rápidas</p>
+          </div>
+          <a href="alunos/inicio.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="alunos/cursos.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Tela de Cursos</p>
+            <p class="screen-meta-sub">Recentes · catálogo · progresso</p>
+          </div>
+          <a href="alunos/cursos.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="alunos/simulados.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Tela de Simulados</p>
+            <p class="screen-meta-sub">Gráfico de desempenho · andamento</p>
+          </div>
+          <a href="alunos/simulados.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="alunos/perfil.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Tela de Perfil</p>
+            <p class="screen-meta-sub">Dados pessoais · senha · sair</p>
+          </div>
+          <a href="alunos/perfil.html">Abrir →</a>
+        </div>
+      </article>
+
+      <div class="placeholder-card">
+        <strong>+14 variações restantes</strong>
+        modais, estados de erro, listas individuais
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════════════════ PHASE 3 — PLATAFORMA ADMIN ═════════════════════ -->
+  <section class="phase" id="admin">
+    <div class="phase-header">
+      <span class="phase-number">FASE 03</span>
+      <h2 class="phase-title">Plataforma · Admin</h2>
+      <span class="phase-count">6 telas-chave · estado base</span>
+    </div>
+    <div class="screen-grid">
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/inicio.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Tela de Início</p>
+            <p class="screen-meta-sub">Dashboard · KPIs em grade 2×N</p>
+          </div>
+          <a href="admin/inicio.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/alunos.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Tela de Alunos</p>
+            <p class="screen-meta-sub">Tabela · busca · tags por curso</p>
+          </div>
+          <a href="admin/alunos.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/cursos.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Tela de Cursos</p>
+            <p class="screen-meta-sub">Grid de cards · criar curso</p>
+          </div>
+          <a href="admin/cursos.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/modulos.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Tela de Módulos</p>
+            <p class="screen-meta-sub">Disciplinas em grade 3×N</p>
+          </div>
+          <a href="admin/modulos.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/equipe.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Tela de Equipe</p>
+            <p class="screen-meta-sub">Colaboradores · ações editar/excluir</p>
+          </div>
+          <a href="admin/equipe.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/perfil.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Meu Perfil</p>
+            <p class="screen-meta-sub">Foto · dados · alterar senha</p>
+          </div>
+          <a href="admin/perfil.html">Abrir →</a>
+        </div>
+      </article>
+
+      <div class="placeholder-card">
+        <strong>+49 variações restantes</strong>
+        modais, sticky notes, criar/editar/deletar
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════════════════ PHASE 4 — SIMULADO ═════════════════════ -->
+  <section class="phase" id="simulado">
+    <div class="phase-header">
+      <span class="phase-number">FASE 04</span>
+      <h2 class="phase-title">Simulado</h2>
+      <span class="phase-count">5 telas · pronto</span>
+    </div>
+    <div class="screen-grid">
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="simulado/login.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Login do simulado</p>
+            <p class="screen-meta-sub">Split com imagem · entrada por e-mail</p>
+          </div>
+          <a href="simulado/login.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="simulado/inicio.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Briefing</p>
+            <p class="screen-meta-sub">Regras · Modo Bruxo · começar</p>
+          </div>
+          <a href="simulado/inicio.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="simulado/dashboard.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Dashboard</p>
+            <p class="screen-meta-sub">Desempenho · simulados disponíveis</p>
+          </div>
+          <a href="simulado/dashboard.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="simulado/exam.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Em prova</p>
+            <p class="screen-meta-sub">Timer · múltipla escolha · abertas</p>
+          </div>
+          <a href="simulado/exam.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="simulado/review.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Gabarito</p>
+            <p class="screen-meta-sub">Grade de questões · acertos e erros</p>
+          </div>
+          <a href="simulado/review.html">Abrir →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="phase-section">
+    <div class="phase-header">
+      <span class="phase-number">FASE 05A</span>
+      <h2 class="phase-title">Plataforma · Secretaria</h2>
+      <span class="phase-count">10 telas · pronto</span>
+    </div>
+    <div class="screen-grid">
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="secretaria/painel.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Painel financeiro</p>
+            <p class="screen-meta-sub">Fluxo de recebíveis · KPIs · faturas</p>
+          </div>
+          <a href="secretaria/painel.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="secretaria/clientes.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Clientes</p>
+            <p class="screen-meta-sub">Lista de responsáveis · filtros · ações</p>
+          </div>
+          <a href="secretaria/clientes.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="secretaria/cliente-detalhe.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Cliente · perfil</p>
+            <p class="screen-meta-sub">Dados · faturas · histórico</p>
+          </div>
+          <a href="secretaria/cliente-detalhe.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="secretaria/formularios.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Formulários</p>
+            <p class="screen-meta-sub">Lista de formulários públicos · link · QR</p>
+          </div>
+          <a href="secretaria/formularios.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="secretaria/formulario-novo.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Formulário · Criar</p>
+            <p class="screen-meta-sub">Wizard: modelo ZapSign + valor</p>
+          </div>
+          <a href="secretaria/formulario-novo.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="secretaria/faturas.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Contas a Receber</p>
+            <p class="screen-meta-sub">Lista completa · status · cobrança</p>
+          </div>
+          <a href="secretaria/faturas.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="secretaria/fatura.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Fatura · detalhe</p>
+            <p class="screen-meta-sub">Itens · timeline · QR Pix</p>
+          </div>
+          <a href="secretaria/fatura.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="secretaria/inadimplentes.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Inadimplência</p>
+            <p class="screen-meta-sub">Aging · risco · ações em massa</p>
+          </div>
+          <a href="secretaria/inadimplentes.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="secretaria/cobranca.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Régua de Cobrança</p>
+            <p class="screen-meta-sub">7 etapas · WhatsApp / e-mail · variáveis</p>
+          </div>
+          <a href="secretaria/cobranca.html">Abrir →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="phase-section">
+    <div class="phase-header">
+      <span class="phase-number">FASE 05B</span>
+      <h2 class="phase-title">Fluxo público · Matrícula do responsável</h2>
+      <span class="phase-count">7 telas · pronto</span>
+    </div>
+    <div class="screen-grid">
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="publico/escolha.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Início — Nova ou Rematrícula</p>
+            <p class="screen-meta-sub">Etapa 0 · escolha do fluxo</p>
+          </div>
+          <a href="publico/escolha.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="publico/cadastro.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Nova matrícula · Cadastro</p>
+            <p class="screen-meta-sub">Responsável + aluno · stepper 1/3</p>
+          </div>
+          <a href="publico/cadastro.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="publico/rematricula.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Rematrícula · Buscar CPF</p>
+            <p class="screen-meta-sub">Confere e edita os dados do aluno</p>
+          </div>
+          <a href="publico/rematricula.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="publico/contrato.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Contrato (ZapSign-style)</p>
+            <p class="screen-meta-sub">Documento + assinatura digital</p>
+          </div>
+          <a href="publico/contrato.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="publico/checkout.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Pagamento</p>
+            <p class="screen-meta-sub">Pix / cartão / boleto · QR Code</p>
+          </div>
+          <a href="publico/checkout.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="publico/confirmacao.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Confirmação</p>
+            <p class="screen-meta-sub">Boas-vindas · próximos passos</p>
+          </div>
+          <a href="publico/confirmacao.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="publico/fatura.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Fatura pública (link)</p>
+            <p class="screen-meta-sub">O pai escolhe Pix ou Boleto</p>
+          </div>
+          <a href="publico/fatura.html">Abrir →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>Mago do Pism · Curso do Mago — Web</span>
+    <span>Importação Figma · v1 · Fase 1 / 2 / 3 / 4 / 5A / 5B</span>
+  </footer>
+
+  <!-- Tweaks panel — global controls for fonts/colors -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel">
+    const TWEAKS = /*EDITMODE-BEGIN*/{
+      "brandBlue": "#0e93f2",
+      "displayFont": "Quicksand",
+      "bodyFont": "Montserrat",
+      "showHero": true
+    }/*EDITMODE-END*/;
+
+    function App() {
+      const [tweaks, setTweak] = useTweaks(TWEAKS);
+      React.useEffect(() => {
+        const root = document.documentElement;
+        root.style.setProperty('--brand-blue', tweaks.brandBlue);
+        root.style.setProperty('--font-display', `"${tweaks.displayFont}", system-ui, sans-serif`);
+        root.style.setProperty('--font-body', `"${tweaks.bodyFont}", system-ui, sans-serif`);
+        const hero = document.querySelector('.index-hero');
+        if (hero) hero.style.display = tweaks.showHero ? '' : 'none';
+      }, [tweaks]);
+      return (
+        <TweaksPanel title="Tweaks">
+          <TweakSection title="Marca">
+            <TweakColor label="Cor primária" value={tweaks.brandBlue} onChange={v => setTweak('brandBlue', v)} />
+          </TweakSection>
+          <TweakSection title="Tipografia">
+            <TweakSelect label="Display" value={tweaks.displayFont} onChange={v => setTweak('displayFont', v)}
+              options={['Quicksand','Nunito Sans','Montserrat','Cormorant Garamond','Inter']} />
+            <TweakSelect label="Body" value={tweaks.bodyFont} onChange={v => setTweak('bodyFont', v)}
+              options={['Montserrat','Nunito Sans','Inter','Quicksand']} />
+          </TweakSection>
+          <TweakSection title="Página">
+            <TweakToggle label="Mostrar hero" value={tweaks.showHero} onChange={v => setTweak('showHero', v)} />
+          </TweakSection>
+        </TweaksPanel>
+      );
+    }
+
+    const root = document.createElement('div');
+    document.body.appendChild(root);
+    ReactDOM.createRoot(root).render(<App />);
+  </script>
+</body>
+</html>

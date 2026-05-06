@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Painel · Secretaria · Mago do Pism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/secretaria.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo" role="img" aria-label="Mago do Pism" style="background:url('../assets/logo-azul.png') center/contain no-repeat; filter:brightness(0) invert(1);"></div>
+    <nav class="sidebar-nav">
+      
+        <a href="painel.html" class="sidebar-item is-active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+          <span>Painel</span>
+        </a>
+        <a href="clientes.html" class="sidebar-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2.3 1.5-4 3.7-4 1.6 0 2.8.9 3.3 2.2"/></svg>
+          <span>Clientes</span>
+        </a>
+        <a href="formularios.html" class="sidebar-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></svg>
+          <span>Formulários</span>
+        </a>
+        <a href="faturas.html" class="sidebar-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+          <span>Contas a Receber</span>
+        </a>
+        <a href="inadimplentes.html" class="sidebar-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.8" fill="currentColor"/></svg>
+          <span>Inadimplência</span>
+        </a>
+        <a href="cobranca.html" class="sidebar-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg>
+          <span>Régua de Cobrança</span>
+        </a>
+    </nav>
+  </aside>
+<main class="main">
+  <div class="sec-page">
+    
+<nav class="sec-breadcrumb">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+  <a href="painel.html">Principal</a><span class="sep">/</span><span>Painel</span>
+</nav>
+    <div class="sec-page-head">
+      <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Painel</h1>
+      <div class="sec-actions">
+        <button class="sec-btn outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Exportar</button>
+        <a href="faturas.html" class="sec-btn dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar Fatura</a>
+      </div>
+    </div>
+
+    <div class="sec-painel-grid">
+      <section class="sec-card">
+        <h3 class="sec-card-title">Fluxo de Recebíveis</h3>
+        <div class="sec-chart-toolbar">
+          <div class="sec-toolbar-field"><label>Data Inicial</label><input type="date" value="2026-04-01"></div>
+          <div class="sec-toolbar-field"><label>Data Final</label><input type="date" value="2026-04-30"></div>
+          <div class="sec-toolbar-field"><label>Visualizar</label><select><option>Diário</option><option>Mensal</option></select></div>
+          <div class="sec-chart-legend" style="margin-left:auto;">
+            <span><i style="background:#A4C879"></i>Pago</span>
+            <span><i style="background:#9EA0A4"></i>Não pago</span>
+          </div>
+        </div>
+        <svg viewBox="0 0 700 280" class="sec-chart" aria-hidden="true">
+          <g stroke="#EAEAEA">
+            <line x1="40" x2="690" y1="40" y2="40"/><line x1="40" x2="690" y1="62" y2="62"/><line x1="40" x2="690" y1="84" y2="84"/><line x1="40" x2="690" y1="106" y2="106"/><line x1="40" x2="690" y1="128" y2="128"/><line x1="40" x2="690" y1="150" y2="150"/><line x1="40" x2="690" y1="172" y2="172"/><line x1="40" x2="690" y1="194" y2="194"/><line x1="40" x2="690" y1="216" y2="216"/><line x1="40" x2="690" y1="238" y2="238"/>
+          </g>
+          <g font-family="Inter" font-size="10" fill="#888" text-anchor="end">
+            <text x="36" y="44">90.000</text><text x="36" y="66">80.000</text><text x="36" y="88">70.000</text><text x="36" y="110">60.000</text><text x="36" y="132">50.000</text><text x="36" y="154">40.000</text><text x="36" y="176">30.000</text><text x="36" y="198">20.000</text><text x="36" y="220">10.000</text><text x="36" y="242">0</text>
+          </g>
+          <g>
+            <rect x="50" y="230" width="9" height="30" fill="#A4C879"/><rect x="59" y="222" width="9" height="38" fill="#9EA0A4"/><rect x="71" y="162.24290319259575" width="9" height="97.75709680740424" fill="#A4C879"/><rect x="80" y="225.6725231432888" width="9" height="34.327476856711186" fill="#9EA0A4"/><rect x="92" y="118.15530968393284" width="9" height="141.84469031606716" fill="#A4C879"/><rect x="101" y="235.79093082395582" width="9" height="24.209069176044192" fill="#9EA0A4"/><rect x="113" y="113.13828429461657" width="9" height="146.86171570538343" fill="#A4C879"/><rect x="122" y="249.87788394996892" width="9" height="10.122116050031087" fill="#9EA0A4"/><rect x="134" y="148.9444183338619" width="9" height="111.05558166613811" fill="#A4C879"/><rect x="143" y="239.51559490358574" width="9" height="20.48440509641427" fill="#9EA0A4"/><rect x="155" y="213.06559903281595" width="9" height="46.93440096718406" fill="#A4C879"/><rect x="164" y="227.965691533592" width="9" height="32.03430846640801" fill="#9EA0A4"/><rect x="176" y="176.89754680461775" width="9" height="83.10245319538225" fill="#A4C879"/><rect x="185" y="222.30022510198665" width="9" height="37.69977489801336" fill="#9EA0A4"/><rect x="197" y="125.41090731036942" width="9" height="134.58909268963058" fill="#A4C879"/><rect x="206" y="223.9062993812761" width="9" height="36.09370061872389" fill="#9EA0A4"/><rect x="218" y="110.46024693969912" width="9" height="149.53975306030088" fill="#A4C879"/><rect x="227" y="232.39069137409163" width="9" height="27.60930862590836" fill="#9EA0A4"/><rect x="239" y="137.26826149328147" width="9" height="122.73173850671853" fill="#A4C879"/><rect x="248" y="245.6761260170766" width="9" height="14.323873982923391" fill="#9EA0A4"/><rect x="260" y="196.4701402161289" width="9" height="63.5298597838711" fill="#A4C879"/><rect x="269" y="243.4901344361032" width="9" height="16.50986556389679" fill="#9EA0A4"/><rect x="281" y="192.61503637839465" width="9" height="67.38496362160535" fill="#A4C879"/><rect x="290" y="230.7399067712622" width="9" height="29.2600932287378" fill="#9EA0A4"/><rect x="302" y="134.75985633810168" width="9" height="125.24014366189832" fill="#A4C879"/><rect x="311" y="223.194891400489" width="9" height="36.80510859951098" fill="#9EA0A4"/><rect x="323" y="110.1747985550474" width="9" height="149.8252014449526" fill="#A4C879"/><rect x="332" y="222.70237122815928" width="9" height="37.29762877184071" fill="#9EA0A4"/><rect x="344" y="127.44813102940634" width="9" height="132.55186897059366" fill="#A4C879"/><rect x="353" y="229.38293236970085" width="9" height="30.61706763029914" fill="#9EA0A4"/><rect x="365" y="180.5457817709892" width="9" height="79.45421822901079" fill="#A4C879"/><rect x="374" y="241.60094046494922" width="9" height="18.399059535050775" fill="#9EA0A4"/><rect x="386" y="209.08078625324245" width="9" height="50.919213746757556" fill="#A4C879"/><rect x="395" y="247.6349989857416" width="9" height="12.365001014258407" fill="#9EA0A4"/><rect x="407" y="146.0150374887749" width="9" height="113.98496251122508" fill="#A4C879"/><rect x="416" y="233.93964291945528" width="9" height="26.06035708054471" fill="#9EA0A4"/><rect x="428" y="112.28765239202107" width="9" height="147.71234760797893" fill="#A4C879"/><rect x="437" y="224.6660921434597" width="9" height="35.33390785654031" fill="#9EA0A4"/><rect x="449" y="119.68057692023893" width="9" height="140.31942307976107" fill="#A4C879"/><rect x="458" y="222.08483531410866" width="9" height="37.915164685891355" fill="#9EA0A4"/><rect x="470" y="165.6112498399478" width="9" height="94.3887501600522" fill="#A4C879"/><rect x="479" y="226.82785412770642" width="9" height="33.17214587229357" fill="#9EA0A4"/><rect x="491" y="145.9652343334636" width="9" height="114.0347656665364" fill="#A4C879"/><rect x="500" y="237.73389216012023" width="9" height="22.266107839879773" fill="#9EA0A4"/><rect x="512" y="158.95117823513323" width="9" height="101.04882176486676" fill="#A4C879"/><rect x="521" y="251.86722906035848" width="9" height="8.132770939641524" fill="#9EA0A4"/><rect x="533" y="116.7565196667075" width="9" height="143.2434803332925" fill="#A4C879"/><rect x="542" y="237.50085723740983" width="9" height="22.499142762590175" fill="#9EA0A4"/><rect x="554" y="114.12106681408665" width="9" height="145.87893318591335" fill="#A4C879"/><rect x="563" y="226.68438123802525" width="9" height="33.31561876197476" fill="#9EA0A4"/><rect x="575" y="151.96545918114597" width="9" height="108.03454081885403" fill="#A4C879"/><rect x="584" y="222.06605162464257" width="9" height="37.93394837535742" fill="#9EA0A4"/><rect x="596" y="217.06956172406672" width="9" height="42.930438275933284" fill="#A4C879"/><rect x="605" y="224.7765965564941" width="9" height="35.22340344350589" fill="#9EA0A4"/><rect x="617" y="173.30936163218405" width="9" height="86.69063836781595" fill="#A4C879"/><rect x="626" y="234.15238010070323" width="9" height="25.84761989929676" fill="#9EA0A4"/><rect x="638" y="123.49195597021946" width="9" height="136.50804402978054" fill="#A4C879"/><rect x="647" y="247.897883453765" width="9" height="12.102116546235008" fill="#9EA0A4"/><rect x="659" y="110.880874343524" width="9" height="149.119125656476" fill="#A4C879"/><rect x="668" y="241.35227199633886" width="9" height="18.64772800366115" fill="#9EA0A4"/>
+          </g>
+          <g font-family="Inter" font-size="9" fill="#888" text-anchor="middle">
+            <text x="56" y="275">01/04</text><text x="119" y="275">04/04</text><text x="182" y="275">07/04</text><text x="245" y="275">10/04</text><text x="308" y="275">13/04</text><text x="371" y="275">16/04</text><text x="434" y="275">19/04</text><text x="497" y="275">22/04</text><text x="560" y="275">25/04</text><text x="623" y="275">28/04</text>
+          </g>
+        </svg>
+      </section>
+
+      <div class="sec-kpis" style="grid-template-columns:1fr 1fr;">
+        <div class="kpi"><div class="kpi-value">R$ 1.255,00</div><div class="kpi-label">Total Projetado</div><div class="kpi-period">04/2026</div></div>
+        <div class="kpi"><div class="kpi-value danger">5,91%</div><div class="kpi-label">Vencido</div><div class="kpi-period">04/2026</div></div>
+        <div class="kpi"><div class="kpi-value success">R$ 341.862,42</div><div class="kpi-label">Pago</div><div class="kpi-period">04/2026</div></div>
+        <div class="kpi"><div class="kpi-value danger">R$ 21.535,00</div><div class="kpi-label">Vencido</div><div class="kpi-period">04/2026</div></div>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:minmax(0,7fr) minmax(0,4fr); gap:20px; margin-top:20px;">
+      <section class="sec-table-card">
+        <div class="sec-table-head">
+          <h3>Faturas à vencer</h3>
+          <span class="badge">6 ATIVOS</span>
+        </div>
+        <table class="sec-table">
+          <thead><tr><th>Fatura #</th><th>Data de Vencimento</th><th>Emitido para</th><th class="num">Valor</th></tr></thead>
+          <tbody>
+            <tr><td><strong class="strong">#Arthur dos Santos Alves-2</strong></td><td>0 dias</td><td><div>Cassia Regina dos Santos Alves</div><div style="font-size:11px;color:#999;">cassiaalvesf340@gmail.com</div></td><td class="num strong">R$ 225,00</td></tr><tr><td><strong class="strong">#Marcela Pires Marcolino-1</strong></td><td>0 dias</td><td><div>Ana Paula Pires Barbosa Marcolino</div><div style="font-size:11px;color:#999;">apmarcolino@gmail.com</div></td><td class="num strong">R$ 200,00</td></tr><tr><td><strong class="strong">#Helena Rosas-3</strong></td><td>1 dia</td><td><div>Adelaide Schittini de Oliveira Rosas</div><div style="font-size:11px;color:#999;">luciane.rosas@gmail.com</div></td><td class="num strong">R$ 240,00</td></tr><tr><td><strong class="strong">#Davi Hubner-2</strong></td><td>2 dias</td><td><div>Abmara Padilha Pontes Hubner</div><div style="font-size:11px;color:#999;">abmarapadilha@gmail.com</div></td><td class="num strong">R$ 200,00</td></tr><tr><td><strong class="strong">#Pedro Lira-1</strong></td><td>3 dias</td><td><div>Higino Reis Lira</div><div style="font-size:11px;color:#999;">higinolira@gmail.com</div></td><td class="num strong">R$ 411,22</td></tr><tr><td><strong class="strong">#Sofia Blumer-2</strong></td><td>4 dias</td><td><div>Estefani Paula Oliveira Blumer</div><div style="font-size:11px;color:#999;">estefani.blumer@gmail.com</div></td><td class="num strong">R$ 200,00</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="sec-table-card">
+        <div class="sec-table-head">
+          <h3>Pago Recentemente</h3>
+          <span class="right">R$ 9.564,00</span>
+        </div>
+        <table class="sec-table">
+          <thead><tr><th>Fatura #</th><th>Pagamento</th><th class="num">Valor</th></tr></thead>
+          <tbody>
+            <tr><td><strong class="strong">#Kyara dethiing de Carvalho-1</strong></td><td>30/04/2026</td><td class="num strong">R$ 204,14</td></tr><tr><td><strong class="strong">#Arthur Mendes de Siqueira-2</strong></td><td>30/04/2026</td><td class="num strong">R$ 200,00</td></tr><tr><td><strong class="strong">#Ana Júlia Mendel perdomo-2</strong></td><td>30/04/2026</td><td class="num strong">R$ 204,14</td></tr><tr><td><strong class="strong">#Valéria Barbosa-1</strong></td><td>30/04/2026</td><td class="num strong">R$ 200,00</td></tr><tr><td><strong class="strong">#Júlio Souza de Almeida-2</strong></td><td>28/04/2026</td><td class="num strong">R$ 200,00</td></tr><tr><td><strong class="strong">#Laura Costa Nunes Erculino-2</strong></td><td>28/04/2026</td><td class="num strong">R$ 200,00</td></tr><tr><td><strong class="strong">#Guilherme Cândido Costa-2</strong></td><td>28/04/2026</td><td class="num strong">R$ 205,26</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</main>
+</div>
+</body>
+</html>

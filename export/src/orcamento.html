@@ -1,0 +1,1029 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Proposta · Mutual Tecnologia → Mago do Pism · 5A + 5B</title>
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 56">
+    <rect width="80" height="56" fill="#0b0d10"/>
+    <rect x="12" y="10" width="56" height="36" rx="3" fill="#f7fafd"/>
+    <rect x="18" y="16" width="24" height="4" rx="2" fill="#0E93F2"/>
+    <rect x="18" y="23" width="40" height="3" rx="1.5" fill="#e5e7eb"/>
+    <rect x="18" y="29" width="32" height="3" rx="1.5" fill="#e5e7eb"/>
+    <rect x="18" y="35" width="20" height="3" rx="1.5" fill="#e5e7eb"/>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Montserrat:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --brand: #0E93F2;
+    --brand-dark: #1686D8;
+    --ink: #1a2530;
+    --ink-soft: #4e4e4e;
+    --muted: #8a8a8a;
+    --line: #e5e7eb;
+    --bg: #fafbfc;
+    --bg-card: #ffffff;
+    --accent: #9747FF;
+    --success: #278556;
+    --warn: #c97a14;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #0b0d10; }
+
+  deck-stage {
+    --slide-w: 1920px;
+    --slide-h: 1080px;
+  }
+
+  deck-stage > section {
+    width: 1920px;
+    height: 1080px;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Montserrat", system-ui, sans-serif;
+    position: relative;
+    overflow: hidden;
+    padding: 96px 120px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== Shared atoms ===== */
+  .eyebrow {
+    font-family: "Roboto Mono", monospace;
+    font-size: 16px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--brand);
+    font-weight: 500;
+    margin: 0 0 28px;
+  }
+  .eyebrow.muted { color: var(--muted); }
+
+  h1, h2, h3 { font-family: "Quicksand", sans-serif; letter-spacing: -1.5px; margin: 0; color: var(--ink); }
+  h1 { font-size: 96px; font-weight: 600; line-height: 1.02; }
+  h2 { font-size: 64px; font-weight: 600; line-height: 1.05; }
+  h3 { font-size: 32px; font-weight: 600; line-height: 1.15; letter-spacing: -0.5px; }
+
+  .lead { font-size: 24px; line-height: 1.5; color: var(--ink-soft); max-width: 1100px; }
+  .body { font-size: 18px; line-height: 1.6; color: var(--ink-soft); }
+  .small { font-size: 14px; color: var(--muted); }
+
+  .footer-bar {
+    position: absolute;
+    left: 120px;
+    right: 120px;
+    bottom: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "Roboto Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+  }
+  .footer-bar .logo { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+  .footer-bar .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand); }
+
+  /* ===== Slide 1 — Capa ===== */
+  .cover {
+    background:
+      radial-gradient(circle at 18% 110%, rgba(14,147,242,0.20), transparent 55%),
+      radial-gradient(circle at 90% 0%, rgba(151,71,255,0.10), transparent 50%),
+      linear-gradient(180deg, #f7fafd 0%, #eef4f9 100%);
+    padding: 180px 120px 110px;
+  }
+  .cover .stamp {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 10px 18px; border-radius: 999px;
+    background: white; border: 1px solid var(--line);
+    font-family: "Roboto Mono", monospace;
+    font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--ink-soft);
+    align-self: flex-start;
+    width: fit-content;
+  }
+  .cover .stamp .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand); }
+  .cover h1 {
+    font-size: 132px; line-height: 0.98; letter-spacing: -3px;
+    margin-top: 56px;
+  }
+  .cover h1 em { font-style: normal; color: var(--brand); }
+  .cover .for {
+    font-family: "Quicksand", sans-serif;
+    font-weight: 500;
+    font-size: 38px;
+    color: var(--ink-soft);
+    margin-top: 36px;
+    letter-spacing: -0.5px;
+  }
+  .cover .for strong { color: var(--ink); font-weight: 600; }
+  .cover .meta-grid {
+    position: absolute; left: 120px; bottom: 110px;
+    display: grid; grid-template-columns: repeat(4, auto); gap: 64px;
+    font-size: 14px;
+  }
+  .cover .meta-grid .k {
+    font-family: "Roboto Mono", monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .cover .meta-grid .v {
+    font-family: "Quicksand", sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--ink);
+  }
+  .cover .pill-group { position: absolute; right: 120px; top: 64px; display: flex; gap: 10px; }
+  .cover .pill {
+    padding: 8px 16px; border-radius: 999px;
+    background: white; border: 1px solid var(--line);
+    font-size: 13px; font-weight: 600; color: var(--ink-soft);
+  }
+  .cover .pill.brand { background: var(--brand); color: white; border-color: var(--brand); }
+
+  /* ===== Slide 2 — Resumo executivo ===== */
+  .exec-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 80px;
+    margin-top: 40px;
+    flex: 1;
+  }
+  .exec-grid h2 { font-size: 56px; }
+  .exec-grid .lead { margin-top: 28px; font-size: 22px; }
+  .pull-stats {
+    display: grid; grid-template-columns: 1fr; gap: 18px;
+  }
+  .pull-stat {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 24px 28px;
+    display: flex; align-items: baseline; gap: 18px;
+  }
+  .pull-stat .num {
+    font-family: "Quicksand", sans-serif;
+    font-size: 56px; font-weight: 600;
+    color: var(--brand);
+    letter-spacing: -2px;
+    line-height: 1;
+    min-width: 200px;
+  }
+  .pull-stat .num small { font-size: 24px; font-weight: 500; color: var(--ink-soft); margin-left: 4px; }
+  .pull-stat .label {
+    font-size: 16px; color: var(--ink-soft); line-height: 1.4;
+  }
+  .pull-stat .label strong { color: var(--ink); font-weight: 600; }
+
+  /* ===== Slide — Escopo (5A / 5B grid) ===== */
+  .scope-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 32px;
+  }
+  .scope-head .count {
+    font-family: "Roboto Mono", monospace;
+    font-size: 14px; letter-spacing: 0.14em; color: var(--muted);
+    text-transform: uppercase;
+  }
+  .scope-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 8px;
+  }
+  .scope-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 24px;
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative;
+  }
+  .scope-card .idx {
+    font-family: "Roboto Mono", monospace;
+    font-size: 12px; letter-spacing: 0.14em;
+    color: var(--brand); font-weight: 500;
+  }
+  .scope-card .name {
+    font-family: "Quicksand", sans-serif;
+    font-size: 22px; font-weight: 600; color: var(--ink);
+    letter-spacing: -0.5px; line-height: 1.2;
+  }
+  .scope-card .desc {
+    font-size: 13.5px; color: var(--ink-soft); line-height: 1.5;
+  }
+  .scope-card .tags {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;
+  }
+  .tag {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 9px; border-radius: 999px;
+    background: rgba(14,147,242,0.08); color: var(--brand);
+  }
+  .tag.acc { background: rgba(151,71,255,0.10); color: var(--accent); }
+  .tag.suc { background: rgba(39,133,86,0.10); color: var(--success); }
+
+  /* Pillars (Stack) */
+  .pillars {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+    margin-top: 32px;
+  }
+  .pillar {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px;
+  }
+  .pillar .title {
+    font-family: "Quicksand", sans-serif;
+    font-size: 24px; font-weight: 600; color: var(--ink);
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+  .pillar .sub {
+    font-family: "Roboto Mono", monospace;
+    font-size: 12px; color: var(--brand);
+    letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .pillar ul { padding: 0; margin: 0; list-style: none; }
+  .pillar ul li {
+    font-size: 15px; color: var(--ink-soft); line-height: 1.5;
+    padding-left: 18px; position: relative; margin-bottom: 6px;
+  }
+  .pillar ul li::before {
+    content: ""; position: absolute; left: 0; top: 9px;
+    width: 6px; height: 6px; border-radius: 50%; background: var(--brand);
+  }
+
+  /* ===== Cronograma ===== */
+  .gantt {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 36px;
+    margin-top: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .gantt-head {
+    display: grid;
+    grid-template-columns: 220px repeat(4, 1fr);
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 14px;
+    font-family: "Roboto Mono", monospace;
+    font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .gantt-head .week { text-align: center; }
+  .gantt-row {
+    display: grid;
+    grid-template-columns: 220px repeat(4, 1fr);
+    align-items: center;
+    height: 64px;
+    border-bottom: 1px solid #f3f4f6;
+    position: relative;
+  }
+  .gantt-row:last-child { border-bottom: 0; }
+  .gantt-row .label {
+    font-family: "Quicksand", sans-serif;
+    font-size: 18px; font-weight: 600;
+    color: var(--ink); letter-spacing: -0.3px;
+  }
+  .gantt-row .label small {
+    display: block; font-family: "Montserrat", sans-serif;
+    font-size: 11px; color: var(--muted); font-weight: 500;
+    letter-spacing: 0;
+  }
+  .gantt-track {
+    grid-column: 2 / 6;
+    position: relative; height: 38px;
+  }
+  .gantt-bar {
+    position: absolute; top: 0; height: 38px;
+    border-radius: 8px;
+    display: flex; align-items: center; padding: 0 14px;
+    font-size: 12px; font-weight: 600; color: white;
+    letter-spacing: 0.04em;
+  }
+  .b-design { background: linear-gradient(90deg, #0E93F2, #4FB3F8); }
+  .b-front { background: linear-gradient(90deg, #1686D8, #0E93F2); }
+  .b-back { background: linear-gradient(90deg, #9747FF, #B07CFF); }
+  .b-int { background: linear-gradient(90deg, #278556, #34A06A); }
+  .b-qa { background: linear-gradient(90deg, #c97a14, #e89c3f); }
+
+  .milestones {
+    display: flex; justify-content: space-between;
+    margin-top: 24px; padding-top: 20px;
+    border-top: 1px dashed var(--line);
+  }
+  .milestone {
+    text-align: center; flex: 1;
+  }
+  .milestone .dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: white; border: 3px solid var(--brand);
+    margin: 0 auto 10px;
+  }
+  .milestone .when {
+    font-family: "Roboto Mono", monospace;
+    font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--brand);
+    font-weight: 600;
+  }
+  .milestone .what {
+    font-family: "Quicksand", sans-serif;
+    font-size: 16px; color: var(--ink);
+    font-weight: 600; margin-top: 4px;
+  }
+
+  /* ===== Premissas ===== */
+  .twocol {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 36px;
+    margin-top: 24px; flex: 1;
+  }
+  .panel {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 36px;
+  }
+  .panel.warn { background: linear-gradient(180deg, #fff8ef, #ffffff); border-color: #f3e1c5; }
+  .panel.brand { background: linear-gradient(180deg, #eef7fe, #ffffff); border-color: #cfe6fa; }
+  .panel h3 {
+    font-size: 28px; margin-bottom: 4px;
+  }
+  .panel .panel-sub {
+    font-family: "Roboto Mono", monospace;
+    font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 22px;
+  }
+  .panel.warn .panel-sub { color: var(--warn); }
+  .panel ol, .panel ul { padding: 0; margin: 0; list-style: none; counter-reset: c; }
+  .panel li {
+    font-size: 16px; line-height: 1.5; color: var(--ink-soft);
+    padding: 14px 0 14px 44px;
+    border-bottom: 1px solid #f3f4f6;
+    position: relative;
+    counter-increment: c;
+  }
+  .panel li:last-child { border-bottom: 0; }
+  .panel ol li::before {
+    content: counter(c, decimal-leading-zero);
+    position: absolute; left: 0; top: 14px;
+    font-family: "Roboto Mono", monospace;
+    font-size: 12px; color: var(--brand);
+    font-weight: 600;
+  }
+  .panel.warn ol li::before { color: var(--warn); }
+  .panel ul li { padding-left: 22px; }
+  .panel ul li::before {
+    content: "✕"; position: absolute; left: 0; top: 13px;
+    color: var(--muted); font-size: 14px;
+  }
+  .panel.warn ul li::before { content: "—"; color: var(--warn); }
+
+  /* ===== Investimento ===== */
+  .invest {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 48px;
+    margin-top: 24px; flex: 1;
+  }
+  .invest-table {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+  .invest-table .row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 22px 28px;
+    border-bottom: 1px solid #f3f4f6;
+    gap: 16px;
+  }
+  .invest-table .row:last-child { border-bottom: 0; }
+  .invest-table .row.head {
+    background: var(--ink);
+    color: white;
+    font-family: "Roboto Mono", monospace;
+    font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+  }
+  .invest-table .row .name {
+    font-family: "Quicksand", sans-serif;
+    font-size: 22px; font-weight: 600; color: var(--ink);
+    letter-spacing: -0.4px;
+  }
+  .invest-table .row .name small {
+    display: block;
+    font-family: "Montserrat", sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-top: 2px;
+    letter-spacing: 0;
+  }
+  .invest-table .row .price {
+    font-family: "Quicksand", sans-serif;
+    font-size: 28px; font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.5px;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .invest-table .row.total {
+    background: linear-gradient(180deg, #eef7fe, #ffffff);
+    padding: 28px;
+  }
+  .invest-table .row.total .name {
+    font-size: 28px;
+  }
+  .invest-table .row.total .price {
+    font-size: 44px;
+    color: var(--brand);
+  }
+
+  .invest-side {
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  .pay-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 28px 32px;
+  }
+  .pay-card .pay-h {
+    font-family: "Roboto Mono", monospace;
+    font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 14px;
+  }
+  .pay-card h3 { font-size: 24px; margin-bottom: 10px; }
+  .pay-card .body { font-size: 15px; line-height: 1.55; }
+
+  .pay-schedule {
+    background: var(--ink);
+    color: white;
+    border-radius: 18px;
+    padding: 28px 32px;
+    flex: 1;
+  }
+  .pay-schedule .pay-h { color: rgba(255,255,255,0.55); margin-bottom: 18px;
+    font-family: "Roboto Mono", monospace;
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .pay-schedule .install {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .pay-schedule .install:last-child { border-bottom: 0; }
+  .pay-schedule .install .when {
+    font-family: "Quicksand", sans-serif;
+    font-size: 18px; font-weight: 600;
+  }
+  .pay-schedule .install .when small {
+    display: block;
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 400;
+    letter-spacing: 0;
+    margin-top: 2px;
+  }
+  .pay-schedule .install .val {
+    font-family: "Quicksand", sans-serif;
+    font-size: 22px; font-weight: 600;
+    color: #4FB3F8;
+    white-space: nowrap;
+    margin-left: 16px;
+  }
+  .pay-schedule .install .when { white-space: nowrap; }
+
+  /* ===== Slide final — Próximos passos ===== */
+  .closing {
+    background:
+      radial-gradient(circle at 80% 110%, rgba(14,147,242,0.18), transparent 55%),
+      radial-gradient(circle at 20% 0%, rgba(151,71,255,0.10), transparent 50%),
+      linear-gradient(180deg, #f7fafd 0%, #eef4f9 100%);
+  }
+  .closing h2 { font-size: 88px; line-height: 1.0; letter-spacing: -2px; }
+  .closing h2 em { font-style: normal; color: var(--brand); }
+  .closing .lead { margin-top: 32px; font-size: 26px; max-width: 1100px; }
+
+  .next-steps {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    margin-top: 56px;
+  }
+  .step {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 32px;
+    position: relative;
+  }
+  .step .num {
+    font-family: "Quicksand", sans-serif;
+    font-size: 64px; font-weight: 600; color: var(--brand);
+    letter-spacing: -2px; line-height: 0.9;
+    margin-bottom: 14px;
+  }
+  .step .name {
+    font-family: "Quicksand", sans-serif;
+    font-size: 24px; font-weight: 600;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .step .desc { font-size: 15px; color: var(--ink-soft); line-height: 1.5; }
+
+  .signoff {
+    position: absolute; left: 120px; bottom: 96px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .signoff .sig-name {
+    font-family: "Quicksand", sans-serif;
+    font-size: 24px; font-weight: 600; color: var(--ink);
+  }
+  .signoff .sig-role { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+  .validity {
+    position: absolute; right: 120px; bottom: 96px;
+    text-align: right;
+    font-family: "Roboto Mono", monospace;
+    font-size: 13px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .validity strong { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<deck-stage>
+
+<!-- =============== SLIDE 1 — CAPA =============== -->
+<section data-screen-label="01 Capa" class="cover">
+  <div class="pill-group">
+    <span class="pill">Proposta comercial</span>
+    <span class="pill brand">v1 · Maio/2026</span>
+  </div>
+
+  <div class="stamp">
+    <span class="dot"></span>
+    Mutual Tecnologia
+  </div>
+
+  <h1>Plataforma <em>Secretaria + Matrículas</em></h1>
+
+  <div class="for">
+    Proposta para <strong>Mago do Pism</strong> · Fases <strong>5A</strong> &amp; <strong>5B</strong>
+  </div>
+
+  <div class="meta-grid">
+    <div>
+      <div class="k">Cliente</div>
+      <div class="v">Mago do Pism</div>
+    </div>
+    <div>
+      <div class="k">Modelo</div>
+      <div class="v">Preço fechado</div>
+    </div>
+    <div>
+      <div class="k">Prazo</div>
+      <div class="v">60 dias de desenvolvimento</div>
+    </div>
+    <div>
+      <div class="k">Entrega</div>
+      <div class="v">Sprints quinzenais</div>
+    </div>
+  </div>
+</section>
+
+<!-- =============== SLIDE 2 — RESUMO EXECUTIVO =============== -->
+<section data-screen-label="02 Resumo Executivo">
+  <p class="eyebrow">Resumo executivo</p>
+  <h2>Tirar a secretaria das plataformas<br/>terceiras e trazer pra dentro do Mago.</h2>
+
+  <div class="exec-grid">
+    <div>
+      <p class="lead">
+        Hoje a secretaria vive espalhada entre planilhas, ZapSign, Pagar.me, WhatsApp e e-mail —
+        cada cobrança, contrato e matrícula passa por uma plataforma terceira diferente.
+        Esta proposta traz <strong>tudo isso pra dentro da plataforma do Mago</strong>, de forma completa.
+      </p>
+      <p class="lead" style="margin-top: 24px;">
+        Implementação ponta a ponta das fases <strong>5A (Secretaria)</strong> e
+        <strong>5B (Matrícula pública)</strong> — design, front-end, back-end e integrações —
+        em <strong>60 dias de desenvolvimento</strong>.
+      </p>
+    </div>
+    <div class="pull-stats">
+      <div class="pull-stat">
+        <div class="num">16</div>
+        <div class="label"><strong>Telas em alta fidelidade</strong><br/>9 da Secretaria + 7 do fluxo público</div>
+      </div>
+      <div class="pull-stat">
+        <div class="num">4</div>
+        <div class="label"><strong>Integrações de produção</strong><br/>ZapSign · Pagar.me · WhatsApp · E-mail</div>
+      </div>
+      <div class="pull-stat">
+        <div class="num">60 <small>dias</small></div>
+        <div class="label"><strong>Do design ao deploy</strong><br/>Desenvolvimento completo com entrega contínua</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <div class="logo"><span class="dot"></span> Mutual Tecnologia · Mago do Pism</div>
+    <span>02 / 08</span>
+  </div>
+</section>
+
+<!-- =============== SLIDE 3 — ESCOPO 5A =============== -->
+<section data-screen-label="03 Escopo 5A">
+  <div class="scope-head">
+    <div>
+      <p class="eyebrow">Fase 5A · Escopo detalhado</p>
+      <h2>Plataforma Secretaria</h2>
+    </div>
+    <span class="count">9 módulos · uso interno</span>
+  </div>
+
+  <div class="scope-grid">
+    <div class="scope-card">
+      <span class="idx">5A.01</span>
+      <span class="name">Painel financeiro</span>
+      <span class="desc">Fluxo de recebíveis, KPIs do mês, faturas em destaque e atalhos para ações.</span>
+      <div class="tags"><span class="tag">Dashboard</span><span class="tag">Pagar.me</span></div>
+    </div>
+    <div class="scope-card">
+      <span class="idx">5A.02</span>
+      <span class="name">Clientes</span>
+      <span class="desc">Lista completa de responsáveis com filtros, busca e ações em lote.</span>
+      <div class="tags"><span class="tag">CRUD</span><span class="tag">Filtros</span></div>
+    </div>
+    <div class="scope-card">
+      <span class="idx">5A.03</span>
+      <span class="name">Cliente · perfil</span>
+      <span class="desc">Página detalhe com dados, faturas, histórico de cobrança e timeline.</span>
+      <div class="tags"><span class="tag">CRUD</span><span class="tag">Histórico</span></div>
+    </div>
+    <div class="scope-card">
+      <span class="idx">5A.04</span>
+      <span class="name">Formulários</span>
+      <span class="desc">Lista de formulários públicos, geração de link e QR code para divulgação.</span>
+      <div class="tags"><span class="tag acc">ZapSign</span><span class="tag">QR</span></div>
+    </div>
+    <div class="scope-card">
+      <span class="idx">5A.05</span>
+      <span class="name">Formulário · Criar</span>
+      <span class="desc">Wizard com seleção de modelo ZapSign, valor e regras de cobrança.</span>
+      <div class="tags"><span class="tag acc">ZapSign</span><span class="tag">Wizard</span></div>
+    </div>
+    <div class="scope-card">
+      <span class="idx">5A.06</span>
+      <span class="name">Contas a Receber</span>
+      <span class="desc">Lista completa de faturas com status, ações de cobrança e filtros por período.</span>
+      <div class="tags"><span class="tag">Pagar.me</span><span class="tag">Filtros</span></div>
+    </div>
+    <div class="scope-card">
+      <span class="idx">5A.07</span>
+      <span class="name">Fatura · detalhe</span>
+      <span class="desc">Itens, timeline de eventos, QR Pix, link público e ações administrativas.</span>
+      <div class="tags"><span class="tag">Pix</span><span class="tag">Boleto</span></div>
+    </div>
+    <div class="scope-card">
+      <span class="idx">5A.08</span>
+      <span class="name">Inadimplência</span>
+      <span class="desc">Dashboard de aging, classificação de risco e ações em massa de cobrança.</span>
+      <div class="tags"><span class="tag">Aging</span><span class="tag suc">Em massa</span></div>
+    </div>
+    <div class="scope-card">
+      <span class="idx">5A.09</span>
+      <span class="name">Régua de Cobrança</span>
+      <span class="desc">Editor das 7 etapas com WhatsApp/e-mail, variáveis e gatilhos automáticos.</span>
+      <div class="tags"><span class="tag suc">WhatsApp</span><span class="tag">Automação</span></div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <div class="logo"><span class="dot"></span> Mutual Tecnologia · Mago do Pism</div>
+    <span>03 / 08</span>
+  </div>
+</section>
+
+<!-- =============== SLIDE 4 — ESCOPO 5B =============== -->
+<section data-screen-label="04 Escopo 5B">
+  <div class="scope-head">
+    <div>
+      <p class="eyebrow">Fase 5B · Escopo detalhado</p>
+      <h2>Fluxo Público de Matrícula</h2>
+    </div>
+    <span class="count">7 telas · uso pelo responsável</span>
+  </div>
+
+  <div class="scope-grid" style="grid-template-columns: repeat(4, 1fr);">
+    <div class="scope-card">
+      <span class="idx">5B.01</span>
+      <span class="name">Início</span>
+      <span class="desc">Etapa zero: o responsável escolhe nova matrícula ou rematrícula.</span>
+      <div class="tags"><span class="tag">Public</span></div>
+    </div>
+    <div class="scope-card">
+      <span class="idx">5B.02</span>
+      <span class="name">Cadastro</span>
+      <span class="desc">Formulário responsável + aluno em stepper, com validação por CPF.</span>
+      <div class="tags"><span class="tag">Stepper</span></div>
+    </div>
+    <div class="scope-card">
+      <span class="idx">5B.03</span>
+      <span class="name">Rematrícula</span>
+      <span class="desc">Busca por CPF e edição rápida dos dados do aluno e responsável.</span>
+      <div class="tags"><span class="tag">CPF</span></div>
+    </div>
+    <div class="scope-card">
+      <span class="idx">5B.04</span>
+      <span class="name">Contrato</span>
+      <span class="desc">Documento + assinatura digital integrada ao ZapSign no padrão da escola.</span>
+      <div class="tags"><span class="tag acc">ZapSign</span></div>
+    </div>
+    <div class="scope-card">
+      <span class="idx">5B.05</span>
+      <span class="name">Pagamento</span>
+      <span class="desc">Pix com QR, cartão tokenizado e boleto via Pagar.me com taxas otimizadas.</span>
+      <div class="tags"><span class="tag">Pagar.me</span><span class="tag suc">Pix</span></div>
+    </div>
+    <div class="scope-card">
+      <span class="idx">5B.06</span>
+      <span class="name">Confirmação</span>
+      <span class="desc">Boas-vindas, próximos passos e disparo de e-mail/WhatsApp transacional.</span>
+      <div class="tags"><span class="tag suc">WhatsApp</span><span class="tag">E-mail</span></div>
+    </div>
+    <div class="scope-card">
+      <span class="idx">5B.07</span>
+      <span class="name">Fatura pública</span>
+      <span class="desc">Link único para o pai pagar a qualquer momento (Pix ou boleto).</span>
+      <div class="tags"><span class="tag">Pix</span><span class="tag">Boleto</span></div>
+    </div>
+    <div class="scope-card" style="background: linear-gradient(180deg, #eef7fe, #ffffff); border-color: #cfe6fa;">
+      <span class="idx">+</span>
+      <span class="name">Mobile-first</span>
+      <span class="desc">Todas as 7 telas otimizadas primeiro para celular — onde o pai vai matricular.</span>
+      <div class="tags"><span class="tag">Responsivo</span></div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <div class="logo"><span class="dot"></span> Mutual Tecnologia · Mago do Pism</div>
+    <span>04 / 08</span>
+  </div>
+</section>
+
+<!-- =============== SLIDE 5 — CRONOGRAMA =============== -->
+<section data-screen-label="05 Cronograma">
+  <p class="eyebrow">Cronograma · 60 dias de desenvolvimento</p>
+  <h2>4 sprints quinzenais, entrega contínua.</h2>
+
+  <div class="gantt">
+    <div class="gantt-head">
+      <div></div>
+      <div class="week">Quinzena 1</div>
+      <div class="week">Quinzena 2</div>
+      <div class="week">Quinzena 3</div>
+      <div class="week">Quinzena 4</div>
+    </div>
+
+    <div class="gantt-row">
+      <div class="label">Design refino<small>UX, copy, microinterações</small></div>
+      <div class="gantt-track">
+        <div class="gantt-bar b-design" style="left: 0; width: 35%;">Refino · Aprovação</div>
+      </div>
+    </div>
+    <div class="gantt-row">
+      <div class="label">Back-end 5A<small>API, banco, auth, webhooks</small></div>
+      <div class="gantt-track">
+        <div class="gantt-bar b-back" style="left: 5%; width: 60%;">Modelagem · API · Webhooks Pagar.me</div>
+      </div>
+    </div>
+    <div class="gantt-row">
+      <div class="label">Front-end 5A<small>9 telas Secretaria</small></div>
+      <div class="gantt-track">
+        <div class="gantt-bar b-front" style="left: 18%; width: 55%;">Construção · Conexão à API</div>
+      </div>
+    </div>
+    <div class="gantt-row">
+      <div class="label">Front + Back 5B<small>Fluxo público mobile</small></div>
+      <div class="gantt-track">
+        <div class="gantt-bar b-front" style="left: 40%; width: 45%;">Cadastro · Contrato · Checkout</div>
+      </div>
+    </div>
+    <div class="gantt-row">
+      <div class="label">Integrações<small>ZapSign · Pagar.me · WhatsApp</small></div>
+      <div class="gantt-track">
+        <div class="gantt-bar b-int" style="left: 30%; width: 55%;">ZapSign · Pagar.me · WhatsApp · SMTP</div>
+      </div>
+    </div>
+    <div class="gantt-row">
+      <div class="label">QA + Deploy<small>Testes, ajustes, go-live</small></div>
+      <div class="gantt-track">
+        <div class="gantt-bar b-qa" style="left: 75%; width: 25%;">QA · Deploy · Treinamento</div>
+      </div>
+    </div>
+
+    <div class="milestones">
+      <div class="milestone">
+        <div class="dot"></div>
+        <div class="when">Dia 15</div>
+        <div class="what">Design aprovado</div>
+      </div>
+      <div class="milestone">
+        <div class="dot"></div>
+        <div class="when">Dia 30</div>
+        <div class="what">5A em homologação</div>
+      </div>
+      <div class="milestone">
+        <div class="dot"></div>
+        <div class="when">Dia 45</div>
+        <div class="what">5B em homologação</div>
+      </div>
+      <div class="milestone">
+        <div class="dot"></div>
+        <div class="when">Dia 60</div>
+        <div class="what">Go-live + treinamento</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <div class="logo"><span class="dot"></span> Mutual Tecnologia · Mago do Pism</div>
+    <span>05 / 08</span>
+  </div>
+</section>
+
+<!-- =============== SLIDE 6 — PREMISSAS =============== -->
+<section data-screen-label="06 Premissas">
+  <p class="eyebrow">Premissas e exclusões</p>
+  <h2>Para fechar o prazo de 60 dias.</h2>
+
+  <div class="twocol">
+    <div class="panel brand">
+      <h3>O que assumimos</h3>
+      <p class="panel-sub">Premissas · 6 itens</p>
+      <ol>
+        <li>Acessos de produção (ZapSign, Pagar.me, WhatsApp Business, SMTP) liberados <strong>na primeira semana</strong>.</li>
+        <li>Identidade visual e textos de marketing já aprovados (design parte do que está no Figma atual).</li>
+        <li>Modelos de contrato ZapSign já cadastrados na conta do cliente — só configuramos as variáveis.</li>
+        <li>Régua de cobrança com até 7 etapas (WhatsApp + e-mail). Aprovações em <strong>até 24h</strong>.</li>
+        <li>Hospedagem em provedor de nuvem (Vercel + Render/Railway). Custos de infra por conta do cliente.</li>
+        <li>Um ponto focal pelo lado do cliente para validar entregas das sprints.</li>
+      </ol>
+    </div>
+    <div class="panel warn">
+      <h3>O que não está incluso</h3>
+      <p class="panel-sub">Exclusões · escopo separado</p>
+      <ul>
+        <li>Migração massiva de dados de planilhas legadas (cobrado por hora, se necessário).</li>
+        <li>Customizações dos templates de contrato no ZapSign (feito pela secretaria).</li>
+        <li>Custos recorrentes: Pagar.me (taxas), ZapSign, WhatsApp BSP, SMTP, hospedagem.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <div class="logo"><span class="dot"></span> Mutual Tecnologia · Mago do Pism</div>
+    <span>06 / 08</span>
+  </div>
+</section>
+
+<!-- =============== SLIDE 7 — INVESTIMENTO =============== -->
+<section data-screen-label="07 Investimento">
+  <p class="eyebrow">Investimento</p>
+  <h2>Preço fechado por entrega.</h2>
+
+  <div class="invest">
+    <div class="invest-table">
+      <div class="row head">
+        <div>Entrega</div>
+        <div>Valor</div>
+      </div>
+      <div class="row">
+        <div class="name">Fase 5A · Secretaria<small>9 telas · back-end · webhooks · régua de cobrança</small></div>
+        <div class="price">R$ 17.500</div>
+      </div>
+      <div class="row">
+        <div class="name">Fase 5B · Matrícula pública<small>7 telas mobile-first · contrato · checkout</small></div>
+        <div class="price">R$ 12.500</div>
+      </div>
+      <div class="row">
+        <div class="name">Integrações de produção<small>ZapSign · Pagar.me · WhatsApp · SMTP transacional</small></div>
+        <div class="price">R$ 15.000</div>
+      </div>
+      <div class="row total">
+        <div class="name">Total da proposta</div>
+        <div class="price">R$ 45.000</div>
+      </div>
+    </div>
+
+    <div class="invest-side">
+      <div class="pay-card">
+        <div class="pay-h">Modelo</div>
+        <h3>Pagamento por entrega</h3>
+        <p class="body">
+          Sem entrada cega. Cada parcela é liberada na <strong>aprovação da sprint</strong> correspondente —
+          você paga conforme o produto vira realidade.
+        </p>
+      </div>
+
+      <div class="pay-schedule">
+        <div class="pay-h">Entrega em 60 dias · pagamento em 5 meses</div>
+        <div class="install">
+          <div class="when">Mês 1 · Assinatura<small>Início do projeto</small></div>
+          <div class="val">R$ 9.000</div>
+        </div>
+        <div class="install">
+          <div class="when">Mês 2 · 30 dias após<small>5A em homologação</small></div>
+          <div class="val">R$ 9.000</div>
+        </div>
+        <div class="install">
+          <div class="when">Mês 3 · 60 dias após<small>Entrega completa em produção</small></div>
+          <div class="val">R$ 9.000</div>
+        </div>
+        <div class="install">
+          <div class="when">Mês 4 · 90 dias após<small>Sistema em uso</small></div>
+          <div class="val">R$ 9.000</div>
+        </div>
+        <div class="install">
+          <div class="when">Mês 5 · 120 dias após<small>Última parcela</small></div>
+          <div class="val">R$ 9.000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <div class="logo"><span class="dot"></span> Mutual Tecnologia · Mago do Pism</div>
+    <span>07 / 08</span>
+  </div>
+</section>
+
+<!-- =============== SLIDE 8 — PRÓXIMOS PASSOS =============== -->
+<section data-screen-label="08 Próximos Passos" class="closing">
+  <p class="eyebrow">Próximos passos</p>
+  <h2>Vamos começar <em>ainda<br/>essa semana</em>.</h2>
+  <p class="lead">
+    Aprovada a proposta, abrimos o canal de Slack/WhatsApp do projeto, agendamos a kick-off
+    e enviamos a lista exata de acessos que precisamos do seu lado — tudo dentro da semana.
+  </p>
+
+  <div class="next-steps">
+    <div class="step">
+      <div class="num">01</div>
+      <div class="name">Aceite</div>
+      <div class="desc">Você responde "OK" ou pede ajustes. A proposta é flexível — escopo e ritmo.</div>
+    </div>
+    <div class="step">
+      <div class="num">02</div>
+      <div class="name">Kick-off</div>
+      <div class="desc">Reunião de 60 min com cronograma final, papéis e checklist de acessos.</div>
+    </div>
+    <div class="step">
+      <div class="num">03</div>
+      <div class="name">Sprint 1</div>
+      <div class="desc">Em 15 dias, você vê design refinado e API rodando em homologação.</div>
+    </div>
+  </div>
+
+  <div class="signoff">
+    <div>
+      <div class="sig-name">Mutual Tecnologia</div>
+      <div class="sig-role">Design + Engenharia · responsável pela proposta</div>
+    </div>
+  </div>
+  <div class="validity">
+    Validade da proposta<br/>
+    <strong>7 dias corridos</strong>
+  </div>
+</section>
+
+</deck-stage>
+
+<script src="deck-stage.js"></script>
+</body>
+</html>

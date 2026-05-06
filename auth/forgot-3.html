@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nova senha · Mago do Pism</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      background: var(--neutral-0);
+      display: grid;
+      grid-template-columns: minmax(0, 926fr) minmax(0, 514fr);
+    }
+    @media (max-width: 900px) { body { grid-template-columns: 1fr; } .auth-hero { display: none; } }
+    .auth-hero {
+      position: relative;
+      background: linear-gradient(rgba(14,147,242,0.6), rgba(14,147,242,0.6)), url("../assets/login-bg.jpg") center / cover no-repeat;
+      min-height: 100vh;
+    }
+    .auth-pane { display: flex; align-items: center; justify-content: center; padding: 64px 40px; }
+    .auth-form { width: 100%; max-width: 364px; display: flex; flex-direction: column; align-items: stretch; gap: 18px; }
+    .auth-logo { width: 250px; height: 200px; background: url("../assets/logo-azul.png") center / contain no-repeat; align-self: center; margin-bottom: 12px; }
+    .auth-form .input, .auth-form .btn-primary { width: 100%; }
+    .password-rules { display: flex; flex-direction: column; gap: 10px; padding: 6px 4px 4px; }
+    .rule {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.2px;
+      color: var(--text-muted);
+    }
+    .rule .check {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--border-default);
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .rule.met .check {
+      background: var(--color-success);
+      border-color: var(--color-success);
+    }
+    .rule.met .check::after {
+      content: "";
+      width: 5px; height: 9px;
+      border-right: 2px solid white;
+      border-bottom: 2px solid white;
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+    .rule.met { color: var(--color-success); }
+    .rules-title {
+      font-family: "Quicksand", sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.4px;
+      color: var(--text-secondary);
+      margin: 6px 0 0;
+    }
+    .hero-tag { position: absolute; bottom: 48px; left: 0; right: 0; text-align: center; font-family: "Quicksand", sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.8px; color: white; opacity: 0.85; }
+    .back-home { position: fixed; top: 16px; left: 16px; z-index: 10; padding: 8px 14px; background: rgba(255,255,255,0.92); border-radius: var(--radius-pill); box-shadow: var(--shadow-soft); font-size: 13px; font-weight: 600; color: var(--brand-blue); }
+  </style>
+</head>
+<body>
+
+  <div class="auth-hero"><div class="hero-tag">LOGAR</div></div>
+
+  <div class="auth-pane">
+    <form class="auth-form" onsubmit="event.preventDefault(); window.location='forgot-4.html'">
+      <div class="auth-logo" role="img" aria-label="Mago do Pism"></div>
+      <input id="pw" class="input" type="password" placeholder="Senha" autocomplete="new-password" oninput="validatePw()" />
+      <input id="pw2" class="input" type="password" placeholder="Confirme a senha" autocomplete="new-password" />
+
+      <div class="password-rules" aria-live="polite">
+        <p class="rules-title">Sua senha precisa ter:</p>
+        <div class="rule" id="r-digit"><span class="check"></span>Pelo menos 1 dígito</div>
+        <div class="rule" id="r-upper"><span class="check"></span>Pelo menos 1 letra maiúscula</div>
+        <div class="rule" id="r-lower"><span class="check"></span>Pelo menos 1 letra minúscula</div>
+        <div class="rule" id="r-special"><span class="check"></span>Pelo menos 1 caractere especial</div>
+      </div>
+
+      <button class="btn-primary" type="submit" style="margin-top: 8px;">Continuar</button>
+    </form>
+  </div>
+
+  <script>
+    function validatePw() {
+      const v = document.getElementById('pw').value;
+      const tests = {
+        'r-digit': /\d/.test(v),
+        'r-upper': /[A-Z]/.test(v),
+        'r-lower': /[a-z]/.test(v),
+        'r-special': /[^A-Za-z0-9]/.test(v),
+      };
+      for (const [id, ok] of Object.entries(tests)) {
+        document.getElementById(id).classList.toggle('met', ok);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Formulários · Secretaria · Mago do Pism</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
+<style>
+  /* Banner ZapSign */
+  .zs-banner { display:flex; align-items:center; gap:14px; padding:13px 18px; background:linear-gradient(90deg, #f3f9fe, #fafdff); border:1px solid #cfe6fa; border-radius:10px; margin-bottom:18px; }
+  .zs-banner .zs-logo { width:36px; height:36px; border-radius:8px; background:#0E93F2; color:white; display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex-shrink:0; letter-spacing:-0.5px; }
+  .zs-banner .zs-text { flex:1; min-width:0; }
+  .zs-banner .zs-text strong { display:block; font-size:13px; color:var(--neutral-900); }
+  .zs-banner .zs-text span { font-size:11.5px; color:var(--text-secondary); }
+  .zs-banner .zs-conn { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:var(--color-success); padding:5px 10px; background:rgba(39,133,86,0.1); border-radius:999px; }
+  .zs-banner .zs-conn .dot { width:6px; height:6px; border-radius:50%; background:var(--color-success); animation:zs-pulse 1.8s ease-in-out infinite; }
+  @keyframes zs-pulse { 0%,100%{ opacity:1;} 50%{ opacity:0.4;} }
+
+  /* KPIs */
+  .ct-summary { display:grid; grid-template-columns: repeat(4, 1fr); gap:14px; margin-bottom:18px; }
+  @media (max-width:900px){ .ct-summary { grid-template-columns: repeat(2,1fr); } }
+  .ct-summary .kpi { padding:14px 18px; }
+  .ct-summary .kpi-value { font-size:22px; }
+
+  /* Tabs */
+  .ct-tabs-bar { display:flex; align-items:center; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .ct-tabs-bar .pill-tab { padding:6px 14px; border-radius:999px; border:1px solid var(--border-default); background:white; font-size:12px; font-weight:600; color:var(--text-secondary); cursor:pointer; display:inline-flex; align-items:center; gap:6px; }
+  .ct-tabs-bar .pill-tab.is-active { background:var(--brand-blue); color:white; border-color:var(--brand-blue); }
+  .ct-tabs-bar .pill-tab .count { background:rgba(255,255,255,0.2); padding:0 6px; border-radius:8px; font-size:11px; }
+  .ct-tabs-bar .pill-tab:not(.is-active) .count { background:var(--neutral-200); color:var(--text-muted); }
+  .ct-tabs-bar .spacer { flex:1; }
+  .ct-search { display:inline-flex; align-items:center; gap:6px; background:white; border:1px solid var(--border-default); border-radius:6px; padding:0 10px; height:32px; font-size:12px; min-width:220px; }
+  .ct-search input { border:0; outline:0; flex:1; font:inherit; color:var(--neutral-900); background:transparent; }
+  .ct-search svg { width:13px; height:13px; color:var(--text-muted); }
+
+  /* Forms Table */
+  .fm-card { background:white; border:1px solid var(--border-default); border-radius:10px; overflow:hidden; }
+  .fm-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .fm-table thead th { text-align:left; padding:12px 16px; font-size:10.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; border-bottom:1px solid var(--border-default); background:var(--neutral-50); }
+  .fm-table tbody tr { border-bottom:1px solid var(--neutral-200); transition: background .12s; }
+  .fm-table tbody tr:hover { background:#fafcfe; }
+  .fm-table tbody tr:last-child { border-bottom:0; }
+  .fm-table td { padding:14px 16px; vertical-align:middle; }
+
+  .fm-name strong { display:block; font-size:13.5px; color:var(--neutral-900); font-weight:600; line-height:1.3; }
+  .fm-name .meta { font-size:11.5px; color:var(--text-muted); margin-top:3px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .fm-name .meta .tpl-chip { display:inline-flex; align-items:center; gap:4px; padding:1px 7px; background:rgba(14,147,242,0.08); color:var(--brand-blue); border-radius:4px; font-weight:600; font-size:11px; }
+  .fm-name .meta .tpl-chip svg { width:10px; height:10px; }
+  .fm-name .meta .sep { color:var(--neutral-300); }
+
+  .fm-amount { font-family:var(--font-akagi); font-weight:700; color:var(--neutral-900); font-size:14px; line-height:1.2; }
+  .fm-amount .sub { display:block; font-size:11px; color:var(--text-muted); font-weight:500; font-family:var(--font-base); margin-top:2px; }
+
+  .fm-status { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; }
+  .fm-status .dot { width:7px; height:7px; border-radius:50%; }
+  .fm-status.active { color:var(--color-success); }
+  .fm-status.active .dot { background:var(--color-success); }
+  .fm-status.paused { color:#c97a14; }
+  .fm-status.paused .dot { background:#c97a14; }
+  .fm-status.expired { color:var(--text-muted); }
+  .fm-status.expired .dot { background:var(--text-muted); }
+
+  .fm-uses { display:flex; align-items:center; gap:8px; }
+  .fm-uses .bar { width:60px; height:5px; background:var(--neutral-200); border-radius:3px; overflow:hidden; }
+  .fm-uses .bar > span { display:block; height:100%; background:var(--brand-blue); border-radius:3px; }
+  .fm-uses .num { font-size:12px; color:var(--neutral-900); font-weight:600; }
+  .fm-uses .num em { color:var(--text-muted); font-style:normal; font-weight:500; }
+
+  /* Link cell */
+  .fm-link { display:inline-flex; align-items:center; gap:0; border:1px solid var(--border-default); border-radius:6px; background:var(--neutral-50); overflow:hidden; max-width:100%; min-width:0; }
+  .fm-link .url { padding:0 10px; font-family:var(--font-mono); font-size:11.5px; color:var(--brand-blue); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; max-width:230px; height:30px; line-height:30px; }
+  .fm-link button { background:white; border:0; border-left:1px solid var(--border-default); width:30px; height:30px; cursor:pointer; color:var(--text-secondary); display:inline-flex; align-items:center; justify-content:center; }
+  .fm-link button:hover { background:var(--neutral-100); color:var(--brand-blue); }
+  .fm-link button svg { width:13px; height:13px; }
+  .fm-link.disabled { opacity:0.55; }
+  .fm-link.disabled .url { color:var(--text-muted); font-style:italic; }
+
+  .fm-row-actions { display:flex; gap:4px; justify-content:flex-end; align-items:center; }
+  .fm-row-actions .ico-btn { width:30px; height:30px; }
+  .fm-row-actions .copy-btn { height:30px; padding:0 12px; font-size:11.5px; font-weight:600; border:0; background:var(--brand-blue); color:white; border-radius:5px; cursor:pointer; display:inline-flex; align-items:center; gap:5px; }
+  .fm-row-actions .copy-btn:hover { background:var(--brand-blue-dark); }
+  .fm-row-actions .copy-btn:disabled { background:var(--neutral-300); cursor:not-allowed; }
+  .fm-row-actions .copy-btn svg { width:12px; height:12px; }
+
+  .fm-card-foot { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:var(--neutral-50); border-top:1px solid var(--border-default); font-size:11.5px; color:var(--text-muted); }
+  .fm-card-foot button { background:transparent; border:0; color:var(--brand-blue); font-weight:600; cursor:pointer; padding:0; font-size:11.5px; }
+  .fm-card-foot button:hover { text-decoration:underline; }
+
+  /* Recent docs (assinaturas geradas) */
+  .recent-docs-card { margin-top:20px; }
+  .doc-pill { display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:999px; font-size:11px; font-weight:600; }
+  .doc-pill.signed { background:rgba(39,133,86,0.12); color:var(--color-success); }
+  .doc-pill.pending { background:rgba(232,156,63,0.14); color:#c97a14; }
+  .doc-pill.viewed { background:rgba(14,147,242,0.12); color:var(--brand-blue); }
+  .doc-pill .dot { width:5px; height:5px; border-radius:50%; background:currentColor; }
+
+  /* Toast */
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--neutral-900); color:white; padding:11px 18px; border-radius:8px; font-size:13px; font-weight:500; box-shadow:0 8px 30px rgba(0,0,0,0.18); display:inline-flex; align-items:center; gap:9px; transition: transform .25s ease, opacity .25s ease; opacity:0; pointer-events:none; z-index:90; }
+  .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+  .toast svg { width:15px; height:15px; color:#5fd49a; }
+</style>
+</head><body><div class="app-shell">
+<aside class="sidebar">
+  <div class="sidebar-logo" role="img" aria-label="Mago do Pism" style="background:url('../assets/logo-azul.png') center/contain no-repeat; filter:brightness(0) invert(1);"></div>
+  <nav class="sidebar-nav">
+    <a href="painel.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Painel</span></a>
+    <a href="clientes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2.3 1.5-4 3.7-4 1.6 0 2.8.9 3.3 2.2"/></svg><span>Clientes</span></a>
+    <a href="formularios.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></svg><span>Formulários</span></a>
+    <a href="faturas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg><span>Contas a Receber</span></a>
+    <a href="inadimplentes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.8" fill="currentColor"/></svg><span>Inadimplência</span></a>
+    <a href="cobranca.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg><span>Régua de Cobrança</span></a>
+  </nav>
+</aside>
+
+<main class="main"><div class="sec-page">
+<nav class="sec-breadcrumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><a href="painel.html">Principal</a><span class="sep">/</span><span>Formulários</span></nav>
+
+<div class="sec-page-head">
+  <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></svg>Formulários</h1>
+  <div class="sec-actions">
+    <button class="sec-btn outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Sincronizar com ZapSign</button>
+    <a href="formulario-novo.html" class="sec-btn dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Criar formulário</a>
+  </div>
+</div>
+
+<div class="zs-banner">
+  <div class="zs-logo">ZS</div>
+  <div class="zs-text">
+    <strong>Cada formulário combina um modelo do ZapSign + um valor de pagamento</strong>
+    <span>O link público gerado pode ser enviado ao responsável (WhatsApp, e-mail, redes). Ele preenche os dados pessoais do aluno, confirma e segue para o contrato + pagamento.</span>
+  </div>
+  <div class="zs-conn"><span class="dot"></span>API ZapSign</div>
+</div>
+
+<div class="ct-summary">
+  <div class="kpi"><div class="kpi-value">12</div><div class="kpi-label">Formulários ativos</div><div class="kpi-period">2 pausados · 3 expirados</div></div>
+  <div class="kpi"><div class="kpi-value success">142</div><div class="kpi-label">Contratos gerados</div><div class="kpi-period">Janeiro–Maio</div></div>
+  <div class="kpi"><div class="kpi-value">17</div><div class="kpi-label">Aguardando assinatura</div><div class="kpi-period">Atualizado há 2 min</div></div>
+  <div class="kpi"><div class="kpi-value danger">R$ 86.4k</div><div class="kpi-label">Receita potencial em aberto</div><div class="kpi-period">17 contratos pendentes</div></div>
+</div>
+
+<div class="ct-tabs-bar">
+  <button class="pill-tab is-active">Todos <span class="count">17</span></button>
+  <button class="pill-tab">Ativos <span class="count">12</span></button>
+  <button class="pill-tab">Pausados <span class="count">2</span></button>
+  <button class="pill-tab">Expirados <span class="count">3</span></button>
+  <span class="spacer"></span>
+  <label class="ct-search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input placeholder="Buscar por nome, modelo ou valor…"/>
+  </label>
+</div>
+
+<section class="fm-card">
+  <table class="fm-table">
+    <thead>
+      <tr>
+        <th style="width:32%;">Formulário</th>
+        <th>Valor</th>
+        <th>Status</th>
+        <th>Usos</th>
+        <th>Link público</th>
+        <th style="text-align:right;">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td>
+          <div class="fm-name">
+            <strong>Intensivo PISM 2026</strong>
+            <div class="meta">
+              <span class="tpl-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Curso Intensivo PISM 2026</span>
+              <span class="sep">·</span>
+              <span>criado em 28/04/2026</span>
+            </div>
+          </div>
+        </td>
+        <td><div class="fm-amount">R$ 3.420,00<span class="sub">à vista ou em até 12×</span></div></td>
+        <td><span class="fm-status active"><span class="dot"></span>Ativo</span></td>
+        <td><div class="fm-uses"><span class="num">109 <em>contratos</em></span></div></td>
+        <td>
+          <div class="fm-link">
+            <span class="url" title="https://magodopism.com.br/f/intensivo-2026">magodopism.com.br/f/intensivo-2026</span>
+            <button class="copy-link" data-url="https://magodopism.com.br/f/intensivo-2026" title="Copiar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            <button class="open-link" data-url="https://magodopism.com.br/f/intensivo-2026" title="Abrir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+            <button class="qr-link" title="QR code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14h1v1h-1zM14 20h1v1h-1zM18 18h3v3h-3z"/></svg></button>
+          </div>
+        </td>
+        <td>
+          <div class="fm-row-actions">
+            <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="ico-btn" title="Duplicar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            <button class="copy-btn copy-link" data-url="https://magodopism.com.br/f/intensivo-2026" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copiar link</button>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="fm-name">
+            <strong>Extensivo Anual 2026</strong>
+            <div class="meta">
+              <span class="tpl-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Cursinho Extensivo · Anual</span>
+              <span class="sep">·</span>
+              <span>criado em 22/04/2026</span>
+            </div>
+          </div>
+        </td>
+        <td><div class="fm-amount">R$ 4.500,00<span class="sub">à vista ou em até 9×</span></div></td>
+        <td><span class="fm-status active"><span class="dot"></span>Ativo</span></td>
+        <td><div class="fm-uses"><span class="num">28 <em>contratos</em></span></div></td>
+        <td>
+          <div class="fm-link">
+            <span class="url" title="https://magodopism.com.br/f/extensivo-2026">magodopism.com.br/f/extensivo-2026</span>
+            <button class="copy-link" data-url="https://magodopism.com.br/f/extensivo-2026" title="Copiar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            <button class="open-link" data-url="https://magodopism.com.br/f/extensivo-2026" title="Abrir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+            <button class="qr-link" title="QR code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14h1v1h-1zM14 20h1v1h-1zM18 18h3v3h-3z"/></svg></button>
+          </div>
+        </td>
+        <td>
+          <div class="fm-row-actions">
+            <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="ico-btn" title="Duplicar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            <button class="copy-btn copy-link" data-url="https://magodopism.com.br/f/extensivo-2026" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copiar link</button>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="fm-name">
+            <strong>Bolsa Parcial 50% · Intensivo</strong>
+            <div class="meta">
+              <span class="tpl-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Bolsa Parcial 50%</span>
+              <span class="sep">·</span>
+              <span>criado em 19/04/2026</span>
+            </div>
+          </div>
+        </td>
+        <td><div class="fm-amount">R$ 1.800,00<span class="sub">à vista ou em até 12×</span></div></td>
+        <td><span class="fm-status active"><span class="dot"></span>Ativo</span></td>
+        <td><div class="fm-uses"><span class="num">8 <em>contratos</em></span></div></td>
+        <td>
+          <div class="fm-link">
+            <span class="url" title="https://magodopism.com.br/f/bolsa-50-2026">magodopism.com.br/f/bolsa-50-2026</span>
+            <button class="copy-link" data-url="https://magodopism.com.br/f/bolsa-50-2026" title="Copiar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            <button class="open-link" data-url="https://magodopism.com.br/f/bolsa-50-2026" title="Abrir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+            <button class="qr-link" title="QR code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14h1v1h-1zM14 20h1v1h-1zM18 18h3v3h-3z"/></svg></button>
+          </div>
+        </td>
+        <td>
+          <div class="fm-row-actions">
+            <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="ico-btn" title="Duplicar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            <button class="copy-btn copy-link" data-url="https://magodopism.com.br/f/bolsa-50-2026" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copiar link</button>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="fm-name">
+            <strong>Rematrícula Veteranos 2026</strong>
+            <div class="meta">
+              <span class="tpl-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Rematrícula 2026 · Veteranos</span>
+              <span class="sep">·</span>
+              <span>criado em 10/04/2026</span>
+            </div>
+          </div>
+        </td>
+        <td><div class="fm-amount">R$ 3.240,00<span class="sub">10% off · até 12×</span></div></td>
+        <td><span class="fm-status paused"><span class="dot"></span>Pausado</span></td>
+        <td><div class="fm-uses"><span class="num">35 <em>contratos</em></span></div></td>
+        <td>
+          <div class="fm-link disabled"><span class="url">— pausado —</span></div>
+        </td>
+        <td>
+          <div class="fm-row-actions">
+            <button class="ico-btn" title="Reativar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+            <button class="ico-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            <button class="copy-btn" disabled>Pausado</button>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="fm-name">
+            <strong>Caderno de Provas — Avulso</strong>
+            <div class="meta">
+              <span class="tpl-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Caderno de Provas — Avulso</span>
+              <span class="sep">·</span>
+              <span>criado em 02/03/2026</span>
+            </div>
+          </div>
+        </td>
+        <td><div class="fm-amount">R$ 180,00<span class="sub">pagamento único</span></div></td>
+        <td><span class="fm-status active"><span class="dot"></span>Ativo</span></td>
+        <td><div class="fm-uses"><span class="num">14 <em>contratos</em></span></div></td>
+        <td>
+          <div class="fm-link">
+            <span class="url" title="https://magodopism.com.br/f/caderno-provas">magodopism.com.br/f/caderno-provas</span>
+            <button class="copy-link" data-url="https://magodopism.com.br/f/caderno-provas" title="Copiar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            <button class="open-link" data-url="https://magodopism.com.br/f/caderno-provas" title="Abrir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+            <button class="qr-link" title="QR code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14h1v1h-1zM14 20h1v1h-1zM18 18h3v3h-3z"/></svg></button>
+          </div>
+        </td>
+        <td>
+          <div class="fm-row-actions">
+            <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="ico-btn" title="Duplicar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            <button class="copy-btn copy-link" data-url="https://magodopism.com.br/f/caderno-provas" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copiar link</button>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="fm-name">
+            <strong>Aulão de Véspera 2026</strong>
+            <div class="meta">
+              <span class="tpl-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Aulão de Véspera 2026</span>
+              <span class="sep">·</span>
+              <span>expirou em 28/04/2026</span>
+            </div>
+          </div>
+        </td>
+        <td><div class="fm-amount">R$ 90,00<span class="sub">pagamento único</span></div></td>
+        <td><span class="fm-status expired"><span class="dot"></span>Expirado</span></td>
+        <td><div class="fm-uses"><span class="num">63 <em>contratos</em></span></div></td>
+        <td>
+          <div class="fm-link disabled"><span class="url">— expirado —</span></div>
+        </td>
+        <td>
+          <div class="fm-row-actions">
+            <button class="ico-btn" title="Reabrir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+            <button class="ico-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            <button class="copy-btn" disabled>Expirado</button>
+          </div>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+  <div class="fm-card-foot">
+    <span>Mostrando 6 de 12 formulários</span>
+    <span><button>Ver todos →</button></span>
+  </div>
+</section>
+
+<section class="sec-table-card recent-docs-card">
+  <div class="sec-table-head">
+    <h3>Contratos gerados recentemente</h3>
+    <span class="badge">ÚLTIMOS 6</span>
+    <span class="right" style="display:inline-flex; gap:8px; align-items:center;">
+      <select style="height:32px; padding:0 10px; border:1px solid var(--border-default); border-radius:5px; font-size:12px; background:white;"><option>Todos os formulários</option><option>Intensivo PISM 2026</option><option>Extensivo Anual 2026</option><option>Bolsa Parcial 50%</option></select>
+      <a href="formularios.html" class="sec-btn outline" style="height:32px; font-size:12px;">Ver todos</a>
+    </span>
+  </div>
+  <table class="sec-table">
+    <thead>
+      <tr><th>Responsável</th><th>Formulário</th><th>Valor</th><th>Criado em</th><th>Status</th><th></th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div style="font-weight:600;">Cassia Regina dos Santos Alves</div><div style="font-size:11px;color:#999;">cassiaalvesf340@gmail.com · Arthur Alves</div></td>
+        <td>Intensivo PISM 2026</td>
+        <td><strong>R$ 3.600,00</strong> <span style="font-size:11px;color:#999;">12×</span></td>
+        <td>03/05/2026 · 14:22</td>
+        <td><span class="doc-pill signed"><span class="dot"></span>Assinado</span></td>
+        <td class="col-actions">
+          <button class="ico-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/></svg></button>
+          <button class="ico-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg></button>
+        </td>
+      </tr>
+      <tr>
+        <td><div style="font-weight:600;">Higino Reis Lira</div><div style="font-size:11px;color:#999;">higinolira@hotmail.com · João Pedro Lira</div></td>
+        <td>Extensivo Anual 2026</td>
+        <td><strong>R$ 4.500,00</strong> <span style="font-size:11px;color:#999;">9×</span></td>
+        <td>02/05/2026 · 11:08</td>
+        <td><span class="doc-pill viewed"><span class="dot"></span>Visualizado</span></td>
+        <td class="col-actions">
+          <button class="ico-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/></svg></button>
+          <button class="ico-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+        </td>
+      </tr>
+      <tr>
+        <td><div style="font-weight:600;">Estefani Paula Oliveira Blumer</div><div style="font-size:11px;color:#999;">estefani.blumer@gmail.com · Sofia Blumer</div></td>
+        <td>Intensivo PISM 2026</td>
+        <td><strong>R$ 3.420,00</strong> <span style="font-size:11px;color:#999;">à vista</span></td>
+        <td>01/05/2026 · 09:14</td>
+        <td><span class="doc-pill pending"><span class="dot"></span>Pendente</span></td>
+        <td class="col-actions">
+          <button class="ico-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/></svg></button>
+          <button class="ico-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+        </td>
+      </tr>
+      <tr>
+        <td><div style="font-weight:600;">Ana Paula Pires Barbosa Marcolino</div><div style="font-size:11px;color:#999;">apmarcolino@gmail.com · Marcela Marcolino</div></td>
+        <td>Bolsa Parcial 50% · Intensivo</td>
+        <td><strong>R$ 1.800,00</strong> <span style="font-size:11px;color:#999;">12×</span></td>
+        <td>30/04/2026 · 18:44</td>
+        <td><span class="doc-pill signed"><span class="dot"></span>Assinado</span></td>
+        <td class="col-actions">
+          <button class="ico-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/></svg></button>
+          <button class="ico-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+</div></main></div>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span id="toastText">Link copiado!</span></div>
+
+<script>
+  const toast = document.getElementById('toast');
+  const toastText = document.getElementById('toastText');
+  function showToast(msg){ toastText.textContent = msg; toast.classList.add('show'); clearTimeout(showToast._t); showToast._t = setTimeout(()=>toast.classList.remove('show'), 1800); }
+
+  document.querySelectorAll('.copy-link').forEach(btn => btn.addEventListener('click', e => {
+    e.preventDefault();
+    const url = btn.dataset.url;
+    if (!url) return;
+    navigator.clipboard?.writeText(url);
+    showToast('Link copiado: ' + url);
+  }));
+
+  document.querySelectorAll('.open-link').forEach(btn => btn.addEventListener('click', e => {
+    e.preventDefault();
+    showToast('Abriria em nova aba o formulário público');
+  }));
+
+  document.querySelectorAll('.qr-link').forEach(btn => btn.addEventListener('click', e => {
+    e.preventDefault();
+    showToast('Geraria o QR code para impressão/cartaz');
+  }));
+
+  document.querySelectorAll('.pill-tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.pill-tab').forEach(x => x.classList.remove('is-active'));
+    t.classList.add('is-active');
+  }));
+</script>
+</body></html>

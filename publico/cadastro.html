@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Matrícula · Mago do Pism</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
+</head><body><div class="pub-shell">
+
+<header class="pub-header">
+  <img src="../assets/logo-azul.png" alt="Mago do Pism"/>
+  <span class="pub-title">Matrícula 2026 · Curso Intensivo Mago do Pism</span>
+  <span class="pub-help">Precisa de ajuda? <a href="#" style="color:var(--brand-blue); font-weight:600;">(31) 99876-1234</a></span>
+</header>
+
+<div class="pub-stepper">
+  <div class="pub-stepper-inner">
+    <div class="pub-step is-active"><span class="dot">1</span><span>Cadastro</span></div>
+    <div class="pub-step"><span class="dot">2</span><span>Contrato</span></div>
+    <div class="pub-step"><span class="dot">3</span><span>Pagamento</span></div>
+  </div>
+</div>
+<main class="pub-content">
+  <div class="pub-card">
+    <h1>Vamos começar sua matrícula</h1>
+    <p class="pub-sub">Preencha os dados do responsável financeiro e do aluno. Leva uns 3 minutos. ✏️</p>
+
+    <h3 style="font-family:var(--font-akagi); font-size:13px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin:0 0 14px;">Responsável financeiro</h3>
+    <div class="pub-form-grid">
+      <div class="pub-field full"><label>Nome completo<span class="req">*</span></label><input placeholder="Ex: Cassia Regina dos Santos Alves"/></div>
+      <div class="pub-field"><label>CPF<span class="req">*</span></label><input placeholder="000.000.000-00"/></div>
+      <div class="pub-field"><label>RG</label><input placeholder="MG-00.000.000"/></div>
+      <div class="pub-field"><label>E-mail<span class="req">*</span></label><input type="email" placeholder="seu@email.com"/></div>
+      <div class="pub-field"><label>Telefone (WhatsApp)<span class="req">*</span></label><input placeholder="(31) 99000-0000"/></div>
+      <div class="pub-field"><label>CEP<span class="req">*</span></label><input placeholder="00000-000"/></div>
+      <div class="pub-field"><label>Cidade / UF</label><input value="Belo Horizonte / MG" readonly/></div>
+      <div class="pub-field full"><label>Endereço<span class="req">*</span></label><input placeholder="Rua, número, complemento — Bairro"/></div>
+    </div>
+
+    <h3 style="font-family:var(--font-akagi); font-size:13px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin:32px 0 14px;">Aluno(a)</h3>
+    <div class="pub-form-grid">
+      <div class="pub-field full"><label>Nome completo do aluno<span class="req">*</span></label><input placeholder="Ex: Arthur dos Santos Alves"/></div>
+      <div class="pub-field"><label>E-mail do aluno (Gmail)<span class="req">*</span></label><input type="email" placeholder="aluno@gmail.com" pattern=".+@gmail\.com" title="Use um e-mail @gmail.com"/></div>
+      <div class="pub-field"><label>Série em 2026<span class="req">*</span></label><select><option>3º ano EM — Curso Intensivo</option><option>2º ano EM — Pré-Vestibular</option><option>1º ano EM — Reforço</option></select></div>
+    </div>
+
+    <div class="pub-actions">
+      <a href="../index.html" class="pub-btn outline">← Voltar</a>
+      <a href="contrato.html" class="pub-btn primary large">Continuar para o contrato →</a>
+    </div>
+  </div>
+</main>
+</div></body></html>
