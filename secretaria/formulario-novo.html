@@ -72,7 +72,7 @@
   .input-prefix .prefix { padding:9px 12px; background:var(--neutral-50); color:var(--text-muted); font-size:12px; font-weight:600; border-right:1px solid var(--border-default); }
   .input-prefix input { border:0; padding:9px 12px; flex:1; font:inherit; font-size:13px; outline:0; width:100%; }
 
-  .parc-grid { display:grid; grid-template-columns:repeat(6, 1fr); gap:6px; }
+  .parc-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; }
   .parc-grid button { padding:10px 0; border:1.5px solid var(--border-default); background:white; border-radius:6px; font-size:12.5px; font-weight:600; cursor:pointer; color:var(--text-secondary); transition:.12s; }
   .parc-grid button:hover { border-color:var(--brand-blue); }
   .parc-grid button.is-selected { background:var(--brand-blue); color:white; border-color:var(--brand-blue); }
@@ -188,9 +188,9 @@
           <div class="hint">Aluno será matriculado nesta turma ao assinar.</div>
         </div>
         <div class="field">
-          <label>Validade do link</label>
-          <input type="date" id="f-validade" value="2026-12-31"/>
-          <div class="hint">Após essa data o link para de funcionar automaticamente.</div>
+          <label>Validade do link <span style="font-weight:400;color:var(--text-muted);">(opcional)</span></label>
+          <input type="date" id="f-validade" value="" placeholder="Sem validade"/>
+          <div class="hint">Deixe em branco para link permanente sem validade. Preencha apenas se quiser que o link expire em uma data específica.</div>
         </div>
       </div>
 
@@ -313,6 +313,7 @@
         <div class="parc-grid" id="parcGrid">
           <button data-n="2">2×</button>
           <button data-n="3">3×</button>
+          <button data-n="4">4×</button>
           <button data-n="6">6×</button>
           <button data-n="9">9×</button>
           <button data-n="10">10×</button>
@@ -453,7 +454,7 @@
     nome: 'Intensivo PISM 2026',
     slug: 'intensivo-2026',
     curso: 'Curso Intensivo PISM 2026 · turma manhã',
-    validade: '2026-12-31',
+    validade: '',  // sem validade por padrão
     modelo: 'Curso Intensivo PISM 2026',
     token: '152f8416-…-1aaf785dd335',
     valor: 3420,
@@ -468,7 +469,7 @@
   function showToast(m){ toastText.textContent = m; toast.classList.add('show'); clearTimeout(showToast._t); showToast._t = setTimeout(()=>toast.classList.remove('show'), 1800); }
 
   function fmtBR(n){ return 'R$ ' + n.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
-  function fmtDate(iso){ if(!iso) return ''; const [y,m,d]=iso.split('-'); return `${d}/${m}/${y}`; }
+  function fmtDate(iso){ if(!iso) return 'Sem validade'; const [y,m,d]=iso.split('-'); return `${d}/${m}/${y}`; }
   function parseValor(s){ return parseFloat(String(s).replace(/\./g,'').replace(',','.')) || 0; }
 
   function updatePreview(){

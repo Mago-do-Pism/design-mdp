@@ -20,15 +20,15 @@
           <div class="method-grid" id="methodGrid" style="grid-template-columns:repeat(3,1fr);">
             <div class="method is-selected" data-method="pix">
               <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11v3a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-3"/><path d="M21 7H3"/><circle cx="7" cy="11" r="1"/></svg></div>
-              <div><strong>Pix</strong><em>À vista ou 9x · sem taxa</em></div>
+              <div><strong>Pix</strong><em><span style="color:var(--color-success);font-style:normal;font-weight:700;">15% off</span> à vista · ou 9x sem juros</em></div>
             </div>
             <div class="method" data-method="cartao">
               <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-              <div><strong>Cartão de crédito</strong><em>1 a 9x · acréscimo 4,99%</em></div>
+              <div><strong>Cartão de crédito</strong><em><span style="color:var(--color-success);font-style:normal;font-weight:700;">10% off</span> à vista · parcelado R$10 off</em></div>
             </div>
             <div class="method" data-method="boleto">
               <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
-              <div><strong>Boleto bancário</strong><em>À vista ou 9x · 1-2 dias úteis</em></div>
+              <div><strong>Boleto bancário</strong><em><span style="color:var(--color-success);font-style:normal;font-weight:700;">15% off</span> à vista · ou 9x · 1-2 dias úteis</em></div>
             </div>
           </div>
         </section>
@@ -52,7 +52,7 @@
           </div>
 
           <div style="margin-top:18px; padding:14px 16px; background:rgba(39,133,86,0.06); border-left:3px solid var(--color-success); border-radius:6px; font-size:12px; color:var(--text-secondary);">
-            <strong style="color:var(--color-success);">⚡ Pix instantâneo:</strong> assim que o banco confirmar o pagamento, sua matrícula é ativada e o aluno recebe o acesso à plataforma por e-mail.
+            <strong style="color:var(--color-success);">⚡ Pix instantâneo:</strong> assim que o banco confirmar o pagamento, sua matrícula é confirmada.
           </div>
         </section>
       </div>
@@ -69,12 +69,16 @@
 
         <div class="summary-line"><span>Curso Intensivo 2026 · 9× R$ 240,00</span><span>R$ 2.160,00</span></div>
         <div class="summary-line"><span>Taxa de matrícula</span><span>R$ 89,00</span></div>
+        <div class="summary-line" id="sumDiscLine" style="color:var(--color-success);display:none;">
+          <span id="sumDiscLabel">Desconto à vista (15%)</span>
+          <span id="sumDiscVal">−R$ 337,35</span>
+        </div>
 
         <div class="summary-total">
-          <span class="label">A pagar agora</span>
-          <span class="value">R$ 329,00</span>
+          <span class="label" id="sumPayLabel">A pagar agora</span>
+          <span class="value" id="sumPayVal">R$ 329,00</span>
         </div>
-        <p style="font-size:11px; color:var(--text-muted); margin:8px 0 0;">Próxima cobrança: <strong>15/06/2026</strong> · R$ 240,00 (parcela 2 de 9)</p>
+        <p style="font-size:11px; color:var(--text-muted); margin:8px 0 0;" id="sumNextLabel">Próxima cobrança: <strong>15/06/2026</strong> · R$ 240,00 (parcela 2 de 9)</p>
 
         <div style="margin-top:18px; padding:12px 14px; background:var(--neutral-100); border-radius:8px; display:flex; align-items:center; gap:10px;">
           <span style="font-size:18px;">🔒</span>
@@ -91,31 +95,85 @@
 </div>
 <script>
 (function(){
+  const BASE = 2249;   // total base (taxa + 9 parcelas)
+  const TAXA = 89;
+  const PARC = 240;
+
+  function fmt(v){ return 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+  // Pre-calculated values
+  const VISTA_PIX    = Math.round(BASE * 0.85 * 100) / 100;   // 1911.65
+  const VISTA_CART   = Math.round(BASE * 0.90 * 100) / 100;   // 2024.10
+  const DISC_PIX     = Math.round((BASE - VISTA_PIX)  * 100) / 100;
+  const DISC_CART1   = Math.round((BASE - VISTA_CART) * 100) / 100;
+  const CART_PARC    = Math.round(BASE * 1.0499) - 10;        // 2350 (com taxa 4,99% − R$10)
+
   const PLANS = {
-    pix:    [{n:1,label:'1x à vista',sub:'R$ 2.249,00 · sem taxa'},{n:9,label:'9x',sub:'R$ 240,00/mês'}],
-    boleto: [{n:1,label:'1x à vista',sub:'R$ 2.249,00 · sem taxa'},{n:9,label:'9x',sub:'R$ 240,00/mês'}],
-    cartao: [1,2,3,4,5,6,7,8,9].map(n => ({
-      n, label: n===1 ? '1x à vista' : n+'x',
-      sub: n===1 ? 'R$ 2.249,00' : 'R$ '+ (2360/n).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}) +'/mês'
-    }))
+    pix: [
+      {n:1, label:'1x à vista', sub: fmt(VISTA_PIX) + ' · 15% off', payNow: VISTA_PIX, payLabel:'total à vista com 15% off', disc: DISC_PIX,  discLabel:'Desconto à vista (15%)', next:''},
+      {n:9, label:'9x',         sub: fmt(PARC)       + '/mês · sem juros', payNow: TAXA+PARC, payLabel:'taxa + 1ª parcela', disc:0, discLabel:'', next:'Próxima cobrança: 15/06/2026 · R$ 240,00 (parcela 2 de 9)'}
+    ],
+    boleto: [
+      {n:1, label:'1x à vista', sub: fmt(VISTA_PIX) + ' · 15% off', payNow: VISTA_PIX, payLabel:'total à vista com 15% off', disc: DISC_PIX,  discLabel:'Desconto à vista (15%)', next:''},
+      {n:9, label:'9x',         sub: fmt(PARC)       + '/mês · 1-2 dias úteis', payNow: TAXA+PARC, payLabel:'taxa + 1ª parcela', disc:0, discLabel:'', next:'Próxima cobrança: 15/06/2026 · R$ 240,00 (parcela 2 de 9)'}
+    ],
+    cartao: [1,2,3,4,5,6,7,8,9].map(n => {
+      if (n===1) return {n:1, label:'1x à vista', sub: fmt(VISTA_CART) + ' · 10% off', payNow: VISTA_CART, payLabel:'total à vista com 10% off', disc: DISC_CART1, discLabel:'Desconto à vista (10%)', next:''};
+      const parc = Math.round(CART_PARC / n * 100) / 100;
+      return {n, label:n+'x', sub: fmt(parc)+'/mês · R$10 off', payNow: parc, payLabel:`1ª de ${n}× parcelas`, disc:10, discLabel:'Desconto parcelado (R$10)', next: `Próxima cobrança: 15/06/2026 · ${fmt(parc)} (parcela 2 de ${n})`};
+    })
   };
+
   const grid = document.getElementById('methodGrid');
   const list = document.getElementById('installments');
-  function render(method){
-    const opts = PLANS[method];
-    list.style.gridTemplateColumns = 'repeat(' + Math.min(opts.length,5) + ',1fr)';
-    list.innerHTML = opts.map((o,i)=>`<div class="opt${(method!=='cartao'&&o.n===9)||(method==='cartao'&&o.n===9)?' is-selected':''}"><strong>${o.label}</strong><span>${o.sub}</span></div>`).join('');
-    list.querySelectorAll('.opt').forEach(el=>el.addEventListener('click',()=>{
-      list.querySelectorAll('.opt').forEach(x=>x.classList.remove('is-selected'));
-      el.classList.add('is-selected');
-    }));
+
+  function updateSummary(plan){
+    const discLine = document.getElementById('sumDiscLine');
+    const discLabel = document.getElementById('sumDiscLabel');
+    const discVal   = document.getElementById('sumDiscVal');
+    const payVal    = document.getElementById('sumPayVal');
+    const payLabel  = document.getElementById('sumPayLabel');
+    const nextLabel = document.getElementById('sumNextLabel');
+
+    if (plan.disc > 0) {
+      discLine.style.display = '';
+      discLabel.textContent  = plan.discLabel;
+      discVal.textContent    = '−' + fmt(plan.disc);
+    } else {
+      discLine.style.display = 'none';
+    }
+    payVal.textContent   = fmt(plan.payNow);
+    payLabel.textContent = 'A pagar agora';
+    nextLabel.textContent = plan.next;
+    nextLabel.style.display = plan.next ? '' : 'none';
   }
-  grid.querySelectorAll('.method').forEach(el=>el.addEventListener('click',()=>{
-    grid.querySelectorAll('.method').forEach(x=>x.classList.remove('is-selected'));
+
+  function render(method, defaultN){
+    const opts = PLANS[method];
+    list.style.gridTemplateColumns = 'repeat(' + Math.min(opts.length, 5) + ',1fr)';
+    list.innerHTML = opts.map(o => {
+      const sel = o.n === (defaultN || (method === 'cartao' ? 9 : 9)) ? ' is-selected' : '';
+      return `<div class="opt${sel}" data-n="${o.n}"><strong>${o.label}</strong><span>${o.sub}</span></div>`;
+    }).join('');
+    list.querySelectorAll('.opt').forEach(el => el.addEventListener('click', () => {
+      list.querySelectorAll('.opt').forEach(x => x.classList.remove('is-selected'));
+      el.classList.add('is-selected');
+      const n = parseInt(el.dataset.n);
+      const plan = opts.find(o => o.n === n) || opts[0];
+      updateSummary(plan);
+    }));
+    // initial summary for default selected
+    const defaultOpt = opts.find(o => o.n === (defaultN || 9)) || opts[opts.length-1];
+    updateSummary(defaultOpt);
+  }
+
+  grid.querySelectorAll('.method').forEach(el => el.addEventListener('click', () => {
+    grid.querySelectorAll('.method').forEach(x => x.classList.remove('is-selected'));
     el.classList.add('is-selected');
     render(el.dataset.method);
   }));
-  render('pix');
+
+  render('pix', 9);
 })();
 </script>
 </body></html>
