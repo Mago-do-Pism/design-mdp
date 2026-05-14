@@ -3,6 +3,18 @@
 <title>Matrícula · Mago do Pism</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
+<template id="__bundler_thumbnail" data-bg-color="#0E93F2">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0E93F2"/>
+    <rect x="300" y="180" width="600" height="440" rx="24" fill="#ffffff"/>
+    <rect x="350" y="240" width="220" height="14" rx="7" fill="#0E93F2"/>
+    <rect x="350" y="290" width="500" height="44" rx="10" fill="#F5F5F5"/>
+    <rect x="350" y="360" width="240" height="44" rx="10" fill="#F5F5F5"/>
+    <rect x="610" y="360" width="240" height="44" rx="10" fill="#F5F5F5"/>
+    <rect x="350" y="430" width="500" height="44" rx="10" fill="#F5F5F5"/>
+    <rect x="620" y="520" width="230" height="56" rx="14" fill="#0E93F2"/>
+  </svg>
+</template>
 </head><body><div class="pub-shell">
 
 <header class="pub-header">
@@ -32,16 +44,14 @@
       <div class="pub-field"><label>Telefone (WhatsApp)<span class="req">*</span></label><input placeholder="(31) 99000-0000"/></div>
       <div class="pub-field"><label>CEP<span class="req">*</span></label><input placeholder="00000-000"/></div>
       <div class="pub-field"><label>Cidade / UF</label><input value="Belo Horizonte / MG" readonly/></div>
-      <div class="pub-field full"><label>Rua<span class="req">*</span></label><input placeholder="Ex: Rua dos Tupinambás"/></div>
-      <div class="pub-field"><label>Número<span class="req">*</span></label><input placeholder="Ex: 123"/></div>
-      <div class="pub-field"><label>Bairro<span class="req">*</span></label><input placeholder="Ex: Centro"/></div>
-      <div class="pub-field"><label>Complemento</label><input placeholder="Apto, bloco, etc."/></div>
+      <div class="pub-field full"><label>Endereço<span class="req">*</span></label><input placeholder="Rua, número, complemento — Bairro"/></div>
     </div>
 
     <h3 style="font-family:var(--font-akagi); font-size:13px; color:var(--brand-blue); font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin:32px 0 14px;">Dados do aluno</h3>
     <div class="pub-form-grid">
       <div class="pub-field full"><label>Nome completo do aluno<span class="req">*</span></label><input placeholder="Ex: Arthur dos Santos Alves"/></div>
       <div class="pub-field"><label>CPF do aluno<span class="req">*</span></label><input placeholder="000.000.000-00"/></div>
+      <div class="pub-field"><label>Série em 2026<span class="req">*</span></label><select><option>3º ano EM — Curso Intensivo</option><option>2º ano EM — Pré-Vestibular</option><option>1º ano EM — Reforço</option></select></div>
     </div>
 
     <div class="pub-actions">
