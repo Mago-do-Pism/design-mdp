@@ -8,6 +8,74 @@
   <link rel="stylesheet" href="../styles/tokens.css" />
   <link rel="stylesheet" href="../styles/platform.css" />
   <link rel="stylesheet" href="../styles/admin.css" />
+  <style>
+    /* ─── Sessão: Tag da comunidade ─── */
+    .tag-section {
+      margin: 32px 0;
+      padding: 24px;
+      max-width: 540px;
+      background: var(--neutral-50);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+    }
+    .tag-section h3 {
+      margin: 0 0 6px;
+      font-family: var(--font-akagi);
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--brand-blue);
+      letter-spacing: 0.3px;
+    }
+    .tag-section .helper {
+      margin: 0 0 18px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .tag-row {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+      margin-bottom: 16px;
+    }
+    .tag-row input[type="text"] {
+      flex: 1;
+      height: 42px;
+      padding: 0 14px;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      background: var(--neutral-0);
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .tag-row input[type="text"]:focus { border-color: var(--brand-blue); }
+    .tag-row .char-count {
+      align-self: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      min-width: 38px;
+      text-align: right;
+    }
+    .tag-save {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .tag-save .saved-flash {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-success);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .tag-save .saved-flash.is-visible { opacity: 1; }
+  </style>
 </head>
 <body>
   <div class="app-shell"><aside class="sidebar">
@@ -52,6 +120,22 @@
           <input type="email" value="vitorcaires10@gmail.com" disabled />
         </label>
 
+        <!-- ─── Tag na comunidade ─── -->
+        <div class="tag-section">
+          <h3>Tag na comunidade</h3>
+          <p class="helper">Esta etiqueta aparece ao lado do seu nome em todas as mensagens enviadas no chat das comunidades. Use algo curto e claro — ex.: <em>Coordenação</em>, <em>Prof. Matemática</em>, <em>Secretaria</em>. A cor é atribuída automaticamente.</p>
+
+          <div class="tag-row">
+            <input type="text" id="tagText" maxlength="20" placeholder="Ex.: Coordenação" value="Coordenação" />
+            <span class="char-count"><span id="tagCharCount">12</span>/20</span>
+          </div>
+
+          <div class="tag-save">
+            <button type="button" class="btn-primary btn-primary--minor" id="tagSave">Salvar tag</button>
+            <span class="saved-flash" id="savedFlash">Salvo</span>
+          </div>
+        </div>
+
         <h3 class="form-section-title">Segurança</h3>
 
         <label class="field">
@@ -69,5 +153,33 @@
       </form>
     </main>
   </div>
+
+  <script>
+    (function () {
+      const STORAGE_KEY = 'magoPism.adminTag';
+      const tagText = document.getElementById('tagText');
+      const tagCharCount = document.getElementById('tagCharCount');
+      const tagSave = document.getElementById('tagSave');
+      const savedFlash = document.getElementById('savedFlash');
+
+      // Restaura
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        if (saved && saved.text) tagText.value = saved.text;
+      } catch (e) {}
+
+      tagText.addEventListener('input', () => {
+        tagCharCount.textContent = tagText.value.length;
+      });
+      tagCharCount.textContent = tagText.value.length;
+
+      tagSave.addEventListener('click', () => {
+        const data = { text: tagText.value.trim() };
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
+        savedFlash.classList.add('is-visible');
+        setTimeout(() => savedFlash.classList.remove('is-visible'), 1800);
+      });
+    })();
+  </script>
 </body>
 </html>

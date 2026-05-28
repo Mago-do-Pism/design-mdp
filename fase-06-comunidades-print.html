@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Mago do Pism — Fase 06 · Comunidades (PDF)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/tokens.css" />
+  <style>
+    :root {
+      --page-w: 1085px;
+      --page-h: 756px;
+      --target-w: 1440;
+      --target-h: 900;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #f3f4f6;
+      font-family: var(--font-body, "Montserrat", system-ui, sans-serif);
+      color: #111;
+    }
+
+    /* ---------- Cover ---------- */
+    .cover {
+      width: var(--page-w);
+      height: var(--page-h);
+      margin: 24px auto;
+      background: white;
+      padding: 64px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      page-break-after: page;
+      break-after: page;
+    }
+    .cover-eyebrow {
+      font-family: "Roboto Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #6b7280;
+    }
+    .cover-title {
+      font-family: "Quicksand", system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 52px;
+      letter-spacing: -1px;
+      line-height: 1.05;
+      color: #0e1116;
+      margin: 16px 0 24px;
+    }
+    .cover-title em {
+      font-style: normal;
+      color: var(--brand-blue, #0e93f2);
+    }
+    .cover-sub {
+      font-size: 16px;
+      color: #4b5563;
+      max-width: 760px;
+      line-height: 1.55;
+    }
+    .cover-phases {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .cover-phase {
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 22px 24px;
+    }
+    .cover-phase .num {
+      font-family: "Roboto Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--brand-blue, #0e93f2);
+    }
+    .cover-phase h3 {
+      font-family: "Quicksand", system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 22px;
+      margin: 8px 0 6px;
+      color: #0e1116;
+    }
+    .cover-phase p {
+      margin: 0;
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .cover-phase ul {
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4px 16px;
+    }
+    .cover-phase li {
+      font-size: 12px;
+      color: #4b5563;
+    }
+    .cover-phase li::before {
+      content: "·";
+      margin-right: 6px;
+      color: #9ca3af;
+    }
+    .cover-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: "Roboto Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+
+    /* ---------- Divider ---------- */
+    .divider {
+      width: var(--page-w);
+      height: var(--page-h);
+      margin: 24px auto;
+      background: #0e1116;
+      color: white;
+      padding: 96px 88px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      page-break-after: page;
+      break-after: page;
+      position: relative;
+    }
+    .divider .num {
+      font-family: "Roboto Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      color: var(--brand-blue, #0e93f2);
+    }
+    .divider h2 {
+      font-family: "Quicksand", system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 72px;
+      letter-spacing: -2px;
+      line-height: 1;
+      margin: 18px 0 24px;
+    }
+    .divider p {
+      font-size: 17px;
+      color: #d1d5db;
+      max-width: 720px;
+      margin: 0;
+      line-height: 1.55;
+    }
+    .divider .meta {
+      position: absolute;
+      bottom: 64px;
+      left: 88px;
+      right: 88px;
+      display: flex;
+      justify-content: space-between;
+      font-family: "Roboto Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #6b7280;
+    }
+
+    /* ---------- Screen page ---------- */
+    .page {
+      width: var(--page-w);
+      height: var(--page-h);
+      margin: 24px auto;
+      background: white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      page-break-after: page;
+      break-after: page;
+      overflow: hidden;
+    }
+    .page:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+    .page-head {
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 14px 22px 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .page-head .left {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+    }
+    .page-head .num {
+      font-family: "Roboto Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: var(--brand-blue, #0e93f2);
+    }
+    .page-head .title {
+      font-family: "Quicksand", system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      color: #0e1116;
+    }
+    .page-head .sub {
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .page-head .idx {
+      font-family: "Roboto Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: #9ca3af;
+    }
+    .stage {
+      flex: 1 1 auto;
+      position: relative;
+      background: #f9fafb;
+      overflow: hidden;
+    }
+    .stage iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1440px;
+      height: 900px;
+      border: 0;
+      transform-origin: 0 0;
+      background: white;
+    }
+
+    /* ---------- Notes page ---------- */
+    .notes {
+      width: var(--page-w);
+      height: var(--page-h);
+      margin: 24px auto;
+      background: white;
+      padding: 56px 72px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      page-break-after: page;
+      break-after: page;
+    }
+    .notes h2 {
+      font-family: "Quicksand", system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 36px;
+      letter-spacing: -0.5px;
+      color: #0e1116;
+      margin: 0 0 8px;
+    }
+    .notes h2 em { font-style: normal; color: var(--brand-blue, #0e93f2); }
+    .notes .lead {
+      font-size: 14px;
+      color: #4b5563;
+      max-width: 720px;
+      line-height: 1.55;
+      margin: 0 0 28px;
+    }
+    .notes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px 32px;
+      flex: 1;
+    }
+    .note-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .note-card .num {
+      font-family: "Roboto Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: var(--brand-blue, #0e93f2);
+    }
+    .note-card h3 {
+      font-family: "Quicksand", system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 17px;
+      color: #0e1116;
+      margin: 0;
+    }
+    .note-card p {
+      margin: 0;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #4b5563;
+    }
+    .note-card ul {
+      margin: 4px 0 0;
+      padding: 0 0 0 14px;
+      font-size: 12px;
+      color: #4b5563;
+      line-height: 1.55;
+    }
+    .note-foot {
+      margin-top: 18px;
+      font-family: "Roboto Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ---------- Print ---------- */
+    @page {
+      size: A4 landscape;
+      margin: 0.5cm;
+    }
+    @media print {
+      html, body { background: white; }
+      .cover, .divider, .page, .notes {
+        margin: 0 auto;
+        box-shadow: none;
+      }
+      .stage iframe { border: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============== COVER ============== -->
+  <section class="cover">
+    <div>
+      <div class="cover-eyebrow">Mago do Pism · Curso do Mago</div>
+      <h1 class="cover-title">Comunidades — <em>chat</em> da<br/>turma e da <em>coordenação</em></h1>
+      <p class="cover-sub">Documento da Fase <strong>06</strong>. Canal de comunicação no estilo de mensageria, com leitura para o aluno e envio (texto, áudio, documentos) para coordenação, professores e secretaria. Cada tela nas próximas páginas reflete a versão atual do protótipo, com a interação disponível na versão web.</p>
+
+      <div class="cover-phases">
+        <div class="cover-phase">
+          <div class="num">FASE 06A</div>
+          <h3>Aluno · Comunidade</h3>
+          <p>Tela do aluno — somente leitura, com reações por emoji.</p>
+          <ul>
+            <li>Stream de mensagens com data, hora e remetente</li>
+            <li>Anexos: PDF, DOCX e áudio com waveform</li>
+            <li>Navegação entre turmas + Avisos gerais</li>
+            <li>Reações por emoji em qualquer mensagem</li>
+            <li>Modo leitura — sem composer de envio</li>
+          </ul>
+        </div>
+        <div class="cover-phase">
+          <div class="num">FASE 06B</div>
+          <h3>Admin · Comunidades</h3>
+          <p>Painel da coordenação — lista de chats, envio e perfil.</p>
+          <ul>
+            <li>Lista com busca + filtros (Pism I, II, Enem…)</li>
+            <li>Chat com texto, áudio gravado e anexos</li>
+            <li>Modal "Nova comunidade" com turmas e pessoas</li>
+            <li>Tag na comunidade editável no Meu Perfil</li>
+            <li>Cor das tags atribuída automaticamente</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="cover-foot">
+      <span>v1 · Maio 2026</span>
+      <span>Mago do Pism — Fase 06 · Comunidades</span>
+    </div>
+  </section>
+
+  <!-- ============== 06A DIVIDER ============== -->
+  <section class="divider">
+    <div class="num">FASE 06A</div>
+    <h2>Aluno<br/>Comunidade</h2>
+    <p>Para o aluno, a comunidade é um feed de mensagens da turma — abas para alternar entre cursos, balões com remetente identificado e reações por emoji. Sem envio.</p>
+    <div class="meta">
+      <span>1 tela · modo leitura</span>
+      <span>Mago do Pism</span>
+    </div>
+  </section>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">06A · 01</span>
+        <span class="title">Comunidade do aluno</span>
+        <span class="sub">Chat read-only · abas por turma · reações</span>
+      </div>
+      <span class="idx">alunos/comunidade.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/comunidade.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <!-- ============== 06B DIVIDER ============== -->
+  <section class="divider">
+    <div class="num">FASE 06B</div>
+    <h2>Coordenação<br/>Comunidades</h2>
+    <p>Coordenadores, professores e secretaria gerenciam todas as comunidades em um único painel. Cada turma tem chat automático; comunidades personalizadas podem ser criadas e populadas com turmas ou pessoas específicas.</p>
+    <div class="meta">
+      <span>2 telas · admin</span>
+      <span>Mago do Pism</span>
+    </div>
+  </section>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">06B · 01</span>
+        <span class="title">Comunidades · lista + chat</span>
+        <span class="sub">8 comunidades · busca · filtros · composer (texto, áudio, docs)</span>
+      </div>
+      <span class="idx">admin/comunidades.html</span>
+    </header>
+    <div class="stage"><iframe src="admin/comunidades.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">06B · 02</span>
+        <span class="title">Meu Perfil · Tag na comunidade</span>
+        <span class="sub">Etiqueta editável ao lado do nome no chat</span>
+      </div>
+      <span class="idx">admin/perfil.html</span>
+    </header>
+    <div class="stage"><iframe src="admin/perfil.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <!-- ============== NOTAS DE DESIGN ============== -->
+  <section class="notes">
+    <h2>Notas de <em>design</em> &amp; decisões</h2>
+    <p class="lead">Princípios e detalhes que sustentam as telas da Fase 06. Originalmente pensada como "chat estilo WhatsApp", a comunidade adota a linguagem de mensageria sem replicar marca de terceiros — usa a paleta e a tipografia do Mago do Pism.</p>
+
+    <div class="notes-grid">
+      <article class="note-card">
+        <div class="num">01</div>
+        <h3>Hierarquia por papel</h3>
+        <p>Cada remetente carrega uma <strong>tag</strong> ao lado do nome (Coordenação, Prof. Matemática, Secretaria). A cor é estável por pessoa — atribuída por hash do nome, como no WhatsApp — sem campo manual de cor.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">02</div>
+        <h3>Aluno é leitor, não emissor</h3>
+        <p>O aluno só vê e reage. Não há composer. Uma barra "Modo leitura" no rodapé deixa explícito o porquê. As reações usam um picker rápido e contam votos por emoji.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">03</div>
+        <h3>Anexos suportados</h3>
+        <p>Documentos (PDF, DOCX, XLSX, PPTX) com ícone colorido por tipo, tamanho e botão de download. Áudios com botão play e <em>waveform</em> animado. Texto rico simples.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">04</div>
+        <h3>Composer da coordenação</h3>
+        <p>Microfone vira botão de enviar quando há texto ou anexo. Gravação mostra waveform pulsante, cronômetro e cancelar. Anexos aparecem em <em>chips</em> de preview antes do envio.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">05</div>
+        <h3>Nova comunidade</h3>
+        <p>Modal com nome, descrição opcional e <em>segmented control</em> para adicionar membros <strong>Por turma</strong> ou <strong>Pessoas específicas</strong>. Selecionados aparecem como pills removíveis; rodapé mostra contagem total.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">06</div>
+        <h3>Filtros &amp; busca</h3>
+        <p>Lista de chats com chips de filtro (Todas, Não lidas, Pism I, Pism II, Enem, Avisos gerais) e busca por título ou mensagem. Filtros e busca se combinam.</p>
+      </article>
+    </div>
+
+    <div class="note-foot">
+      <span>Fase 06 · Comunidades</span>
+      <span>v1 · Maio 2026</span>
+    </div>
+  </section>
+
+  <script>
+    function scaleStages() {
+      document.querySelectorAll('.stage').forEach(stage => {
+        const iframe = stage.querySelector('iframe[data-screen]');
+        if (!iframe) return;
+        const w = stage.clientWidth;
+        const h = stage.clientHeight;
+        const targetW = 1440;
+        const targetH = 900;
+        const s = Math.min(w / targetW, h / targetH);
+        iframe.style.transform = `scale(${s})`;
+        const ox = (w - targetW * s) / 2;
+        const oy = (h - targetH * s) / 2;
+        iframe.style.left = ox + 'px';
+        iframe.style.top = oy + 'px';
+      });
+    }
+    window.addEventListener('load', scaleStages);
+    window.addEventListener('resize', scaleStages);
+    scaleStages();
+  </script>
+
+</body>
+</html>

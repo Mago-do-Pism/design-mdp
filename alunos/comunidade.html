@@ -1,0 +1,1089 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Comunidade · Aluno · Mago do Pism</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <style>
+    /* ─── Page layout ─── */
+    .content.comunidade {
+      padding: 0;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      height: 100vh;
+      max-height: 100vh;
+      overflow: hidden;
+      background: var(--neutral-100);
+    }
+
+    /* ─── Header da comunidade ─── */
+    .com-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 40px;
+      background: var(--neutral-0);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .com-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1686D8 0%, #0E93F2 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-soft);
+    }
+    .com-header-title {
+      flex: 1;
+      min-width: 0;
+    }
+    .com-header-title h1 {
+      font-family: var(--font-akagi);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--neutral-900);
+      margin: 0 0 4px;
+      letter-spacing: 0.2px;
+    }
+    .com-header-title p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .com-header-title p .dot-online {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--color-success-stroke);
+      display: inline-block;
+    }
+    .com-header-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .icon-btn:hover { background: var(--neutral-200); color: var(--brand-blue); }
+    .icon-btn svg { width: 20px; height: 20px; }
+
+    /* ─── Tabs de comunidades (aluno em múltiplas turmas) ─── */
+    .com-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 0 40px;
+      background: var(--neutral-0);
+      border-bottom: 1px solid var(--border-default);
+      overflow-x: auto;
+    }
+    .com-tab {
+      padding: 12px 18px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-muted);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: color 0.15s ease;
+    }
+    .com-tab:hover { color: var(--text-primary); }
+    .com-tab.is-active { color: var(--brand-blue); }
+    .com-tab.is-active::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: -1px;
+      height: 2px;
+      background: var(--brand-blue);
+      border-radius: 2px 2px 0 0;
+    }
+    .com-tab .badge {
+      background: var(--brand-blue);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 10px;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    /* ─── Stream de mensagens ─── */
+    .com-stream {
+      overflow-y: auto;
+      padding: 24px 40px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .com-stream:not(.is-active) { display: none; }
+
+    .com-empty {
+      align-self: center;
+      max-width: 360px;
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--text-muted);
+    }
+    .com-empty h3 {
+      font-family: var(--font-akagi);
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--neutral-900);
+      margin: 12px 0 6px;
+    }
+    .com-empty p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .date-sep {
+      align-self: center;
+      padding: 6px 14px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-pill);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .msg {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 12px;
+      max-width: 720px;
+    }
+    .msg-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--neutral-300);
+      color: var(--text-on-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .msg-avatar.coord { background: linear-gradient(135deg, #1686D8 0%, #0E93F2 100%); }
+    .msg-avatar.prof  { background: linear-gradient(135deg, #9747FF 0%, #6E3FD0 100%); }
+    .msg-avatar.admin { background: linear-gradient(135deg, #278556 0%, #21C230 100%); }
+
+    .msg-body {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+    .msg-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .msg-name {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--neutral-900);
+    }
+    .msg-name.coord { color: var(--brand-blue); }
+    .msg-name.prof  { color: var(--color-warn); }
+    .msg-name.admin { color: var(--color-success); }
+    .msg-role {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--neutral-0);
+      background: var(--text-muted);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .msg-role.coord { background: var(--brand-blue); }
+    .msg-role.prof  { background: var(--color-warn); }
+    .msg-role.admin { background: var(--color-success); }
+    .msg-time {
+      font-size: 11px;
+      color: var(--text-faint);
+      font-family: var(--font-mono);
+    }
+    .msg-bubble {
+      background: var(--neutral-0);
+      border: 1px solid var(--border-default);
+      border-radius: 4px 14px 14px 14px;
+      padding: 12px 16px;
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--text-primary);
+      word-wrap: break-word;
+      position: relative;
+    }
+    .msg-bubble.is-highlight {
+      background: rgba(14,147,242,0.05);
+      border-color: rgba(14,147,242,0.25);
+    }
+    .msg-bubble p { margin: 0; }
+    .msg-bubble p + p { margin-top: 8px; }
+    .msg-bubble strong { color: var(--neutral-900); font-weight: 700; }
+
+    /* ─── Attachment: documento ─── */
+    .att-doc {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      margin: 8px -4px -4px;
+      background: var(--neutral-150);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .att-doc:hover { background: var(--neutral-200); }
+    .att-doc-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      background: var(--brand-blue);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+    .att-doc-icon.pdf  { background: #D03E3E; }
+    .att-doc-icon.docx { background: var(--brand-blue); }
+    .att-doc-icon.xlsx { background: #278556; }
+    .att-doc-meta {
+      flex: 1;
+      min-width: 0;
+    }
+    .att-doc-meta h5 {
+      margin: 0 0 2px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .att-doc-meta p {
+      margin: 0;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .att-doc-action {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--neutral-0);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .att-doc-action svg { width: 16px; height: 16px; }
+
+    /* ─── Attachment: áudio ─── */
+    .att-audio {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px 10px 12px;
+      background: var(--neutral-150);
+      border-radius: var(--radius-md);
+      margin-top: 6px;
+      min-width: 260px;
+    }
+    .att-audio-play {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--brand-blue);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .att-audio-play svg { width: 14px; height: 14px; }
+    .att-audio-wave {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      height: 26px;
+    }
+    .att-audio-wave span {
+      flex: 1;
+      background: var(--brand-blue-soft);
+      border-radius: 2px;
+    }
+    .att-audio-wave span.played { background: var(--brand-blue); }
+    .att-audio-time {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── Reações ─── */
+    .msg-reactions {
+      display: flex;
+      gap: 4px;
+      margin-top: 2px;
+      flex-wrap: wrap;
+    }
+    .reaction {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .reaction:hover { border-color: var(--brand-blue); }
+    .reaction.is-mine {
+      background: rgba(14,147,242,0.10);
+      border-color: var(--brand-blue);
+      color: var(--brand-blue);
+    }
+    .reaction-add {
+      width: 26px; height: 26px;
+      padding: 0;
+      justify-content: center;
+      color: var(--text-muted);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+    .msg:hover .reaction-add { opacity: 1; }
+    .reaction-add svg { width: 14px; height: 14px; }
+
+    /* ─── Emoji picker (flutuante) ─── */
+    .emoji-picker {
+      position: absolute;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 8px;
+      display: none;
+      gap: 4px;
+      z-index: 50;
+    }
+    .emoji-picker.is-open { display: flex; }
+    .emoji-picker button {
+      width: 36px; height: 36px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-md);
+      font-size: 20px;
+      cursor: pointer;
+      transition: background 0.1s ease;
+    }
+    .emoji-picker button:hover { background: var(--neutral-200); }
+
+    /* ─── Banner read-only ─── */
+    .read-only-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 40px;
+      background: var(--neutral-0);
+      border-top: 1px solid var(--border-default);
+    }
+    .read-only-bar-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: rgba(14,147,242,0.10);
+      color: var(--brand-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .read-only-bar-icon svg { width: 18px; height: 18px; }
+    .read-only-bar-text { flex: 1; }
+    .read-only-bar-text h4 {
+      margin: 0 0 2px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--neutral-900);
+    }
+    .read-only-bar-text p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .read-only-bar-hint {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--text-faint);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* Empty state inicial — caso o aluno não tenha comunidade ainda (não usado por padrão) */
+    /* Adaptive */
+    @media (max-width: 900px) {
+      .com-header, .com-tabs, .com-stream, .read-only-bar { padding-left: 20px; padding-right: 20px; }
+      .com-tabs { padding-left: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+      <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+          <span>Início</span>
+        </a>
+        <a href="cursos.html" class="sidebar-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg>
+          <span>Cursos</span>
+        </a>
+        <a href="simulados.html" class="sidebar-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>
+          <span>Simulados</span>
+        </a>
+        <a href="#" class="sidebar-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+          <span>Listas</span>
+        </a>
+        <a href="comunidade.html" class="sidebar-item is-active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <span>Comunidade</span>
+        </a>
+        <a href="#" class="sidebar-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M14 9c-.5-1-1.5-1.5-2.5-1.5S9 8 9 9.5s1 2 2.5 2.5 2.5 1 2.5 2.5-1 2-2.5 2-2-.5-2.5-1.5"/><path d="M12 6v2M12 16v2"/></svg>
+          <span>Financeiro</span>
+        </a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="#" class="sidebar-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 0c0 1.5-2.5 2-2.5 3.5"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/></svg>
+          <span>Ajuda</span>
+        </a>
+        <a href="perfil.html" class="sidebar-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+          <span>Meu Perfil</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <main class="content comunidade">
+      <!-- Header da comunidade -->
+      <header class="com-header">
+        <div class="com-header-title">
+          <h1 id="comTitle">Extensivo Pism I — Turma T1</h1>
+          <p><span class="dot-online"></span> <span id="comSub">38 alunos</span></p>
+        </div>
+        <div class="com-header-actions">
+          <button class="icon-btn" aria-label="Buscar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Tabs (se aluno está em múltiplas turmas) -->
+      <nav class="com-tabs" id="comTabs">
+        <button class="com-tab is-active" data-tab="pism1-t1" data-title="Extensivo Pism I — Turma T1" data-sub="38 alunos">Extensivo Pism I — T1 <span class="badge">3</span></button>
+        <button class="com-tab" data-tab="pism2-t3" data-title="Extensivo Pism II — Turma T3" data-sub="34 alunos">Extensivo Pism II — T3</button>
+        <button class="com-tab" data-tab="enem-t1" data-title="Extensivo Pism/Enem — Turma T1" data-sub="42 alunos">Extensivo Pism/Enem — T1 <span class="badge">1</span></button>
+        <button class="com-tab" data-tab="avisos" data-title="Avisos gerais" data-sub="Toda a base · 5.040 alunos">Avisos gerais</button>
+      </nav>
+
+      <!-- Stream de mensagens · Pism I T1 -->
+      <div class="com-stream is-active" data-stream="pism1-t1">
+        <div class="date-sep">12 de novembro de 2024</div>
+
+        <!-- Msg 1: Coordenadora -->
+        <article class="msg">
+          <div class="msg-avatar coord">HA</div>
+          <div class="msg-body">
+            <div class="msg-head">
+              <span class="msg-name coord">Prof. Helena Aguiar</span>
+              <span class="msg-role coord">Coordenação</span>
+              <span class="msg-time">09:14</span>
+            </div>
+            <div class="msg-bubble is-highlight">
+              <p>Bom dia, turma! ☀️</p>
+              <p>Lembrando que a <strong>aula de Função Quadrática</strong> de hoje começa às 19h. Preparem dúvidas — vamos resolver questões anteriores do Pism direto no quadro.</p>
+            </div>
+            <div class="msg-reactions">
+              <button class="reaction is-mine">👍 12</button>
+              <button class="reaction">🔥 4</button>
+              <button class="reaction">🙌 2</button>
+              <button class="reaction reaction-add" aria-label="Adicionar reação">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M19 8v6M22 11h-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Msg 2: Professor com PDF -->
+        <article class="msg">
+          <div class="msg-avatar prof">RM</div>
+          <div class="msg-body">
+            <div class="msg-head">
+              <span class="msg-name prof">Prof. Rafael Marques</span>
+              <span class="msg-role prof">Professor · Matemática</span>
+              <span class="msg-time">09:42</span>
+            </div>
+            <div class="msg-bubble">
+              <p>Pessoal, segue o <strong>material complementar</strong> com 32 questões anteriores resolvidas. Quem conseguir, dá uma olhada antes da aula:</p>
+              <div class="att-doc">
+                <div class="att-doc-icon pdf">PDF</div>
+                <div class="att-doc-meta">
+                  <h5>funcao-quadratica-pism-2014-2023.pdf</h5>
+                  <p>2,4 MB</p>
+                </div>
+                <button class="att-doc-action" aria-label="Baixar">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="msg-reactions">
+              <button class="reaction">❤️ 18</button>
+              <button class="reaction is-mine">🙏 7</button>
+              <button class="reaction reaction-add" aria-label="Adicionar reação">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M19 8v6M22 11h-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Msg 3: Áudio do prof -->
+        <article class="msg">
+          <div class="msg-avatar prof">RM</div>
+          <div class="msg-body">
+            <div class="msg-head">
+              <span class="msg-name prof">Prof. Rafael Marques</span>
+              <span class="msg-role prof">Professor · Matemática</span>
+              <span class="msg-time">09:44</span>
+            </div>
+            <div class="msg-bubble">
+              <div class="att-audio">
+                <button class="att-audio-play" aria-label="Ouvir áudio">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                </button>
+                <div class="att-audio-wave" aria-hidden="true">
+                  <span class="played" style="height:60%"></span>
+                  <span class="played" style="height:80%"></span>
+                  <span class="played" style="height:45%"></span>
+                  <span class="played" style="height:70%"></span>
+                  <span class="played" style="height:90%"></span>
+                  <span class="played" style="height:55%"></span>
+                  <span style="height:65%"></span>
+                  <span style="height:40%"></span>
+                  <span style="height:75%"></span>
+                  <span style="height:50%"></span>
+                  <span style="height:85%"></span>
+                  <span style="height:60%"></span>
+                  <span style="height:35%"></span>
+                  <span style="height:70%"></span>
+                  <span style="height:55%"></span>
+                  <span style="height:80%"></span>
+                  <span style="height:45%"></span>
+                  <span style="height:65%"></span>
+                  <span style="height:50%"></span>
+                  <span style="height:75%"></span>
+                  <span style="height:40%"></span>
+                  <span style="height:60%"></span>
+                </div>
+                <span class="att-audio-time">0:48 / 1:23</span>
+              </div>
+            </div>
+            <div class="msg-reactions">
+              <button class="reaction">👂 5</button>
+              <button class="reaction reaction-add" aria-label="Adicionar reação">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M19 8v6M22 11h-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <div class="date-sep">Hoje</div>
+
+        <!-- Msg 4: Admin com DOCX -->
+        <article class="msg">
+          <div class="msg-avatar admin">SC</div>
+          <div class="msg-body">
+            <div class="msg-head">
+              <span class="msg-name admin">Secretaria · Sara Coutinho</span>
+              <span class="msg-role admin">Secretaria</span>
+              <span class="msg-time">07:30</span>
+            </div>
+            <div class="msg-bubble">
+              <p>Bom dia. Encaminho o <strong>cronograma oficial dos simulados</strong> do trimestre. As datas estão confirmadas. Levem caneta preta e documento com foto.</p>
+              <div class="att-doc">
+                <div class="att-doc-icon docx">DOCX</div>
+                <div class="att-doc-meta">
+                  <h5>cronograma-simulados-2024-T1.docx</h5>
+                  <p>184 KB</p>
+                </div>
+                <button class="att-doc-action" aria-label="Baixar">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="msg-reactions">
+              <button class="reaction">👍 22</button>
+              <button class="reaction">📌 6</button>
+              <button class="reaction reaction-add" aria-label="Adicionar reação">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M19 8v6M22 11h-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Msg 5: Coordenadora -->
+        <article class="msg">
+          <div class="msg-avatar coord">HA</div>
+          <div class="msg-body">
+            <div class="msg-head">
+              <span class="msg-name coord">Prof. Helena Aguiar</span>
+              <span class="msg-role coord">Coordenação</span>
+              <span class="msg-time">08:55</span>
+            </div>
+            <div class="msg-bubble is-highlight">
+              <p>📣 <strong>Aviso importante:</strong> a aula extra de plantão de dúvidas de quinta passa para <strong>sexta, 18h30</strong>, na sala 04. Confirmem presença pela lista da turma.</p>
+            </div>
+            <div class="msg-reactions">
+              <button class="reaction">👍 9</button>
+              <button class="reaction">✅ 14</button>
+              <button class="reaction reaction-add" aria-label="Adicionar reação">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M19 8v6M22 11h-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Msg 6: prof curto -->
+        <article class="msg">
+          <div class="msg-avatar prof">CB</div>
+          <div class="msg-body">
+            <div class="msg-head">
+              <span class="msg-name prof">Prof. Camila Borba</span>
+              <span class="msg-role prof">Professora · Redação</span>
+              <span class="msg-time">10:12</span>
+            </div>
+            <div class="msg-bubble">
+              <p>Lembrete — entreguem a redação 7 até <strong>domingo às 23h59</strong>. Tema: meritocracia e desigualdade no Brasil contemporâneo.</p>
+            </div>
+            <div class="msg-reactions">
+              <button class="reaction is-mine">✍️ 11</button>
+              <button class="reaction reaction-add" aria-label="Adicionar reação">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M19 8v6M22 11h-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Stream · Pism II T3 -->
+      <div class="com-stream" data-stream="pism2-t3">
+        <div class="date-sep">11 de novembro de 2024</div>
+
+        <article class="msg">
+          <div class="msg-avatar coord">HA</div>
+          <div class="msg-body">
+            <div class="msg-head">
+              <span class="msg-name coord">Prof. Helena Aguiar</span>
+              <span class="msg-role coord">Coordenação</span>
+              <span class="msg-time">08:20</span>
+            </div>
+            <div class="msg-bubble is-highlight">
+              <p>Bom dia, T3! Lembrando que a partir desta semana entramos no bloco de <strong>Citologia</strong> em Biologia. Tragam o caderno organizado.</p>
+            </div>
+            <div class="msg-reactions">
+              <button class="reaction">👍 14</button>
+              <button class="reaction">🔬 3</button>
+              <button class="reaction reaction-add" aria-label="Adicionar reação">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M19 8v6M22 11h-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="msg">
+          <div class="msg-avatar prof">FP</div>
+          <div class="msg-body">
+            <div class="msg-head">
+              <span class="msg-name prof">Prof. Flávia Pinto</span>
+              <span class="msg-role prof">Professora · Biologia</span>
+              <span class="msg-time">09:05</span>
+            </div>
+            <div class="msg-bubble">
+              <p>Pessoal, segue o resumo de membrana plasmática e transporte celular. Estudem antes da aula de quarta:</p>
+              <div class="att-doc">
+                <div class="att-doc-icon pdf">PDF</div>
+                <div class="att-doc-meta">
+                  <h5>citologia-resumo-membrana.pdf</h5>
+                  <p>1,8 MB</p>
+                </div>
+                <button class="att-doc-action" aria-label="Baixar">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="msg-reactions">
+              <button class="reaction">❤️ 9</button>
+              <button class="reaction is-mine">🙏 5</button>
+              <button class="reaction reaction-add" aria-label="Adicionar reação">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M19 8v6M22 11h-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <div class="date-sep">Hoje</div>
+
+        <article class="msg">
+          <div class="msg-avatar prof">FP</div>
+          <div class="msg-body">
+            <div class="msg-head">
+              <span class="msg-name prof">Prof. Flávia Pinto</span>
+              <span class="msg-role prof">Professora · Biologia</span>
+              <span class="msg-time">07:48</span>
+            </div>
+            <div class="msg-bubble">
+              <div class="att-audio">
+                <button class="att-audio-play" aria-label="Ouvir áudio">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                </button>
+                <div class="att-audio-wave" aria-hidden="true">
+                  <span class="played" style="height:55%"></span><span class="played" style="height:75%"></span><span class="played" style="height:45%"></span><span class="played" style="height:85%"></span><span class="played" style="height:60%"></span><span style="height:70%"></span><span style="height:40%"></span><span style="height:80%"></span><span style="height:55%"></span><span style="height:65%"></span><span style="height:75%"></span><span style="height:50%"></span><span style="height:85%"></span><span style="height:60%"></span><span style="height:45%"></span><span style="height:70%"></span><span style="height:55%"></span><span style="height:80%"></span><span style="height:50%"></span>
+                </div>
+                <span class="att-audio-time">0:24 / 0:58</span>
+              </div>
+            </div>
+            <div class="msg-reactions">
+              <button class="reaction">👂 8</button>
+              <button class="reaction reaction-add" aria-label="Adicionar reação">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M19 8v6M22 11h-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="msg">
+          <div class="msg-avatar coord">HA</div>
+          <div class="msg-body">
+            <div class="msg-head">
+              <span class="msg-name coord">Prof. Helena Aguiar</span>
+              <span class="msg-role coord">Coordenação</span>
+              <span class="msg-time">11:30</span>
+            </div>
+            <div class="msg-bubble is-highlight">
+              <p>📣 Aula de Física de quinta foi adiada para sexta, mesmo horário. Confirmem presença.</p>
+            </div>
+            <div class="msg-reactions">
+              <button class="reaction">✅ 18</button>
+              <button class="reaction reaction-add" aria-label="Adicionar reação">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M19 8v6M22 11h-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Stream · Pism/Enem T1 -->
+      <div class="com-stream" data-stream="enem-t1">
+        <div class="date-sep">Hoje</div>
+
+        <article class="msg">
+          <div class="msg-avatar coord">MV</div>
+          <div class="msg-body">
+            <div class="msg-head">
+              <span class="msg-name coord">Marcelo Vieira</span>
+              <span class="msg-role coord">Coordenação</span>
+              <span class="msg-time">07:55</span>
+            </div>
+            <div class="msg-bubble is-highlight">
+              <p>Turma Enem T1 — a aula de hoje aborda <strong>Mecânica: leis de Newton aplicadas</strong>. Cheguem 10 minutos antes para resolver o quiz de aquecimento.</p>
+            </div>
+            <div class="msg-reactions">
+              <button class="reaction">👍 21</button>
+              <button class="reaction">🔥 6</button>
+              <button class="reaction reaction-add" aria-label="Adicionar reação">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M19 8v6M22 11h-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="msg">
+          <div class="msg-avatar prof">RM</div>
+          <div class="msg-body">
+            <div class="msg-head">
+              <span class="msg-name prof">Prof. Rafael Marques</span>
+              <span class="msg-role prof">Professor · Física</span>
+              <span class="msg-time">08:30</span>
+            </div>
+            <div class="msg-bubble">
+              <p>Galera, lista de Mecânica resolvida. As questões 18 e 22 caíram em Enem nos últimos 5 anos — prestem atenção.</p>
+              <div class="att-doc">
+                <div class="att-doc-icon pdf">PDF</div>
+                <div class="att-doc-meta">
+                  <h5>mecanica-leis-newton-resolvida.pdf</h5>
+                  <p>3,1 MB</p>
+                </div>
+                <button class="att-doc-action" aria-label="Baixar">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="msg-reactions">
+              <button class="reaction is-mine">🙏 12</button>
+              <button class="reaction">🔥 4</button>
+              <button class="reaction reaction-add" aria-label="Adicionar reação">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M19 8v6M22 11h-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Stream · Avisos gerais -->
+      <div class="com-stream" data-stream="avisos">
+        <div class="date-sep">12 de novembro de 2024</div>
+
+        <article class="msg">
+          <div class="msg-avatar admin">SC</div>
+          <div class="msg-body">
+            <div class="msg-head">
+              <span class="msg-name admin">Secretaria · Sara Coutinho</span>
+              <span class="msg-role admin">Secretaria</span>
+              <span class="msg-time">07:00</span>
+            </div>
+            <div class="msg-bubble">
+              <p>Bom dia! Matrí­culas 2025 abertas para todas as turmas. Quem quiser renovar com desconto de pontualidade, faça até <strong>20/12</strong>.</p>
+            </div>
+            <div class="msg-reactions">
+              <button class="reaction">👍 87</button>
+              <button class="reaction">🎉 24</button>
+              <button class="reaction reaction-add" aria-label="Adicionar reação">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M19 8v6M22 11h-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="msg">
+          <div class="msg-avatar coord">MV</div>
+          <div class="msg-body">
+            <div class="msg-head">
+              <span class="msg-name coord">Marcelo Vieira</span>
+              <span class="msg-role coord">Coordenação geral</span>
+              <span class="msg-time">09:42</span>
+            </div>
+            <div class="msg-bubble is-highlight">
+              <p>📅 <strong>Simulado geral</strong> no dia 23/11, sábado, presencial. Todas as turmas. Cheguem 30 minutos antes.</p>
+            </div>
+            <div class="msg-reactions">
+              <button class="reaction">✅ 142</button>
+              <button class="reaction">📝 56</button>
+              <button class="reaction reaction-add" aria-label="Adicionar reação">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M19 8v6M22 11h-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Bottom: read-only -->
+      <div class="read-only-bar">
+        <div class="read-only-bar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="read-only-bar-text">
+          <h4>Apenas coordenadores e professores podem enviar mensagens</h4>
+          <p>Você pode reagir com emojis em qualquer mensagem.</p>
+        </div>
+        <div class="read-only-bar-hint">MODO LEITURA</div>
+      </div>
+
+      <!-- Emoji picker flutuante -->
+      <div class="emoji-picker" id="picker">
+        <button data-emoji="👍">👍</button>
+        <button data-emoji="❤️">❤️</button>
+        <button data-emoji="😂">😂</button>
+        <button data-emoji="🔥">🔥</button>
+        <button data-emoji="🙏">🙏</button>
+        <button data-emoji="🙌">🙌</button>
+        <button data-emoji="✅">✅</button>
+        <button data-emoji="✍️">✍️</button>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Emoji picker: posiciona perto do botão de "+" e adiciona reação ao clicar
+    (function () {
+      const picker = document.getElementById('picker');
+      let currentMsgReactions = null;
+
+      document.addEventListener('click', (e) => {
+        const addBtn = e.target.closest('.reaction-add');
+        if (addBtn) {
+          e.stopPropagation();
+          currentMsgReactions = addBtn.parentElement;
+          const r = addBtn.getBoundingClientRect();
+          const main = document.querySelector('.content.comunidade');
+          const mr = main.getBoundingClientRect();
+          picker.style.left = (r.left - mr.left) + 'px';
+          picker.style.top  = (r.top - mr.top - 50) + 'px';
+          picker.classList.add('is-open');
+          return;
+        }
+        const emojiBtn = e.target.closest('.emoji-picker button');
+        if (emojiBtn && currentMsgReactions) {
+          const emoji = emojiBtn.dataset.emoji;
+          // Procura reação existente
+          const existing = [...currentMsgReactions.querySelectorAll('.reaction:not(.reaction-add)')]
+            .find(b => b.textContent.trim().startsWith(emoji));
+          if (existing) {
+            const m = existing.textContent.trim().match(/(.+?)\s*(\d+)$/);
+            if (m) {
+              const wasMine = existing.classList.contains('is-mine');
+              const n = parseInt(m[2], 10) + (wasMine ? -1 : 1);
+              if (n <= 0) existing.remove();
+              else {
+                existing.textContent = `${emoji} ${n}`;
+                existing.classList.toggle('is-mine');
+              }
+            }
+          } else {
+            const btn = document.createElement('button');
+            btn.className = 'reaction is-mine';
+            btn.textContent = `${emoji} 1`;
+            currentMsgReactions.insertBefore(btn, currentMsgReactions.querySelector('.reaction-add'));
+          }
+          picker.classList.remove('is-open');
+          return;
+        }
+        // Clique fora fecha
+        if (!e.target.closest('.emoji-picker')) {
+          picker.classList.remove('is-open');
+        }
+      });
+
+      // Reação rápida: clicar em reação existente alterna +1/-1
+      document.addEventListener('click', (e) => {
+        const r = e.target.closest('.reaction:not(.reaction-add)');
+        if (!r) return;
+        const m = r.textContent.trim().match(/^(.+?)\s+(\d+)$/);
+        if (!m) return;
+        const wasMine = r.classList.contains('is-mine');
+        const n = parseInt(m[2], 10) + (wasMine ? -1 : 1);
+        if (n <= 0) { r.remove(); return; }
+        r.textContent = `${m[1]} ${n}`;
+        r.classList.toggle('is-mine');
+      });
+
+      // Auto-scroll para o fim
+      function scrollActive() {
+        const s = document.querySelector('.com-stream.is-active');
+        if (s) s.scrollTop = s.scrollHeight;
+      }
+      scrollActive();
+
+      // Cor estável por usuário (hash do nome) — como o WhatsApp
+      const TAG_PALETTE = [
+        'rgb(14, 147, 242)', 'rgb(151, 71, 255)', 'rgb(39, 133, 86)',
+        'rgb(208, 62, 62)', 'rgb(226, 154, 47)', 'rgb(78, 78, 78)',
+        'rgb(22, 134, 216)', 'rgb(110, 63, 208)', 'rgb(33, 194, 48)'
+      ];
+      function hashColor(str) {
+        let h = 0;
+        for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0;
+        return TAG_PALETTE[Math.abs(h) % TAG_PALETTE.length];
+      }
+      document.querySelectorAll('.msg').forEach(msg => {
+        const nameEl = msg.querySelector('.msg-name');
+        const roleEl = msg.querySelector('.msg-role');
+        if (!nameEl || !roleEl) return;
+        const color = hashColor(nameEl.textContent.trim());
+        nameEl.style.color = color;
+        roleEl.style.background = color;
+      });
+
+      // Tabs: alterna stream + atualiza header
+      const tabs = document.querySelectorAll('.com-tab');
+      const title = document.getElementById('comTitle');
+      const sub = document.getElementById('comSub');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('is-active'));
+          tab.classList.add('is-active');
+          // Limpa badge (mensagens "lidas")
+          const badge = tab.querySelector('.badge');
+          if (badge) badge.remove();
+          // Troca stream
+          document.querySelectorAll('.com-stream').forEach(s => s.classList.remove('is-active'));
+          const target = document.querySelector(`.com-stream[data-stream="${tab.dataset.tab}"]`);
+          if (target) target.classList.add('is-active');
+          // Atualiza header
+          if (tab.dataset.title) title.textContent = tab.dataset.title;
+          if (tab.dataset.sub) sub.textContent = tab.dataset.sub;
+          scrollActive();
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,2064 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Comunidades · Admin · Mago do Pism</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+  <style>
+    /* ─── Layout ─── */
+    .content.comunidades-admin {
+      padding: 0;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      height: 100vh;
+      max-height: 100vh;
+      overflow: hidden;
+      background: var(--neutral-100);
+    }
+    @media (max-width: 1100px) {
+      .content.comunidades-admin { grid-template-columns: 300px 1fr; }
+    }
+
+    /* ─── Lista de comunidades (coluna esquerda) ─── */
+    .com-list {
+      background: var(--neutral-0);
+      border-right: 1px solid var(--border-default);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .com-list-head {
+      padding: 22px 24px 14px;
+      border-bottom: 1px solid var(--border-default);
+    }
+    .com-list-head h1 {
+      font-family: var(--font-akagi);
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--brand-blue);
+      margin: 0 0 4px;
+      letter-spacing: 0.3px;
+    }
+    .com-list-head p {
+      margin: 0 0 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .com-search {
+      position: relative;
+    }
+    .com-search input {
+      width: 100%;
+      height: 40px;
+      padding: 0 14px 0 38px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-default);
+      background: var(--neutral-100);
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .com-search input:focus { border-color: var(--brand-blue); background: var(--neutral-0); }
+    .com-search svg {
+      position: absolute; left: 12px; top: 50%;
+      transform: translateY(-50%);
+      width: 16px; height: 16px;
+      color: var(--text-muted);
+    }
+
+    .com-list-filters {
+      display: flex;
+      gap: 6px;
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--border-default);
+      overflow-x: auto;
+    }
+    .com-filter {
+      padding: 6px 12px;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-pill);
+      background: var(--neutral-0);
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 11px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .com-filter:hover { border-color: var(--brand-blue); color: var(--brand-blue); }
+    .com-filter.is-active {
+      background: var(--brand-blue);
+      border-color: var(--brand-blue);
+      color: white;
+    }
+
+    .com-list-scroll {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .com-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 14px 24px;
+      align-items: center;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      border-bottom: 1px solid var(--neutral-200);
+      transition: background 0.1s ease;
+    }
+    .com-row.is-hidden { display: none; }
+    .com-row:hover { background: var(--neutral-100); }
+    .com-row.is-active {
+      background: rgba(14,147,242,0.06);
+      border-left-color: var(--brand-blue);
+    }
+    .com-row-avatar {
+      width: 46px; height: 46px;
+      border-radius: 14px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.4px;
+      flex-shrink: 0;
+    }
+    .com-row-avatar.p1 { background: linear-gradient(135deg, #1686D8 0%, #0E93F2 100%); }
+    .com-row-avatar.p2 { background: linear-gradient(135deg, #278556 0%, #21C230 100%); }
+    .com-row-avatar.en { background: linear-gradient(135deg, #9747FF 0%, #1686D8 100%); }
+    .com-row-avatar.gn { background: linear-gradient(135deg, #4E4E4E 0%, #757575 100%); }
+    .com-row-avatar.av { background: linear-gradient(135deg, #D03E3E 0%, #f56b6b 100%); }
+
+    .com-row-body { min-width: 0; }
+    .com-row-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .com-row-title {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 13.5px;
+      color: var(--neutral-900);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .com-row-time {
+      font-size: 11px;
+      color: var(--text-faint);
+      font-family: var(--font-mono);
+      flex-shrink: 0;
+    }
+    .com-row-preview {
+      margin-top: 4px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .com-row-preview .sender { color: var(--text-secondary); font-weight: 600; }
+    .com-row-preview svg { width: 12px; height: 12px; flex-shrink: 0; color: var(--text-faint); }
+
+    .com-row-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+    .com-row-badge {
+      background: var(--brand-blue);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      min-width: 20px;
+      text-align: center;
+    }
+    .com-row-badge.muted {
+      background: var(--neutral-300);
+      color: var(--text-secondary);
+    }
+    .com-row-mute {
+      color: var(--text-faint);
+    }
+    .com-row-mute svg { width: 14px; height: 14px; }
+
+    .com-list-foot {
+      border-top: 1px solid var(--border-default);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .com-list-foot button {
+      flex: 1;
+      height: 40px;
+      border: none;
+      border-radius: var(--radius-md);
+      background: var(--brand-blue);
+      color: white;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .com-list-foot button:hover { background: var(--brand-blue-dark); }
+    .com-list-foot button svg { width: 16px; height: 16px; }
+
+    /* ─── Chat aberto (coluna direita) ─── */
+    .com-chat {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: var(--neutral-100);
+      overflow: hidden;
+    }
+    .chat-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 32px;
+      background: var(--neutral-0);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .chat-head-avatar {
+      width: 46px; height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1686D8 0%, #0E93F2 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.4px;
+    }
+    .chat-head-info { flex: 1; }
+    .chat-head-info h2 {
+      margin: 0 0 3px;
+      font-family: var(--font-akagi);
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--neutral-900);
+    }
+    .chat-head-info p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chat-head-info p .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--color-success-stroke);
+    }
+    .chat-head-actions {
+      display: flex;
+      gap: 6px;
+    }
+    .chat-head-actions .icon-btn {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-md);
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .chat-head-actions .icon-btn:hover { background: var(--neutral-200); color: var(--brand-blue); }
+    .chat-head-actions .icon-btn svg { width: 18px; height: 18px; }
+
+    /* ─── Stream ─── */
+    .chat-stream {
+      overflow-y: auto;
+      padding: 24px 32px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .chat-stream:not(.is-active) { display: none; }
+    .date-sep {
+      align-self: center;
+      padding: 6px 14px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-pill);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .msg {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 10px;
+      max-width: 720px;
+    }
+    .msg.is-mine {
+      grid-template-columns: 1fr 36px;
+      margin-left: auto;
+    }
+    .msg.is-mine .msg-avatar { order: 2; }
+    .msg.is-mine .msg-body { order: 1; align-items: flex-end; }
+    .msg.is-mine .msg-head { justify-content: flex-end; }
+    .msg.is-mine .msg-bubble {
+      background: var(--brand-blue);
+      color: var(--text-on-blue);
+      border-color: var(--brand-blue);
+      border-radius: 14px 4px 14px 14px;
+    }
+    .msg.is-mine .msg-bubble strong { color: white; }
+
+    .msg-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .msg-avatar.coord { background: linear-gradient(135deg, #1686D8 0%, #0E93F2 100%); }
+    .msg-avatar.prof  { background: linear-gradient(135deg, #9747FF 0%, #6E3FD0 100%); }
+    .msg-avatar.admin { background: linear-gradient(135deg, #278556 0%, #21C230 100%); }
+    .msg-avatar.me    { background: linear-gradient(135deg, #4E4E4E 0%, #2B2B2B 100%); }
+
+    .msg-body {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+    .msg-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .msg-name {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .msg-name.coord { color: var(--brand-blue); }
+    .msg-name.prof  { color: var(--color-warn); }
+    .msg-name.admin { color: var(--color-success); }
+    .msg-name.me    { color: var(--neutral-900); }
+    .msg-role {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .msg-role.coord { background: var(--brand-blue); }
+    .msg-role.prof  { background: var(--color-warn); }
+    .msg-role.admin { background: var(--color-success); }
+    .msg-role.me    { background: var(--neutral-800); }
+    .msg-time { font-size: 11px; color: var(--text-faint); font-family: var(--font-mono); }
+
+    .msg-bubble {
+      background: var(--neutral-0);
+      border: 1px solid var(--border-default);
+      border-radius: 4px 14px 14px 14px;
+      padding: 12px 16px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--text-primary);
+      word-wrap: break-word;
+    }
+    .msg-bubble p { margin: 0; }
+    .msg-bubble p + p { margin-top: 6px; }
+    .msg-bubble strong { color: var(--neutral-900); font-weight: 700; }
+
+    /* Doc attachment */
+    .att-doc {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      margin-top: 8px;
+      background: var(--neutral-150);
+      border-radius: var(--radius-md);
+    }
+    .msg.is-mine .att-doc { background: rgba(255,255,255,0.18); }
+    .att-doc-icon {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      background: var(--brand-blue);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+    .att-doc-icon.pdf  { background: #D03E3E; }
+    .att-doc-icon.docx { background: var(--brand-blue); }
+    .att-doc-icon.xlsx { background: #278556; }
+    .att-doc-meta { flex: 1; min-width: 0; }
+    .att-doc-meta h5 {
+      margin: 0 0 2px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: inherit;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .att-doc-meta p {
+      margin: 0;
+      font-size: 11px;
+      opacity: 0.7;
+      font-family: var(--font-mono);
+    }
+
+    /* Audio attachment */
+    .att-audio {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px 8px 8px;
+      background: var(--neutral-150);
+      border-radius: var(--radius-md);
+      margin-top: 6px;
+      min-width: 240px;
+    }
+    .msg.is-mine .att-audio { background: rgba(255,255,255,0.18); }
+    .att-audio-play {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--brand-blue);
+      color: white;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .msg.is-mine .att-audio-play { background: white; color: var(--brand-blue); }
+    .att-audio-play svg { width: 12px; height: 12px; }
+    .att-audio-wave {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      height: 24px;
+    }
+    .att-audio-wave span {
+      flex: 1;
+      background: var(--brand-blue-soft);
+      border-radius: 2px;
+    }
+    .att-audio-wave span.played { background: var(--brand-blue); }
+    .msg.is-mine .att-audio-wave span { background: rgba(255,255,255,0.4); }
+    .msg.is-mine .att-audio-wave span.played { background: white; }
+    .att-audio-time {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      opacity: 0.7;
+    }
+
+    .msg-reactions {
+      display: flex;
+      gap: 4px;
+      margin-top: 2px;
+      flex-wrap: wrap;
+    }
+    .reaction {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    /* ─── Composer ─── */
+    .composer {
+      background: var(--neutral-0);
+      border-top: 1px solid var(--border-default);
+      padding: 14px 32px;
+    }
+    .composer-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+    }
+    .composer-attach {
+      display: flex;
+      gap: 4px;
+      padding-bottom: 6px;
+    }
+    .composer-attach button {
+      width: 38px; height: 38px;
+      border-radius: var(--radius-md);
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .composer-attach button:hover { background: var(--neutral-200); color: var(--brand-blue); }
+    .composer-attach button svg { width: 20px; height: 20px; }
+
+    .composer-input {
+      flex: 1;
+      min-height: 44px;
+      max-height: 200px;
+      padding: 12px 16px;
+      border: 1px solid var(--border-default);
+      border-radius: 22px;
+      background: var(--neutral-100);
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text-primary);
+      resize: none;
+      outline: none;
+      line-height: 1.5;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .composer-input:focus { border-color: var(--brand-blue); background: var(--neutral-0); }
+    .composer-input::placeholder { color: var(--text-faint); }
+
+    .composer-send {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: var(--brand-blue);
+      color: white;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease, transform 0.05s ease;
+      flex-shrink: 0;
+    }
+    .composer-send:hover { background: var(--brand-blue-dark); }
+    .composer-send:active { transform: scale(0.95); }
+    .composer-send svg { width: 18px; height: 18px; }
+
+    /* ─── Composer: arquivos preview ─── */
+    .composer-pending {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .composer-pending-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: rgba(14,147,242,0.08);
+      border: 1px dashed var(--brand-blue);
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      color: var(--brand-blue);
+      font-weight: 600;
+    }
+    .composer-pending-chip svg { width: 14px; height: 14px; }
+    .composer-pending-chip .x {
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.1s ease;
+    }
+    .composer-pending-chip .x:hover { opacity: 1; }
+
+    /* ─── Composer: gravando áudio ─── */
+    .composer-recording {
+      display: none;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 18px;
+      background: rgba(208,62,62,0.08);
+      border: 1px solid rgba(208,62,62,0.25);
+      border-radius: 22px;
+      flex: 1;
+    }
+    .composer-recording.is-active { display: flex; }
+    .composer-recording .rec-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--color-danger);
+      animation: pulse 1s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+    .composer-recording .rec-wave {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 24px;
+    }
+    .composer-recording .rec-wave span {
+      flex: 1;
+      background: var(--color-danger);
+      border-radius: 2px;
+      opacity: 0.6;
+      animation: wave 0.9s ease-in-out infinite;
+    }
+    .composer-recording .rec-wave span:nth-child(2n) { animation-delay: 0.15s; }
+    .composer-recording .rec-wave span:nth-child(3n) { animation-delay: 0.30s; }
+    @keyframes wave {
+      0%, 100% { height: 30%; }
+      50% { height: 90%; }
+    }
+    .composer-recording .rec-time {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-danger);
+      letter-spacing: 0.05em;
+    }
+    .composer-recording .rec-cancel {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--color-danger);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .composer-recording .rec-cancel:hover { background: rgba(208,62,62,0.12); }
+    .composer-recording .rec-cancel svg { width: 16px; height: 16px; }
+
+    .composer-hint { display: none; }
+
+    @media (max-width: 900px) {
+      .chat-head, .chat-stream, .composer { padding-left: 18px; padding-right: 18px; }
+    }
+
+    /* ─── Doc download botão (admin stream) ─── */
+    .att-doc { position: relative; }
+    .att-doc-action {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--neutral-0);
+      color: var(--text-secondary);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .att-doc-action:hover { background: var(--brand-blue); color: white; }
+    .att-doc-action svg { width: 14px; height: 14px; }
+    .msg.is-mine .att-doc-action { background: rgba(255,255,255,0.9); color: var(--brand-blue); }
+    .msg.is-mine .att-doc-action:hover { background: white; }
+
+    /* ─── Header dropdown menu ("Mais opções") ─── */
+    .menu-wrap { position: relative; }
+    .menu-dropdown {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 6px);
+      min-width: 220px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      padding: 6px;
+      display: none;
+      z-index: 80;
+    }
+    .menu-dropdown.is-open { display: block; }
+    .menu-dropdown button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.1s ease;
+    }
+    .menu-dropdown button:hover { background: var(--neutral-150); }
+    .menu-dropdown button svg { width: 16px; height: 16px; color: var(--text-muted); }
+    .menu-dropdown button.is-danger { color: var(--color-danger); }
+    .menu-dropdown button.is-danger svg { color: var(--color-danger); }
+    .menu-dropdown hr {
+      border: none;
+      border-top: 1px solid var(--border-default);
+      margin: 4px 0;
+    }
+
+    /* ─── Modal: Nova comunidade ─── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+    .modal-overlay.is-open { display: flex; }
+    .modal {
+      background: var(--neutral-0);
+      border-radius: var(--radius-xl);
+      width: 100%;
+      max-width: 640px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-deep);
+      overflow: hidden;
+    }
+    .modal-head {
+      padding: 22px 28px 18px;
+      border-bottom: 1px solid var(--border-default);
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .modal-head-text { flex: 1; }
+    .modal-head h2 {
+      margin: 0 0 4px;
+      font-family: var(--font-akagi);
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--neutral-900);
+    }
+    .modal-head p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .modal-close {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-md);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-close:hover { background: var(--neutral-200); color: var(--neutral-900); }
+    .modal-close svg { width: 18px; height: 18px; }
+
+    .modal-body {
+      padding: 22px 28px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .field-group { display: flex; flex-direction: column; gap: 6px; }
+    .field-group label {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 12px;
+      color: var(--text-secondary);
+      letter-spacing: 0.2px;
+    }
+    .field-group input[type="text"], .field-group textarea {
+      width: 100%;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      background: var(--neutral-100);
+      padding: 10px 14px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .field-group textarea { min-height: 64px; resize: vertical; }
+    .field-group input[type="text"]:focus,
+    .field-group textarea:focus {
+      border-color: var(--brand-blue);
+      background: var(--neutral-0);
+    }
+
+    /* Color picker para avatar */
+    .color-swatches { display: flex; gap: 8px; flex-wrap: wrap; }
+    .color-swatch {
+      width: 36px; height: 36px;
+      border-radius: 12px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+    .color-swatch:hover { transform: scale(1.08); }
+    .color-swatch.is-selected {
+      border-color: var(--neutral-900);
+      outline: 2px solid var(--neutral-0);
+      outline-offset: -4px;
+    }
+
+    /* Toggle (turmas / pessoas) */
+    .seg-control {
+      display: flex;
+      gap: 4px;
+      padding: 4px;
+      background: var(--neutral-150);
+      border-radius: var(--radius-md);
+    }
+    .seg-control button {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .seg-control button:hover { color: var(--text-primary); }
+    .seg-control button.is-active {
+      background: var(--neutral-0);
+      color: var(--brand-blue);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    /* Lista selecionável (turmas / pessoas) */
+    .pick-list {
+      max-height: 220px;
+      overflow-y: auto;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      background: var(--neutral-50);
+    }
+    .pick-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--neutral-200);
+      transition: background 0.1s ease;
+    }
+    .pick-row:last-child { border-bottom: none; }
+    .pick-row:hover { background: var(--neutral-100); }
+    .pick-row.is-hidden { display: none; }
+    .pick-check {
+      width: 18px; height: 18px;
+      border: 2px solid var(--border-strong);
+      border-radius: 4px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+    .pick-row.is-checked .pick-check {
+      background: var(--brand-blue);
+      border-color: var(--brand-blue);
+      color: white;
+    }
+    .pick-check svg {
+      width: 12px; height: 12px;
+      opacity: 0;
+      transition: opacity 0.1s ease;
+    }
+    .pick-row.is-checked .pick-check svg { opacity: 1; }
+    .pick-row-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--neutral-200);
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+    .pick-row-tag.coord { background: rgba(14,147,242,0.12); color: var(--brand-blue); }
+    .pick-row-tag.prof  { background: rgba(151,71,255,0.12); color: var(--color-warn); }
+    .pick-row-tag.aluno { background: rgba(78,78,78,0.10); color: var(--text-secondary); }
+    .pick-row-text { flex: 1; min-width: 0; }
+    .pick-row-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--neutral-900);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pick-row-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+    .pick-count {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    /* Pills selecionados */
+    .selected-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 28px;
+    }
+    .selected-pills:empty::before {
+      content: "Nenhum membro adicionado ainda";
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      color: var(--text-faint);
+    }
+    .selected-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px 4px 10px;
+      background: rgba(14,147,242,0.10);
+      border: 1px solid rgba(14,147,242,0.25);
+      border-radius: var(--radius-pill);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--brand-blue);
+    }
+    .selected-pill .x {
+      width: 16px; height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 50%;
+      opacity: 0.7;
+      transition: opacity 0.1s ease, background 0.1s ease;
+    }
+    .selected-pill .x:hover { opacity: 1; background: rgba(14,147,242,0.15); }
+
+    .modal-foot {
+      padding: 16px 28px;
+      border-top: 1px solid var(--border-default);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: var(--neutral-50);
+    }
+    .modal-foot-count {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .modal-foot-count strong { color: var(--neutral-900); }
+    .modal-foot-actions { display: flex; gap: 8px; }
+    .btn-secondary {
+      height: 40px;
+      padding: 0 16px;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      background: var(--neutral-0);
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    .btn-secondary:hover { background: var(--neutral-150); }
+    .btn-create {
+      height: 40px;
+      padding: 0 18px;
+      border: none;
+      border-radius: var(--radius-md);
+      background: var(--brand-blue);
+      color: white;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-create:hover { background: var(--brand-blue-dark); }
+    .btn-create:disabled {
+      background: var(--neutral-300);
+      color: var(--neutral-500);
+      cursor: not-allowed;
+    }
+    .btn-create svg { width: 14px; height: 14px; }
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    <!-- ADMIN SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+      <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
+        <a href="alunos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos</span></a>
+        <a href="modulos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
+        <a href="equipe.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Equipe</span></a>
+        <a href="comunidades.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span>Comunidades</span></a>
+        <a href="#" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M14 9c-.5-1-1.5-1.5-2.5-1.5S9 8 9 9.5s1 2 2.5 2.5 2.5 1 2.5 2.5-1 2-2.5 2-2-.5-2.5-1.5"/></svg><span>Financeiro</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="#" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 0c0 1.5-2.5 2-2.5 3.5"/></svg><span>Ajuda</span></a>
+        <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content comunidades-admin">
+
+      <!-- ─── LISTA DE COMUNIDADES ─── -->
+      <aside class="com-list">
+        <div class="com-list-head">
+          <h1>Comunidades</h1>
+          <p>8 chats · <span id="unreadTotal">38</span> mensagens não lidas</p>
+          <div class="com-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="listSearch" placeholder="Buscar turma, curso ou mensagem" />
+          </div>
+        </div>
+
+        <div class="com-list-filters" id="listFilters">
+          <button class="com-filter is-active" data-filter="all">Todas</button>
+          <button class="com-filter" data-filter="unread">Não lidas</button>
+          <button class="com-filter" data-filter="pism1">Pism I</button>
+          <button class="com-filter" data-filter="pism2">Pism II</button>
+          <button class="com-filter" data-filter="enem">Enem</button>
+          <button class="com-filter" data-filter="avisos">Avisos gerais</button>
+        </div>
+
+        <div class="com-list-scroll" id="chatList">
+          <!-- Linha 1 (interativa) -->
+          <div class="com-row is-active" data-chat="pism1-t1" data-cat="pism1" data-unread="3">
+            <div class="com-row-body">
+              <div class="com-row-top">
+                <span class="com-row-title">Extensivo Pism I — T1</span>
+                <span class="com-row-time">10:12</span>
+              </div>
+              <div class="com-row-preview">
+                <span class="sender">Camila:</span> Lembrete — entreguem a redação 7 até domingo às 23h59.
+              </div>
+            </div>
+            <div class="com-row-meta">
+              <span class="com-row-badge">3</span>
+            </div>
+          </div>
+
+          <!-- Linha 2 (interativa) -->
+          <div class="com-row" data-chat="pism1-t2" data-cat="pism1" data-unread="7">
+            <div class="com-row-body">
+              <div class="com-row-top">
+                <span class="com-row-title">Extensivo Pism I — T2</span>
+                <span class="com-row-time">09:38</span>
+              </div>
+              <div class="com-row-preview">
+                <span class="sender">Rafael:</span> Material complementar de função quadrática
+              </div>
+            </div>
+            <div class="com-row-meta">
+              <span class="com-row-badge">7</span>
+            </div>
+          </div>
+
+          <!-- Linha 3 (interativa) -->
+          <div class="com-row" data-chat="pism2-t3" data-cat="pism2" data-unread="0">
+            <div class="com-row-body">
+              <div class="com-row-top">
+                <span class="com-row-title">Extensivo Pism II — T3</span>
+                <span class="com-row-time">Ontem</span>
+              </div>
+              <div class="com-row-preview">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span class="sender">Você:</span> gabarito-citologia-aula14.pdf
+              </div>
+            </div>
+            <div class="com-row-meta">
+              <span class="com-row-badge muted">—</span>
+            </div>
+          </div>
+
+          <!-- Linha 4 -->
+          <div class="com-row" data-cat="enem" data-unread="12">
+            <div class="com-row-body">
+              <div class="com-row-top">
+                <span class="com-row-title">Extensivo Pism/Enem — T1</span>
+                <span class="com-row-time">Ontem</span>
+              </div>
+              <div class="com-row-preview">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19v3M8 22h8M5.5 15.5L4 17M18.5 15.5L20 17M9 11V7a3 3 0 0 1 6 0v4M5 15a7 7 0 0 0 14 0v-4H5z"/></svg>
+                <span class="sender">Helena:</span> Áudio · 1:23
+              </div>
+            </div>
+            <div class="com-row-meta">
+              <span class="com-row-badge">12</span>
+            </div>
+          </div>
+
+          <!-- Linha 5 -->
+          <div class="com-row" data-cat="pism2" data-unread="0">
+            <div class="com-row-body">
+              <div class="com-row-top">
+                <span class="com-row-title">Extensivo Pism II — T1</span>
+                <span class="com-row-time">Seg</span>
+              </div>
+              <div class="com-row-preview">
+                <span class="sender">Sara:</span> Cronograma de simulados atualizado
+              </div>
+            </div>
+            <div class="com-row-meta">
+              <span class="com-row-badge muted">—</span>
+              <span class="com-row-mute" aria-label="Silenciado">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- Linha 6 -->
+          <div class="com-row" data-cat="other" data-unread="2">
+            <div class="com-row-body">
+              <div class="com-row-top">
+                <span class="com-row-title">Sala dos coordenadores</span>
+                <span class="com-row-time">Sex</span>
+              </div>
+              <div class="com-row-preview">
+                <span class="sender">Marcelo:</span> Reunião pedagógica · pauta sexta 14h
+              </div>
+            </div>
+            <div class="com-row-meta">
+              <span class="com-row-badge">2</span>
+            </div>
+          </div>
+
+          <!-- Linha 7 -->
+          <div class="com-row" data-cat="avisos" data-unread="0">
+            <div class="com-row-body">
+              <div class="com-row-top">
+                <span class="com-row-title">Avisos gerais · Toda a base</span>
+                <span class="com-row-time">12/11</span>
+              </div>
+              <div class="com-row-preview">
+                <span class="sender">Você:</span> Bom dia, base. Lembrete sobre matrícula 2025...
+              </div>
+            </div>
+            <div class="com-row-meta">
+              <span class="com-row-badge muted">—</span>
+            </div>
+          </div>
+
+          <!-- Linha 8 -->
+          <div class="com-row" data-cat="enem" data-unread="14">
+            <div class="com-row-body">
+              <div class="com-row-top">
+                <span class="com-row-title">Extensivo Pism/Enem — T2</span>
+                <span class="com-row-time">11/11</span>
+              </div>
+              <div class="com-row-preview">
+                <span class="sender">Rafael:</span> Lista 23 corrigida no PDF anexo
+              </div>
+            </div>
+            <div class="com-row-meta">
+              <span class="com-row-badge">14</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="com-list-foot">
+          <button id="openNew">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nova comunidade
+          </button>
+        </div>
+      </aside>
+
+      <!-- ─── CHAT ABERTO ─── -->
+      <section class="com-chat">
+
+        <!-- Header do chat -->
+        <header class="chat-head">
+          <div class="chat-head-info">
+            <h2 id="chatTitle">Extensivo Pism I — Turma T1</h2>
+            <p><span class="dot"></span> <span id="chatSub">38 alunos</span></p>
+          </div>
+          <div class="chat-head-actions">
+            <button class="icon-btn" aria-label="Membros" title="Membros">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </button>
+            <button class="icon-btn" aria-label="Buscar mensagens" title="Buscar mensagens">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            </button>
+          </div>
+        </header>
+
+        <!-- Stream · Pism I — T1 -->
+        <div class="chat-stream is-active" data-stream="pism1-t1">
+          <div class="date-sep">12 de novembro de 2024</div>
+
+          <article class="msg">
+            <div class="msg-avatar coord">HA</div>
+            <div class="msg-body">
+              <div class="msg-head">
+                <span class="msg-name coord">Prof. Helena Aguiar</span>
+                <span class="msg-role coord">Coordenação</span>
+                <span class="msg-time">09:14</span>
+              </div>
+              <div class="msg-bubble">
+                <p>Bom dia, turma! ☀️ Aula de Função Quadrática hoje às 19h. Tragam dúvidas.</p>
+              </div>
+              <div class="msg-reactions">
+                <button class="reaction">👍 12</button>
+                <button class="reaction">🔥 4</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="msg">
+            <div class="msg-avatar prof">RM</div>
+            <div class="msg-body">
+              <div class="msg-head">
+                <span class="msg-name prof">Prof. Rafael Marques</span>
+                <span class="msg-role prof">Professor · Mat</span>
+                <span class="msg-time">09:42</span>
+              </div>
+              <div class="msg-bubble">
+                <p>Pessoal, segue o material complementar com 32 questões.</p>
+                <div class="att-doc">
+                  <div class="att-doc-icon pdf">PDF</div>
+                  <div class="att-doc-meta">
+                    <h5>funcao-quadratica-pism-2014-2023.pdf</h5>
+                    <p>2,4 MB</p>
+                  </div>
+                  <button class="att-doc-action" aria-label="Baixar" title="Baixar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                </div>
+              </div>
+              <div class="msg-reactions">
+                <button class="reaction">❤️ 18</button>
+                <button class="reaction">🙏 7</button>
+              </div>
+            </div>
+          </article>
+
+          <div class="date-sep">Hoje</div>
+
+          <article class="msg">
+            <div class="msg-avatar admin">SC</div>
+            <div class="msg-body">
+              <div class="msg-head">
+                <span class="msg-name admin">Secretaria · Sara Coutinho</span>
+                <span class="msg-role admin">Secretaria</span>
+                <span class="msg-time">07:30</span>
+              </div>
+              <div class="msg-bubble">
+                <p>Bom dia. Cronograma oficial dos simulados do trimestre.</p>
+                <div class="att-doc">
+                  <div class="att-doc-icon docx">DOCX</div>
+                  <div class="att-doc-meta">
+                    <h5>cronograma-simulados-2024-T1.docx</h5>
+                    <p>184 KB</p>
+                  </div>
+                  <button class="att-doc-action" aria-label="Baixar" title="Baixar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                </div>
+              </div>
+              <div class="msg-reactions">
+                <button class="reaction">👍 22</button>
+                <button class="reaction">📌 6</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Minha mensagem (coordenadora logada) -->
+          <article class="msg is-mine">
+            <div class="msg-avatar me">MV</div>
+            <div class="msg-body">
+              <div class="msg-head">
+                <span class="msg-time">08:42</span>
+                <span class="msg-role me">Coordenação · Você</span>
+                <span class="msg-name me">Marcelo Vieira</span>
+              </div>
+              <div class="msg-bubble">
+                <p>Pessoal, <strong>aviso geral:</strong> a aula extra de plantão muda de quinta para sexta, 18h30, sala 04. Confirmação de presença pela lista da turma.</p>
+              </div>
+              <div class="msg-reactions">
+                <button class="reaction">✅ 14</button>
+                <button class="reaction">👍 9</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Áudio enviado por mim -->
+          <article class="msg is-mine">
+            <div class="msg-avatar me">MV</div>
+            <div class="msg-body">
+              <div class="msg-head">
+                <span class="msg-time">08:45</span>
+              </div>
+              <div class="msg-bubble">
+                <div class="att-audio">
+                  <button class="att-audio-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg></button>
+                  <div class="att-audio-wave">
+                    <span class="played" style="height:50%"></span><span class="played" style="height:80%"></span><span class="played" style="height:60%"></span><span class="played" style="height:90%"></span><span style="height:45%"></span><span style="height:70%"></span><span style="height:55%"></span><span style="height:85%"></span><span style="height:40%"></span><span style="height:65%"></span><span style="height:75%"></span><span style="height:50%"></span><span style="height:90%"></span><span style="height:60%"></span><span style="height:70%"></span><span style="height:45%"></span>
+                  </div>
+                  <span class="att-audio-time">0:42</span>
+                </div>
+              </div>
+              <div class="msg-reactions">
+                <button class="reaction">👂 8</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="msg">
+            <div class="msg-avatar prof">CB</div>
+            <div class="msg-body">
+              <div class="msg-head">
+                <span class="msg-name prof">Prof. Camila Borba</span>
+                <span class="msg-role prof">Professora · Redação</span>
+                <span class="msg-time">10:12</span>
+              </div>
+              <div class="msg-bubble">
+                <p>Lembrete — entreguem a redação 7 até <strong>domingo 23h59</strong>. Tema: meritocracia e desigualdade.</p>
+              </div>
+              <div class="msg-reactions">
+                <button class="reaction">✍️ 11</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Stream · Pism I — T2 -->
+        <div class="chat-stream" data-stream="pism1-t2">
+          <div class="date-sep">Hoje</div>
+          <article class="msg">
+            <div class="msg-avatar prof">RM</div>
+            <div class="msg-body">
+              <div class="msg-head">
+                <span class="msg-name prof">Prof. Rafael Marques</span>
+                <span class="msg-role prof">Professor · Mat</span>
+                <span class="msg-time">09:38</span>
+              </div>
+              <div class="msg-bubble">
+                <p>T2, segue o material complementar de função quadrática. Mesmo PDF da T1, vale para todos.</p>
+                <div class="att-doc">
+                  <div class="att-doc-icon pdf">PDF</div>
+                  <div class="att-doc-meta">
+                    <h5>funcao-quadratica-pism-2014-2023.pdf</h5>
+                    <p>2,4 MB</p>
+                  </div>
+                  <button class="att-doc-action" aria-label="Baixar" title="Baixar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                </div>
+              </div>
+              <div class="msg-reactions">
+                <button class="reaction">❤️ 12</button>
+                <button class="reaction">🙏 5</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="msg">
+            <div class="msg-avatar coord">HA</div>
+            <div class="msg-body">
+              <div class="msg-head">
+                <span class="msg-name coord">Prof. Helena Aguiar</span>
+                <span class="msg-role coord">Coordenação</span>
+                <span class="msg-time">10:05</span>
+              </div>
+              <div class="msg-bubble">
+                <p>Galera da T2 — a aula de hoje está confirmada às <strong>20h30</strong>. Levem o caderno organizado.</p>
+              </div>
+              <div class="msg-reactions">
+                <button class="reaction">👍 23</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Stream · Pism II — T3 -->
+        <div class="chat-stream" data-stream="pism2-t3">
+          <div class="date-sep">Ontem</div>
+          <article class="msg is-mine">
+            <div class="msg-avatar me">MV</div>
+            <div class="msg-body">
+              <div class="msg-head">
+                <span class="msg-time">15:22</span>
+                <span class="msg-role me">Coordenação · Você</span>
+                <span class="msg-name me">Marcelo Vieira</span>
+              </div>
+              <div class="msg-bubble">
+                <p>Pessoal, segue o <strong>gabarito completo</strong> da aula 14 de Citologia. As questões 7, 11 e 18 caíram em Pism II.</p>
+                <div class="att-doc">
+                  <div class="att-doc-icon pdf">PDF</div>
+                  <div class="att-doc-meta">
+                    <h5>gabarito-citologia-aula14.pdf</h5>
+                    <p>1,1 MB</p>
+                  </div>
+                  <button class="att-doc-action" aria-label="Baixar" title="Baixar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                </div>
+              </div>
+              <div class="msg-reactions">
+                <button class="reaction">🙏 19</button>
+                <button class="reaction">❤️ 7</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="msg">
+            <div class="msg-avatar prof">FP</div>
+            <div class="msg-body">
+              <div class="msg-head">
+                <span class="msg-name prof">Prof. Flávia Pinto</span>
+                <span class="msg-role prof">Professora · Bio</span>
+                <span class="msg-time">16:48</span>
+              </div>
+              <div class="msg-bubble">
+                <p>Obrigada, Marcelo! Resoluções completas. Pessoal, deem uma olhada antes da prova de quinta.</p>
+              </div>
+              <div class="msg-reactions">
+                <button class="reaction">👍 14</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Composer -->
+        <div class="composer">
+
+          <!-- Pending attachments (preview antes de enviar) -->
+          <div class="composer-pending" id="pendingList" style="display:none"></div>
+
+          <!-- Gravando áudio (estado alternativo) -->
+          <div class="composer-recording" id="recording">
+            <div class="rec-dot"></div>
+            <div class="rec-wave">
+              <span style="height:60%"></span><span style="height:80%"></span><span style="height:40%"></span>
+              <span style="height:70%"></span><span style="height:50%"></span><span style="height:85%"></span>
+              <span style="height:45%"></span><span style="height:65%"></span><span style="height:75%"></span>
+              <span style="height:55%"></span><span style="height:90%"></span><span style="height:50%"></span>
+            </div>
+            <span class="rec-time" id="recTime">0:00</span>
+            <button class="rec-cancel" id="recCancel" aria-label="Cancelar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+
+          <div class="composer-row" id="composerRow">
+            <div class="composer-attach">
+              <!-- Anexar documento (PDF, DOCX, XLSX...) -->
+              <button id="btnDoc" aria-label="Anexar documento" title="Anexar PDF, DOCX, XLSX">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+              </button>
+              <!-- Anexar imagem -->
+              <button id="btnImg" aria-label="Anexar imagem" title="Anexar imagem">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </button>
+              <!-- Emoji -->
+              <button id="btnEmoji" aria-label="Inserir emoji" title="Inserir emoji">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+              </button>
+            </div>
+            <textarea class="composer-input" id="input" rows="1" placeholder="Mensagem para Extensivo Pism I — T1"></textarea>
+            <!-- Microfone (alterna para Enviar quando há texto/anexo) -->
+            <button class="composer-send" id="btnSend" aria-label="Gravar áudio">
+              <svg id="iconMic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              <svg id="iconSend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+          <p class="composer-hint">Visível para 38 alunos</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ─── MODAL: Nova comunidade ─── -->
+  <div class="modal-overlay" id="newModal">
+    <div class="modal" role="dialog" aria-labelledby="newModalTitle">
+      <header class="modal-head">
+        <div class="modal-head-text">
+          <h2 id="newModalTitle">Nova comunidade</h2>
+          <p>Por padrão, cada turma já tem uma comunidade automática. Use este formulário para criar um chat personalizado e adicionar turmas ou pessoas específicas da plataforma.</p>
+        </div>
+        <button class="modal-close" id="closeModal" aria-label="Fechar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </header>
+
+      <div class="modal-body">
+        <div class="field-group">
+          <label for="newName">Nome da comunidade</label>
+          <input type="text" id="newName" placeholder="Ex.: Grupo de monitores de Matemática" />
+        </div>
+
+        <div class="field-group">
+          <label for="newDesc">Descrição <span style="color:var(--text-faint);font-weight:500">(opcional)</span></label>
+          <textarea id="newDesc" placeholder="Para que serve esta comunidade?"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label>Adicionar membros</label>
+          <div class="seg-control" id="pickToggle">
+            <button class="is-active" data-view="turmas">Por turma</button>
+            <button data-view="pessoas">Pessoas específicas</button>
+          </div>
+          <div class="com-search" style="margin-top:8px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="pickSearch" placeholder="Buscar..." />
+          </div>
+
+          <div class="pick-list" id="pickTurmas">
+            <div class="pick-row" data-id="t-pism1-t1" data-label="Extensivo Pism I — T1" data-kind="turma">
+              <div class="pick-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+              <div class="pick-row-text">
+                <div class="pick-row-title">Extensivo Pism I — T1</div>
+                <div class="pick-row-sub">Pism I · manhã</div>
+              </div>
+              <span class="pick-count">38 alunos</span>
+            </div>
+            <div class="pick-row" data-id="t-pism1-t2" data-label="Extensivo Pism I — T2" data-kind="turma">
+              <div class="pick-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+              <div class="pick-row-text">
+                <div class="pick-row-title">Extensivo Pism I — T2</div>
+                <div class="pick-row-sub">Pism I · tarde</div>
+              </div>
+              <span class="pick-count">41 alunos</span>
+            </div>
+            <div class="pick-row" data-id="t-pism2-t1" data-label="Extensivo Pism II — T1" data-kind="turma">
+              <div class="pick-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+              <div class="pick-row-text">
+                <div class="pick-row-title">Extensivo Pism II — T1</div>
+                <div class="pick-row-sub">Pism II · manhã</div>
+              </div>
+              <span class="pick-count">36 alunos</span>
+            </div>
+            <div class="pick-row" data-id="t-pism2-t3" data-label="Extensivo Pism II — T3" data-kind="turma">
+              <div class="pick-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+              <div class="pick-row-text">
+                <div class="pick-row-title">Extensivo Pism II — T3</div>
+                <div class="pick-row-sub">Pism II · noite</div>
+              </div>
+              <span class="pick-count">34 alunos</span>
+            </div>
+            <div class="pick-row" data-id="t-enem-t1" data-label="Extensivo Pism/Enem — T1" data-kind="turma">
+              <div class="pick-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+              <div class="pick-row-text">
+                <div class="pick-row-title">Extensivo Pism/Enem — T1</div>
+                <div class="pick-row-sub">Pism/Enem · manhã</div>
+              </div>
+              <span class="pick-count">42 alunos</span>
+            </div>
+            <div class="pick-row" data-id="t-enem-t2" data-label="Extensivo Pism/Enem — T2" data-kind="turma">
+              <div class="pick-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+              <div class="pick-row-text">
+                <div class="pick-row-title">Extensivo Pism/Enem — T2</div>
+                <div class="pick-row-sub">Pism/Enem · noite</div>
+              </div>
+              <span class="pick-count">39 alunos</span>
+            </div>
+          </div>
+
+          <div class="pick-list" id="pickPessoas" style="display:none">
+            <div class="pick-row" data-id="p-ha" data-label="Helena Aguiar" data-kind="pessoa">
+              <div class="pick-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+              <span class="pick-row-tag coord">Coord</span>
+              <div class="pick-row-text">
+                <div class="pick-row-title">Helena Aguiar</div>
+                <div class="pick-row-sub">helena@magodopism.com.br</div>
+              </div>
+            </div>
+            <div class="pick-row" data-id="p-rm" data-label="Rafael Marques" data-kind="pessoa">
+              <div class="pick-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+              <span class="pick-row-tag prof">Prof</span>
+              <div class="pick-row-text">
+                <div class="pick-row-title">Rafael Marques</div>
+                <div class="pick-row-sub">Matemática · Física</div>
+              </div>
+            </div>
+            <div class="pick-row" data-id="p-cb" data-label="Camila Borba" data-kind="pessoa">
+              <div class="pick-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+              <span class="pick-row-tag prof">Prof</span>
+              <div class="pick-row-text">
+                <div class="pick-row-title">Camila Borba</div>
+                <div class="pick-row-sub">Redação</div>
+              </div>
+            </div>
+            <div class="pick-row" data-id="p-fp" data-label="Flávia Pinto" data-kind="pessoa">
+              <div class="pick-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+              <span class="pick-row-tag prof">Prof</span>
+              <div class="pick-row-text">
+                <div class="pick-row-title">Flávia Pinto</div>
+                <div class="pick-row-sub">Biologia</div>
+              </div>
+            </div>
+            <div class="pick-row" data-id="p-sc" data-label="Sara Coutinho" data-kind="pessoa">
+              <div class="pick-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+              <span class="pick-row-tag coord">Secret.</span>
+              <div class="pick-row-text">
+                <div class="pick-row-title">Sara Coutinho</div>
+                <div class="pick-row-sub">Secretaria</div>
+              </div>
+            </div>
+            <div class="pick-row" data-id="p-al-1" data-label="Beatriz Rodrigues" data-kind="pessoa">
+              <div class="pick-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+              <span class="pick-row-tag aluno">Aluno</span>
+              <div class="pick-row-text">
+                <div class="pick-row-title">Beatriz Rodrigues</div>
+                <div class="pick-row-sub">Pism I — T1 · monitor</div>
+              </div>
+            </div>
+            <div class="pick-row" data-id="p-al-2" data-label="Lucas Andrade" data-kind="pessoa">
+              <div class="pick-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+              <span class="pick-row-tag aluno">Aluno</span>
+              <div class="pick-row-text">
+                <div class="pick-row-title">Lucas Andrade</div>
+                <div class="pick-row-sub">Pism II — T3 · representante</div>
+              </div>
+            </div>
+            <div class="pick-row" data-id="p-al-3" data-label="Marina Costa" data-kind="pessoa">
+              <div class="pick-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+              <span class="pick-row-tag aluno">Aluno</span>
+              <div class="pick-row-text">
+                <div class="pick-row-title">Marina Costa</div>
+                <div class="pick-row-sub">Pism/Enem — T1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Selecionados</label>
+          <div class="selected-pills" id="selectedPills"></div>
+        </div>
+      </div>
+
+      <footer class="modal-foot">
+        <div class="modal-foot-count" id="footCount">Nenhum membro adicionado</div>
+        <div class="modal-foot-actions">
+          <button class="btn-secondary" id="cancelModal">Cancelar</button>
+          <button class="btn-create" id="createBtn" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Criar comunidade
+          </button>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Inputs de arquivo escondidos -->
+  <input type="file" id="fileDoc" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt" multiple style="display:none" />
+  <input type="file" id="fileImg" accept="image/*" multiple style="display:none" />
+
+  <script>
+    (function() {
+      const input    = document.getElementById('input');
+      const btnSend  = document.getElementById('btnSend');
+      const iconMic  = document.getElementById('iconMic');
+      const iconSend = document.getElementById('iconSend');
+      const pendingList = document.getElementById('pendingList');
+      const recording = document.getElementById('recording');
+      const composerRow = document.getElementById('composerRow');
+      const recTime = document.getElementById('recTime');
+      const recCancel = document.getElementById('recCancel');
+      const fileDoc = document.getElementById('fileDoc');
+      const fileImg = document.getElementById('fileImg');
+
+      let pending = [];
+      let recTimer = null;
+      let recStart = 0;
+
+      function refreshSend() {
+        const has = input.value.trim().length > 0 || pending.length > 0;
+        iconMic.style.display  = has ? 'none' : 'block';
+        iconSend.style.display = has ? 'block' : 'none';
+        btnSend.setAttribute('aria-label', has ? 'Enviar' : 'Gravar áudio');
+      }
+
+      function renderPending() {
+        pendingList.style.display = pending.length ? 'flex' : 'none';
+        pendingList.innerHTML = pending.map((f, i) => `
+          <span class="composer-pending-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            ${f.name}
+            <span class="x" data-i="${i}" aria-label="Remover">✕</span>
+          </span>
+        `).join('');
+      }
+      pendingList.addEventListener('click', (e) => {
+        const x = e.target.closest('.x');
+        if (!x) return;
+        pending.splice(+x.dataset.i, 1);
+        renderPending();
+        refreshSend();
+      });
+
+      input.addEventListener('input', () => {
+        input.style.height = 'auto';
+        input.style.height = Math.min(200, input.scrollHeight) + 'px';
+        refreshSend();
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          // demonstração: envia se houver texto
+          if (input.value.trim() || pending.length) {
+            input.value = '';
+            input.style.height = 'auto';
+            pending = [];
+            renderPending();
+            refreshSend();
+          }
+        }
+      });
+
+      // Anexos
+      document.getElementById('btnDoc').addEventListener('click', () => fileDoc.click());
+      document.getElementById('btnImg').addEventListener('click', () => fileImg.click());
+      [fileDoc, fileImg].forEach(inp => {
+        inp.addEventListener('change', () => {
+          for (const f of inp.files) pending.push({ name: f.name, size: f.size });
+          inp.value = '';
+          renderPending();
+          refreshSend();
+        });
+      });
+
+      // Mic → grava (estado visual). Send → envia.
+      btnSend.addEventListener('click', () => {
+        const sending = iconSend.style.display !== 'none';
+        if (sending) {
+          input.value = '';
+          input.style.height = 'auto';
+          pending = [];
+          renderPending();
+          refreshSend();
+        } else {
+          composerRow.style.display = 'none';
+          recording.classList.add('is-active');
+          recStart = Date.now();
+          recTime.textContent = '0:00';
+          recTimer = setInterval(() => {
+            const s = Math.floor((Date.now() - recStart) / 1000);
+            recTime.textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+          }, 250);
+        }
+      });
+      recCancel.addEventListener('click', () => {
+        clearInterval(recTimer);
+        recording.classList.remove('is-active');
+        composerRow.style.display = '';
+      });
+
+      // ─── Seleção de chats (3 primeiras têm stream próprio)
+      const chatTitle = document.getElementById('chatTitle');
+      const chatSub = document.getElementById('chatSub');
+      const chatHeads = {
+        'pism1-t1': { title: 'Extensivo Pism I — Turma T1', sub: '38 alunos' },
+        'pism1-t2': { title: 'Extensivo Pism I — Turma T2', sub: '41 alunos' },
+        'pism2-t3': { title: 'Extensivo Pism II — Turma T3', sub: '34 alunos' },
+      };
+      document.querySelectorAll('.com-row').forEach(row => {
+        row.addEventListener('click', () => {
+          document.querySelectorAll('.com-row').forEach(r => r.classList.remove('is-active'));
+          row.classList.add('is-active');
+          // Limpa badge ao abrir
+          const badge = row.querySelector('.com-row-badge:not(.muted)');
+          if (badge) badge.remove();
+          const chat = row.dataset.chat;
+          if (chat && chatHeads[chat]) {
+            const info = chatHeads[chat];
+            chatTitle.textContent = info.title;
+            chatSub.textContent = info.sub;
+            document.querySelectorAll('.chat-stream').forEach(s => s.classList.remove('is-active'));
+            const target = document.querySelector(`.chat-stream[data-stream="${chat}"]`);
+            if (target) target.classList.add('is-active');
+          }
+          updateUnreadTotal();
+        });
+      });
+
+      // ─── Filtros + busca da lista
+      const listSearch = document.getElementById('listSearch');
+      function applyListFilter() {
+        const activeFilter = document.querySelector('.com-filter.is-active')?.dataset.filter || 'all';
+        const q = (listSearch.value || '').toLowerCase().trim();
+        document.querySelectorAll('.com-row').forEach(row => {
+          let show = true;
+          if (activeFilter === 'unread') show = +row.dataset.unread > 0;
+          else if (activeFilter !== 'all') show = row.dataset.cat === activeFilter;
+          if (show && q) {
+            const txt = row.textContent.toLowerCase();
+            show = txt.includes(q);
+          }
+          row.classList.toggle('is-hidden', !show);
+        });
+      }
+      document.querySelectorAll('.com-filter').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.com-filter').forEach(b => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          applyListFilter();
+        });
+      });
+      listSearch.addEventListener('input', applyListFilter);
+
+      function updateUnreadTotal() {
+        let total = 0;
+        document.querySelectorAll('.com-row').forEach(r => {
+          if (!r.classList.contains('is-active')) {
+            const b = r.querySelector('.com-row-badge:not(.muted)');
+            if (b) total += parseInt(b.textContent, 10) || 0;
+          }
+        });
+        const el = document.getElementById('unreadTotal');
+        if (el) el.textContent = total;
+      }
+      updateUnreadTotal();
+
+      // (menu "Mais opções" removido)
+
+      // ─── Modal: Nova comunidade
+      const overlay = document.getElementById('newModal');
+      const openNew = document.getElementById('openNew');
+      const closeModalBtn = document.getElementById('closeModal');
+      const cancelModal = document.getElementById('cancelModal');
+      const newName = document.getElementById('newName');
+      const createBtn = document.getElementById('createBtn');
+      const pickToggle = document.getElementById('pickToggle');
+      const pickTurmas = document.getElementById('pickTurmas');
+      const pickPessoas = document.getElementById('pickPessoas');
+      const pickSearch = document.getElementById('pickSearch');
+      const selectedPills = document.getElementById('selectedPills');
+      const footCount = document.getElementById('footCount');
+      const colorSwatches = null;
+      let selected = new Map();
+
+      function openModal() {
+        overlay.classList.add('is-open');
+        setTimeout(() => newName.focus(), 50);
+      }
+      function closeModal() {
+        overlay.classList.remove('is-open');
+        // reset
+        newName.value = '';
+        document.getElementById('newDesc').value = '';
+        pickSearch.value = '';
+        selected.clear();
+        renderPills();
+        document.querySelectorAll('.pick-row').forEach(r => r.classList.remove('is-checked', 'is-hidden'));
+        validateCreate();
+      }
+      openNew.addEventListener('click', openModal);
+      closeModalBtn.addEventListener('click', closeModal);
+      cancelModal.addEventListener('click', closeModal);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+      // (swatch picker removido)
+
+      // Toggle turmas/pessoas
+      pickToggle.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        pickToggle.querySelectorAll('button').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        const view = btn.dataset.view;
+        pickTurmas.style.display = view === 'turmas' ? '' : 'none';
+        pickPessoas.style.display = view === 'pessoas' ? '' : 'none';
+        pickSearch.value = '';
+        applyPickFilter();
+      });
+
+      // Search nos pickers
+      function applyPickFilter() {
+        const q = pickSearch.value.toLowerCase().trim();
+        const activeList = pickTurmas.style.display !== 'none' ? pickTurmas : pickPessoas;
+        activeList.querySelectorAll('.pick-row').forEach(row => {
+          const txt = row.textContent.toLowerCase();
+          row.classList.toggle('is-hidden', q && !txt.includes(q));
+        });
+      }
+      pickSearch.addEventListener('input', applyPickFilter);
+
+      // Toggle de seleção
+      [pickTurmas, pickPessoas].forEach(list => {
+        list.addEventListener('click', (e) => {
+          const row = e.target.closest('.pick-row');
+          if (!row) return;
+          const id = row.dataset.id;
+          if (selected.has(id)) {
+            selected.delete(id);
+            row.classList.remove('is-checked');
+          } else {
+            selected.set(id, { label: row.dataset.label, kind: row.dataset.kind });
+            row.classList.add('is-checked');
+          }
+          renderPills();
+          validateCreate();
+        });
+      });
+
+      function renderPills() {
+        selectedPills.innerHTML = '';
+        let nTurmas = 0, nPessoas = 0;
+        selected.forEach((v, id) => {
+          if (v.kind === 'turma') nTurmas++; else nPessoas++;
+          const pill = document.createElement('span');
+          pill.className = 'selected-pill';
+          pill.innerHTML = `${v.label} <span class="x" data-id="${id}" aria-label="Remover">✕</span>`;
+          selectedPills.appendChild(pill);
+        });
+        const parts = [];
+        if (nTurmas) parts.push(`${nTurmas} turma${nTurmas > 1 ? 's' : ''}`);
+        if (nPessoas) parts.push(`${nPessoas} pessoa${nPessoas > 1 ? 's' : ''}`);
+        footCount.innerHTML = parts.length
+          ? `<strong>${parts.join(' + ')}</strong> serão adicionadas à comunidade`
+          : 'Nenhum membro adicionado';
+      }
+      selectedPills.addEventListener('click', (e) => {
+        const x = e.target.closest('.x');
+        if (!x) return;
+        const id = x.dataset.id;
+        selected.delete(id);
+        const row = document.querySelector(`.pick-row[data-id="${id}"]`);
+        if (row) row.classList.remove('is-checked');
+        renderPills();
+        validateCreate();
+      });
+
+      function validateCreate() {
+        const ok = newName.value.trim().length >= 3 && selected.size > 0;
+        createBtn.disabled = !ok;
+      }
+      newName.addEventListener('input', validateCreate);
+
+      // Criar comunidade (insere no topo da lista)
+      createBtn.addEventListener('click', () => {
+        if (createBtn.disabled) return;
+        const name = newName.value.trim();
+        const totalMembers = [...selected.values()].reduce((acc, v) => acc + (v.kind === 'turma' ? 35 : 1), 0);
+        const row = document.createElement('div');
+        row.className = 'com-row is-new-flash';
+        row.dataset.cat = 'other';
+        row.dataset.unread = '0';
+        row.innerHTML = `
+          <div class="com-row-body">
+            <div class="com-row-top">
+              <span class="com-row-title">${name}</span>
+              <span class="com-row-time">agora</span>
+            </div>
+            <div class="com-row-preview">
+              <span class="sender">Você criou</span> esta comunidade · ~${totalMembers} membros
+            </div>
+          </div>
+          <div class="com-row-meta"><span class="com-row-badge muted">novo</span></div>
+        `;
+        const list = document.getElementById('chatList');
+        list.insertBefore(row, list.firstChild);
+        closeModal();
+      });
+
+      // Auto-scroll
+      function scrollActive() {
+        const s = document.querySelector('.chat-stream.is-active');
+        if (s) s.scrollTop = s.scrollHeight;
+      }
+      scrollActive();
+
+      // ─── Aplica tag salva (admin/perfil.html) nas minhas mensagens
+      //     + cor aleatória estável por usuário (hash do nome)
+      const TAG_PALETTE = [
+        'rgb(14, 147, 242)', 'rgb(151, 71, 255)', 'rgb(39, 133, 86)',
+        'rgb(208, 62, 62)', 'rgb(226, 154, 47)', 'rgb(78, 78, 78)',
+        'rgb(22, 134, 216)', 'rgb(110, 63, 208)', 'rgb(33, 194, 48)'
+      ];
+      function hashColor(str) {
+        let h = 0;
+        for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0;
+        return TAG_PALETTE[Math.abs(h) % TAG_PALETTE.length];
+      }
+      // Pinta TODAS as tags de mensagens com cor estável pelo nome
+      document.querySelectorAll('.msg').forEach(msg => {
+        const nameEl = msg.querySelector('.msg-name');
+        const roleEl = msg.querySelector('.msg-role');
+        if (!nameEl || !roleEl) return;
+        const color = hashColor(nameEl.textContent.trim());
+        nameEl.style.color = color;
+        roleEl.style.background = color;
+      });
+      // Aplica tag salva pela admin (texto) nas minhas mensagens
+      try {
+        const saved = JSON.parse(localStorage.getItem('magoPism.adminTag') || 'null');
+        if (saved && saved.text) {
+          document.querySelectorAll('.msg.is-mine .msg-role.me').forEach(el => {
+            el.textContent = saved.text + ' · Você';
+          });
+        }
+      } catch (e) {}
+    })();
+  </script>
+</body>
+</html>
