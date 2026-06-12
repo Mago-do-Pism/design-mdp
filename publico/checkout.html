@@ -1,369 +1,1063 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Pagamento · Mago do Pism</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
-<style>
-  /* Method buttons — vertical list (cf. MethodSelector.tsx) */
-  .method-btn {
-    display: flex; align-items: center; gap: 14px;
-    padding: 14px 16px;
-    border: 2px solid var(--border-default); border-radius: 10px;
-    background: white; cursor: pointer; text-align: left; width: 100%;
-    font-family: inherit;
-    transition: border-color 0.15s, background 0.15s;
-  }
-  .method-btn:hover  { border-color: var(--brand-blue-soft); }
-  .method-btn.is-selected { border-color: var(--brand-blue); background: rgba(14,147,242,0.04); }
-  .method-icon {
-    width: 44px; height: 44px; border-radius: 8px;
-    background: var(--neutral-100); color: var(--brand-blue);
-    display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
-    transition: background 0.15s;
-  }
-  .method-btn.is-selected .method-icon { background: rgba(14,147,242,0.12); }
-  .method-info          { flex: 1; min-width: 0; }
-  .method-info strong   { display: block; font-weight: 700; font-size: 15px; color: var(--neutral-900); margin-bottom: 2px; }
-  .method-info em       { font-style: normal; font-size: 13px; color: var(--text-muted); }
-  .method-badge         { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
-  .discount-badge       { padding: 2px 8px; border-radius: 4px; background: rgba(39,133,86,0.10); color: var(--color-success); font-weight: 700; font-size: 12px; }
-  .or-text              { font-size: 12px; color: var(--text-muted); }
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pagamento · Mago do Pism</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/tokens.css" />
+    <link rel="stylesheet" href="../styles/platform.css" />
+    <link rel="stylesheet" href="../styles/secretaria.css" />
+    <style>
+      /* Method buttons — vertical list (cf. MethodSelector.tsx) */
+      .method-btn {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        border: 2px solid var(--border-default);
+        border-radius: 10px;
+        background: white;
+        cursor: pointer;
+        text-align: left;
+        width: 100%;
+        font-family: inherit;
+        transition:
+          border-color 0.15s,
+          background 0.15s;
+      }
+      .method-btn:hover {
+        border-color: var(--brand-blue-soft);
+      }
+      .method-btn.is-selected {
+        border-color: var(--brand-blue);
+        background: rgba(14, 147, 242, 0.04);
+      }
+      .method-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        background: var(--neutral-100);
+        color: var(--brand-blue);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: background 0.15s;
+      }
+      .method-btn.is-selected .method-icon {
+        background: rgba(14, 147, 242, 0.12);
+      }
+      .method-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .method-info strong {
+        display: block;
+        font-weight: 700;
+        font-size: 15px;
+        color: var(--neutral-900);
+        margin-bottom: 2px;
+      }
+      .method-info em {
+        font-style: normal;
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      .method-badge {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 3px;
+      }
+      .discount-badge {
+        padding: 2px 8px;
+        border-radius: 4px;
+        background: rgba(39, 133, 86, 0.1);
+        color: var(--color-success);
+        font-weight: 700;
+        font-size: 12px;
+      }
+      .or-text {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
 
-  /* Form controls */
-  .form-control {
-    width: 100%; height: 42px; padding: 0 12px;
-    border: 1px solid var(--border-default); border-radius: 8px;
-    font-size: 14px; color: var(--text-primary); background: white; font-family: inherit;
-  }
-  .form-control:focus { outline: none; border-color: var(--brand-blue); box-shadow: 0 0 0 3px rgba(14,147,242,0.12); }
+      /* Form controls */
+      .form-control {
+        width: 100%;
+        height: 42px;
+        padding: 0 12px;
+        border: 1px solid var(--border-default);
+        border-radius: 8px;
+        font-size: 14px;
+        color: var(--text-primary);
+        background: white;
+        font-family: inherit;
+      }
+      .form-control:focus {
+        outline: none;
+        border-color: var(--brand-blue);
+        box-shadow: 0 0 0 3px rgba(14, 147, 242, 0.12);
+      }
 
-  /* Pay-now card subtle highlight when active */
-  #payNowCard.is-active { border-color: var(--brand-blue); background: rgba(14,147,242,0.03); }
-</style>
-</head><body><div class="pub-shell">
+      /* Pay-now card subtle highlight when active */
+      #payNowCard.is-active {
+        border-color: var(--brand-blue);
+        background: rgba(14, 147, 242, 0.03);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="pub-shell">
+      <header class="pub-header">
+        <img src="../assets/logo-azul.png" alt="Mago do Pism" />
+        <span class="pub-title"
+          >Matrícula 2026 · Curso Intensivo Mago do Pism</span
+        >
+        <span class="pub-help"
+          >Precisa de ajuda?
+          <a href="#" style="color: var(--brand-blue); font-weight: 600"
+            >(31) 99876-1234</a
+          ></span
+        >
+      </header>
 
-<header class="pub-header">
-  <img src="../assets/logo-azul.png" alt="Mago do Pism"/>
-  <span class="pub-title">Matrícula 2026 · Curso Intensivo Mago do Pism</span>
-  <span class="pub-help">Precisa de ajuda? <a href="#" style="color:var(--brand-blue); font-weight:600;">(31) 99876-1234</a></span>
-</header>
-
-<div class="pub-stepper"><div class="pub-stepper-inner">
-  <div class="pub-step is-done"><span class="dot">✓</span><span>Cadastro</span></div>
-  <div class="pub-step is-done"><span class="dot">✓</span><span>Contrato</span></div>
-  <div class="pub-step is-active"><span class="dot">3</span><span>Pagamento</span></div>
-</div></div>
-
-<main class="pub-content">
-  <div style="width:100%; max-width:1100px;">
-    <div style="text-align:center; margin-bottom:24px;">
-      <h1 style="font-family:var(--font-display); font-weight:600; font-size:24px; color:var(--neutral-900); margin:0 0 4px;">Última etapa: pagamento da matrícula</h1>
-      <p style="font-size:13px; color:var(--text-muted); margin:0;">Sua matrícula é confirmada após o pagamento da 1ª mensalidade.</p>
-    </div>
-
-    <div class="checkout-shell">
-      <div style="display:flex; flex-direction:column; gap:16px;">
-
-        <!-- Endereço de cobrança (AddressSection.tsx) -->
-        <section class="sec-card">
-          <h3 class="sec-card-title">Endereço de cobrança</h3>
-          <label style="display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none;">
-            <input type="checkbox" id="useRegistered" style="position:absolute; opacity:0; pointer-events:none; width:0; height:0;" checked/>
-            <div id="addrBox" style="width:18px; height:18px; border-radius:4px; border:2px solid var(--brand-blue); background:var(--brand-blue); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.15s;">
-              <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 3.5l2.5 2.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <span style="font-size:14px; color:var(--neutral-900);">Usar o mesmo endereço do cadastro</span>
-          </label>
-
-          <div id="addrForm" style="display:none; margin-top:16px; display:flex; flex-direction:column; gap:12px;">
-            <div style="max-width:200px;">
-              <div class="pub-field"><label>CEP <span class="req">*</span></label><input type="text" class="form-control" placeholder="00000-000" maxlength="9"/></div>
-            </div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-              <div class="pub-field"><label>Rua / Avenida <span class="req">*</span></label><input type="text" class="form-control" placeholder="Nome da rua"/></div>
-              <div class="pub-field"><label>Bairro <span class="req">*</span></label><input type="text" class="form-control" placeholder="Bairro"/></div>
-            </div>
-            <div style="display:grid; grid-template-columns:1fr 1fr 80px; gap:12px;">
-              <div class="pub-field"><label>Cidade <span class="req">*</span></label><input type="text" class="form-control" placeholder="Cidade"/></div>
-              <div class="pub-field"><label>Complemento</label><input type="text" class="form-control" placeholder="Apto, sala... (opcional)"/></div>
-              <div class="pub-field"><label>Estado <span class="req">*</span></label><input type="text" class="form-control" placeholder="SP" maxlength="2"/></div>
-            </div>
+      <div class="pub-stepper">
+        <div class="pub-stepper-inner">
+          <div class="pub-step is-done">
+            <span class="dot">✓</span><span>Cadastro</span>
           </div>
-        </section>
-
-        <!-- Forma de pagamento (MethodSelector.tsx) -->
-        <section class="sec-card">
-          <h3 class="sec-card-title">Forma de pagamento</h3>
-          <div id="methodGrid" style="display:flex; flex-direction:column; gap:10px;">
-
-            <button type="button" class="method-btn is-selected" data-method="pix">
-              <div class="method-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M7 2.5L11.5 7 7 11.5 2.5 7zm10 0L21.5 7 17 11.5 12.5 7zM7 12.5L11.5 17 7 21.5 2.5 17zm10 0l4.5 4.5-4.5 4.5-4.5-4.5z"/></svg>
-              </div>
-              <div class="method-info"><strong>Pix</strong><em>Aprovação imediata</em></div>
-              <div class="method-badge"><span class="discount-badge">15% off à vista</span><span class="or-text">ou 4× sem juros</span></div>
-            </button>
-
-            <button type="button" class="method-btn" data-method="credit_card">
-              <div class="method-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
-              </div>
-              <div class="method-info"><strong>Cartão de crédito</strong><em>Visa, Master, Elo e outros</em></div>
-              <div class="method-badge"><span class="discount-badge">10% off à vista</span><span class="or-text">ou 4× sem juros</span></div>
-            </button>
-
-            <button type="button" class="method-btn" data-method="boleto">
-              <div class="method-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M2 4h1v16H2zm2 0h2v16H4zm3 0h1v16H7zm2 0h3v16H9zm4 0h1v16h-1zm2 0h2v16h-2zm3 0h1v16h-1zm2 0h1v16h-1z"/></svg>
-              </div>
-              <div class="method-info"><strong>Boleto bancário</strong><em>1–2 dias úteis para compensar</em></div>
-              <div class="method-badge"><span class="discount-badge">15% off à vista</span><span class="or-text">ou 4× sem juros</span></div>
-            </button>
-
+          <div class="pub-step is-done">
+            <span class="dot">✓</span><span>Contrato</span>
           </div>
-        </section>
-
-        <!-- Forma de parcelamento (InstallmentSelector.tsx) -->
-        <section class="sec-card">
-          <h3 class="sec-card-title">Forma de parcelamento</h3>
-          <div class="installments" id="installments" style="grid-template-columns:repeat(2,1fr);"></div>
-          <p style="font-size:11px; color:var(--text-muted); margin:12px 0 0;">As parcelas serão cobradas todo dia 10, com vencimento a partir de 10/08/2026.</p>
-        </section>
-
-        <!-- Pagar agora (NOVO) -->
-        <section class="sec-card" id="payNowCard">
-          <label style="display:flex; align-items:flex-start; gap:14px; cursor:pointer; user-select:none;">
-            <input type="checkbox" id="payNowCheck" style="position:absolute; opacity:0; pointer-events:none; width:0; height:0;"/>
-            <div id="payNowBox" style="width:20px; height:20px; border-radius:5px; border:2px solid var(--border-strong); background:white; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; transition:background 0.15s, border-color 0.15s;"></div>
-            <div>
-              <strong style="display:block; font-size:14px; color:var(--neutral-900); margin-bottom:4px;">Pagar agora</strong>
-              <p style="font-size:12px; color:var(--text-muted); margin:0; line-height:1.5;">Você pode pagar até o dia <strong style="color:var(--neutral-800);">10/08/2026</strong> ou pode pagar agora.</p>
-            </div>
-          </label>
-        </section>
-
-        <!-- Painéis de pagamento — visíveis apenas quando "Pagar agora" marcado -->
-        <div id="payPanel" style="display:none; display:flex; flex-direction:column; gap:16px;">
-
-          <!-- Pix Panel (PixPanel.tsx) -->
-          <section class="sec-card" id="pixSection">
-            <h3 class="sec-card-title">Pagar com Pix</h3>
-            <div class="pix-block">
-              <div class="pix-qr" aria-label="QR Code Pix"></div>
-              <div style="text-align:center;">
-                <div id="pixAmount" style="font-weight:700; font-size:14px; color:var(--neutral-900);">R$ 260,00 — 1ª mensalidade</div>
-                <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">QR Code expira em <strong>14:58</strong></div>
-              </div>
-              <code class="pix-code">00020126360014BR.GOV.BCB.PIX0114004566677-01030-5204000053039865802BR5925MAGO DO PISM CURSOS LTDA6009BELO HORIZONTE62070503***6304B12F</code>
-              <button class="pub-btn outline" style="width:100%;">📋 Copiar código Pix Copia &amp; Cola</button>
-            </div>
-            <div style="margin-top:18px; padding:14px 16px; background:rgba(39,133,86,0.06); border-left:3px solid var(--color-success); border-radius:6px; font-size:12px; color:var(--text-secondary);">
-              <strong style="color:var(--color-success);">⚡ Pix instantâneo:</strong> assim que o banco confirmar o pagamento, sua matrícula é confirmada.
-            </div>
-          </section>
-
-          <!-- Card Panel (CardPanel.tsx) -->
-          <section class="sec-card" id="cardSection" style="display:none;">
-            <h3 class="sec-card-title">Pagar com Cartão de Crédito</h3>
-            <div style="display:flex; flex-direction:column; gap:12px;">
-              <div class="pub-field"><label>Número do cartão <span class="req">*</span></label><input type="text" class="form-control" placeholder="0000 0000 0000 0000" inputmode="numeric" maxlength="19"/></div>
-              <div class="pub-field"><label>Nome no cartão <span class="req">*</span></label><input type="text" class="form-control" placeholder="Como aparece no cartão" autocomplete="cc-name"/></div>
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                <div class="pub-field"><label>Validade <span class="req">*</span></label><input type="text" class="form-control" placeholder="MM/AA" inputmode="numeric" maxlength="5" autocomplete="cc-exp"/></div>
-                <div class="pub-field"><label>CVV <span class="req">*</span></label><input type="text" class="form-control" placeholder="000" inputmode="numeric" maxlength="4" autocomplete="cc-csc"/></div>
-              </div>
-              <button type="button" id="cardPayBtn" class="pub-btn primary" style="margin-top:8px;">Pagar R$ 260,00 (1ª de 4×)</button>
-            </div>
-          </section>
-
-          <!-- Boleto Panel (BoletoPanel.tsx) -->
-          <section class="sec-card" id="boletoSection" style="display:none;">
-            <h3 class="sec-card-title">Pagar com Boleto Bancário</h3>
-            <div style="display:flex; flex-direction:column; gap:12px;">
-              <div id="boletoAmount" style="font-weight:700; font-size:14px; color:var(--neutral-900);">R$ 260,00 — 1ª mensalidade</div>
-              <div style="background:var(--neutral-100); border-radius:8px; padding:12px 14px; font-family:monospace; font-size:12px; word-break:break-all; color:var(--neutral-800);">23793.38128 60007.590752 70102.063102 9 89150000026000</div>
-              <button type="button" class="pub-btn outline">📋 Copiar linha digitável</button>
-              <a href="#" class="pub-btn outline" style="text-align:center; text-decoration:none;">📄 Abrir boleto em PDF</a>
-            </div>
-            <div style="margin-top:18px; padding:14px 16px; background:rgba(39,133,86,0.06); border-left:3px solid var(--color-success); border-radius:6px; font-size:12px; color:var(--text-secondary);">
-              <strong style="color:var(--color-success);">📄 Vencimento em 3 dias úteis:</strong> o pagamento pode levar 1-2 dias úteis para ser confirmado. Assim que o boleto for processado, sua matrícula estará confirmada.
-            </div>
-          </section>
-
+          <div class="pub-step is-active">
+            <span class="dot">3</span><span>Pagamento</span>
+          </div>
         </div>
       </div>
 
-      <!-- Resumo (CheckoutSummary.tsx) -->
-      <aside class="summary">
-        <h3>Resumo da matrícula</h3>
-        <div style="display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--neutral-200);">
-          <div style="width:44px; height:44px; border-radius:8px; background:var(--brand-blue); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0;">A</div>
-          <div>
-            <div style="font-weight:700; color:var(--neutral-900); font-size:13px;">Arthur dos Santos Alves</div>
-            <div style="font-size:11px; color:var(--text-muted);">Curso Intensivo 2026</div>
+      <main class="pub-content">
+        <div style="width: 100%; max-width: 1100px">
+          <div style="text-align: center; margin-bottom: 24px">
+            <h1
+              style="
+                font-family: var(--font-display);
+                font-weight: 600;
+                font-size: 24px;
+                color: var(--neutral-900);
+                margin: 0 0 4px;
+              "
+            >
+              Última etapa: pagamento da matrícula
+            </h1>
+            <p style="font-size: 13px; color: var(--text-muted); margin: 0">
+              Sua matrícula é confirmada após o pagamento da 1ª mensalidade.
+            </p>
+          </div>
+
+          <div class="checkout-shell">
+            <div style="display: flex; flex-direction: column; gap: 16px">
+              <!-- Endereço de cobrança (AddressSection.tsx) -->
+              <section class="sec-card">
+                <h3 class="sec-card-title">Endereço de cobrança</h3>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    cursor: pointer;
+                    user-select: none;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    id="useRegistered"
+                    style="
+                      position: absolute;
+                      opacity: 0;
+                      pointer-events: none;
+                      width: 0;
+                      height: 0;
+                    "
+                    checked
+                  />
+                  <div
+                    id="addrBox"
+                    style="
+                      width: 18px;
+                      height: 18px;
+                      border-radius: 4px;
+                      border: 2px solid var(--brand-blue);
+                      background: var(--brand-blue);
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      flex-shrink: 0;
+                      transition: all 0.15s;
+                    "
+                  >
+                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                      <path
+                        d="M1 3.5l2.5 2.5L9 1"
+                        stroke="white"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
+                  <span style="font-size: 14px; color: var(--neutral-900)"
+                    >Usar o mesmo endereço do cadastro</span
+                  >
+                </label>
+
+                <div
+                  id="addrForm"
+                  style="
+                    display: none;
+                    margin-top: 16px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                  "
+                >
+                  <div style="max-width: 200px">
+                    <div class="pub-field">
+                      <label>CEP <span class="req">*</span></label
+                      ><input
+                        type="text"
+                        class="form-control"
+                        placeholder="00000-000"
+                        maxlength="9"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      display: grid;
+                      grid-template-columns: 1fr 1fr;
+                      gap: 12px;
+                    "
+                  >
+                    <div class="pub-field">
+                      <label>Rua / Avenida <span class="req">*</span></label
+                      ><input
+                        type="text"
+                        class="form-control"
+                        placeholder="Nome da rua"
+                      />
+                    </div>
+                    <div class="pub-field">
+                      <label>Bairro <span class="req">*</span></label
+                      ><input
+                        type="text"
+                        class="form-control"
+                        placeholder="Bairro"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      display: grid;
+                      grid-template-columns: 1fr 1fr 80px;
+                      gap: 12px;
+                    "
+                  >
+                    <div class="pub-field">
+                      <label>Cidade <span class="req">*</span></label
+                      ><input
+                        type="text"
+                        class="form-control"
+                        placeholder="Cidade"
+                      />
+                    </div>
+                    <div class="pub-field">
+                      <label>Complemento</label
+                      ><input
+                        type="text"
+                        class="form-control"
+                        placeholder="Apto, sala... (opcional)"
+                      />
+                    </div>
+                    <div class="pub-field">
+                      <label>Estado <span class="req">*</span></label
+                      ><input
+                        type="text"
+                        class="form-control"
+                        placeholder="SP"
+                        maxlength="2"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Forma de pagamento (MethodSelector.tsx) -->
+              <section class="sec-card">
+                <h3 class="sec-card-title">Forma de pagamento</h3>
+                <div
+                  id="methodGrid"
+                  style="display: flex; flex-direction: column; gap: 10px"
+                >
+                  <button
+                    type="button"
+                    class="method-btn is-selected"
+                    data-method="pix"
+                  >
+                    <div class="method-icon">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        width="22"
+                        height="22"
+                      >
+                        <path
+                          d="M7 2.5L11.5 7 7 11.5 2.5 7zm10 0L21.5 7 17 11.5 12.5 7zM7 12.5L11.5 17 7 21.5 2.5 17zm10 0l4.5 4.5-4.5 4.5-4.5-4.5z"
+                        />
+                      </svg>
+                    </div>
+                    <div class="method-info">
+                      <strong>Pix</strong><em>Aprovação imediata</em>
+                    </div>
+                    <div class="method-badge">
+                      <span class="discount-badge">15% off à vista</span
+                      ><span class="or-text">ou 4× sem juros</span>
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="method-btn"
+                    data-method="credit_card"
+                  >
+                    <div class="method-icon">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        width="22"
+                        height="22"
+                      >
+                        <rect x="2" y="5" width="20" height="14" rx="2" />
+                        <path d="M2 10h20" />
+                        <path d="M6 15h4" />
+                      </svg>
+                    </div>
+                    <div class="method-info">
+                      <strong>Cartão de crédito</strong
+                      ><em>Visa, Master, Elo e outros</em>
+                    </div>
+                    <div class="method-badge">
+                      <span class="discount-badge">10% off à vista</span
+                      ><span class="or-text">ou 4× sem juros</span>
+                    </div>
+                  </button>
+
+                  <button type="button" class="method-btn" data-method="boleto">
+                    <div class="method-icon">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        width="22"
+                        height="22"
+                      >
+                        <path
+                          d="M2 4h1v16H2zm2 0h2v16H4zm3 0h1v16H7zm2 0h3v16H9zm4 0h1v16h-1zm2 0h2v16h-2zm3 0h1v16h-1zm2 0h1v16h-1z"
+                        />
+                      </svg>
+                    </div>
+                    <div class="method-info">
+                      <strong>Boleto bancário</strong
+                      ><em>1–2 dias úteis para compensar</em>
+                    </div>
+                    <div class="method-badge">
+                      <span class="discount-badge">15% off à vista</span
+                      ><span class="or-text">ou 4× sem juros</span>
+                    </div>
+                  </button>
+                </div>
+              </section>
+
+              <!-- Forma de parcelamento (InstallmentSelector.tsx) -->
+              <section class="sec-card">
+                <h3 class="sec-card-title">Forma de parcelamento</h3>
+                <div
+                  class="installments"
+                  id="installments"
+                  style="grid-template-columns: repeat(2, 1fr)"
+                ></div>
+                <p
+                  style="
+                    font-size: 11px;
+                    color: var(--text-muted);
+                    margin: 12px 0 0;
+                  "
+                >
+                  As parcelas serão cobradas todo dia 10, com vencimento a
+                  partir de 10/08/2026.
+                </p>
+              </section>
+
+              <!-- Pagar agora (NOVO) -->
+              <section class="sec-card" id="payNowCard">
+                <label
+                  style="
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 14px;
+                    cursor: pointer;
+                    user-select: none;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    id="payNowCheck"
+                    style="
+                      position: absolute;
+                      opacity: 0;
+                      pointer-events: none;
+                      width: 0;
+                      height: 0;
+                    "
+                  />
+                  <div
+                    id="payNowBox"
+                    style="
+                      width: 20px;
+                      height: 20px;
+                      border-radius: 5px;
+                      border: 2px solid var(--border-strong);
+                      background: white;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      flex-shrink: 0;
+                      margin-top: 2px;
+                      transition:
+                        background 0.15s,
+                        border-color 0.15s;
+                    "
+                  ></div>
+                  <div>
+                    <strong
+                      style="
+                        display: block;
+                        font-size: 14px;
+                        color: var(--neutral-900);
+                        margin-bottom: 4px;
+                      "
+                      >Pagar agora</strong
+                    >
+                    <p
+                      style="
+                        font-size: 12px;
+                        color: var(--text-muted);
+                        margin: 0;
+                        line-height: 1.5;
+                      "
+                    >
+                      Você pode pagar até o dia
+                      <strong style="color: var(--neutral-800)"
+                        >10/08/2026</strong
+                      >
+                      ou pode pagar agora.
+                    </p>
+                  </div>
+                </label>
+              </section>
+
+              <!-- Botão confirmar — visível apenas quando NÃO vai pagar agora -->
+              <div id="confirmSection">
+                <a
+                  href="confirmacao.html"
+                  class="pub-btn success"
+                  style="
+                    width: 100%;
+                    justify-content: center;
+                    text-decoration: none;
+                  "
+                >
+                  Confirmar matrícula — receber fatura por e-mail
+                </a>
+                <p
+                  style="
+                    font-size: 11px;
+                    color: var(--text-muted);
+                    text-align: center;
+                    margin: 10px 0 0;
+                  "
+                >
+                  A 1ª fatura vencerá em <strong>10/08/2026</strong>. Você
+                  receberá um lembrete por e-mail.
+                </p>
+              </div>
+
+              <!-- Painéis de pagamento — visíveis apenas quando "Pagar agora" marcado -->
+              <div
+                id="payPanel"
+                style="
+                  display: none;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 16px;
+                "
+              >
+                <!-- Pix Panel (PixPanel.tsx) -->
+                <section class="sec-card" id="pixSection">
+                  <h3 class="sec-card-title">Pagar com Pix</h3>
+                  <div class="pix-block">
+                    <div class="pix-qr" aria-label="QR Code Pix"></div>
+                    <div style="text-align: center">
+                      <div
+                        id="pixAmount"
+                        style="
+                          font-weight: 700;
+                          font-size: 14px;
+                          color: var(--neutral-900);
+                        "
+                      >
+                        R$ 260,00 — 1ª mensalidade
+                      </div>
+                      <div
+                        style="
+                          font-size: 11px;
+                          color: var(--text-muted);
+                          margin-top: 4px;
+                        "
+                      >
+                        QR Code expira em <strong>14:58</strong>
+                      </div>
+                    </div>
+                    <code class="pix-code"
+                      >00020126360014BR.GOV.BCB.PIX0114004566677-01030-5204000053039865802BR5925MAGO
+                      DO PISM CURSOS LTDA6009BELO
+                      HORIZONTE62070503***6304B12F</code
+                    >
+                    <button class="pub-btn outline" style="width: 100%">
+                      📋 Copiar código Pix Copia &amp; Cola
+                    </button>
+                  </div>
+                  <div
+                    style="
+                      margin-top: 18px;
+                      padding: 14px 16px;
+                      background: rgba(39, 133, 86, 0.06);
+                      border-left: 3px solid var(--color-success);
+                      border-radius: 6px;
+                      font-size: 12px;
+                      color: var(--text-secondary);
+                    "
+                  >
+                    <strong style="color: var(--color-success)"
+                      >⚡ Pix instantâneo:</strong
+                    >
+                    assim que o banco confirmar o pagamento, sua matrícula é
+                    confirmada.
+                  </div>
+                  <a
+                    href="confirmacao.html"
+                    class="pub-btn success"
+                    style="
+                      width: 100%;
+                      margin-top: 14px;
+                      justify-content: center;
+                      text-decoration: none;
+                    "
+                    >✓ Já paguei — ver confirmação</a
+                  >
+                </section>
+
+                <!-- Card Panel (CardPanel.tsx) -->
+                <section
+                  class="sec-card"
+                  id="cardSection"
+                  style="display: none"
+                >
+                  <h3 class="sec-card-title">Pagar com Cartão de Crédito</h3>
+                  <div style="display: flex; flex-direction: column; gap: 12px">
+                    <div class="pub-field">
+                      <label>Número do cartão <span class="req">*</span></label
+                      ><input
+                        type="text"
+                        class="form-control"
+                        placeholder="0000 0000 0000 0000"
+                        inputmode="numeric"
+                        maxlength="19"
+                      />
+                    </div>
+                    <div class="pub-field">
+                      <label>Nome no cartão <span class="req">*</span></label
+                      ><input
+                        type="text"
+                        class="form-control"
+                        placeholder="Como aparece no cartão"
+                        autocomplete="cc-name"
+                      />
+                    </div>
+                    <div
+                      style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 12px;
+                      "
+                    >
+                      <div class="pub-field">
+                        <label>Validade <span class="req">*</span></label
+                        ><input
+                          type="text"
+                          class="form-control"
+                          placeholder="MM/AA"
+                          inputmode="numeric"
+                          maxlength="5"
+                          autocomplete="cc-exp"
+                        />
+                      </div>
+                      <div class="pub-field">
+                        <label>CVV <span class="req">*</span></label
+                        ><input
+                          type="text"
+                          class="form-control"
+                          placeholder="000"
+                          inputmode="numeric"
+                          maxlength="4"
+                          autocomplete="cc-csc"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      id="cardPayBtn"
+                      class="pub-btn primary"
+                      style="margin-top: 8px"
+                      onclick="window.location.href = 'confirmacao.html'"
+                    >
+                      Pagar R$ 260,00 (1ª de 4×)
+                    </button>
+                  </div>
+                </section>
+
+                <!-- Boleto Panel (BoletoPanel.tsx) -->
+                <section
+                  class="sec-card"
+                  id="boletoSection"
+                  style="display: none"
+                >
+                  <h3 class="sec-card-title">Pagar com Boleto Bancário</h3>
+                  <div style="display: flex; flex-direction: column; gap: 12px">
+                    <div
+                      id="boletoAmount"
+                      style="
+                        font-weight: 700;
+                        font-size: 14px;
+                        color: var(--neutral-900);
+                      "
+                    >
+                      R$ 260,00 — 1ª mensalidade
+                    </div>
+                    <div
+                      style="
+                        background: var(--neutral-100);
+                        border-radius: 8px;
+                        padding: 12px 14px;
+                        font-family: monospace;
+                        font-size: 12px;
+                        word-break: break-all;
+                        color: var(--neutral-800);
+                      "
+                    >
+                      23793.38128 60007.590752 70102.063102 9 89150000026000
+                    </div>
+                    <button type="button" class="pub-btn outline">
+                      📋 Copiar linha digitável
+                    </button>
+                    <a
+                      href="#"
+                      class="pub-btn outline"
+                      style="text-align: center; text-decoration: none"
+                      >📄 Abrir boleto em PDF</a
+                    >
+                    <a
+                      href="confirmacao.html"
+                      class="pub-btn success"
+                      style="text-align: center; text-decoration: none"
+                      >✓ Boleto gerado — ver confirmação</a
+                    >
+                  </div>
+                  <div
+                    style="
+                      margin-top: 18px;
+                      padding: 14px 16px;
+                      background: rgba(39, 133, 86, 0.06);
+                      border-left: 3px solid var(--color-success);
+                      border-radius: 6px;
+                      font-size: 12px;
+                      color: var(--text-secondary);
+                    "
+                  >
+                    <strong style="color: var(--color-success)"
+                      >📄 Vencimento em 3 dias úteis:</strong
+                    >
+                    o pagamento pode levar 1-2 dias úteis para ser confirmado.
+                    Assim que o boleto for processado, sua matrícula estará
+                    confirmada.
+                  </div>
+                </section>
+              </div>
+            </div>
+
+            <!-- Resumo (CheckoutSummary.tsx) -->
+            <aside class="summary">
+              <h3>Resumo da matrícula</h3>
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  padding: 12px 0;
+                  border-bottom: 1px solid var(--neutral-200);
+                "
+              >
+                <div
+                  style="
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 8px;
+                    background: var(--brand-blue);
+                    color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 700;
+                    flex-shrink: 0;
+                  "
+                >
+                  A
+                </div>
+                <div>
+                  <div
+                    style="
+                      font-weight: 700;
+                      color: var(--neutral-900);
+                      font-size: 13px;
+                    "
+                  >
+                    Arthur dos Santos Alves
+                  </div>
+                  <div style="font-size: 11px; color: var(--text-muted)">
+                    Curso Intensivo 2026
+                  </div>
+                </div>
+              </div>
+
+              <div class="summary-line">
+                <span>Curso Intensivo 2026 · 4× R$ 260,00</span
+                ><span>R$ 1.040,00</span>
+              </div>
+
+              <div
+                class="summary-line"
+                id="sumDiscLine"
+                style="color: var(--color-success); display: none"
+              >
+                <span id="sumDiscLabel">Desconto à vista (15%)</span>
+                <span id="sumDiscVal">−R$ 156,00</span>
+              </div>
+
+              <div class="summary-total">
+                <span class="label" id="sumPayLabel"
+                  >Vencimento: 10/08/2026</span
+                >
+                <span class="value" id="sumPayVal">R$ 260,00</span>
+              </div>
+              <p
+                style="
+                  font-size: 11px;
+                  color: var(--text-muted);
+                  margin: 8px 0 0;
+                "
+                id="sumNextLabel"
+              >
+                Próxima parcela: <strong>10/09/2026</strong> · R$ 260,00 (2 de
+                4)
+              </p>
+
+              <div
+                style="
+                  margin-top: 18px;
+                  padding: 12px 14px;
+                  background: var(--neutral-100);
+                  border-radius: 8px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                "
+              >
+                <span style="font-size: 18px">🔒</span>
+                <div
+                  style="
+                    font-size: 11px;
+                    color: var(--text-secondary);
+                    line-height: 1.4;
+                  "
+                >
+                  Pagamento processado com segurança via Pagarme.
+                </div>
+              </div>
+
+              <div style="text-align: center; margin-top: 14px">
+                <a
+                  href="contrato.html"
+                  style="
+                    font-size: 12px;
+                    color: var(--text-muted);
+                    text-decoration: none;
+                  "
+                  >← Voltar ao contrato</a
+                >
+              </div>
+            </aside>
           </div>
         </div>
-
-        <div class="summary-line"><span>Curso Intensivo 2026 · 4× R$ 260,00</span><span>R$ 1.040,00</span></div>
-
-        <div class="summary-line" id="sumDiscLine" style="color:var(--color-success); display:none;">
-          <span id="sumDiscLabel">Desconto à vista (15%)</span>
-          <span id="sumDiscVal">−R$ 156,00</span>
-        </div>
-
-        <div class="summary-total">
-          <span class="label" id="sumPayLabel">Vencimento: 10/08/2026</span>
-          <span class="value" id="sumPayVal">R$ 260,00</span>
-        </div>
-        <p style="font-size:11px; color:var(--text-muted); margin:8px 0 0;" id="sumNextLabel">Próxima parcela: <strong>10/09/2026</strong> · R$ 260,00 (2 de 4)</p>
-
-        <div style="margin-top:18px; padding:12px 14px; background:var(--neutral-100); border-radius:8px; display:flex; align-items:center; gap:10px;">
-          <span style="font-size:18px;">🔒</span>
-          <div style="font-size:11px; color:var(--text-secondary); line-height:1.4;">Pagamento processado com segurança via Pagarme.</div>
-        </div>
-
-        <div style="text-align:center; margin-top:14px;">
-          <a href="contrato.html" style="font-size:12px; color:var(--text-muted); text-decoration:none;">← Voltar ao contrato</a>
-        </div>
-      </aside>
+      </main>
     </div>
-  </div>
-</main>
-</div>
-<script>
-(function(){
-  function fmt(v){ return 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+    <script>
+      (function () {
+        function fmt(v) {
+          return (
+            "R$ " +
+            v.toLocaleString("pt-BR", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          );
+        }
 
-  // Values from InstallmentSelector.tsx
-  const PLANS = {
-    pix: [
-      {n:1, label:'1x à vista', sub:'R$ 884,00 · 15% off',           payNow:884,  disc:156, discLabel:'Desconto à vista (15%)', next:''},
-      {n:4, label:'4x',         sub:'R$ 260,00/mês · sem juros',       payNow:260,  disc:0,   discLabel:'',                       next:'Próxima parcela: 10/09/2026 · R$ 260,00 (2 de 4)'}
-    ],
-    boleto: [
-      {n:1, label:'1x à vista', sub:'R$ 884,00 · 15% off',           payNow:884,  disc:156, discLabel:'Desconto à vista (15%)', next:''},
-      {n:4, label:'4x',         sub:'R$ 260,00/mês · 1-2 dias úteis', payNow:260,  disc:0,   discLabel:'',                       next:'Próxima parcela: 10/09/2026 · R$ 260,00 (2 de 4)'}
-    ],
-    credit_card: [
-      {n:1, label:'1x à vista', sub:'R$ 936,00 · 10% off',           payNow:936,  disc:104, discLabel:'Desconto à vista (10%)', next:''},
-      {n:4, label:'4x',         sub:'R$ 260,00/mês no cartão',        payNow:260,  disc:0,   discLabel:'',                       next:'Próxima parcela: 10/09/2026 · R$ 260,00 (2 de 4)'}
-    ]
-  };
+        // Values from InstallmentSelector.tsx
+        const PLANS = {
+          pix: [
+            {
+              n: 1,
+              label: "1x à vista",
+              sub: "R$ 884,00 · 15% off",
+              payNow: 884,
+              disc: 156,
+              discLabel: "Desconto à vista (15%)",
+              next: "",
+            },
+            {
+              n: 4,
+              label: "4x",
+              sub: "R$ 260,00/mês · sem juros",
+              payNow: 260,
+              disc: 0,
+              discLabel: "",
+              next: "Próxima parcela: 10/09/2026 · R$ 260,00 (2 de 4)",
+            },
+          ],
+          boleto: [
+            {
+              n: 1,
+              label: "1x à vista",
+              sub: "R$ 884,00 · 15% off",
+              payNow: 884,
+              disc: 156,
+              discLabel: "Desconto à vista (15%)",
+              next: "",
+            },
+            {
+              n: 4,
+              label: "4x",
+              sub: "R$ 260,00/mês · 1-2 dias úteis",
+              payNow: 260,
+              disc: 0,
+              discLabel: "",
+              next: "Próxima parcela: 10/09/2026 · R$ 260,00 (2 de 4)",
+            },
+          ],
+          credit_card: [
+            {
+              n: 1,
+              label: "1x à vista",
+              sub: "R$ 936,00 · 10% off",
+              payNow: 936,
+              disc: 104,
+              discLabel: "Desconto à vista (10%)",
+              next: "",
+            },
+            {
+              n: 4,
+              label: "4x",
+              sub: "R$ 260,00/mês no cartão",
+              payNow: 260,
+              disc: 0,
+              discLabel: "",
+              next: "Próxima parcela: 10/09/2026 · R$ 260,00 (2 de 4)",
+            },
+          ],
+        };
 
-  let currentPlan   = null;
-  let currentMethod = 'pix';
+        let currentPlan = null;
+        let currentMethod = "pix";
 
-  const methodGrid   = document.getElementById('methodGrid');
-  const installList  = document.getElementById('installments');
-  const payNowChk    = document.getElementById('payNowCheck');
-  const payNowBox    = document.getElementById('payNowBox');
-  const payNowCard   = document.getElementById('payNowCard');
-  const payPanel     = document.getElementById('payPanel');
-  const useRegChk    = document.getElementById('useRegistered');
-  const addrBox      = document.getElementById('addrBox');
-  const addrForm     = document.getElementById('addrForm');
+        const methodGrid = document.getElementById("methodGrid");
+        const installList = document.getElementById("installments");
+        const payNowChk = document.getElementById("payNowCheck");
+        const payNowBox = document.getElementById("payNowBox");
+        const payNowCard = document.getElementById("payNowCard");
+        const payPanel = document.getElementById("payPanel");
+        const useRegChk = document.getElementById("useRegistered");
+        const addrBox = document.getElementById("addrBox");
+        const addrForm = document.getElementById("addrForm");
 
-  // ── Address toggle ────────────────────────────────────────────
-  useRegChk.addEventListener('change', function(){
-    const on = this.checked;
-    addrBox.style.background  = on ? 'var(--brand-blue)' : 'white';
-    addrBox.style.borderColor = on ? 'var(--brand-blue)' : 'var(--border-strong)';
-    addrBox.innerHTML = on
-      ? '<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 3.5l2.5 2.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-      : '';
-    addrForm.style.display = on ? 'none' : 'flex';
-  });
-  // init hidden (useRegistered checked by default)
-  addrForm.style.display = 'none';
+        // ── Address toggle ────────────────────────────────────────────
+        useRegChk.addEventListener("change", function () {
+          const on = this.checked;
+          addrBox.style.background = on ? "var(--brand-blue)" : "white";
+          addrBox.style.borderColor = on
+            ? "var(--brand-blue)"
+            : "var(--border-strong)";
+          addrBox.innerHTML = on
+            ? '<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 3.5l2.5 2.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+            : "";
+          addrForm.style.display = on ? "none" : "flex";
+        });
+        // init hidden (useRegistered checked by default)
+        addrForm.style.display = "none";
 
-  // ── Pay-now checkbox ──────────────────────────────────────────
-  function syncPayNow(){
-    const on = payNowChk.checked;
-    payNowBox.style.background  = on ? 'var(--brand-blue)' : 'white';
-    payNowBox.style.borderColor = on ? 'var(--brand-blue)' : 'var(--border-strong)';
-    payNowBox.innerHTML = on
-      ? '<svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-      : '';
-    payNowCard.classList.toggle('is-active', on);
-    payPanel.style.display = on ? 'flex' : 'none';
-    if(currentPlan) updateSummary(currentPlan);
-  }
-  payNowChk.addEventListener('change', syncPayNow);
+        // ── Pay-now checkbox ──────────────────────────────────────────
+        function syncPayNow() {
+          const on = payNowChk.checked;
+          payNowBox.style.background = on ? "var(--brand-blue)" : "white";
+          payNowBox.style.borderColor = on
+            ? "var(--brand-blue)"
+            : "var(--border-strong)";
+          payNowBox.innerHTML = on
+            ? '<svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+            : "";
+          payNowCard.classList.toggle("is-active", on);
+          payPanel.style.display = on ? "flex" : "none";
+          document.getElementById("confirmSection").style.display = on
+            ? "none"
+            : "";
+          if (currentPlan) updateSummary(currentPlan);
+        }
+        payNowChk.addEventListener("change", syncPayNow);
 
-  // ── Show correct payment section ──────────────────────────────
-  function showPaySection(method){
-    document.getElementById('pixSection').style.display    = method === 'pix'         ? '' : 'none';
-    document.getElementById('cardSection').style.display   = method === 'credit_card' ? '' : 'none';
-    document.getElementById('boletoSection').style.display = method === 'boleto'      ? '' : 'none';
-  }
+        // ── Show correct payment section ──────────────────────────────
+        function showPaySection(method) {
+          document.getElementById("pixSection").style.display =
+            method === "pix" ? "" : "none";
+          document.getElementById("cardSection").style.display =
+            method === "credit_card" ? "" : "none";
+          document.getElementById("boletoSection").style.display =
+            method === "boleto" ? "" : "none";
+        }
 
-  // ── Summary update ────────────────────────────────────────────
-  function updateSummary(plan){
-    currentPlan = plan;
-    const discLine  = document.getElementById('sumDiscLine');
-    const discLabel = document.getElementById('sumDiscLabel');
-    const discVal   = document.getElementById('sumDiscVal');
-    const payVal    = document.getElementById('sumPayVal');
-    const payLabel  = document.getElementById('sumPayLabel');
-    const nextLabel = document.getElementById('sumNextLabel');
+        // ── Summary update ────────────────────────────────────────────
+        function updateSummary(plan) {
+          currentPlan = plan;
+          const discLine = document.getElementById("sumDiscLine");
+          const discLabel = document.getElementById("sumDiscLabel");
+          const discVal = document.getElementById("sumDiscVal");
+          const payVal = document.getElementById("sumPayVal");
+          const payLabel = document.getElementById("sumPayLabel");
+          const nextLabel = document.getElementById("sumNextLabel");
 
-    if(plan.disc > 0){
-      discLine.style.display = '';
-      discLabel.textContent  = plan.discLabel;
-      discVal.textContent    = '−' + fmt(plan.disc);
-    } else {
-      discLine.style.display = 'none';
-    }
-    payVal.textContent   = fmt(plan.payNow);
-    payLabel.textContent = payNowChk.checked ? 'A pagar agora' : 'Vencimento: 10/08/2026';
-    if(plan.next){ nextLabel.textContent = plan.next; nextLabel.style.display = ''; }
-    else { nextLabel.style.display = 'none'; }
+          if (plan.disc > 0) {
+            discLine.style.display = "";
+            discLabel.textContent = plan.discLabel;
+            discVal.textContent = "−" + fmt(plan.disc);
+          } else {
+            discLine.style.display = "none";
+          }
+          payVal.textContent = fmt(plan.payNow);
+          payLabel.textContent = payNowChk.checked
+            ? "A pagar agora"
+            : "Vencimento: 10/08/2026";
+          if (plan.next) {
+            nextLabel.textContent = plan.next;
+            nextLabel.style.display = "";
+          } else {
+            nextLabel.style.display = "none";
+          }
 
-    // Sync amounts inside payment panels
-    const pixAmt    = document.getElementById('pixAmount');
-    const boletoAmt = document.getElementById('boletoAmount');
-    const cardBtn   = document.getElementById('cardPayBtn');
-    if(pixAmt)    pixAmt.textContent    = fmt(plan.payNow) + ' — 1ª mensalidade';
-    if(boletoAmt) boletoAmt.textContent = fmt(plan.payNow) + ' — 1ª mensalidade';
-    if(cardBtn)   cardBtn.textContent   = plan.n === 1
-      ? 'Pagar ' + fmt(plan.payNow) + ' à vista'
-      : 'Pagar ' + fmt(plan.payNow) + ' (1ª de ' + plan.n + '×)';
-  }
+          // Sync amounts inside payment panels
+          const pixAmt = document.getElementById("pixAmount");
+          const boletoAmt = document.getElementById("boletoAmount");
+          const cardBtn = document.getElementById("cardPayBtn");
+          if (pixAmt)
+            pixAmt.textContent = fmt(plan.payNow) + " — 1ª mensalidade";
+          if (boletoAmt)
+            boletoAmt.textContent = fmt(plan.payNow) + " — 1ª mensalidade";
+          if (cardBtn)
+            cardBtn.textContent =
+              plan.n === 1
+                ? "Pagar " + fmt(plan.payNow) + " à vista"
+                : "Pagar " + fmt(plan.payNow) + " (1ª de " + plan.n + "×)";
+        }
 
-  // ── Installment list ──────────────────────────────────────────
-  function renderInstallments(method){
-    const opts = PLANS[method];
-    installList.innerHTML = opts.map(o => {
-      const sel = o.n === 4 ? ' is-selected' : '';
-      return '<div class="opt' + sel + '" data-n="' + o.n + '"><strong>' + o.label + '</strong><span>' + o.sub + '</span></div>';
-    }).join('');
-    installList.querySelectorAll('.opt').forEach(function(el){
-      el.addEventListener('click', function(){
-        installList.querySelectorAll('.opt').forEach(function(x){ x.classList.remove('is-selected'); });
-        el.classList.add('is-selected');
-        var plan = opts.find(function(o){ return o.n === parseInt(el.dataset.n); }) || opts[0];
-        updateSummary(plan);
-      });
-    });
-    var defaultOpt = opts.find(function(o){ return o.n === 4; }) || opts[opts.length-1];
-    updateSummary(defaultOpt);
-  }
+        // ── Installment list ──────────────────────────────────────────
+        function renderInstallments(method) {
+          const opts = PLANS[method];
+          installList.innerHTML = opts
+            .map((o) => {
+              const sel = o.n === 4 ? " is-selected" : "";
+              return (
+                '<div class="opt' +
+                sel +
+                '" data-n="' +
+                o.n +
+                '"><strong>' +
+                o.label +
+                "</strong><span>" +
+                o.sub +
+                "</span></div>"
+              );
+            })
+            .join("");
+          installList.querySelectorAll(".opt").forEach(function (el) {
+            el.addEventListener("click", function () {
+              installList.querySelectorAll(".opt").forEach(function (x) {
+                x.classList.remove("is-selected");
+              });
+              el.classList.add("is-selected");
+              var plan =
+                opts.find(function (o) {
+                  return o.n === parseInt(el.dataset.n);
+                }) || opts[0];
+              updateSummary(plan);
+            });
+          });
+          var defaultOpt =
+            opts.find(function (o) {
+              return o.n === 4;
+            }) || opts[opts.length - 1];
+          updateSummary(defaultOpt);
+        }
 
-  // ── Method selector ───────────────────────────────────────────
-  methodGrid.querySelectorAll('.method-btn').forEach(function(el){
-    el.addEventListener('click', function(){
-      methodGrid.querySelectorAll('.method-btn').forEach(function(x){ x.classList.remove('is-selected'); });
-      el.classList.add('is-selected');
-      currentMethod = el.dataset.method;
-      showPaySection(currentMethod);
-      renderInstallments(currentMethod);
-    });
-  });
+        // ── Method selector ───────────────────────────────────────────
+        methodGrid.querySelectorAll(".method-btn").forEach(function (el) {
+          el.addEventListener("click", function () {
+            methodGrid.querySelectorAll(".method-btn").forEach(function (x) {
+              x.classList.remove("is-selected");
+            });
+            el.classList.add("is-selected");
+            currentMethod = el.dataset.method;
+            showPaySection(currentMethod);
+            renderInstallments(currentMethod);
+          });
+        });
 
-  // ── Init ──────────────────────────────────────────────────────
-  syncPayNow();
-  showPaySection('pix');
-  renderInstallments('pix');
-})();
-</script>
-</body></html>
+        // ── Init ──────────────────────────────────────────────────────
+        syncPayNow();
+        showPaySection("pix");
+        renderInstallments("pix");
+      })();
+    </script>
+  </body>
+</html>
