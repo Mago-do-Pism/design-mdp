@@ -138,7 +138,7 @@
       width: 1440px;
       height: 1024px;
       transform-origin: top left;
-      transform: scale(0.305);
+      transform: scale(var(--thumb-scale, 0.305));
       border: 0;
       pointer-events: none;
     }
@@ -345,6 +345,17 @@
         </div>
       </article>
 
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="alunos/comunidade.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Tela de Comunidade</p>
+            <p class="screen-meta-sub">Chat da turma · read-only · reações</p>
+          </div>
+          <a href="alunos/comunidade.html">Abrir →</a>
+        </div>
+      </article>
+
       <div class="placeholder-card">
         <strong>+14 variações restantes</strong>
         modais, estados de erro, listas individuais
@@ -423,6 +434,17 @@
             <p class="screen-meta-sub">Foto · dados · alterar senha</p>
           </div>
           <a href="admin/perfil.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/comunidades.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Tela de Comunidades</p>
+            <p class="screen-meta-sub">Lista de chats · texto, áudio e documentos</p>
+          </div>
+          <a href="admin/comunidades.html">Abrir →</a>
         </div>
       </article>
 
@@ -696,6 +718,25 @@
     <span>Mago do Pism · Curso do Mago — Web</span>
     <span>Importação Figma · v1 · Fase 1 / 2 / 3 / 4 / 5A / 5B</span>
   </footer>
+
+  <!-- Auto-scale iframe thumbnails to fit their card width -->
+  <script>
+    (function() {
+      const DESIGN_W = 1440;
+      function updateScales() {
+        document.querySelectorAll('.screen-thumb').forEach(thumb => {
+          const w = thumb.clientWidth;
+          if (w > 0) thumb.style.setProperty('--thumb-scale', (w / DESIGN_W).toFixed(4));
+        });
+      }
+      updateScales();
+      window.addEventListener('resize', updateScales);
+      if (window.ResizeObserver) {
+        const ro = new ResizeObserver(updateScales);
+        document.querySelectorAll('.screen-thumb').forEach(t => ro.observe(t));
+      }
+    })();
+  </script>
 
   <!-- Tweaks panel — global controls for fonts/colors -->
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
