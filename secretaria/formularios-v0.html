@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Formulários · Secretaria · Mago do Pism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/secretaria.css" />
+  <style>
+    /* ── Link card ── */
+    .link-section {
+      background: white;
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 16px;
+    }
+    .link-section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .link-section-header h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--neutral-900);
+      margin: 0;
+    }
+    .link-section-header .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+    .badge-normal {
+      background: rgba(14,147,242,0.1);
+      color: var(--brand-blue);
+    }
+    .badge-discount {
+      background: rgba(39,133,86,0.1);
+      color: var(--color-success);
+    }
+    .link-section-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0 0 20px;
+      line-height: 1.5;
+    }
+
+    /* ── URL display row ── */
+    .url-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .url-box {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      background: var(--neutral-50);
+      overflow: hidden;
+      min-width: 0;
+    }
+    .url-box .url-icon {
+      padding: 0 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      border-right: 1px solid var(--border-default);
+      height: 44px;
+    }
+    .url-box .url-icon svg { width: 15px; height: 15px; }
+    .url-box .url-text {
+      flex: 1;
+      padding: 0 14px;
+      font-family: var(--font-mono, 'Roboto Mono', monospace);
+      font-size: 13px;
+      color: var(--brand-blue);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 44px;
+      line-height: 44px;
+    }
+    .url-copy-btn {
+      height: 44px;
+      padding: 0 16px;
+      background: white;
+      border: 0;
+      border-left: 1px solid var(--border-default);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      transition: background .12s, color .12s;
+      white-space: nowrap;
+    }
+    .url-copy-btn svg { width: 14px; height: 14px; }
+    .url-copy-btn:hover { background: var(--neutral-100); color: var(--brand-blue); }
+    .url-copy-btn.copied { color: var(--color-success); background: rgba(39,133,86,0.05); }
+
+    /* ── Discount section placeholder ── */
+    .disc-placeholder {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 22px;
+      background: var(--neutral-50);
+      border: 1.5px dashed var(--border-default);
+      border-radius: 10px;
+    }
+    .disc-placeholder .hint {
+      flex: 1;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .disc-placeholder .hint strong {
+      display: block;
+      font-size: 13.5px;
+      color: var(--neutral-900);
+      margin-bottom: 2px;
+    }
+
+    /* ── Generated link result ── */
+    .disc-result {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .disc-result .result-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+    .disc-result .result-meta .uses-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      background: rgba(39,133,86,0.1);
+      color: var(--color-success);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .disc-result .result-meta .uses-chip svg { width: 11px; height: 11px; }
+
+    .gen-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 44px;
+      padding: 0 20px;
+      background: var(--brand-blue);
+      color: white;
+      border: 0;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .15s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .gen-btn svg { width: 15px; height: 15px; }
+    .gen-btn:hover { background: var(--brand-blue-dark); }
+    .gen-btn.again {
+      background: white;
+      color: var(--brand-blue);
+      border: 1.5px solid var(--brand-blue);
+    }
+    .gen-btn.again:hover { background: rgba(14,147,242,0.06); }
+
+    /* ── Modal ── */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 14px;
+      padding: 30px 30px 26px;
+      width: 600px;
+      max-width: 95vw;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: 4px;
+      line-height: 0;
+      border-radius: 4px;
+    }
+    .modal-close:hover { background: var(--neutral-100); color: var(--neutral-900); }
+    .modal-close svg { width: 18px; height: 18px; }
+
+    .modal h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--neutral-900);
+      margin: 0 0 4px;
+    }
+    .modal .modal-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0 0 24px;
+      line-height: 1.5;
+    }
+
+    .uses-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--neutral-900);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    /* Quick pick chips */
+    .uses-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .uses-chip-btn {
+      padding: 8px 16px;
+      border: 1.5px solid var(--border-default);
+      border-radius: 7px;
+      background: white;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--neutral-700);
+      cursor: pointer;
+      transition: border-color .12s, background .12s, color .12s;
+    }
+    .uses-chip-btn:hover {
+      border-color: var(--brand-blue);
+      color: var(--brand-blue);
+    }
+    .uses-chip-btn.is-active {
+      background: rgba(14,147,242,0.1);
+      border-color: var(--brand-blue);
+      color: var(--brand-blue);
+    }
+
+    /* Custom input */
+    .uses-custom {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .uses-custom label {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .uses-custom input {
+      width: 80px;
+      height: 38px;
+      padding: 0 10px;
+      border: 1.5px solid var(--border-default);
+      border-radius: 7px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--neutral-900);
+      text-align: center;
+      background: white;
+      outline: none;
+      transition: border-color .12s;
+    }
+    .uses-custom input:focus {
+      border-color: var(--brand-blue);
+      box-shadow: 0 0 0 3px rgba(14,147,242,0.12);
+    }
+    .uses-custom .uses-unit {
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .modal-confirm-btn {
+      width: 100%;
+      height: 46px;
+      background: var(--brand-blue);
+      color: white;
+      border: 0;
+      border-radius: 8px;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background .15s;
+    }
+    .modal-confirm-btn:hover { background: var(--brand-blue-dark); }
+    .modal-confirm-btn svg { width: 16px; height: 16px; }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(70px);
+      background: var(--neutral-900);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: transform .22s ease, opacity .22s ease;
+      pointer-events: none;
+      z-index: 999;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast svg { width: 15px; height: 15px; color: #5fd49a; }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo" role="img" aria-label="Mago do Pism"
+      style="background:url('../assets/logo-azul.png') center/contain no-repeat; filter:brightness(0) invert(1);"></div>
+    <nav class="sidebar-nav">
+      <a href="painel.html" class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        <span>Painel</span>
+      </a>
+      <a href="clientes.html" class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2.3 1.5-4 3.7-4 1.6 0 2.8.9 3.3 2.2"/></svg>
+        <span>Clientes</span>
+      </a>
+      <a href="formularios.html" class="sidebar-item is-active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></svg>
+        <span>Formulários</span>
+      </a>
+      <a href="faturas.html" class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+        <span>Contas a Receber</span>
+      </a>
+      <a href="inadimplentes.html" class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.8" fill="currentColor"/></svg>
+        <span>Inadimplência</span>
+      </a>
+      <a href="cobranca.html" class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg>
+        <span>Régua de Cobrança</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="sec-page">
+
+      <nav class="sec-breadcrumb">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+        <a href="painel.html">Principal</a>
+        <span class="sep">/</span>
+        <span>Formulários</span>
+      </nav>
+
+      <div class="sec-page-head">
+        <h1>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></svg>
+          Formulários
+        </h1>
+      </div>
+
+      <!-- Formulário: Matrícula -->
+      <div style="max-width: 760px;">
+
+        <!-- Link normal -->
+        <div class="link-section">
+          <div class="link-section-header">
+            <h2>Link de matrícula</h2>
+            <span class="badge badge-normal">Permanente</span>
+          </div>
+          <p class="link-section-desc">
+            Link público para novos alunos. Pode ser enviado por WhatsApp, e-mail ou redes sociais. Sem validade.
+          </p>
+          <div class="url-row">
+            <div class="url-box">
+              <span class="url-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </span>
+              <span class="url-text" id="normalUrl">https://magodopism.com.br/matricula/cadastro</span>
+              <button class="url-copy-btn" id="copyNormal" onclick="copyUrl('normalUrl','copyNormal')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copiar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Link com desconto -->
+        <div class="link-section">
+          <div class="link-section-header">
+            <h2>Link com desconto</h2>
+            <span class="badge badge-discount">Uso limitado</span>
+          </div>
+          <p class="link-section-desc">
+            Gera um link especial com desconto e controle de uso. Ideal para campanhas ou indicações pontuais.
+          </p>
+
+          <!-- Placeholder / resultado -->
+          <div id="discPlaceholder">
+            <button class="gen-btn" onclick="openModal()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              Gerar link
+            </button>
+          </div>
+
+          <div class="disc-result" id="discResult">
+            <div class="url-row">
+              <div class="url-box">
+                <span class="url-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                </span>
+                <span class="url-text" id="discUrl"></span>
+                <button class="url-copy-btn" id="copyDisc" onclick="copyUrl('discUrl','copyDisc')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  Copiar
+                </button>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end;">
+              <button class="gen-btn again" onclick="openModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                Gerar outro
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /max-width -->
+    </div><!-- /sec-page -->
+  </main>
+</div>
+
+<!-- ─── Modal: quantas vezes pode usar? ─── -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="handleBackdropClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <!-- View 1: configurar -->
+    <div id="modalForm">
+      <h3>Gerar link com desconto</h3>
+      <p class="modal-sub">Quantas vezes esse link pode ser usado antes de expirar?</p>
+
+      <span class="uses-label">Número de usos</span>
+
+      <div class="uses-chips">
+        <button class="uses-chip-btn is-active" data-val="1" onclick="selectUses(this)">1×</button>
+        <button class="uses-chip-btn" data-val="2" onclick="selectUses(this)">2×</button>
+        <button class="uses-chip-btn" data-val="3" onclick="selectUses(this)">3×</button>
+        <button class="uses-chip-btn" data-val="4" onclick="selectUses(this)">4×</button>
+        <button class="uses-chip-btn" data-val="ilimitado" onclick="selectUses(this)">Ilimitado</button>
+      </div>
+
+      <div class="uses-custom">
+        <label>Outro:</label>
+        <input type="number" id="customUses" min="1" max="999" placeholder="ex: 7" oninput="onCustomInput(this)" />
+        <span class="uses-unit">usos</span>
+      </div>
+
+      <div style="display:flex; align-items:flex-start; gap:9px; padding:11px 13px; background:#f0f8ff; border:1px solid rgba(14,147,242,0.25); border-radius:8px; margin-bottom:18px; font-size:12px; color:var(--text-secondary); line-height:1.5;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;color:var(--brand-blue);flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="0.6" fill="currentColor"/></svg>
+        <span>Após o primeiro uso, o link fica <strong style="color:var(--neutral-900);">atrelado ao cliente</strong>. Só ele poderá consumir os usos restantes.</span>
+      </div>
+
+      <button class="modal-confirm-btn" onclick="generateLink()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Gerar link
+      </button>
+    </div>
+
+    <!-- View 2: link gerado -->
+    <div id="modalResult" style="display:none;">
+      <h3>Link gerado!</h3>
+      <p class="modal-sub">Copie o link abaixo e envie para o aluno.</p>
+
+      <div style="border:1.5px solid var(--brand-blue); border-radius:9px; background:#f0f8ff; overflow:hidden; margin-bottom:12px;">
+        <div style="padding:10px 14px; font-family:var(--font-mono,'Roboto Mono',monospace); font-size:12.5px; color:var(--brand-blue); word-break:break-all; line-height:1.6;" id="modalDiscUrl"></div>
+        <button id="modalCopyBtn" onclick="copyModalLink()" style="width:100%; height:42px; background:var(--brand-blue); color:white; border:0; border-top:1px solid rgba(14,147,242,0.3); font-size:13.5px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:background .15s;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:15px;height:15px;"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copiar link
+        </button>
+      </div>
+
+      <div style="display:flex; align-items:flex-start; gap:9px; padding:11px 13px; background:#f0f8ff; border:1px solid rgba(14,147,242,0.25); border-radius:8px; margin-bottom:16px; font-size:12px; color:var(--text-secondary); line-height:1.5;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;color:var(--brand-blue);flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="0.6" fill="currentColor"/></svg>
+        <span>Após o primeiro uso, o link fica <strong style="color:var(--neutral-900);">atrelado ao cliente</strong>. Só ele poderá consumir os usos restantes.</span>
+      </div>
+
+      <button onclick="backToForm()" style="width:100%; height:38px; background:white; border:1px solid var(--border-default); border-radius:7px; font-size:13px; font-weight:600; color:var(--text-secondary); cursor:pointer;">← Gerar outro</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastText">Copiado!</span>
+</div>
+
+<script>
+  let selectedUses = '1';
+
+  function openModal() {
+    document.getElementById('modalBackdrop').classList.add('open');
+    document.getElementById('modalForm').style.display = '';
+    document.getElementById('modalResult').style.display = 'none';
+    selectUses(document.querySelector('.uses-chip-btn[data-val="1"]'));
+    document.getElementById('customUses').value = '';
+  }
+
+  function closeModal() {
+    document.getElementById('modalBackdrop').classList.remove('open');
+  }
+
+  function handleBackdropClick(e) {
+    if (e.target === document.getElementById('modalBackdrop')) closeModal();
+  }
+
+  function selectUses(btn) {
+    document.querySelectorAll('.uses-chip-btn').forEach(b => b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+    selectedUses = btn.dataset.val;
+    document.getElementById('customUses').value = '';
+  }
+
+  function onCustomInput(input) {
+    document.querySelectorAll('.uses-chip-btn').forEach(b => b.classList.remove('is-active'));
+    selectedUses = input.value || '1';
+  }
+
+  function generateLink() {
+    const token = Math.random().toString(36).substr(2, 8).toUpperCase();
+    const url = `https://magodopism.com.br/matricula/cadastro?desc=${token}`;
+
+    document.getElementById('modalDiscUrl').textContent = url;
+    document.getElementById('modalCopyBtn').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:15px;height:15px;"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copiar link`;
+    document.getElementById('modalCopyBtn').style.background = 'var(--brand-blue)';
+
+    document.getElementById('modalForm').style.display = 'none';
+    document.getElementById('modalResult').style.display = '';
+  }
+
+  function copyModalLink() {
+    const url = document.getElementById('modalDiscUrl').textContent;
+    navigator.clipboard?.writeText(url);
+    const btn = document.getElementById('modalCopyBtn');
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:15px;height:15px;"><polyline points="20 6 9 17 4 12"/></svg>Copiado!`;
+    btn.style.background = 'var(--color-success)';
+    showToast('Link copiado!');
+  }
+
+  function backToForm() {
+    document.getElementById('modalForm').style.display = '';
+    document.getElementById('modalResult').style.display = 'none';
+    selectUses(document.querySelector('.uses-chip-btn[data-val="1"]'));
+    document.getElementById('customUses').value = '';
+  }
+
+  function copyUrl(elId, btnId) {
+    const text = document.getElementById(elId).textContent;
+    navigator.clipboard?.writeText(text);
+    const btn = document.getElementById(btnId);
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:14px;height:14px;"><polyline points="20 6 9 17 4 12"/></svg>Copiado!`;
+    showToast('Link copiado!');
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copiar`;
+    }, 2200);
+  }
+
+  const toast = document.getElementById('toast');
+  function showToast(msg) {
+    document.getElementById('toastText').textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+</script>
+</body>
+</html>
