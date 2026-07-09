@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calendário · Professor · Mago do Pism</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+    .cal-toolbar { display:flex; align-items:center; gap:14px; margin-bottom:24px; flex-wrap:wrap; }
+    .cal-nav-btn { width:36px; height:36px; border-radius:8px; border:1px solid var(--border-default); background:var(--neutral-0); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-secondary); }
+    .cal-nav-btn:hover { border-color:var(--brand-blue); color:var(--brand-blue); }
+    .cal-nav-btn svg { width:18px; height:18px; }
+    .cal-week-label { font-weight:600; font-size:16px; color:var(--text-primary); }
+
+    .cal-outer { background:var(--neutral-0); border-radius:var(--radius-xl); box-shadow:var(--shadow-soft); overflow:auto; flex:1; }
+    .cal-head { display:grid; grid-template-columns:56px repeat(6,1fr); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:10; background:var(--neutral-0); }
+    .cal-head-cell { padding:14px 8px 12px; text-align:center; font-size:13px; font-weight:600; color:var(--text-muted); }
+    .cal-head-cell .day-num { display:block; width:34px; height:34px; border-radius:50%; line-height:34px; margin:4px auto 0; font-size:15px; font-weight:700; color:var(--text-primary); }
+    .cal-head-cell.today { color:var(--brand-blue); }
+    .cal-head-cell.today .day-num { background:var(--brand-blue); color:white; }
+
+    .cal-body { display:grid; grid-template-columns:56px repeat(6,1fr); min-width:700px; }
+    .cal-time-col { border-right:1px solid var(--border-default); }
+    .cal-time-slot { height:70px; display:flex; align-items:flex-start; justify-content:flex-end; padding:6px 10px 0 0; font-size:11px; font-weight:500; color:var(--text-muted); border-bottom:1px solid var(--neutral-200); box-sizing:border-box; }
+    .cal-day-col { position:relative; border-right:1px solid var(--border-default); }
+    .cal-day-col:last-child { border-right:0; }
+    .cal-hour-line { height:70px; border-bottom:1px solid var(--neutral-200); box-sizing:border-box; }
+    .cal-day-col.today-col { background:rgba(39,133,86,0.025); }
+
+    .cal-event { position:absolute; left:4px; right:4px; border-radius:8px; padding:8px 10px; cursor:pointer; overflow:hidden; transition:filter .15s; }
+    .cal-event:hover { filter:brightness(0.92); }
+    .cal-event-name { font-size:12px; font-weight:700; color:white; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px; }
+    .cal-event-sub { font-size:11px; color:rgba(255,255,255,0.78); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .cal-event-badge { display:inline-block; margin-top:4px; padding:2px 7px; border-radius:4px; background:rgba(255,255,255,0.22); font-size:10px; font-weight:700; color:white; letter-spacing:0.5px; text-transform:uppercase; }
+    .ev-green { background:var(--brand-blue); }
+    @keyframes pulse-ring { 0%{box-shadow:0 0 0 0 rgba(14,147,242,0.5)} 70%{box-shadow:0 0 0 8px rgba(14,147,242,0)} 100%{box-shadow:0 0 0 0 rgba(14,147,242,0)} }
+    .ev-live { animation: pulse-ring 1.8s infinite; }
+
+    /* Start button inside event */
+    .ev-start-btn {
+      display:block; margin-top:7px; width:100%; padding:4px 0;
+      border-radius:5px; border:none; background:rgba(255,255,255,0.22);
+      font-family:var(--font-body); font-size:10px; font-weight:700;
+      color:white; cursor:pointer; text-align:center; letter-spacing:0.3px;
+    }
+    .ev-start-btn:hover { background:rgba(255,255,255,0.35); }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+      <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
+        <a href="aulas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.723v6.554a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Aulas</span></a>
+        <a href="calendario.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Calendário</span></a>
+        <a href="presenca.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Presença</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="#" class="sidebar-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 0c0 1.5-2.5 2-2.5 3.5"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/></svg>
+          <span>Ajuda</span>
+        </a>
+        <a href="#" class="sidebar-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+          <span>Meu Perfil</span>
+        </a>
+      </div>
+    </aside>
+
+    <main class="content" style="padding:40px;display:flex;flex-direction:column;height:100vh;box-sizing:border-box;overflow:hidden;">
+      <div class="cal-toolbar">
+        <h2 class="section-title" style="margin:0;">Minha Agenda</h2>
+        <button class="cal-nav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <span class="cal-week-label">7 – 12 de julho de 2026</span>
+        <button class="cal-nav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+        <button style="margin-left:auto;padding:0 16px;height:36px;border-radius:8px;border:1px solid var(--border-default);background:var(--neutral-0);font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--text-secondary);cursor:pointer;">Hoje</button>
+      </div>
+
+      <div class="cal-outer">
+        <div class="cal-head">
+          <div class="cal-head-cell"></div>
+          <div class="cal-head-cell today"><span>SEG</span><span class="day-num">7</span></div>
+          <div class="cal-head-cell"><span>TER</span><span class="day-num">8</span></div>
+          <div class="cal-head-cell"><span>QUA</span><span class="day-num">9</span></div>
+          <div class="cal-head-cell"><span>QUI</span><span class="day-num">10</span></div>
+          <div class="cal-head-cell"><span>SEX</span><span class="day-num">11</span></div>
+          <div class="cal-head-cell"><span>SÁB</span><span class="day-num">12</span></div>
+        </div>
+        <div class="cal-body" style="height:770px;">
+          <div class="cal-time-col">
+            <div class="cal-time-slot">08:00</div><div class="cal-time-slot">09:00</div><div class="cal-time-slot">10:00</div>
+            <div class="cal-time-slot">11:00</div><div class="cal-time-slot">12:00</div><div class="cal-time-slot">13:00</div>
+            <div class="cal-time-slot">14:00</div><div class="cal-time-slot">15:00</div><div class="cal-time-slot">16:00</div>
+            <div class="cal-time-slot">17:00</div><div class="cal-time-slot">18:00</div>
+          </div>
+
+          <!-- SEG 7 — PISM I T1 14:00-16:00 (AO VIVO EM BREVE) -->
+          <div class="cal-day-col today-col">
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <a href="aula-ao-vivo.html" class="cal-event ev-green ev-live" style="top:420px;height:134px;">
+              <div class="cal-event-name">PISM I · T1</div>
+              <div class="cal-event-sub">14:00–16:00 · PISM I T1</div>
+              <div class="cal-event-badge">● iniciar em 12 min</div>
+              <button class="ev-start-btn" onclick="event.preventDefault();window.location='aula-ao-vivo.html'">▶ Iniciar aula agora</button>
+            </a>
+          </div>
+
+          <!-- TER 8 — nenhuma aula -->
+          <div class="cal-day-col">
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+          </div>
+
+          <!-- QUA 9 — nenhuma aula -->
+          <div class="cal-day-col">
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+          </div>
+
+          <!-- QUI 10 — PISM I T1 14:00-16:00 -->
+          <div class="cal-day-col">
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-event ev-green" style="top:420px;height:134px;">
+              <div class="cal-event-name">PISM I · T1</div>
+              <div class="cal-event-sub">14:00–16:00 · PISM I T1</div>
+            </div>
+          </div>
+
+          <!-- SEX 11 — nenhuma aula -->
+          <div class="cal-day-col">
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+          </div>
+
+          <!-- SÁB 12 — nenhuma aula -->
+          <div class="cal-day-col">
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -6,9 +6,9 @@
 .admin-content .section-title {
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 22px;
-  line-height: 22px;
-  letter-spacing: 0.444px;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.3px;
   color: var(--brand-blue);
   margin: 0 0 32px;
 }
@@ -320,22 +320,32 @@
 }
 .profile-tab {
   background: transparent;
-  border: 0;
-  padding: 12px 0;
+  border: none;
+  padding: 12px 16px;
   font-family: var(--font-body);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 14px;
-  color: var(--text-muted);
+  color: #a0a0a0;
   cursor: pointer;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
-  letter-spacing: 0.3px;
+  position: relative;
+  transition: color 0.15s;
 }
+.profile-tab:hover { color: #666; }
 .profile-tab.is-active {
   color: var(--brand-blue);
-  border-bottom-color: var(--brand-blue);
+  border-bottom: none;
 }
-.profile-tab:hover { color: var(--text-primary); }
+.profile-tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  bottom: -1px;
+  height: 3px;
+  background: var(--brand-blue);
+  border-radius: 4px 4px 0 0;
+}
 
 .profile-form {
   display: flex;
@@ -377,27 +387,33 @@
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 .field-label {
   font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 0.3px;
-  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: 0.444px;
+  color: var(--text-secondary);
 }
-.field input {
+.field input, .field select {
   height: 50px;
-  padding: 0 16px;
+  padding: 12px 16px;
   background: var(--neutral-0);
-  border: 1px solid var(--border-default);
+  border: 2px solid #dedede;
   border-radius: 10px;
   font-family: var(--font-body);
-  font-size: 14px;
-  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  outline: none;
+  width: 100%;
+  transition: border-color 0.15s ease;
 }
-.field input:focus { outline: none; border-color: var(--brand-blue); }
-.field input:disabled { background: var(--neutral-100); color: var(--text-muted); }
+.field input::placeholder { color: #BDBDBD; font-weight: 400; }
+.field input:focus, .field select:focus { border-color: var(--brand-blue); box-shadow: 0 0 0 3px rgba(14,147,242,0.12); }
+.field input:disabled { background: var(--neutral-150); color: var(--text-muted); }
 
 .form-section-title {
   font-family: var(--font-body);

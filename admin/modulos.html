@@ -4,138 +4,116 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Módulos · Admin · Mago do Pism</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styles/tokens.css" />
   <link rel="stylesheet" href="../styles/platform.css" />
   <link rel="stylesheet" href="../styles/admin.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+    .mod-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+      max-width: 960px;
+    }
+    .mod-card {
+      background: var(--neutral-150);
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .mod-card:hover { border-color: var(--brand-blue); transform: translateY(-1px); }
+    .mod-card-name { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+    .mod-card-meta { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+    .mod-card-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .mod-card-actions button {
+      width: 28px; height: 28px; border-radius: 4px;
+      background: transparent; border: 0; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--text-muted);
+    }
+    .mod-card-actions button:hover { background: var(--neutral-200); color: var(--text-primary); }
+    .mod-card-actions button svg { width: 16px; height: 16px; }
+  </style>
 </head>
 <body>
-  <div class="app-shell"><aside class="sidebar">
+  <div class="app-shell">
+    <aside class="sidebar">
       <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
       <nav class="sidebar-nav">
         <a href="inicio.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
-        <a href="alunos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
         <a href="cursos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos</span></a>
+        <a href="alunos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
         <a href="modulos.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
         <a href="equipe.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Equipe</span></a>
-        <a href="#" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M14 9c-.5-1-1.5-1.5-2.5-1.5S9 8 9 9.5s1 2 2.5 2.5 2.5 1 2.5 2.5-1 2-2.5 2-2-.5-2.5-1.5"/></svg><span>Financeiro</span></a>
+        <a href="avisos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Avisos</span></a>
+        <a href="simulados.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg><span>Simulados</span></a>
+        <a href="nivelamentos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Nivelamentos</span></a>
+        <a href="listas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Listas</span></a>
       </nav>
       <div class="sidebar-foot">
-        <a href="#" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 0c0 1.5-2.5 2-2.5 3.5"/></svg><span>Ajuda</span></a>
         <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
       </div>
     </aside>
+
     <main class="content admin-content">
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:32px; max-width:1116px;">
-        <h2 class="section-title" style="margin:0">Módulos</h2>
-        <button class="btn-primary compact">Criar módulo</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px; max-width:960px;">
+        <h2 class="section-title" style="margin:0;">Módulos</h2>
+        <button class="btn-primary btn-primary--minor">Criar módulo</button>
       </div>
-      <div class="module-grid">
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">Português</p>
-            <p class="module-card-meta">42 aulas · 8 prof.</p>
+
+      <div class="mod-grid">
+        <div class="mod-card">
+          <div><div class="mod-card-name">Matemática</div><div class="mod-card-meta">14 listas · 42 questões</div></div>
+          <div class="mod-card-actions">
+            <button title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
           </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">Matemática</p>
-            <p class="module-card-meta">56 aulas · 6 prof.</p>
+        </div>
+        <div class="mod-card">
+          <div><div class="mod-card-name">Português</div><div class="mod-card-meta">11 listas · 38 questões</div></div>
+          <div class="mod-card-actions">
+            <button title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
           </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">Química</p>
-            <p class="module-card-meta">38 aulas · 4 prof.</p>
+        </div>
+        <div class="mod-card">
+          <div><div class="mod-card-name">Física</div><div class="mod-card-meta">9 listas · 31 questões</div></div>
+          <div class="mod-card-actions">
+            <button title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
           </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">Geografia</p>
-            <p class="module-card-meta">30 aulas · 3 prof.</p>
+        </div>
+        <div class="mod-card">
+          <div><div class="mod-card-name">Química</div><div class="mod-card-meta">8 listas · 27 questões</div></div>
+          <div class="mod-card-actions">
+            <button title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
           </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">História</p>
-            <p class="module-card-meta">34 aulas · 4 prof.</p>
+        </div>
+        <div class="mod-card">
+          <div><div class="mod-card-name">Biologia</div><div class="mod-card-meta">10 listas · 35 questões</div></div>
+          <div class="mod-card-actions">
+            <button title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
           </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">Física</p>
-            <p class="module-card-meta">48 aulas · 5 prof.</p>
+        </div>
+        <div class="mod-card">
+          <div><div class="mod-card-name">História</div><div class="mod-card-meta">7 listas · 24 questões</div></div>
+          <div class="mod-card-actions">
+            <button title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
           </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">Inglês</p>
-            <p class="module-card-meta">22 aulas · 2 prof.</p>
+        </div>
+        <div class="mod-card">
+          <div><div class="mod-card-name">Geografia</div><div class="mod-card-meta">7 listas · 22 questões</div></div>
+          <div class="mod-card-actions">
+            <button title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
           </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">Filosofia</p>
-            <p class="module-card-meta">14 aulas · 2 prof.</p>
+        </div>
+        <div class="mod-card">
+          <div><div class="mod-card-name">Redação</div><div class="mod-card-meta">5 listas · 15 questões</div></div>
+          <div class="mod-card-actions">
+            <button title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
           </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">Sociologia</p>
-            <p class="module-card-meta">12 aulas · 2 prof.</p>
-          </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">Biologia</p>
-            <p class="module-card-meta">40 aulas · 4 prof.</p>
-          </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">Projeções</p>
-            <p class="module-card-meta">Conteúdo extra</p>
-          </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">Aulões Gratuitos</p>
-            <p class="module-card-meta">Acesso aberto</p>
-          </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">Maratona Revisional</p>
-            <p class="module-card-meta">8 encontros</p>
-          </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">Monitorias</p>
-            <p class="module-card-meta">Diário</p>
-          </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
-        <article class="module-card" tabindex="0">
-          <div>
-            <p class="module-card-name">Maratona Revisional 2</p>
-            <p class="module-card-meta">4 encontros</p>
-          </div>
-          <div class="module-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
-        </article>
+        </div>
       </div>
     </main>
   </div>

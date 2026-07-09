@@ -4,227 +4,136 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Simulados · Aluno · Mago do Pism</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styles/tokens.css" />
   <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/app.css" />
   <style>
-    .chart-card {
-      background: var(--neutral-0);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-soft);
-      padding: 28px 28px 18px;
-      max-width: 880px;
-    }
-    .chart-card h3 {
-      font-family: var(--font-akagi);
-      font-weight: 600;
-      font-size: 16px;
-      color: var(--text-secondary);
-      margin: 0 0 18px;
-      letter-spacing: 0.3px;
-    }
-    .chart {
-      width: 100%;
-      height: 320px;
-      display: block;
-    }
-    .legend {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      margin-top: 16px;
-      font-family: var(--font-akagi);
-      font-size: 12px;
-      color: rgba(0,0,0,0.7);
-      letter-spacing: 0.3px;
-    }
-    .legend .swatch {
-      width: 16px; height: 16px;
-      display: inline-flex; align-items: center; justify-content: center;
-    }
-    .legend .swatch::before { content: ""; width: 16px; height: 2px; background: var(--brand-blue); display: block; }
-    .legend .swatch::after {
-      content: ""; width: 8px; height: 8px; border-radius: 50%;
-      background: var(--brand-blue); border: 1px solid var(--neutral-50);
-      position: absolute; transform: translate(-12px, 0);
-    }
-
-    .simulator-row {
+    a { color: inherit; text-decoration: none; }
+    .perf-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 24px;
-      max-width: 880px;
+      grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+      gap: 12px;
+      margin-bottom: 16px;
     }
-    .sim-card {
-      background: var(--neutral-0);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-soft);
-      padding: 24px 26px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      cursor: pointer;
+    .group-border { border-bottom: 1px solid var(--neutral-250); padding-bottom: 1rem; margin-bottom: 1rem; }
+    .chart-bar {
+      display: flex; align-items: flex-end; gap: 8px;
+      height: 100px; padding: 8px 0;
     }
-    .sim-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
-    .sim-card.is-finished { background: var(--neutral-150); }
-    .sim-head { display: flex; align-items: center; justify-content: space-between; }
-    .sim-name {
-      font-family: var(--font-body);
-      font-weight: 700;
-      font-size: 18px;
-      color: var(--text-primary);
-      margin: 0;
+    .chart-col { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+    .chart-bar-fill { width: 100%; background: var(--brand-blue); border-radius: 4px 4px 0 0; transition: height 0.3s; }
+    .chart-label { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+    .chart-value { font-size: 11px; font-weight: 600; color: var(--text-secondary); }
+    .pag-row { display:flex; gap:4px; justify-content:flex-end; margin-top:24px; }
+    .pag-btn {
+      min-width:32px; height:32px; border-radius:4px; padding:0 8px;
+      border:1px solid var(--border-default); background:var(--neutral-0);
+      font-size:13px; color:var(--text-secondary); cursor:pointer;
+      display:inline-flex; align-items:center; justify-content:center;
     }
-    .sim-status {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: var(--radius-pill);
-    }
-    .sim-status.live {
-      background: rgba(14,147,242,0.10);
-      color: var(--brand-blue);
-    }
-    .sim-status.done {
-      background: rgba(39,133,86,0.10);
-      color: var(--color-success);
-    }
-    .sim-meta {
-      font-family: var(--font-body);
-      font-weight: 500;
-      font-size: 13px;
-      color: var(--text-muted);
-      display: flex;
-      gap: 14px;
-    }
-    .sim-foot {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 14px;
-      border-top: 1px solid var(--border-default);
-    }
-    .sim-score {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 22px;
-      color: var(--brand-blue);
-    }
-    .sim-card.is-finished .sim-score { color: var(--color-success); }
-    .btn-link {
-      font-family: var(--font-body);
-      font-weight: 700;
-      font-size: 13px;
-      color: var(--brand-blue);
-      letter-spacing: 0.3px;
-    }
+    .pag-btn.active { background:var(--brand-blue); color:white; border-color:var(--brand-blue); }
+    .pag-btn:hover:not(.active) { border-color:var(--brand-blue); color:var(--brand-blue); }
   </style>
 </head>
 <body>
-
   <div class="app-shell">
     <aside class="sidebar">
       <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
       <nav class="sidebar-nav">
-        <a href="inicio.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
-        <a href="cursos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos</span></a>
-        <a href="simulados.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg><span>Simulados</span></a>
-        <a href="#" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg><span>Listas</span></a>
-        <a href="#" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M14 9c-.5-1-1.5-1.5-2.5-1.5S9 8 9 9.5s1 2 2.5 2.5 2.5 1 2.5 2.5-1 2-2.5 2-2-.5-2.5-1.5"/></svg><span>Financeiro</span></a>
+        <a href="inicio.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M15.625 21.8751V13.5418C15.625 13.2655 15.5153 13.0006 15.3199 12.8052C15.1246 12.6099 14.8596 12.5001 14.5833 12.5001H10.4167C10.1404 12.5001 9.87545 12.6099 9.6801 12.8052C9.48475 13.0006 9.375 13.2655 9.375 13.5418V21.8751M3.125 10.4168C3.12493 10.1137 3.19097 9.8143 3.31853 9.5394C3.44609 9.26449 3.63208 9.02073 3.86354 8.82511L11.1552 2.57615C11.5312 2.25835 12.0077 2.08398 12.5 2.08398C12.9923 2.08398 13.4688 2.25835 13.8448 2.57615L21.1365 8.82511C21.3679 9.02073 21.5539 9.26449 21.6815 9.5394C21.809 9.8143 21.8751 10.1137 21.875 10.4168V19.7918C21.875 20.3443 21.6555 20.8742 21.2648 21.2649C20.8741 21.6556 20.3442 21.8751 19.7917 21.8751H5.20833C4.6558 21.8751 4.12589 21.6556 3.73519 21.2649C3.34449 20.8742 3.125 20.3443 3.125 19.7918V10.4168Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M7.29167 21.875H17.7083M10.4167 8.07292C10.4169 7.93416 10.4541 7.79797 10.5245 7.67835C10.5948 7.55874 10.6957 7.46002 10.8169 7.39235C10.938 7.32467 11.075 7.29048 11.2137 7.29329C11.3525 7.2961 11.488 7.33581 11.6062 7.40833L15.4229 9.75104C15.5367 9.82094 15.6306 9.91882 15.6958 10.0353C15.7609 10.1519 15.7951 10.2832 15.7951 10.4167C15.7951 10.5502 15.7609 10.6815 15.6958 10.798C15.6306 10.9145 15.5367 11.0124 15.4229 11.0823L11.6062 13.426C11.4878 13.4987 11.3521 13.5384 11.2132 13.5411C11.0743 13.5438 10.9372 13.5094 10.816 13.4415C10.6948 13.3736 10.5939 13.2746 10.5237 13.1547C10.4535 13.0348 10.4166 12.8983 10.4167 12.7594V8.07292ZM4.16667 3.125H20.8333C21.9839 3.125 22.9167 4.05774 22.9167 5.20833V15.625C22.9167 16.7756 21.9839 17.7083 20.8333 17.7083H4.16667C3.01607 17.7083 2.08333 16.7756 2.08333 15.625V5.20833C2.08333 4.05774 3.01607 3.125 4.16667 3.125Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Cursos</span></a>
+        <a href="ao-vivo.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.723v6.554a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ao vivo</span></a>
+        <a href="links.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9.99996 13C10.4294 13.5741 10.9773 14.0491 11.6065 14.3929C12.2357 14.7367 12.9315 14.9411 13.6466 14.9923C14.3617 15.0435 15.0795 14.9403 15.7513 14.6897C16.4231 14.4392 17.0331 14.047 17.54 13.54L20.54 10.54C21.4507 9.59695 21.9547 8.33394 21.9433 7.02296C21.9319 5.71198 21.4061 4.45791 20.479 3.53087C19.552 2.60383 18.2979 2.07799 16.987 2.0666C15.676 2.0552 14.413 2.55918 13.47 3.46997L11.75 5.17997M14 11C13.5705 10.4258 13.0226 9.95078 12.3934 9.60703C11.7642 9.26327 11.0684 9.05885 10.3533 9.00763C9.63816 8.95642 8.92037 9.0596 8.24861 9.31018C7.57685 9.56077 6.96684 9.9529 6.45996 10.46L3.45996 13.46C2.54917 14.403 2.04519 15.666 2.05659 16.977C2.06798 18.288 2.59382 19.542 3.52086 20.4691C4.4479 21.3961 5.70197 21.9219 7.01295 21.9333C8.32393 21.9447 9.58694 21.4408 10.53 20.53L12.24 18.82" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Links</span></a>
+        <a href="simulados.html" class="sidebar-item is-active"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M4.16666 20.3127V4.68766C4.16666 3.99699 4.44103 3.33461 4.92941 2.84624C5.41778 2.35786 6.08016 2.0835 6.77083 2.0835H19.7917C20.0679 2.0835 20.3329 2.19324 20.5282 2.38859C20.7236 2.58394 20.8333 2.8489 20.8333 3.12516V21.8752C20.8333 22.1514 20.7236 22.4164 20.5282 22.6117C20.3329 22.8071 20.0679 22.9168 19.7917 22.9168H6.77083C6.08016 22.9168 5.41778 22.6425 4.92941 22.1541C4.44103 21.6657 4.16666 21.0033 4.16666 20.3127ZM4.16666 20.3127C4.16666 19.622 4.44103 18.9596 4.92941 18.4712C5.41778 17.9829 6.08016 17.7085 6.77083 17.7085H20.8333M9.375 9.896L11.4583 11.9793L15.625 7.81266" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Simulados</span></a>
+        <a href="nivelamentos.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M13.957 2.08365H6.2487C5.69616 2.08365 5.16626 2.30314 4.77556 2.69385C4.38486 3.08455 4.16536 3.61445 4.16536 4.16698V20.8337C4.16536 21.3862 4.38486 21.9161 4.77556 22.3068C5.16626 22.6975 5.69616 22.917 6.2487 22.917H18.7487C19.3012 22.917 19.8311 22.6975 20.2218 22.3068C20.6125 21.9161 20.832 21.3862 20.832 20.8337V13.1253M2.08203 6.25032H6.2487M2.08203 10.417H6.2487M2.08203 14.5837H6.2487M2.08203 18.7503H6.2487M22.2674 5.86073C22.6824 5.44578 22.9155 4.88298 22.9155 4.29615C22.9155 3.70932 22.6824 3.14652 22.2674 2.73157C21.8525 2.31661 21.2897 2.0835 20.7029 2.0835C20.116 2.0835 19.5532 2.31661 19.1383 2.73157L13.9195 7.9524C13.6719 8.19992 13.4906 8.50587 13.3924 8.84198L12.5206 11.8316C12.4944 11.9212 12.4929 12.0162 12.516 12.1067C12.5392 12.1971 12.5863 12.2797 12.6523 12.3457C12.7183 12.4117 12.8009 12.4588 12.8913 12.4819C12.9818 12.5051 13.0768 12.5035 13.1664 12.4774L16.156 11.6055C16.4921 11.5074 16.798 11.3261 17.0456 11.0784L22.2674 5.86073Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Nivelamentos</span></a>
+        <a href="lista-questoes.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M15.625 12.5H10.4167M15.625 8.33333H10.4167M19.7917 17.7083V5.20833C19.7917 4.6558 19.5722 4.12589 19.1815 3.73519C18.7908 3.34449 18.2609 3.125 17.7083 3.125H4.16667M4.16667 3.125C4.7192 3.125 5.2491 3.34449 5.6398 3.73519C6.03051 4.12589 6.25 4.6558 6.25 5.20833V19.7917C6.25 20.3442 6.46949 20.8741 6.86019 21.2648C7.25089 21.6555 7.7808 21.875 8.33333 21.875M4.16667 3.125C3.61413 3.125 3.08423 3.34449 2.69353 3.73519C2.30283 4.12589 2.08333 4.6558 2.08333 5.20833V7.29167C2.08333 7.56793 2.19308 7.83289 2.38843 8.02824C2.58378 8.22359 2.84873 8.33333 3.125 8.33333H6.25M8.33333 21.875H20.8333C21.3859 21.875 21.9158 21.6555 22.3065 21.2648C22.6972 20.8741 22.9167 20.3442 22.9167 19.7917V18.75C22.9167 18.4737 22.8069 18.2088 22.6116 18.0134C22.4162 17.8181 22.1513 17.7083 21.875 17.7083H11.4583C11.1821 17.7083 10.9171 17.8181 10.7218 18.0134C10.5264 18.2088 10.4167 18.4737 10.4167 18.75V19.7917C10.4167 20.3442 10.1972 20.8741 9.80647 21.2648C9.41577 21.6555 8.88587 21.875 8.33333 21.875Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Listas</span></a>
       </nav>
       <div class="sidebar-foot">
-        <a href="#" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 0c0 1.5-2.5 2-2.5 3.5"/></svg><span>Ajuda</span></a>
-        <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
+        <a href="perfil.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M19.7917 21.875V19.7917C19.7917 18.6866 19.3527 17.6268 18.5713 16.8454C17.7899 16.064 16.7301 15.625 15.625 15.625H9.375C8.26993 15.625 7.21013 16.064 6.42872 16.8454C5.64732 17.6268 5.20834 18.6866 5.20834 19.7917V21.875M16.6667 7.29167C16.6667 9.59285 14.8012 11.4583 12.5 11.4583C10.1988 11.4583 8.33334 9.59285 8.33334 7.29167C8.33334 4.99048 10.1988 3.125 12.5 3.125C14.8012 3.125 16.6667 4.99048 16.6667 7.29167Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Meu Perfil</span></a>
       </div>
     </aside>
 
-    <main class="content">
-      <h2 class="section-title">Desempenho</h2>
+    <main class="content student-content" style="overflow-y:auto;">
 
-      <div class="chart-card">
-        <h3>% da nota — últimos 4 simulados</h3>
-        <svg class="chart" viewBox="0 0 600 320" preserveAspectRatio="none">
-          <!-- Y axis labels -->
-          <g font-family="Roboto Mono, monospace" font-size="10" fill="#a0a0a0">
-            <text x="22" y="20" text-anchor="end">100</text>
-            <text x="22" y="80" text-anchor="end">80</text>
-            <text x="22" y="140" text-anchor="end">60</text>
-            <text x="22" y="200" text-anchor="end">40</text>
-            <text x="22" y="260" text-anchor="end">20</text>
-            <text x="22" y="304" text-anchor="end">0</text>
-          </g>
-          <!-- Grid -->
-          <g stroke="#ebebeb" stroke-width="1">
-            <line x1="32" y1="16" x2="592" y2="16"/>
-            <line x1="32" y1="76" x2="592" y2="76"/>
-            <line x1="32" y1="136" x2="592" y2="136"/>
-            <line x1="32" y1="196" x2="592" y2="196"/>
-            <line x1="32" y1="256" x2="592" y2="256"/>
-            <line x1="32" y1="300" x2="592" y2="300"/>
-          </g>
-          <!-- X dividers -->
-          <g stroke="#ebebeb" stroke-width="1" stroke-dasharray="3 3">
-            <line x1="172" y1="16" x2="172" y2="300"/>
-            <line x1="312" y1="16" x2="312" y2="300"/>
-            <line x1="452" y1="16" x2="452" y2="300"/>
-          </g>
-          <!-- Line: 50%, 70%, 60%, 78% (mapped) -->
-          <polyline fill="none" stroke="#0E93F2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
-            points="100,164 240,104 380,140 520,75" />
-          <!-- Nodes -->
-          <g>
-            <circle cx="100" cy="164" r="6" fill="#0E93F2" stroke="#fcfcfc" stroke-width="2"/>
-            <circle cx="240" cy="104" r="6" fill="#0E93F2" stroke="#fcfcfc" stroke-width="2"/>
-            <circle cx="380" cy="140" r="6" fill="#0E93F2" stroke="#fcfcfc" stroke-width="2"/>
-            <circle cx="520" cy="75"  r="6" fill="#0E93F2" stroke="#fcfcfc" stroke-width="2"/>
-          </g>
-          <!-- Data labels -->
-          <g font-family="Nunito Sans, sans-serif" font-weight="700" font-size="11" fill="#0E93F2">
-            <text x="100" y="150" text-anchor="middle">50</text>
-            <text x="240" y="90"  text-anchor="middle">70</text>
-            <text x="380" y="126" text-anchor="middle">60</text>
-            <text x="520" y="61"  text-anchor="middle">78</text>
-          </g>
-          <!-- X labels -->
-          <g font-family="Roboto Mono, monospace" font-size="10" fill="#757575">
-            <text x="100" y="316" text-anchor="middle">Simulado Set</text>
-            <text x="240" y="316" text-anchor="middle">Simulado Out</text>
-            <text x="380" y="316" text-anchor="middle">Simulado Nov</text>
-            <text x="520" y="316" text-anchor="middle">Simulado Dez</text>
-          </g>
-        </svg>
-        <div class="legend">
-          <span class="swatch"></span>
-          <span>% da nota</span>
+      <!-- Desempenho + gráfico -->
+      <div class="mb-4 d-flex justify-content-between align-items-center gap-2" style="flex-wrap:wrap;">
+        <h4 class="text-primary mt-2 mb-0">Desempenho</h4>
+        <button class="btn-primary btn-primary--minor">Baixar relatório</button>
+      </div>
+
+      <!-- Gráfico simplificado -->
+      <div class="pb-4" style="max-width:600px; background:var(--neutral-150); border-radius:10px; padding:20px;">
+        <div class="chart-bar">
+          <div class="chart-col"><div class="chart-bar-fill" style="height:68%;"></div><div class="chart-label">S1</div><div class="chart-value">68%</div></div>
+          <div class="chart-col"><div class="chart-bar-fill" style="height:74%;"></div><div class="chart-label">S2</div><div class="chart-value">74%</div></div>
+          <div class="chart-col"><div class="chart-bar-fill" style="height:71%;"></div><div class="chart-label">S3</div><div class="chart-value">71%</div></div>
+          <div class="chart-col"><div class="chart-bar-fill" style="height:76%;"></div><div class="chart-label">S4</div><div class="chart-value">76%</div></div>
         </div>
       </div>
 
-      <h2 class="section-title">Simulados</h2>
-      <div class="simulator-row">
-        <article class="sim-card">
-          <div class="sim-head">
-            <p class="sim-name">Simulado Outubro</p>
-            <span class="sim-status live">Em andamento</span>
+      <!-- Simulados agrupados -->
+      <h4 class="mb-3 text-primary">Simulados</h4>
+
+      <div>
+        <!-- Grupo 1 -->
+        <div class="d-flex align-items-center justify-content-between gap-2 pt-4 pb-3">
+          <h5 class="mb-1 text-secondary">Simulado PISM I · 2026</h5>
+        </div>
+        <div class="perf-grid group-border">
+          <div class="card-custom">
+            <div class="body-2">Aberta - Dia 1</div>
+            <div class="caption text-secondary">09/07/2026</div>
+            <div class="sim-status andamento micro-caption">Em andamento</div>
           </div>
-          <p class="sim-meta">120 questões · 4h · até 15/out</p>
-          <div class="sim-foot">
-            <span class="sim-score">—</span>
-            <span class="btn-link">Continuar →</span>
+          <div class="card-custom">
+            <div class="body-2">Fechada - Dia 1</div>
+            <div class="caption text-secondary">09/07/2026</div>
+            <div class="sim-status agendado micro-caption">Agendado</div>
           </div>
-        </article>
-        <article class="sim-card is-finished">
-          <div class="sim-head">
-            <p class="sim-name">Simulado Setembro</p>
-            <span class="sim-status done">Finalizado</span>
+        </div>
+
+        <!-- Grupo 2 -->
+        <div class="d-flex align-items-center justify-content-between gap-2 pt-4 pb-3">
+          <h5 class="mb-1 text-secondary">Simulado PISM/ENEM · Jun 2026</h5>
+          <button class="btn-primary btn-primary--minor">Refazer</button>
+        </div>
+        <div class="perf-grid group-border">
+          <div class="card-custom">
+            <div class="body-2">Aberta - Dia 1</div>
+            <div class="caption text-secondary">26/06/2026</div>
+            <div class="sim-status concluido micro-caption">Concluído · 72%</div>
           </div>
-          <p class="sim-meta">120 questões · 4h · concluído em 30/set</p>
-          <div class="sim-foot">
-            <span class="sim-score">70%</span>
-            <span class="btn-link">Ver gabarito →</span>
+          <div class="card-custom">
+            <div class="body-2">Fechada - Dia 2</div>
+            <div class="caption text-secondary">27/06/2026</div>
+            <div class="sim-status concluido micro-caption">Concluído · 68%</div>
           </div>
-        </article>
+        </div>
+
+        <!-- Grupo 3 -->
+        <div class="d-flex align-items-center justify-content-between gap-2 pt-4 pb-3">
+          <h5 class="mb-1 text-secondary">Simulado PISM I · Jun 2026</h5>
+          <button class="btn-primary btn-primary--minor">Refazer</button>
+        </div>
+        <div class="perf-grid group-border">
+          <div class="card-custom">
+            <div class="body-2">Aberta - Dia 1</div>
+            <div class="caption text-secondary">19/06/2026</div>
+            <div class="sim-status concluido micro-caption">Concluído · 74%</div>
+          </div>
+        </div>
       </div>
+
+      <div class="pag-row">
+        <button class="pag-btn">«</button>
+        <button class="pag-btn">‹</button>
+        <button class="pag-btn active">1</button>
+        <button class="pag-btn">2</button>
+        <button class="pag-btn">›</button>
+        <button class="pag-btn">»</button>
+      </div>
+
     </main>
   </div>
 </body>

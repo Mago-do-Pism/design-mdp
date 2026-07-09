@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gravações · Admin · Mago do Pism</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+
+    .rec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 22px;
+      max-width: 1100px;
+    }
+
+    .rec-card {
+      background: var(--neutral-0);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .rec-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); }
+
+    .rec-thumb {
+      aspect-ratio: 16/9;
+      background: repeating-linear-gradient(
+        135deg,
+        #1a2235 0 18px,
+        #1e2d42 18px 36px
+      );
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .rec-thumb-play {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: rgba(14,147,242,0.85);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .rec-card:hover .rec-thumb-play { background: var(--brand-blue); }
+    .rec-thumb-play svg { width: 22px; height: 22px; color: white; margin-left: 3px; }
+    .rec-thumb-dur {
+      position: absolute; bottom: 8px; right: 10px;
+      background: rgba(0,0,0,0.65); color: white;
+      font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .rec-thumb-date {
+      position: absolute; top: 8px; left: 10px;
+      background: rgba(0,0,0,0.55); color: rgba(255,255,255,0.85);
+      font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+    }
+
+    .rec-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .rec-title { font-weight: 700; font-size: 15px; color: var(--text-primary); margin: 0; }
+    .rec-meta {
+      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    }
+    .rec-tag {
+      display: inline-flex; align-items: center;
+      padding: 3px 9px; border-radius: 5px;
+      font-size: 11px; font-weight: 600;
+    }
+    .rec-tag.blue { background: rgba(14,147,242,0.10); color: var(--brand-blue); }
+    .rec-tag.green { background: rgba(39,133,86,0.10); color: var(--color-success); }
+    .rec-tag.draft { background: rgba(160,160,160,0.14); color: var(--text-muted); }
+
+    .rec-prof { font-size: 12px; color: var(--text-muted); }
+
+    .rec-foot {
+      display: flex; gap: 8px; align-items: center; border-top: 1px solid var(--border-default);
+      padding-top: 12px; margin-top: 2px;
+    }
+    .btn-publish {
+      flex: 1; height: 36px; border-radius: 8px; border: none;
+      background: var(--brand-blue); color: white;
+      font-family: var(--font-body); font-weight: 700; font-size: 13px;
+      cursor: pointer; transition: background .15s;
+    }
+    .btn-publish:hover { background: var(--brand-blue-dark); }
+    .btn-publish.published {
+      background: rgba(39,133,86,0.10); color: var(--color-success);
+      border: 1px solid rgba(39,133,86,0.25);
+    }
+    .btn-icon-sm {
+      width: 36px; height: 36px; border-radius: 8px;
+      border: 1px solid var(--border-default); background: var(--neutral-0);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text-muted); flex-shrink: 0;
+    }
+    .btn-icon-sm:hover { border-color: var(--brand-blue); color: var(--brand-blue); }
+    .btn-icon-sm svg { width: 16px; height: 16px; }
+
+    /* Publish drawer */
+    .drawer-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.40); z-index: 100;
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; width: 480px; max-width: 95vw;
+      background: var(--neutral-0); box-shadow: var(--shadow-deep);
+      display: flex; flex-direction: column;
+      transform: translateX(100%); transition: transform .25s cubic-bezier(.4,0,.2,1);
+    }
+    .drawer-overlay.open .drawer { transform: translateX(0); }
+    .drawer-head {
+      padding: 24px 28px; border-bottom: 1px solid var(--border-default);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .drawer-title { font-weight: 700; font-size: 18px; color: var(--text-primary); margin: 0; flex: 1; }
+    .drawer-close {
+      width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border-default);
+      background: transparent; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text-muted);
+    }
+    .drawer-close svg { width: 18px; height: 18px; }
+    .drawer-body { flex: 1; overflow-y: auto; padding: 28px; display: flex; flex-direction: column; gap: 20px; }
+    .drawer-field { display: flex; flex-direction: column; gap: 7px; }
+    .drawer-field label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+    .drawer-field input, .drawer-field select, .drawer-field textarea {
+      padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-default);
+      font-family: var(--font-body); font-size: 14px; color: var(--text-primary);
+      background: var(--neutral-50); outline: none; width: 100%;
+    }
+    .drawer-field input:focus, .drawer-field select:focus, .drawer-field textarea:focus { border-color: var(--brand-blue); }
+    .drawer-field textarea { min-height: 80px; resize: vertical; }
+
+    .attach-area {
+      border: 2px dashed var(--border-default); border-radius: 10px;
+      padding: 20px; text-align: center; color: var(--text-muted);
+      font-size: 13px; cursor: pointer; transition: border-color .15s;
+    }
+    .attach-area:hover { border-color: var(--brand-blue); }
+    .attach-area svg { width: 28px; height: 28px; margin-bottom: 8px; display: block; margin-inline: auto; }
+
+    .drawer-foot {
+      padding: 20px 28px; border-top: 1px solid var(--border-default);
+      display: flex; gap: 10px; justify-content: flex-end;
+    }
+    .btn-cancel-sm { padding: 0 18px; height: 40px; border-radius: 8px; border: 1px solid var(--border-default); background: transparent; font-family: var(--font-body); font-weight: 600; font-size: 14px; color: var(--text-secondary); cursor: pointer; }
+    .btn-pub-confirm { padding: 0 24px; height: 40px; border-radius: 8px; border: none; background: var(--brand-blue); font-family: var(--font-body); font-weight: 700; font-size: 14px; color: white; cursor: pointer; }
+    .btn-pub-confirm:hover { background: var(--brand-blue-dark); }
+
+    .section-date {
+      font-family: var(--font-body); font-weight: 700; font-size: 13px;
+      color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase;
+      margin: 24px 0 12px; padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-default);
+      max-width: 1100px;
+    }
+    .section-date:first-child { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+            <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos</span></a>
+        <a href="alunos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
+        <a href="modulos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
+        <a href="equipe.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Equipe</span></a>
+        <a href="avisos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Avisos</span></a>
+        <a href="simulados.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg><span>Simulados</span></a>
+        <a href="nivelamentos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Nivelamentos</span></a>
+        <a href="listas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Listas</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <main class="content admin-content">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px;">
+        <h2 class="section-title" style="margin:0;">Banco de Gravações</h2>
+        <span style="font-size:13px;color:var(--text-muted);font-weight:500;">Acesso restrito — sem visibilidade para alunos</span>
+        <div style="margin-left:auto;display:flex;gap:10px;">
+          <a href="aulas.html" style="display:inline-flex;align-items:center;gap:6px;padding:0 16px;height:38px;border-radius:8px;border:1px solid var(--border-default);background:var(--neutral-0);font-family:var(--font-body);font-weight:600;font-size:13px;color:var(--text-secondary);">← Aulas</a>
+        </div>
+      </div>
+
+      <!-- Jul 9 -->
+      <div class="section-date">Quarta-feira, 9 de julho de 2026</div>
+      <div class="rec-grid">
+        <div class="rec-card">
+          <div class="rec-thumb">
+            <div class="rec-thumb-date">09/07/2026</div>
+            <div class="rec-thumb-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            <div class="rec-thumb-dur">2:03:14</div>
+          </div>
+          <div class="rec-body">
+            <p class="rec-title">Mecânica Clássica</p>
+            <div class="rec-meta">
+              <span class="rec-tag blue">PISM/ENEM · T1</span>
+              <span class="rec-tag draft">Rascunho</span>
+            </div>
+            <div class="rec-prof">Prof. Ricardo Dias · 09/07 · 14:00</div>
+            <div class="rec-foot">
+              <button class="btn-publish" onclick="openDrawer('Mecânica Clássica')">Publicar no curso</button>
+              <button class="btn-icon-sm" title="Baixar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jul 8 -->
+      <div class="section-date">Terça-feira, 8 de julho de 2026</div>
+      <div class="rec-grid">
+        <div class="rec-card">
+          <div class="rec-thumb">
+            <div class="rec-thumb-date">08/07/2026</div>
+            <div class="rec-thumb-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            <div class="rec-thumb-dur">1:58:42</div>
+          </div>
+          <div class="rec-body">
+            <p class="rec-title">Citologia</p>
+            <div class="rec-meta">
+              <span class="rec-tag blue">PISM II · T3</span>
+              <span class="rec-tag green">Publicado</span>
+            </div>
+            <div class="rec-prof">Prof. Ana Lima · 08/07 · 09:00</div>
+            <div class="rec-foot">
+              <button class="btn-publish published">✓ Publicado</button>
+              <button class="btn-icon-sm" title="Baixar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jul 7 -->
+      <div class="section-date">Segunda-feira, 7 de julho de 2026</div>
+      <div class="rec-grid">
+        <div class="rec-card">
+          <div class="rec-thumb">
+            <div class="rec-thumb-date">07/07/2026</div>
+            <div class="rec-thumb-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            <div class="rec-thumb-dur">1:52:08</div>
+          </div>
+          <div class="rec-body">
+            <p class="rec-title">Reforma Protestante</p>
+            <div class="rec-meta">
+              <span class="rec-tag blue">PISM I · T2</span>
+              <span class="rec-tag draft">Rascunho</span>
+            </div>
+            <div class="rec-prof">Prof. Fernanda Rocha · 07/07 · 16:00</div>
+            <div class="rec-foot">
+              <button class="btn-publish" onclick="openDrawer('Reforma Protestante')">Publicar no curso</button>
+              <button class="btn-icon-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="rec-card">
+          <div class="rec-thumb">
+            <div class="rec-thumb-date">07/07/2026</div>
+            <div class="rec-thumb-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            <div class="rec-thumb-dur">2:01:30</div>
+          </div>
+          <div class="rec-body">
+            <p class="rec-title">Funções Quadráticas</p>
+            <div class="rec-meta">
+              <span class="rec-tag blue">PISM I · T1</span>
+              <span style="background:rgba(239,68,68,0.10);color:#dc2626;font-size:11px;font-weight:600;padding:3px 9px;border-radius:5px;">Ao vivo agora</span>
+            </div>
+            <div class="rec-prof">Prof. Carlos Menezes · 07/07 · 14:00</div>
+            <div class="rec-foot">
+              <button class="btn-publish" style="background:var(--neutral-200);color:var(--text-muted);cursor:not-allowed;" disabled>Gravando…</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Publish drawer -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="if(event.target===this)closeDrawer()">
+    <div class="drawer">
+      <div class="drawer-head">
+        <p class="drawer-title">Publicar gravação</p>
+        <button class="drawer-close" onclick="closeDrawer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div class="drawer-body">
+        <div class="drawer-field">
+          <label>Nome da aula (como aparecerá para alunos)</label>
+          <input type="text" id="drawerTitle" value="" />
+        </div>
+        <div class="drawer-field">
+          <label>Descrição</label>
+          <textarea placeholder="Descreva o conteúdo abordado nesta aula…"></textarea>
+        </div>
+        <div class="drawer-field">
+          <label>Adicionar ao curso</label>
+          <select><option>PISM I — T1</option><option>PISM I — T2</option><option>PISM II — T3</option><option>PISM/ENEM — T1</option></select>
+        </div>
+        <div class="drawer-field">
+          <label>Módulo</label>
+          <select><option>Álgebra</option><option>Geometria</option><option>Funções</option><option>Trigonometria</option><option>Estatística</option></select>
+        </div>
+        <div class="drawer-field">
+          <label>Materiais complementares</label>
+          <div class="attach-area">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            Arraste arquivos ou clique para anexar PDF, slides ou listas
+          </div>
+        </div>
+        <div class="drawer-field">
+          <label>Visibilidade</label>
+          <select><option>Disponível imediatamente</option><option>Agendar data de liberação</option></select>
+        </div>
+      </div>
+      <div class="drawer-foot">
+        <button class="btn-cancel-sm" onclick="closeDrawer()">Cancelar</button>
+        <button class="btn-pub-confirm" onclick="closeDrawer()">Publicar no curso</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openDrawer(title) {
+      document.getElementById('drawerTitle').value = title;
+      document.getElementById('drawerOverlay').classList.add('open');
+    }
+    function closeDrawer() { document.getElementById('drawerOverlay').classList.remove('open'); }
+  </script>
+</body>
+</html>

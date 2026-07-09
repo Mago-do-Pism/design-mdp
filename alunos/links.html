@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Links · Aluno · Mago do Pism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/app.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+    .info-card {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 12px 16px; border-radius: 8px;
+      background: var(--neutral-150); border: 1px solid var(--border-default);
+      margin-bottom: 24px;
+    }
+    .info-card svg { width: 20px; height: 20px; color: var(--brand-blue); flex-shrink: 0; margin-top: 2px; }
+    .link-section-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .link-section-head svg { width: 22px; height: 22px; }
+    .link-section-head span { font-weight: 600; font-size: 15px; color: var(--text-primary); }
+    .link-card {
+      border: 1px solid var(--border-default); border-radius: 8px;
+      padding: 16px 20px; display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: space-between; gap: 16px;
+      margin-bottom: 8px;
+    }
+    .link-card-left { display: flex; align-items: center; gap: 12px; }
+    .link-icon-circle {
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .link-icon-circle svg { width: 22px; height: 22px; }
+    .link-card h6 { margin: 0 0 2px; font-weight: 600; font-size: 14px; }
+    .link-card .caption { color: var(--text-secondary); line-height: 1.5; }
+    .badge-available { background: #e3f2fd; color: #1565c0; font-size: 11px; font-weight: 600; border-radius: 4px; padding: 2px 8px; }
+    .badge-success  { background: #e8f5e9; color: #2e7d32; font-size: 11px; font-weight: 600; border-radius: 4px; padding: 2px 8px; }
+    .btn-link-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 0 20px; height: 42px; border-radius: 8px;
+      border: none; background: var(--brand-blue); color: white;
+      font-family: var(--font-body); font-weight: 600; font-size: 14px;
+      cursor: pointer; white-space: nowrap; text-decoration: none;
+    }
+    .btn-link-primary:hover { background: var(--brand-blue-dark); color: white; }
+    .btn-link-success {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 0 20px; height: 42px; border-radius: 8px;
+      border: none; background: var(--color-success); color: white;
+      font-family: var(--font-body); font-weight: 600; font-size: 14px;
+      cursor: pointer; white-space: nowrap; text-decoration: none;
+    }
+    .live-time { font-weight: 700; font-size: 18px; color: var(--text-primary); }
+    .live-time-label { font-size: 12px; color: var(--text-secondary); }
+    .time-badge {
+      background: #f0eeff; color: #7c5cbf; font-weight: 500;
+      font-size: 13px; border-radius: 999px; padding: 4px 12px; white-space: nowrap;
+    }
+    .whatsapp-info {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-radius: 6px;
+      background: #f6fef9; font-size: 12px; color: var(--text-secondary);
+      margin-top: 12px;
+    }
+    .whatsapp-info svg { width: 16px; height: 16px; color: var(--color-success); flex-shrink: 0; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+      <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M15.625 21.8751V13.5418C15.625 13.2655 15.5153 13.0006 15.3199 12.8052C15.1246 12.6099 14.8596 12.5001 14.5833 12.5001H10.4167C10.1404 12.5001 9.87545 12.6099 9.6801 12.8052C9.48475 13.0006 9.375 13.2655 9.375 13.5418V21.8751M3.125 10.4168C3.12493 10.1137 3.19097 9.8143 3.31853 9.5394C3.44609 9.26449 3.63208 9.02073 3.86354 8.82511L11.1552 2.57615C11.5312 2.25835 12.0077 2.08398 12.5 2.08398C12.9923 2.08398 13.4688 2.25835 13.8448 2.57615L21.1365 8.82511C21.3679 9.02073 21.5539 9.26449 21.6815 9.5394C21.809 9.8143 21.8751 10.1137 21.875 10.4168V19.7918C21.875 20.3443 21.6555 20.8742 21.2648 21.2649C20.8741 21.6556 20.3442 21.8751 19.7917 21.8751H5.20833C4.6558 21.8751 4.12589 21.6556 3.73519 21.2649C3.34449 20.8742 3.125 20.3443 3.125 19.7918V10.4168Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M7.29167 21.875H17.7083M10.4167 8.07292C10.4169 7.93416 10.4541 7.79797 10.5245 7.67835C10.5948 7.55874 10.6957 7.46002 10.8169 7.39235C10.938 7.32467 11.075 7.29048 11.2137 7.29329C11.3525 7.2961 11.488 7.33581 11.6062 7.40833L15.4229 9.75104C15.5367 9.82094 15.6306 9.91882 15.6958 10.0353C15.7609 10.1519 15.7951 10.2832 15.7951 10.4167C15.7951 10.5502 15.7609 10.6815 15.6958 10.798C15.6306 10.9145 15.5367 11.0124 15.4229 11.0823L11.6062 13.426C11.4878 13.4987 11.3521 13.5384 11.2132 13.5411C11.0743 13.5438 10.9372 13.5094 10.816 13.4415C10.6948 13.3736 10.5939 13.2746 10.5237 13.1547C10.4535 13.0348 10.4166 12.8983 10.4167 12.7594V8.07292ZM4.16667 3.125H20.8333C21.9839 3.125 22.9167 4.05774 22.9167 5.20833V15.625C22.9167 16.7756 21.9839 17.7083 20.8333 17.7083H4.16667C3.01607 17.7083 2.08333 16.7756 2.08333 15.625V5.20833C2.08333 4.05774 3.01607 3.125 4.16667 3.125Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Cursos</span></a>
+        <a href="ao-vivo.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.723v6.554a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ao vivo</span></a>
+        <a href="links.html" class="sidebar-item is-active"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9.99996 13C10.4294 13.5741 10.9773 14.0491 11.6065 14.3929C12.2357 14.7367 12.9315 14.9411 13.6466 14.9923C14.3617 15.0435 15.0795 14.9403 15.7513 14.6897C16.4231 14.4392 17.0331 14.047 17.54 13.54L20.54 10.54C21.4507 9.59695 21.9547 8.33394 21.9433 7.02296C21.9319 5.71198 21.4061 4.45791 20.479 3.53087C19.552 2.60383 18.2979 2.07799 16.987 2.0666C15.676 2.0552 14.413 2.55918 13.47 3.46997L11.75 5.17997M14 11C13.5705 10.4258 13.0226 9.95078 12.3934 9.60703C11.7642 9.26327 11.0684 9.05885 10.3533 9.00763C9.63816 8.95642 8.92037 9.0596 8.24861 9.31018C7.57685 9.56077 6.96684 9.9529 6.45996 10.46L3.45996 13.46C2.54917 14.403 2.04519 15.666 2.05659 16.977C2.06798 18.288 2.59382 19.542 3.52086 20.4691C4.4479 21.3961 5.70197 21.9219 7.01295 21.9333C8.32393 21.9447 9.58694 21.4408 10.53 20.53L12.24 18.82" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Links</span></a>
+        <a href="simulados.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M4.16666 20.3127V4.68766C4.16666 3.99699 4.44103 3.33461 4.92941 2.84624C5.41778 2.35786 6.08016 2.0835 6.77083 2.0835H19.7917C20.0679 2.0835 20.3329 2.19324 20.5282 2.38859C20.7236 2.58394 20.8333 2.8489 20.8333 3.12516V21.8752C20.8333 22.1514 20.7236 22.4164 20.5282 22.6117C20.3329 22.8071 20.0679 22.9168 19.7917 22.9168H6.77083C6.08016 22.9168 5.41778 22.6425 4.92941 22.1541C4.44103 21.6657 4.16666 21.0033 4.16666 20.3127ZM4.16666 20.3127C4.16666 19.622 4.44103 18.9596 4.92941 18.4712C5.41778 17.9829 6.08016 17.7085 6.77083 17.7085H20.8333M9.375 9.896L11.4583 11.9793L15.625 7.81266" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Simulados</span></a>
+        <a href="nivelamentos.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M13.957 2.08365H6.2487C5.69616 2.08365 5.16626 2.30314 4.77556 2.69385C4.38486 3.08455 4.16536 3.61445 4.16536 4.16698V20.8337C4.16536 21.3862 4.38486 21.9161 4.77556 22.3068C5.16626 22.6975 5.69616 22.917 6.2487 22.917H18.7487C19.3012 22.917 19.8311 22.6975 20.2218 22.3068C20.6125 21.9161 20.832 21.3862 20.832 20.8337V13.1253M2.08203 6.25032H6.2487M2.08203 10.417H6.2487M2.08203 14.5837H6.2487M2.08203 18.7503H6.2487M22.2674 5.86073C22.6824 5.44578 22.9155 4.88298 22.9155 4.29615C22.9155 3.70932 22.6824 3.14652 22.2674 2.73157C21.8525 2.31661 21.2897 2.0835 20.7029 2.0835C20.116 2.0835 19.5532 2.31661 19.1383 2.73157L13.9195 7.9524C13.6719 8.19992 13.4906 8.50587 13.3924 8.84198L12.5206 11.8316C12.4944 11.9212 12.4929 12.0162 12.516 12.1067C12.5392 12.1971 12.5863 12.2797 12.6523 12.3457C12.7183 12.4117 12.8009 12.4588 12.8913 12.4819C12.9818 12.5051 13.0768 12.5035 13.1664 12.4774L16.156 11.6055C16.4921 11.5074 16.798 11.3261 17.0456 11.0784L22.2674 5.86073Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Nivelamentos</span></a>
+        <a href="lista-questoes.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M15.625 12.5H10.4167M15.625 8.33333H10.4167M19.7917 17.7083V5.20833C19.7917 4.6558 19.5722 4.12589 19.1815 3.73519C18.7908 3.34449 18.2609 3.125 17.7083 3.125H4.16667M4.16667 3.125C4.7192 3.125 5.2491 3.34449 5.6398 3.73519C6.03051 4.12589 6.25 4.6558 6.25 5.20833V19.7917C6.25 20.3442 6.46949 20.8741 6.86019 21.2648C7.25089 21.6555 7.7808 21.875 8.33333 21.875M4.16667 3.125C3.61413 3.125 3.08423 3.34449 2.69353 3.73519C2.30283 4.12589 2.08333 4.6558 2.08333 5.20833V7.29167C2.08333 7.56793 2.19308 7.83289 2.38843 8.02824C2.58378 8.22359 2.84873 8.33333 3.125 8.33333H6.25M8.33333 21.875H20.8333C21.3859 21.875 21.9158 21.6555 22.3065 21.2648C22.6972 20.8741 22.9167 20.3442 22.9167 19.7917V18.75C22.9167 18.4737 22.8069 18.2088 22.6116 18.0134C22.4162 17.8181 22.1513 17.7083 21.875 17.7083H11.4583C11.1821 17.7083 10.9171 17.8181 10.7218 18.0134C10.5264 18.2088 10.4167 18.4737 10.4167 18.75V19.7917C10.4167 20.3442 10.1972 20.8741 9.80647 21.2648C9.41577 21.6555 8.88587 21.875 8.33333 21.875Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Listas</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M19.7917 21.875V19.7917C19.7917 18.6866 19.3527 17.6268 18.5713 16.8454C17.7899 16.064 16.7301 15.625 15.625 15.625H9.375C8.26993 15.625 7.21013 16.064 6.42872 16.8454C5.64732 17.6268 5.20834 18.6866 5.20834 19.7917V21.875M16.6667 7.29167C16.6667 9.59285 14.8012 11.4583 12.5 11.4583C10.1988 11.4583 8.33334 9.59285 8.33334 7.29167C8.33334 4.99048 10.1988 3.125 12.5 3.125C14.8012 3.125 16.6667 4.99048 16.6667 7.29167Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <main class="content student-content" style="overflow-y:auto;">
+      <div style="max-width:900px;">
+        <h4 class="fw-bold mb-1">Links</h4>
+        <p class="text-secondary mb-4">Acesse os principais links da sua turma</p>
+
+        <div class="info-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div>
+            <div class="body-2">Aqui você encontra os links importantes da sua turma.</div>
+            <div class="caption text-secondary">Use para entrar nas aulas ao vivo e no grupo do WhatsApp.</div>
+          </div>
+        </div>
+
+        <!-- Aulas ao vivo -->
+        <div class="mb-4">
+          <div class="link-section-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.723v6.554a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            <span>Suas aulas ao vivo</span>
+          </div>
+          <p class="caption text-secondary mb-3">Acesse as aulas ao vivo da sua turma nos horários programados.</p>
+
+          <div class="link-card">
+            <div class="link-card-left">
+              <span class="time-badge">Turma PISM I — T1</span>
+              <div>
+                <div class="live-time-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:middle;"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Horário de início</div>
+                <div class="live-time">19:00</div>
+              </div>
+            </div>
+            <a href="#" class="btn-link-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.723v6.554a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              Entrar na aula
+            </a>
+          </div>
+        </div>
+
+        <!-- Mentoria -->
+        <div class="mb-4">
+          <div class="link-section-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Mentoria</span>
+          </div>
+          <div class="link-card">
+            <div class="link-card-left">
+              <div class="link-icon-circle" style="background:#e3f2fd;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </div>
+              <div>
+                <div class="d-flex align-items-center gap-2 mb-1">
+                  <span class="fw-semibold">Marque sua mentoria</span>
+                  <span class="badge-available">Disponível</span>
+                </div>
+                <p class="caption text-secondary mb-0" style="max-width:380px;">A mentoria é um momento onde você pode ordenar seus estudos, ter apoio emocional e orientar tudo sobre as dificuldades de um estudante.</p>
+              </div>
+            </div>
+            <a href="#" class="btn-link-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              Marque sua mentoria
+            </a>
+          </div>
+        </div>
+
+        <!-- WhatsApp -->
+        <div class="mb-4">
+          <div class="link-section-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span>Outros links importantes</span>
+          </div>
+          <div class="link-card" style="flex-direction:column; align-items:flex-start;">
+            <div class="d-flex align-items-center justify-content-between w-100 gap-3" style="flex-wrap:wrap;">
+              <div class="link-card-left">
+                <div class="link-icon-circle" style="background:#e8f5e9;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <div>
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="fw-semibold">Grupo da turma</span>
+                    <span class="badge-success">Disponível</span>
+                  </div>
+                  <p class="caption text-secondary mb-0" style="max-width:380px;">Participe do grupo oficial da sua turma no WhatsApp para avisos, dúvidas e interação com colegas e professores.</p>
+                </div>
+              </div>
+              <a href="#" class="btn-link-success">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Entrar no grupo
+              </a>
+            </div>
+            <div class="whatsapp-info w-100">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Ao entrar no grupo, mantenha o respeito com colegas, professores e equipe.
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

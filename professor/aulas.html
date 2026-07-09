@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aulas · Professor · Mago do Pism</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+
+    .filter-bar { display:flex; align-items:center; gap:12px; margin-bottom:28px; flex-wrap:wrap; }
+    .turma-select { height:40px; padding:0 14px; border-radius:8px; border:1px solid var(--border-default); font-family:var(--font-body); font-size:14px; font-weight:600; color:var(--text-primary); background:var(--neutral-0); outline:none; min-width:240px; }
+    .turma-select:focus { border-color:var(--brand-blue); }
+
+    .status-chip { display:inline-flex; align-items:center; padding:4px 12px; border-radius:6px; font-size:12px; font-weight:600; white-space:nowrap; }
+    .status-chip.pub { background:rgba(39,133,86,0.10); color:var(--color-success); }
+    .status-chip.unpub { background:rgba(160,160,160,0.12); color:var(--text-muted); }
+
+    .pres-bar { display:flex; align-items:center; gap:8px; }
+    .pres-bar-track { width:80px; height:6px; border-radius:3px; background:var(--neutral-250); overflow:hidden; }
+    .pres-bar-fill { height:100%; border-radius:3px; background:var(--brand-blue); }
+    .pres-pct { font-size:12px; font-weight:700; color:var(--text-secondary); }
+
+    .row-link { color:var(--brand-blue); font-weight:600; font-size:13px; cursor:pointer; background:none; border:none; padding:0; white-space:nowrap; }
+    .row-link:hover { text-decoration:underline; }
+
+    /* Drawer */
+    .drawer-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:100; opacity:0; pointer-events:none; transition:opacity .2s; }
+    .drawer-overlay.open { opacity:1; pointer-events:all; }
+    .drawer { position:fixed; top:0; right:0; bottom:0; width:540px; max-width:95vw; background:var(--neutral-0); box-shadow:var(--shadow-deep); display:flex; flex-direction:column; transform:translateX(100%); transition:transform .25s cubic-bezier(.4,0,.2,1); }
+    .drawer-overlay.open .drawer { transform:translateX(0); }
+    .drawer-head { padding:22px 28px; border-bottom:1px solid var(--border-default); display:flex; align-items:flex-start; gap:14px; }
+    .drawer-head-info { flex:1; }
+    .drawer-head-title { font-weight:700; font-size:17px; color:var(--text-primary); margin:0 0 4px; }
+    .drawer-head-meta { font-size:13px; color:var(--text-muted); }
+    .drawer-close { width:34px; height:34px; border-radius:8px; border:1px solid var(--border-default); background:transparent; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-muted); flex-shrink:0; }
+    .drawer-close svg { width:16px; height:16px; }
+    .drawer-body { flex:1; overflow-y:auto; padding:24px 28px; display:flex; flex-direction:column; gap:24px; }
+
+    .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    .stat-box { background:var(--neutral-150); border-radius:10px; padding:14px 16px; }
+    .stat-box-val { font-weight:800; font-size:22px; color:var(--text-primary); line-height:1; }
+    .stat-box-label { font-size:11px; color:var(--text-muted); margin-top:4px; font-weight:500; }
+
+    .section-label { font-weight:700; font-size:13px; color:var(--text-muted); letter-spacing:0.4px; text-transform:uppercase; margin:0 0 12px; }
+
+    .pres-table { width:100%; border-collapse:separate; border-spacing:0; font-size:13px; }
+    .pres-table th { background:var(--neutral-150); font-weight:700; font-size:11px; color:var(--text-muted); padding:10px 14px; text-align:left; letter-spacing:0.3px; }
+    .pres-table th:first-child { border-radius:8px 0 0 8px; }
+    .pres-table th:last-child { border-radius:0 8px 8px 0; }
+    .pres-table td { padding:10px 14px; border-bottom:1px solid var(--neutral-200); color:var(--text-primary); vertical-align:middle; }
+    .pres-table tr:last-child td { border-bottom:0; }
+    .pres-chip { display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:5px; font-size:11px; font-weight:600; }
+    .pres-chip.p { background:rgba(14,147,242,0.08); color:var(--brand-blue); }
+    .pres-chip.a { background:rgba(208,62,62,0.08); color:var(--color-danger); }
+    .cell-av { width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:white; margin-right:8px; flex-shrink:0; }
+    .cell-name { display:flex; align-items:center; }
+
+    .publish-box { background:var(--neutral-150); border-radius:var(--radius-lg); padding:20px 22px; display:flex; align-items:center; gap:16px; }
+    .publish-box-icon { width:40px; height:40px; border-radius:10px; background:rgba(14,147,242,0.10); display:flex; align-items:center; justify-content:center; color:var(--brand-blue); flex-shrink:0; }
+    .publish-box-icon svg { width:20px; height:20px; }
+    .publish-box-text { flex:1; }
+    .publish-box-title { font-weight:700; font-size:14px; color:var(--text-primary); margin:0 0 3px; }
+    .publish-box-sub { font-size:12px; color:var(--text-muted); }
+    .btn-publish-now { padding:0 20px; height:38px; border-radius:8px; border:none; background:var(--brand-blue); color:white; font-family:var(--font-body); font-weight:700; font-size:13px; cursor:pointer; white-space:nowrap; flex-shrink:0; }
+    .btn-publish-now:hover { background:var(--brand-blue-dark); }
+    .btn-publish-now.done { background:rgba(39,133,86,0.12); color:var(--color-success); cursor:default; }
+
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:200; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .2s; }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+    .modal { background:var(--neutral-0); border-radius:var(--radius-xl); padding:32px; width:440px; max-width:95vw; box-shadow:var(--shadow-deep); transform:translateY(10px); transition:transform .2s; }
+    .modal-overlay.open .modal { transform:translateY(0); }
+    .modal-title { font-weight:700; font-size:18px; color:var(--text-primary); margin:0 0 10px; }
+    .modal-body { font-size:14px; color:var(--text-secondary); line-height:1.6; margin-bottom:24px; }
+    .modal-body strong { color:var(--text-primary); }
+    .modal-actions { display:flex; gap:10px; justify-content:flex-end; }
+    .btn-cancel { padding:0 18px; height:38px; border-radius:8px; border:1px solid var(--border-default); background:transparent; font-family:var(--font-body); font-weight:600; font-size:14px; color:var(--text-secondary); cursor:pointer; }
+    .btn-confirm { padding:0 22px; height:38px; border-radius:8px; border:none; background:var(--brand-blue); font-family:var(--font-body); font-weight:700; font-size:14px; color:white; cursor:pointer; }
+    .btn-confirm:hover { background:var(--brand-blue-dark); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+      <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
+        <a href="aulas.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.723v6.554a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Aulas</span></a>
+        <a href="calendario.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Calendário</span></a>
+        <a href="presenca.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Presença</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="#" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 0c0 1.5-2.5 2-2.5 3.5"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/></svg><span>Ajuda</span></a>
+        <a href="#" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <main class="content" style="padding:40px 40px 40px;">
+      <h2 class="section-title">Aulas</h2>
+
+      <div class="filter-bar">
+        <select class="turma-select" onchange="loadTurma(this.value)">
+          <option value="pism1t1">Extensivo PISM I — T1</option>
+          <option value="pism1t2">Extensivo PISM I — T2</option>
+        </select>
+        <span style="font-size:13px;color:var(--text-muted);" id="turmaInfo">22 alunos</span>
+      </div>
+
+      <table class="data-table" style="max-width:100%;">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Duração</th>
+              <th>Presença</th>
+              <th>Publicação</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>09/07/2026</strong><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Qua · 14:00</div></td>
+              <td>2h03</td>
+              <td><div class="pres-bar"><div class="pres-bar-track"><div class="pres-bar-fill" style="width:77%;"></div></div><span class="pres-pct">17/22</span></div></td>
+              <td><span class="status-chip unpub">Não publicada</span></td>
+              <td><button class="row-link" onclick="openDrawer('qua')">Ver detalhes →</button></td>
+            </tr>
+            <tr>
+              <td><strong>03/07/2026</strong><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Qui · 14:00</div></td>
+              <td>1h58</td>
+              <td><div class="pres-bar"><div class="pres-bar-track"><div class="pres-bar-fill" style="width:86%;"></div></div><span class="pres-pct">19/22</span></div></td>
+              <td><span class="status-chip pub">Publicada</span></td>
+              <td><button class="row-link" onclick="openDrawer('qui')">Ver detalhes →</button></td>
+            </tr>
+            <tr>
+              <td><strong>30/06/2026</strong><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Seg · 14:00</div></td>
+              <td>2h01</td>
+              <td><div class="pres-bar"><div class="pres-bar-track"><div class="pres-bar-fill" style="width:91%;"></div></div><span class="pres-pct">20/22</span></div></td>
+              <td><span class="status-chip pub">Publicada</span></td>
+              <td><button class="row-link" onclick="openDrawer('seg')">Ver detalhes →</button></td>
+            </tr>
+            <tr>
+              <td><strong>26/06/2026</strong><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Qui · 14:00</div></td>
+              <td>2h00</td>
+              <td><div class="pres-bar"><div class="pres-bar-track"><div class="pres-bar-fill" style="width:68%;"></div></div><span class="pres-pct">15/22</span></div></td>
+              <td><span class="status-chip pub">Publicada</span></td>
+              <td><button class="row-link" onclick="openDrawer('seg2')">Ver detalhes →</button></td>
+            </tr>
+          </tbody>
+        </table>
+    </main>
+  </div>
+
+  <!-- Detail drawer -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="if(event.target===this)closeDrawer()">
+    <div class="drawer">
+      <div class="drawer-head">
+        <div class="drawer-head-info">
+          <p class="drawer-head-title" id="drawerTitle">Extensivo PISM I — T1 · 09/07/2026</p>
+          <p class="drawer-head-meta" id="drawerMeta">Qua, 14:00–16:03 · 2h03</p>
+        </div>
+        <button class="drawer-close" onclick="closeDrawer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div class="drawer-body">
+        <div>
+          <p class="section-label">Estatísticas</p>
+          <div class="stats-row">
+            <div class="stat-box"><div class="stat-box-val" id="dPresentes">17</div><div class="stat-box-label">Presentes</div></div>
+            <div class="stat-box"><div class="stat-box-val" id="dAusentes">5</div><div class="stat-box-label">Ausentes</div></div>
+            <div class="stat-box"><div class="stat-box-val" id="dPct">77%</div><div class="stat-box-label">Presença</div></div>
+            <div class="stat-box"><div class="stat-box-val" id="dTempo">1h52</div><div class="stat-box-label">Tempo médio</div></div>
+          </div>
+        </div>
+        <div>
+          <p class="section-label">Presença</p>
+          <table class="pres-table">
+            <thead><tr><th>Aluno</th><th>Entrada</th><th>Saída</th><th>Tempo</th><th></th></tr></thead>
+            <tbody>
+              <tr><td><div class="cell-name"><span class="cell-av" style="background:#0e93f2;">KM</span>Karla Moreira</div></td><td>14:01</td><td>16:03</td><td>2h02</td><td><span class="pres-chip p">Presente</span></td></tr>
+              <tr><td><div class="cell-name"><span class="cell-av" style="background:#278556;">MC</span>Matheus Carvalho</div></td><td>14:05</td><td>15:55</td><td>1h50</td><td><span class="pres-chip p">Presente</span></td></tr>
+              <tr><td><div class="cell-name"><span class="cell-av" style="background:#d97706;">BF</span>Beatriz Fontes</div></td><td>—</td><td>—</td><td>—</td><td><span class="pres-chip a">Ausente</span></td></tr>
+              <tr><td><div class="cell-name"><span class="cell-av" style="background:#db2777;">LS</span>Lucas Souza</div></td><td>14:00</td><td>16:04</td><td>2h04</td><td><span class="pres-chip p">Presente</span></td></tr>
+              <tr><td><div class="cell-name"><span class="cell-av" style="background:#6366f1;">PR</span>Paula Rezende</div></td><td>—</td><td>—</td><td>—</td><td><span class="pres-chip a">Ausente</span></td></tr>
+              <tr><td style="color:var(--text-muted);font-style:italic;" colspan="5">+ 17 alunos</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <p class="section-label">Gravação</p>
+          <div class="publish-box">
+            <div class="publish-box-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/></svg></div>
+            <div class="publish-box-text">
+              <p class="publish-box-title">Gravação disponível · 2h03</p>
+              <p class="publish-box-sub">O título será definido na seção de Conteúdo do Curso.</p>
+            </div>
+            <button class="btn-publish-now" id="publishBtn" onclick="openConfirm()">Publicar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="confirmOverlay" onclick="if(event.target===this)closeConfirm()">
+    <div class="modal">
+      <p class="modal-title">Publicar gravação?</p>
+      <p class="modal-body">A gravação ficará disponível para os alunos desta turma. O título e materiais podem ser configurados depois no <strong>Conteúdo do Curso</strong>.</p>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeConfirm()">Cancelar</button>
+        <button class="btn-confirm" onclick="confirmPublish()">Publicar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      qua:  { title:'Extensivo PISM I — T1 · 09/07/2026', meta:'Qua, 14:00–16:03 · 2h03', p:17, a:5, pct:'77%', tempo:'1h52' },
+      qui:  { title:'Extensivo PISM I — T1 · 03/07/2026', meta:'Qui, 14:00–15:58 · 1h58', p:19, a:3, pct:'86%', tempo:'1h55' },
+      seg:  { title:'Extensivo PISM I — T1 · 30/06/2026', meta:'Seg, 14:00–16:01 · 2h01', p:20, a:2, pct:'91%', tempo:'1h58' },
+      seg2: { title:'Extensivo PISM I — T1 · 26/06/2026', meta:'Qui, 14:00–16:00 · 2h00', p:15, a:7, pct:'68%', tempo:'1h40' },
+    };
+    function openDrawer(key) {
+      const d = data[key];
+      document.getElementById('drawerTitle').textContent = d.title;
+      document.getElementById('drawerMeta').textContent = d.meta;
+      document.getElementById('dPresentes').textContent = d.p;
+      document.getElementById('dAusentes').textContent = d.a;
+      document.getElementById('dPct').textContent = d.pct;
+      document.getElementById('dTempo').textContent = d.tempo;
+      document.getElementById('publishBtn').textContent = 'Publicar';
+      document.getElementById('publishBtn').className = 'btn-publish-now';
+      document.getElementById('publishBtn').disabled = false;
+      document.getElementById('drawerOverlay').classList.add('open');
+    }
+    function closeDrawer() { document.getElementById('drawerOverlay').classList.remove('open'); }
+    function openConfirm() { document.getElementById('confirmOverlay').classList.add('open'); }
+    function closeConfirm() { document.getElementById('confirmOverlay').classList.remove('open'); }
+    function confirmPublish() {
+      closeConfirm();
+      const btn = document.getElementById('publishBtn');
+      btn.textContent = '✓ Publicada'; btn.classList.add('done'); btn.disabled = true;
+    }
+    function loadTurma(val) {
+      const labels = { pism1t1:'22 alunos', pism1t2:'20 alunos' };
+      document.getElementById('turmaInfo').textContent = labels[val] || '';
+    }
+  </script>
+</body>
+</html>

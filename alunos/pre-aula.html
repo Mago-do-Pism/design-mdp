@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Entrar na aula · Mago do Pism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/app.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    a { color: inherit; text-decoration: none; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--neutral-150);
+      min-height: 100dvh;
+      display: flex; flex-direction: column;
+    }
+
+    /* ── Top bar ── */
+    .lobby-top {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px;
+      background: var(--neutral-0);
+      border-bottom: 1px solid var(--border-default);
+      flex-shrink: 0;
+    }
+    .lobby-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--text-muted); font-size: 14px; font-weight: 500;
+      cursor: pointer; background: none; border: none;
+    }
+    .lobby-back:hover { color: var(--brand-blue); }
+    .lobby-back svg { width: 18px; height: 18px; }
+    .lobby-class-info { text-align: center; }
+    .lobby-class-name { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+    .lobby-class-sub  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .lobby-live-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 12px; border-radius: 6px;
+      background: rgba(14,147,242,0.10); border: 1px solid rgba(14,147,242,0.25);
+      font-size: 12px; font-weight: 700; color: var(--brand-blue);
+    }
+    .lobby-live-badge::before {
+      content: ""; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--brand-blue); animation: blink 1.4s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ── Main ── */
+    .lobby-main {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      gap: 56px; padding: 48px 40px; flex-wrap: wrap;
+    }
+
+    /* ── Camera preview ── */
+    .cam-side { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+
+    .cam-preview {
+      width: 540px; max-width: 100%; aspect-ratio: 16/9;
+      background: #e8eaf0;
+      border-radius: 16px; overflow: hidden; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    }
+    .cam-avatar {
+      width: 96px; height: 96px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-blue), #6366f1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; font-weight: 800; color: white;
+      transition: opacity 0.3s;
+    }
+    .cam-preview.cam-on .cam-avatar { opacity: 0; }
+    .cam-video-on {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, #dde3ef 0%, #c8d0e0 100%);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .cam-preview.cam-on .cam-video-on { opacity: 1; }
+    .cam-video-on svg { opacity: 0.15; width: 96px; height: 96px; }
+    .cam-name-tag {
+      position: absolute; bottom: 12px; left: 16px;
+      font-size: 13px; font-weight: 600; color: white;
+      background: rgba(0,0,0,0.35); border-radius: 6px; padding: 3px 10px;
+      backdrop-filter: blur(4px);
+    }
+    .mic-level {
+      position: absolute; bottom: 16px; right: 16px;
+      display: flex; align-items: flex-end; gap: 2px; height: 20px;
+    }
+    .mic-bar {
+      width: 3px; border-radius: 2px; background: var(--brand-blue); opacity: 0.7;
+      animation: levelbounce var(--d,0.8s) ease-in-out infinite alternate;
+    }
+    @keyframes levelbounce { from{height:3px} to{height:var(--h,14px)} }
+
+    /* Controls */
+    .media-controls { display: flex; gap: 12px; align-items: center; }
+    .media-btn-wrap { display: flex; flex-direction: column; align-items: center; padding-bottom: 20px; }
+    .media-btn {
+      width: 52px; height: 52px; border-radius: 50%; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, transform 0.1s; position: relative;
+    }
+    .media-btn:active { transform: scale(0.93); }
+    .media-btn svg { width: 22px; height: 22px; }
+    .media-btn.on  { background: var(--neutral-300); color: var(--text-primary); }
+    .media-btn.off { background: rgba(239,68,68,0.12); color: var(--color-danger); }
+    .media-btn.on:hover  { background: var(--neutral-350); }
+    .media-btn.off:hover { background: rgba(239,68,68,0.20); }
+    .media-label {
+      font-size: 11px; color: var(--text-muted); font-weight: 500;
+      position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%);
+      white-space: nowrap;
+    }
+
+    /* ── Right panel ── */
+    .info-side {
+      display: flex; flex-direction: column; gap: 24px;
+      max-width: 320px; width: 100%;
+    }
+    .info-heading { font-size: 24px; font-weight: 800; color: var(--text-primary); line-height: 1.2; }
+    .info-sub { font-size: 14px; color: var(--text-secondary); margin-top: 8px; line-height: 1.6; }
+
+    .participants-label {
+      font-size: 11px; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px;
+    }
+    .participants-list { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .part-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: white;
+      border: 2px solid var(--neutral-150);
+    }
+    .part-count { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+    .info-divider { height: 1px; background: var(--border-default); }
+
+    .settings-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px; border-radius: 10px;
+      background: var(--neutral-0); border: 1px solid var(--border-default);
+      cursor: pointer; transition: border-color 0.15s;
+    }
+    .settings-row:hover { border-color: var(--brand-blue); }
+    .settings-row svg { width: 18px; height: 18px; color: var(--text-muted); flex-shrink: 0; }
+    .settings-row-text { flex: 1; }
+    .settings-row-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .settings-row-sub   { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+    .settings-row-arrow svg { width: 16px; height: 16px; color: var(--text-muted); }
+
+    .btn-enter {
+      width: 100%; height: 52px; border-radius: 12px;
+      background: var(--brand-blue); border: none;
+      color: white; font-family: var(--font-body);
+      font-size: 16px; font-weight: 700; cursor: pointer;
+      transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 8px;
+      text-decoration: none;
+    }
+    .btn-enter:hover { background: var(--brand-blue-dark); color: white; }
+    .btn-enter svg { width: 20px; height: 20px; }
+
+    .btn-back {
+      width: 100%; height: 44px; border-radius: 10px;
+      background: var(--neutral-0); border: 1px solid var(--border-default);
+      color: var(--text-secondary); font-family: var(--font-body);
+      font-size: 14px; font-weight: 500; cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .btn-back:hover { border-color: var(--brand-blue); color: var(--brand-blue); }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="lobby-top">
+    <button class="lobby-back" onclick="history.back()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      Voltar
+    </button>
+    <div class="lobby-class-info">
+      <div class="lobby-class-name">PISM I — Turma T1</div>
+      <div class="lobby-class-sub">Prof. Carlos Menezes · Matemática</div>
+    </div>
+    <span class="lobby-live-badge">Ao vivo</span>
+  </div>
+
+  <!-- Main -->
+  <div class="lobby-main">
+
+    <!-- Camera side -->
+    <div class="cam-side">
+      <div class="cam-preview" id="camPreview">
+        <div class="cam-avatar" id="camAvatar">KM</div>
+        <div class="cam-video-on">
+          <svg viewBox="0 0 25 25" fill="none" stroke="var(--text-muted)" stroke-width="1.5"><path d="M19.7917 21.875V19.7917C19.7917 18.6866 19.3527 17.6268 18.5713 16.8454C17.7899 16.064 16.7301 15.625 15.625 15.625H9.375C8.26993 15.625 7.21013 16.064 6.42872 16.8454C5.64732 17.6268 5.20834 18.6866 5.20834 19.7917V21.875M16.6667 7.29167C16.6667 9.59285 14.8012 11.4583 12.5 11.4583C10.1988 11.4583 8.33334 9.59285 8.33334 7.29167C8.33334 4.99048 10.1988 3.125 12.5 3.125C14.8012 3.125 16.6667 4.99048 16.6667 7.29167Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="cam-name-tag">Karla Moreira (você)</div>
+        <div class="mic-level" id="micLevel">
+          <div class="mic-bar" style="--h:6px;--d:0.6s;"></div>
+          <div class="mic-bar" style="--h:14px;--d:0.8s;"></div>
+          <div class="mic-bar" style="--h:9px;--d:0.7s;"></div>
+          <div class="mic-bar" style="--h:16px;--d:0.9s;"></div>
+          <div class="mic-bar" style="--h:7px;--d:0.65s;"></div>
+        </div>
+      </div>
+
+      <div class="media-controls">
+        <div class="media-btn-wrap">
+          <button class="media-btn on" id="micBtn" onclick="toggleMic()">
+            <svg id="micIconOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            <svg id="micIconOff" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            <span class="media-label">Microfone</span>
+          </button>
+        </div>
+        <div class="media-btn-wrap">
+          <button class="media-btn on" id="camBtn" onclick="toggleCam()">
+            <svg id="camIconOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.723v6.554a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            <svg id="camIconOff" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M21 21H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3m3-3h6l2 3h4a2 2 0 0 1 2 2v9.34"/><path d="M15 13a3 3 0 1 1-4.24-4.24"/></svg>
+            <span class="media-label">Câmera</span>
+          </button>
+        </div>
+        <div class="media-btn-wrap">
+          <button class="media-btn on">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            <span class="media-label">Efeitos</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info panel -->
+    <div class="info-side">
+      <div>
+        <div class="info-heading">Pronto para entrar?</div>
+        <div class="info-sub">Verifique seu microfone e câmera antes de entrar na aula.</div>
+      </div>
+
+      <div>
+        <div class="participants-label">Na aula agora</div>
+        <div class="participants-list">
+          <div class="part-avatar" style="background:#278556;">CM</div>
+          <div class="part-avatar" style="background:#0e93f2;">MN</div>
+          <div class="part-avatar" style="background:#d97706;">IS</div>
+          <div class="part-avatar" style="background:#db2777;">BF</div>
+          <div class="part-avatar" style="background:#6366f1;">PR</div>
+          <span class="part-count">+18 participantes</span>
+        </div>
+      </div>
+
+      <div class="info-divider"></div>
+
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <div class="settings-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+          <div class="settings-row-text">
+            <div class="settings-row-title">Microfone padrão</div>
+            <div class="settings-row-sub">Microfone interno do dispositivo</div>
+          </div>
+          <div class="settings-row-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
+        <div class="settings-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.723v6.554a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          <div class="settings-row-text">
+            <div class="settings-row-title">Câmera padrão</div>
+            <div class="settings-row-sub">Câmera integrada FaceTime HD</div>
+          </div>
+          <div class="settings-row-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
+      </div>
+
+      <div class="info-divider"></div>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <a href="aula-ao-vivo.html" class="btn-enter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.723v6.554a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Entrar na aula
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let micOn = true, camOn = true;
+    function toggleMic() {
+      micOn = !micOn;
+      document.getElementById('micBtn').className = 'media-btn ' + (micOn ? 'on' : 'off');
+      document.getElementById('micIconOn').style.display  =  micOn ? '' : 'none';
+      document.getElementById('micIconOff').style.display = !micOn ? '' : 'none';
+      document.getElementById('micLevel').style.opacity   =  micOn ? '1' : '0.2';
+    }
+    function toggleCam() {
+      camOn = !camOn;
+      document.getElementById('camBtn').className = 'media-btn ' + (camOn ? 'on' : 'off');
+      document.getElementById('camIconOn').style.display  =  camOn ? '' : 'none';
+      document.getElementById('camIconOff').style.display = !camOn ? '' : 'none';
+      document.getElementById('camPreview').classList.toggle('cam-on', camOn);
+    }
+  </script>
+</body>
+</html>

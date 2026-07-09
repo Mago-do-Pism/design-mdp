@@ -4,9 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mago do Pism — Importação Figma</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@400;500;600&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles/tokens.css" />
   <style>
     body {
@@ -714,9 +712,114 @@
     </div>
   </section>
 
+  <!-- ═════════════════════ PHASE 6 — AULAS AO VIVO ═════════════════════ -->
+  <section class="phase" id="aulas-ao-vivo">
+    <div class="phase-header">
+      <span class="phase-number">FASE 06</span>
+      <h2 class="phase-title">Aulas ao Vivo · Calendário · Gravações · Presença</h2>
+      <span class="phase-count">11 telas · 3 papéis</span>
+    </div>
+
+    <!-- Aluno -->
+    <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin:0 0 16px;">Papel · Aluno</p>
+    <div class="screen-grid" style="margin-bottom:40px;">
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="alunos/calendario.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Calendário Semanal</p>
+            <p class="screen-meta-sub">Grade dias × horários · badge AO VIVO · link para sala</p>
+          </div>
+          <a href="alunos/calendario.html">Abrir →</a>
+        </div>
+      </article>
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="alunos/aula-ao-vivo.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Sala de Aula ao Vivo · Aluno</p>
+            <p class="screen-meta-sub">Tela compartilhada · chat · participantes · controles</p>
+          </div>
+          <a href="alunos/aula-ao-vivo.html">Abrir →</a>
+        </div>
+      </article>
+    </div>
+
+    <!-- Admin -->
+    <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin:0 0 16px;">Papel · Admin / Coordenação</p>
+    <div class="screen-grid" style="margin-bottom:40px;">
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/aulas.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Aulas</p>
+            <p class="screen-meta-sub">Seletor de turma · lista de aulas · stats + presença + publicar</p>
+          </div>
+          <a href="admin/aulas.html">Abrir →</a>
+        </div>
+      </article>
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/calendario.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Calendário</p>
+            <p class="screen-meta-sub">Grade semanal por turma · criar e editar aulas · filtro por professor</p>
+          </div>
+          <a href="admin/calendario.html">Abrir →</a>
+        </div>
+      </article>
+    </div>
+
+    <!-- Professor -->
+    <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin:0 0 16px;">Papel · Professor (novo papel)</p>
+    <div class="screen-grid">
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="professor/inicio.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Painel do Professor</p>
+            <p class="screen-meta-sub">Próxima aula · agenda · gravações pendentes · stats</p>
+          </div>
+          <a href="professor/inicio.html">Abrir →</a>
+        </div>
+      </article>
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="professor/calendario.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Agenda do Professor</p>
+            <p class="screen-meta-sub">Só as suas turmas · botão Iniciar aula na hora certa</p>
+          </div>
+          <a href="professor/calendario.html">Abrir →</a>
+        </div>
+      </article>
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="professor/aula-ao-vivo.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Sala de Aula ao Vivo · Professor</p>
+            <p class="screen-meta-sub">Silenciar alunos · encerrar aula · compartilhar tela</p>
+          </div>
+          <a href="professor/aula-ao-vivo.html">Abrir →</a>
+        </div>
+      </article>
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="professor/presenca.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Presença · Professor</p>
+            <p class="screen-meta-sub">Apenas suas turmas · visualização simplificada</p>
+          </div>
+          <a href="professor/presenca.html">Abrir →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
   <footer class="footer">
     <span>Mago do Pism · Curso do Mago — Web</span>
-    <span>Importação Figma · v1 · Fase 1 / 2 / 3 / 4 / 5A / 5B</span>
+    <span>Importação Figma · v1 · Fase 1 / 2 / 3 / 4 / 5A / 5B / 6</span>
   </footer>
 
   <!-- Auto-scale iframe thumbnails to fit their card width -->

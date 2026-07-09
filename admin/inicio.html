@@ -4,91 +4,108 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Início · Admin · Mago do Pism</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styles/tokens.css" />
   <link rel="stylesheet" href="../styles/platform.css" />
   <link rel="stylesheet" href="../styles/admin.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      max-width: 960px;
+    }
+    .stat-card {
+      background: var(--neutral-150);
+      border-radius: 10px;
+      padding: 32px;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: transform 0.2s ease;
+      cursor: default;
+    }
+    .stat-card:hover { transform: scale(1.02); }
+    .stat-title { font-size: 17px; font-weight: 600; color: var(--text-primary); }
+    .stat-desc  { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+    .star-row { display: flex; gap: 4px; }
+    .star-row svg { width: 22px; height: 22px; fill: var(--brand-blue); }
+    .prog-track { height: 8px; background: var(--neutral-350); border-radius: 4px; overflow: hidden; width: 75%; }
+    .prog-fill  { height: 100%; background: var(--brand-blue); border-radius: 4px; }
+  </style>
 </head>
 <body>
-
   <div class="app-shell">
-    <!-- ADMIN SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
       <nav class="sidebar-nav">
         <a href="inicio.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
-        <a href="alunos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
         <a href="cursos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos</span></a>
+        <a href="alunos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
         <a href="modulos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
         <a href="equipe.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Equipe</span></a>
-        <a href="#" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M14 9c-.5-1-1.5-1.5-2.5-1.5S9 8 9 9.5s1 2 2.5 2.5 2.5 1 2.5 2.5-1 2-2.5 2-2-.5-2.5-1.5"/></svg><span>Financeiro</span></a>
+        <a href="avisos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Avisos</span></a>
+        <a href="simulados.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg><span>Simulados</span></a>
+        <a href="nivelamentos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Nivelamentos</span></a>
+        <a href="listas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Listas</span></a>
       </nav>
       <div class="sidebar-foot">
-        <a href="#" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 0c0 1.5-2.5 2-2.5 3.5"/></svg><span>Ajuda</span></a>
         <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
       </div>
     </aside>
 
-    <!-- CONTENT — replicates Figma /Plataforma---Admin/Tela-de-Início (20:783) -->
     <main class="content admin-content">
-      <h2 class="section-title">Início</h2>
+      <h2 class="section-title">Estatísticas</h2>
 
-      <div class="kpi-grid">
-        <article class="kpi-card">
-          <div class="kpi-stars" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-            <svg viewBox="0 0 24 24" class="half"><defs><linearGradient id="halfg"><stop offset="50%" stop-color="#0E93F2"/><stop offset="50%" stop-color="#dedede"/></linearGradient></defs><path fill="url(#halfg)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="star-row">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><defs><linearGradient id="hg"><stop offset="50%" stop-color="var(--brand-blue)"/><stop offset="50%" stop-color="var(--neutral-350)"/></linearGradient></defs><path fill="url(#hg)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           </div>
-          <p class="kpi-value">4,9 estrelas</p>
-          <p class="kpi-label">Nota média, de um total de 12.456 avaliações</p>
-        </article>
+          <div class="stat-title">4,9 estrelas</div>
+          <div class="stat-desc">Nota média, de um total de 12.456 avaliações</div>
+        </div>
 
-        <article class="kpi-card">
-          <div class="kpi-bars" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
-          <p class="kpi-value">56% de conclusão</p>
-          <p class="kpi-label">Percentual de alunos que concluem</p>
-        </article>
+        <div class="stat-card">
+          <div class="prog-track"><div class="prog-fill" style="width:56%;"></div></div>
+          <div class="stat-title">56% de conclusão</div>
+          <div class="stat-desc">Percentual de alunos que concluem os cursos</div>
+        </div>
 
-        <article class="kpi-card">
-          <div class="kpi-bars" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
-          <p class="kpi-value">92% de NPS</p>
-          <p class="kpi-label">Indice de satisfação dos alunos com os cursos</p>
-        </article>
+        <div class="stat-card">
+          <div class="prog-track"><div class="prog-fill" style="width:92%;"></div></div>
+          <div class="stat-title">92% de NPS</div>
+          <div class="stat-desc">Índice de satisfação dos alunos com os cursos</div>
+        </div>
 
-        <article class="kpi-card">
-          <div class="kpi-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <p class="kpi-value">5.040 alunos</p>
-          <p class="kpi-label">Total de alunos no Mago do Pism</p>
-        </article>
+        <div class="stat-card">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <div class="stat-title">5.040 alunos</div>
+          <div class="stat-desc">Total de alunos no Mago do Pism</div>
+        </div>
 
-        <article class="kpi-card">
-          <div class="kpi-icon warn" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2 2"/></svg>
-          </div>
-          <p class="kpi-value">230 inadimplentes</p>
-          <p class="kpi-label">Total de alunos que estão com faturas atrasadas</p>
-        </article>
+        <div class="stat-card">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div class="stat-title">230 inadimplentes</div>
+          <div class="stat-desc">Total de alunos com faturas atrasadas</div>
+        </div>
 
-        <article class="kpi-card">
-          <div class="kpi-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h6"/></svg>
-          </div>
-          <p class="kpi-value">12.453 Anotações</p>
-          <p class="kpi-label">Total de anotações privadas dos alunos</p>
-        </article>
+        <div class="stat-card">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+          <div class="stat-title">12,5 aulas assistidas</div>
+          <div class="stat-desc">Média de aulas assistidas por aluno nos últimos 7 dias</div>
+        </div>
 
-        <article class="kpi-card">
-          <div class="kpi-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-          </div>
-          <p class="kpi-value">12,5 aulas assistidas</p>
-          <p class="kpi-label">Média de aulas assistidas por alunos nos últimos 7 dias</p>
-        </article>
+        <div class="stat-card">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h6"/></svg>
+          <div class="stat-title">12.453 Anotações</div>
+          <div class="stat-desc">Total de anotações privadas dos alunos</div>
+        </div>
+
       </div>
     </main>
   </div>

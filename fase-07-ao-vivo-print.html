@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Mago do Pism — Fase 07 · Aulas ao Vivo (PDF)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/tokens.css" />
+  <style>
+    :root {
+      --page-w: 1085px;
+      --page-h: 756px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: #f3f4f6;
+      font-family: var(--font-body, "Montserrat", system-ui, sans-serif);
+      color: #111;
+    }
+
+    /* Cover */
+    .cover {
+      width: var(--page-w); height: var(--page-h);
+      margin: 24px auto; background: white;
+      padding: 64px 72px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      page-break-after: page; break-after: page;
+    }
+    .cover-eyebrow { font-family: "Roboto Mono", monospace; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: #6b7280; }
+    .cover-title { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 52px; letter-spacing: -1px; line-height: 1.05; color: #0e1116; margin: 16px 0 24px; }
+    .cover-title em { font-style: normal; color: var(--brand-blue, #0e93f2); }
+    .cover-sub { font-size: 16px; color: #4b5563; max-width: 760px; line-height: 1.55; }
+    .cover-phases { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; }
+    .cover-phase { border: 1px solid #e5e7eb; border-radius: 14px; padding: 22px 24px; }
+    .cover-phase .num { font-family: "Roboto Mono", monospace; font-size: 11px; letter-spacing: 0.22em; color: var(--brand-blue, #0e93f2); }
+    .cover-phase h3 { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 22px; margin: 8px 0 6px; color: #0e1116; }
+    .cover-phase p { margin: 0; font-size: 13px; color: #6b7280; }
+    .cover-phase ul { margin: 12px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr; gap: 4px; }
+    .cover-phase li { font-size: 12px; color: #4b5563; }
+    .cover-phase li::before { content: "·"; margin-right: 6px; color: #9ca3af; }
+    .cover-foot { display: flex; justify-content: space-between; align-items: baseline; font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #9ca3af; }
+
+    /* Divider */
+    .divider {
+      width: var(--page-w); height: var(--page-h);
+      margin: 24px auto; background: #0e1116; color: white;
+      padding: 96px 88px;
+      display: flex; flex-direction: column; justify-content: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      page-break-after: page; break-after: page;
+      position: relative;
+    }
+    .divider .num { font-family: "Roboto Mono", monospace; font-size: 12px; letter-spacing: 0.28em; color: var(--brand-blue, #0e93f2); }
+    .divider h2 { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 72px; letter-spacing: -2px; line-height: 1; margin: 18px 0 24px; }
+    .divider p { font-size: 17px; color: #d1d5db; max-width: 720px; margin: 0; line-height: 1.55; }
+    .divider .meta { position: absolute; bottom: 64px; left: 88px; right: 88px; display: flex; justify-content: space-between; font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #6b7280; }
+
+    /* Screen page */
+    .page {
+      width: var(--page-w); height: var(--page-h);
+      margin: 24px auto; background: white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      display: flex; flex-direction: column;
+      page-break-after: page; break-after: page;
+      overflow: hidden;
+    }
+    .page:last-child { page-break-after: auto; break-after: auto; }
+    .page-head {
+      flex: 0 0 auto; display: flex; justify-content: space-between; align-items: baseline;
+      padding: 14px 22px 12px; border-bottom: 1px solid #e5e7eb;
+    }
+    .page-head .left { display: flex; align-items: baseline; gap: 14px; }
+    .page-head .num { font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.22em; color: var(--brand-blue, #0e93f2); }
+    .page-head .title { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 18px; color: #0e1116; }
+    .page-head .sub { font-size: 12px; color: #6b7280; }
+    .page-head .idx { font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.22em; color: #9ca3af; }
+    .stage { flex: 1 1 auto; position: relative; background: #f9fafb; overflow: hidden; }
+    .stage iframe { position: absolute; top: 0; left: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; background: white; }
+
+    /* Notes */
+    .notes {
+      width: var(--page-w); height: var(--page-h);
+      margin: 24px auto; background: white;
+      padding: 56px 72px;
+      display: flex; flex-direction: column;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      page-break-after: page; break-after: page;
+    }
+    .notes h2 { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 36px; letter-spacing: -0.5px; color: #0e1116; margin: 0 0 8px; }
+    .notes h2 em { font-style: normal; color: var(--brand-blue, #0e93f2); }
+    .notes .lead { font-size: 14px; color: #4b5563; max-width: 720px; line-height: 1.55; margin: 0 0 28px; }
+    .notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 32px; flex: 1; }
+    .note-card { border: 1px solid #e5e7eb; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; }
+    .note-card .num { font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.22em; color: var(--brand-blue, #0e93f2); }
+    .note-card h3 { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 17px; color: #0e1116; margin: 0; }
+    .note-card p { margin: 0; font-size: 12.5px; line-height: 1.5; color: #4b5563; }
+    .note-card ul { margin: 4px 0 0; padding: 0 0 0 14px; font-size: 12px; color: #4b5563; line-height: 1.55; }
+    .note-foot { margin-top: 18px; font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #9ca3af; display: flex; justify-content: space-between; }
+
+    @page { size: A4 landscape; margin: 0.5cm; }
+    @media print {
+      html, body { background: white; }
+      .cover, .divider, .page, .notes { margin: 0 auto; box-shadow: none; }
+      .stage iframe { border: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- COVER -->
+  <section class="cover">
+    <div>
+      <div class="cover-eyebrow">Mago do Pism · Curso do Mago</div>
+      <h1 class="cover-title">Aulas <em>ao vivo</em> —<br/>sala do aluno e do <em>professor</em></h1>
+      <p class="cover-sub">Documento da Fase <strong>07</strong>. Infraestrutura de aulas ao vivo: listagem e calendário para o aluno, tela preparatória estilo Meet, sala de vídeo com chat e participantes, e painel do professor com controles de apresentação e gravação.</p>
+
+      <div class="cover-phases">
+        <div class="cover-phase">
+          <div class="num">FASE 07A</div>
+          <h3>Aluno · Ao vivo</h3>
+          <p>4 telas — do agendamento à sala de aula.</p>
+          <ul>
+            <li>Ao vivo — lista de aulas (próximas + ao vivo)</li>
+            <li>Ao vivo — aba Calendário semanal</li>
+            <li>Pré-aula — verificação de câmera e microfone</li>
+            <li>Sala do aluno — vídeo, chat, participantes</li>
+          </ul>
+        </div>
+        <div class="cover-phase">
+          <div class="num">FASE 07B</div>
+          <h3>Professor · Painel</h3>
+          <p>4 telas — início, aulas e sala de transmissão.</p>
+          <ul>
+            <li>Início — próximas aulas + gravações pendentes</li>
+            <li>Aulas — lista com upload de gravação</li>
+            <li>Presença — registro de presença por aula</li>
+            <li>Sala do professor — controles, gravação, alunos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="cover-foot">
+      <span>v1 · Julho 2026</span>
+      <span>Mago do Pism — Fase 07 · Aulas ao Vivo</span>
+    </div>
+  </section>
+
+  <!-- 07A DIVIDER -->
+  <section class="divider">
+    <div class="num">FASE 07A</div>
+    <h2>Aluno<br/>Ao vivo</h2>
+    <p>O aluno visualiza as aulas agendadas em lista cronológica ou em calendário semanal, prepara seu dispositivo em uma tela dedicada e entra na sala de vídeo com chat e levantar a mão.</p>
+    <div class="meta">
+      <span>4 telas</span>
+      <span>Mago do Pism</span>
+    </div>
+  </section>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07A · 01</span>
+        <span class="title">Ao vivo — Aulas</span>
+        <span class="sub">Lista cronológica · badge ao vivo pulsante · próximas aulas</span>
+      </div>
+      <span class="idx">alunos/ao-vivo.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/ao-vivo.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07A · 02</span>
+        <span class="title">Ao vivo — Calendário</span>
+        <span class="sub">Grade semanal · eventos por turma · cores por curso</span>
+      </div>
+      <span class="idx">alunos/ao-vivo.html (aba calendário)</span>
+    </header>
+    <div class="stage">
+      <iframe src="alunos/ao-vivo.html" loading="eager" data-screen id="cal-frame"></iframe>
+    </div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07A · 03</span>
+        <span class="title">Pré-aula</span>
+        <span class="sub">Preview da câmera · microfone · participantes · entrar</span>
+      </div>
+      <span class="idx">alunos/pre-aula.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/pre-aula.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07A · 04</span>
+        <span class="title">Sala do aluno</span>
+        <span class="sub">Vídeo do professor · chat · levantar a mão · tiles de alunos</span>
+      </div>
+      <span class="idx">alunos/aula-ao-vivo.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/aula-ao-vivo.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <!-- 07B DIVIDER -->
+  <section class="divider">
+    <div class="num">FASE 07B</div>
+    <h2>Professor<br/>Painel</h2>
+    <p>O professor acompanha a agenda, publica gravações e gerencia a sala ao vivo com controles de apresentação, gravação, microfone/câmera dos alunos e chat.</p>
+    <div class="meta">
+      <span>4 telas</span>
+      <span>Mago do Pism</span>
+    </div>
+  </section>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07B · 01</span>
+        <span class="title">Professor · Início</span>
+        <span class="sub">Aula do dia · próximas aulas · gravações pendentes</span>
+      </div>
+      <span class="idx">professor/inicio.html</span>
+    </header>
+    <div class="stage"><iframe src="professor/inicio.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07B · 02</span>
+        <span class="title">Professor · Aulas</span>
+        <span class="sub">Lista de aulas · upload de gravação · publicar</span>
+      </div>
+      <span class="idx">professor/aulas.html</span>
+    </header>
+    <div class="stage"><iframe src="professor/aulas.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07B · 03</span>
+        <span class="title">Professor · Presença</span>
+        <span class="sub">Registro de presença por aula · lista de alunos</span>
+      </div>
+      <span class="idx">professor/presenca.html</span>
+    </header>
+    <div class="stage"><iframe src="professor/presenca.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07B · 04</span>
+        <span class="title">Sala do professor</span>
+        <span class="sub">Transmissão · gravação · silenciar alunos · chat · tiles de câmera</span>
+      </div>
+      <span class="idx">professor/aula-ao-vivo.html</span>
+    </header>
+    <div class="stage"><iframe src="professor/aula-ao-vivo.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <!-- NOTAS DE DESIGN -->
+  <section class="notes">
+    <h2>Notas de <em>design</em> &amp; decisões</h2>
+    <p class="lead">Princípios que sustentam as telas da Fase 07. A sala de aulas ao vivo usa tema escuro (como ferramentas de vídeo consolidadas) enquanto todo o restante da plataforma mantém tema claro — a transição é intencional e contextual.</p>
+
+    <div class="notes-grid">
+      <article class="note-card">
+        <div class="num">01</div>
+        <h3>Tema escuro só na sala</h3>
+        <p>A sala de vídeo (professor e aluno) usa fundo <code>#111827</code> para reduzir fadiga visual durante transmissões longas e destacar o conteúdo. A pré-aula e todo o restante da plataforma mantêm tema claro.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">02</div>
+        <h3>Pré-aula estilo Meet</h3>
+        <p>Antes de entrar o aluno vê preview da câmera, barra de nível do microfone, lista de participantes já na sala e configurações de dispositivo. Reduz erros técnicos durante a aula.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">03</div>
+        <h3>Tiles de câmera</h3>
+        <p>Fila inferior com tiles 180×108 px. Câmera ligada: gradiente colorido simulando vídeo. Câmera desligada: avatar com iniciais. Tile "Você" tem borda azul primária e chip identificador.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">04</div>
+        <h3>Controles contextuais</h3>
+        <p>Aluno: microfone, câmera, <strong>levantar a mão</strong> (amarelo quando ativo), chat, sair. Professor: microfone, câmera, compartilhar tela, <strong>gravar</strong> (vermelho quando ativo), silenciar todos, encerrar.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">05</div>
+        <h3>Listagem cronológica</h3>
+        <p>Aulas ordenadas do mais próximo ao mais distante. Aula em andamento tem badge pulsante "Ao vivo" em azul. Próximas têm badge "Em breve" neutro. Clicar leva à pré-aula.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">06</div>
+        <h3>Calendário semanal</h3>
+        <p>Grade de segunda a sábado com eventos coloridos por curso (PISM I, PISM II, PISM/ENEM). Aula ao vivo tem efeito pulse. Navegação por semana com botão "Hoje".</p>
+      </article>
+    </div>
+
+    <div class="note-foot">
+      <span>Fase 07 · Aulas ao Vivo</span>
+      <span>v1 · Julho 2026</span>
+    </div>
+  </section>
+
+  <script>
+    // Switch calendar tab in iframe 07A-02
+    document.getElementById('cal-frame').addEventListener('load', function() {
+      try {
+        const doc = this.contentDocument;
+        const tabs = doc.querySelectorAll('.page-tab');
+        if (tabs[1]) tabs[1].click();
+      } catch(e) {}
+    });
+
+    function scaleStages() {
+      document.querySelectorAll('.stage').forEach(stage => {
+        const iframe = stage.querySelector('iframe[data-screen]');
+        if (!iframe) return;
+        const w = stage.clientWidth;
+        const h = stage.clientHeight;
+        const s = Math.min(w / 1440, h / 900);
+        iframe.style.transform = `scale(${s})`;
+        iframe.style.left = ((w - 1440 * s) / 2) + 'px';
+        iframe.style.top  = ((h - 900  * s) / 2) + 'px';
+      });
+    }
+    window.addEventListener('load', scaleStages);
+    window.addEventListener('resize', scaleStages);
+    scaleStages();
+  </script>
+
+</body>
+</html>

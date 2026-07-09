@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calendário · Aluno · Mago do Pism</title>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/app.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: inherit; }
+
+    /* ── Calendar wrapper ── */
+    .cal-shell { display: flex; flex-direction: column; height: 100%; }
+
+    .cal-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .cal-nav-btn {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border-default);
+      background: var(--neutral-0);
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text-secondary);
+      transition: border-color .15s;
+    }
+    .cal-nav-btn:hover { border-color: var(--brand-blue); color: var(--brand-blue); }
+    .cal-nav-btn svg { width: 18px; height: 18px; }
+    .cal-week-label {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--text-primary);
+      min-width: 220px;
+    }
+    .cal-today-btn {
+      margin-left: auto;
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border-default);
+      background: var(--neutral-0);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    .cal-legend {
+      display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+    }
+    .cal-legend-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--text-muted); font-weight: 500;
+    }
+    .cal-legend-dot {
+      width: 10px; height: 10px; border-radius: 3px;
+    }
+
+    /* ── Grid ── */
+    .cal-outer {
+      background: var(--neutral-0);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      overflow: auto;
+      flex: 1;
+    }
+    .cal-head {
+      display: grid;
+      grid-template-columns: 56px repeat(6, 1fr);
+      border-bottom: 1px solid var(--border-default);
+      position: sticky; top: 0; z-index: 10;
+      background: var(--neutral-0);
+    }
+    .cal-head-cell {
+      padding: 14px 8px 12px;
+      text-align: center;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .cal-head-cell .day-num {
+      display: block;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      line-height: 34px;
+      margin: 4px auto 0;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .cal-head-cell.today .day-num {
+      background: var(--brand-blue);
+      color: white;
+    }
+    .cal-head-cell.today { color: var(--brand-blue); }
+
+    .cal-body {
+      display: grid;
+      grid-template-columns: 56px repeat(6, 1fr);
+      min-width: 700px;
+    }
+    .cal-time-col {
+      border-right: 1px solid var(--border-default);
+    }
+    .cal-time-slot {
+      height: 70px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: 6px 10px 0 0;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--neutral-200);
+      box-sizing: border-box;
+    }
+    .cal-day-col {
+      position: relative;
+      border-right: 1px solid var(--border-default);
+    }
+    .cal-day-col:last-child { border-right: 0; }
+    .cal-hour-line {
+      height: 70px;
+      border-bottom: 1px solid var(--neutral-200);
+      box-sizing: border-box;
+    }
+    .cal-day-col.today-col { background: rgba(14,147,242,0.02); }
+
+    /* ── Events ── */
+    .cal-event {
+      position: absolute;
+      left: 5px; right: 5px;
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: filter .15s;
+      text-decoration: none;
+    }
+    .cal-event:hover { filter: brightness(0.93); }
+    .cal-event-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+    .cal-event-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.80);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cal-event-badge {
+      display: inline-block;
+      margin-top: 5px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.25);
+      font-size: 10px;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* colors */
+    .ev-blue   { background: var(--brand-blue); }
+    .ev-green  { background: #27855680; background: #278556; }
+    .ev-purple { background: #7c3aed; }
+
+    /* live pulse */
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(14,147,242,0.5); }
+      70%  { box-shadow: 0 0 0 8px rgba(14,147,242,0); }
+      100% { box-shadow: 0 0 0 0 rgba(14,147,242,0); }
+    }
+    .ev-live { animation: pulse-ring 1.8s infinite; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+            <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M15.625 21.8751V13.5418C15.625 13.2655 15.5153 13.0006 15.3199 12.8052C15.1246 12.6099 14.8596 12.5001 14.5833 12.5001H10.4167C10.1404 12.5001 9.87545 12.6099 9.6801 12.8052C9.48475 13.0006 9.375 13.2655 9.375 13.5418V21.8751M3.125 10.4168C3.12493 10.1137 3.19097 9.8143 3.31853 9.5394C3.44609 9.26449 3.63208 9.02073 3.86354 8.82511L11.1552 2.57615C11.5312 2.25835 12.0077 2.08398 12.5 2.08398C12.9923 2.08398 13.4688 2.25835 13.8448 2.57615L21.1365 8.82511C21.3679 9.02073 21.5539 9.26449 21.6815 9.5394C21.809 9.8143 21.8751 10.1137 21.875 10.4168V19.7918C21.875 20.3443 21.6555 20.8742 21.2648 21.2649C20.8741 21.6556 20.3442 21.8751 19.7917 21.8751H5.20833C4.6558 21.8751 4.12589 21.6556 3.73519 21.2649C3.34449 20.8742 3.125 20.3443 3.125 19.7918V10.4168Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M7.29167 21.875H17.7083M4.16667 3.125H20.8333C21.9839 3.125 22.9167 4.05774 22.9167 5.20833V15.625C22.9167 16.7756 21.9839 17.7083 20.8333 17.7083H4.16667C3.01607 17.7083 2.08333 16.7756 2.08333 15.625V5.20833C2.08333 4.05774 3.01607 3.125 4.16667 3.125Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Cursos</span></a>
+        <a href="links.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Links</span></a>
+        <a href="simulados.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M4.16666 20.3127V4.68766C4.16666 3.99699 4.44103 3.33461 4.92941 2.84624C5.41778 2.35786 6.08016 2.0835 6.77083 2.0835H19.7917C20.0679 2.0835 20.3329 2.19324 20.5282 2.38859C20.7236 2.58394 20.8333 2.8489 20.8333 3.12516V21.8752C20.8333 22.1514 20.7236 22.4164 20.5282 22.6117C20.3329 22.8071 20.0679 22.9168 19.7917 22.9168H6.77083C6.08016 22.9168 5.41778 22.6425 4.92941 22.1541C4.44103 21.6657 4.16666 21.0033 4.16666 20.3127ZM4.16666 20.3127C4.16666 19.622 4.44103 18.9596 4.92941 18.4712C5.41778 17.9829 6.08016 17.7085 6.77083 17.7085H20.8333M9.375 9.896L11.4583 11.9793L15.625 7.81266" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Simulados</span></a>
+        <a href="nivelamentos.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M13.957 2.08365H6.2487C5.69616 2.08365 5.16626 2.30314 4.77556 2.69385C4.38486 3.08455 4.16536 3.61445 4.16536 4.16698V20.8337C4.16536 21.3862 4.38486 21.9161 4.77556 22.3068C5.16626 22.6975 5.69616 22.917 6.2487 22.917H18.7487C19.3012 22.917 19.8311 22.6975 20.2218 22.3068C20.6125 21.9161 20.832 21.3862 20.832 20.8337V13.1253M22.2674 2.73157L13.9195 7.9524L12.5206 11.8316L16.156 11.6055L22.2674 5.86073C22.9155 5.17932 22.9155 4.29615 22.2674 2.73157Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Nivelamentos</span></a>
+        <a href="lista-questoes.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M15.625 12.5H10.4167M15.625 8.33333H10.4167M19.7917 17.7083V5.20833C19.7917 4.6558 19.5722 4.12589 19.1815 3.73519C18.7908 3.34449 18.2609 3.125 17.7083 3.125H4.16667M4.16667 3.125C4.7192 3.125 5.2491 3.34449 5.6398 3.73519C6.03051 4.12589 6.25 4.6558 6.25 5.20833V19.7917C6.25 20.3442 6.46949 20.8741 6.86019 21.2648C7.25089 21.6555 7.7808 21.875 8.33333 21.875M8.33333 21.875H20.8333C21.3859 21.875 21.9158 21.6555 22.3065 21.2648C22.6972 20.8741 22.9167 20.3442 22.9167 19.7917V18.75H10.4167V19.7917C10.4167 20.3442 10.1972 20.8741 9.80647 21.2648C9.41577 21.6555 8.88587 21.875 8.33333 21.875Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Listas</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M19.7917 21.875V19.7917C19.7917 18.6866 19.3527 17.6268 18.5713 16.8454C17.7899 16.064 16.7301 15.625 15.625 15.625H9.375C8.26993 15.625 7.21013 16.064 6.42872 16.8454C5.64732 17.6268 5.20834 18.6866 5.20834 19.7917V21.875M16.6667 7.29167C16.6667 9.59285 14.8012 11.4583 12.5 11.4583C10.1988 11.4583 8.33334 9.59285 8.33334 7.29167C8.33334 4.99048 10.1988 3.125 12.5 3.125C14.8012 3.125 16.6667 4.99048 16.6667 7.29167Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <main class="content" style="padding: 40px 40px 40px; display:flex; flex-direction:column; height:100vh; box-sizing:border-box; overflow:hidden;">
+
+      <div class="cal-toolbar">
+        <h2 class="section-title" style="margin:0;">Calendário</h2>
+        <button class="cal-nav-btn" aria-label="Semana anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <span class="cal-week-label">7 – 12 de julho de 2026</span>
+        <button class="cal-nav-btn" aria-label="Próxima semana">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button class="cal-today-btn">Hoje</button>
+        <div class="cal-legend">
+          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--brand-blue);"></div> PISM I — T1</div>
+          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#278556;"></div> PISM II — T3</div>
+          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#7c3aed;"></div> PISM/ENEM — T1</div>
+        </div>
+      </div>
+
+      <div class="cal-outer">
+        <!-- Header row: days -->
+        <div class="cal-head">
+          <div class="cal-head-cell"></div>
+          <div class="cal-head-cell today">
+            <span>SEG</span>
+            <span class="day-num">7</span>
+          </div>
+          <div class="cal-head-cell">
+            <span>TER</span>
+            <span class="day-num">8</span>
+          </div>
+          <div class="cal-head-cell">
+            <span>QUA</span>
+            <span class="day-num">9</span>
+          </div>
+          <div class="cal-head-cell">
+            <span>QUI</span>
+            <span class="day-num">10</span>
+          </div>
+          <div class="cal-head-cell">
+            <span>SEX</span>
+            <span class="day-num">11</span>
+          </div>
+          <div class="cal-head-cell">
+            <span>SÁB</span>
+            <span class="day-num">12</span>
+          </div>
+        </div>
+
+        <!-- Body: time col + day cols -->
+        <!-- Hours 8:00–19:00 = 11 rows × 70px = 770px -->
+        <div class="cal-body" style="height:770px; position:relative;">
+
+          <!-- Time labels -->
+          <div class="cal-time-col">
+            <div class="cal-time-slot">08:00</div>
+            <div class="cal-time-slot">09:00</div>
+            <div class="cal-time-slot">10:00</div>
+            <div class="cal-time-slot">11:00</div>
+            <div class="cal-time-slot">12:00</div>
+            <div class="cal-time-slot">13:00</div>
+            <div class="cal-time-slot">14:00</div>
+            <div class="cal-time-slot">15:00</div>
+            <div class="cal-time-slot">16:00</div>
+            <div class="cal-time-slot">17:00</div>
+            <div class="cal-time-slot">18:00</div>
+          </div>
+
+          <!-- SEG 7 — today — PISM I 14:00-16:00 AO VIVO -->
+          <div class="cal-day-col today-col">
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div>
+            <!-- 14:00-16:00: offset=(14-8)*70=420, height=2*70=140 -->
+            <a href="aula-ao-vivo.html" class="cal-event ev-blue ev-live" style="top:420px; height:134px;">
+              <div class="cal-event-name">PISM I</div>
+              <div class="cal-event-sub">14:00 – 16:00 · Prof. Carlos Menezes</div>
+              <div class="cal-event-badge">● ao vivo</div>
+            </a>
+          </div>
+
+          <!-- TER 8 — PISM II 09:00-11:00 -->
+          <div class="cal-day-col">
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div>
+            <!-- 09:00-11:00: offset=(9-8)*70=70, height=2*70=140 -->
+            <a href="#" class="cal-event ev-green" style="top:70px; height:134px;">
+              <div class="cal-event-name">PISM II</div>
+              <div class="cal-event-sub">09:00 – 11:00 · Prof. Ana Lima</div>
+            </a>
+          </div>
+
+          <!-- QUA 9 — PISM/ENEM 14:00-16:00 -->
+          <div class="cal-day-col">
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div>
+            <a href="#" class="cal-event ev-purple" style="top:420px; height:134px;">
+              <div class="cal-event-name">PISM/ENEM</div>
+              <div class="cal-event-sub">14:00 – 16:00 · Prof. Ricardo Dias</div>
+            </a>
+          </div>
+
+          <!-- QUI 10 — PISM I 14:00-16:00 -->
+          <div class="cal-day-col">
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div>
+            <a href="#" class="cal-event ev-blue" style="top:420px; height:134px;">
+              <div class="cal-event-name">PISM I</div>
+              <div class="cal-event-sub">14:00 – 16:00 · Prof. Carlos Menezes</div>
+            </a>
+          </div>
+
+          <!-- SEX 11 — PISM II 09:00-11:00 -->
+          <div class="cal-day-col">
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div>
+            <a href="#" class="cal-event ev-green" style="top:70px; height:134px;">
+              <div class="cal-event-name">PISM II</div>
+              <div class="cal-event-sub">09:00 – 11:00 · Prof. Ana Lima</div>
+            </a>
+          </div>
+
+          <!-- SÁB 12 — PISM/ENEM 10:00-12:00 -->
+          <div class="cal-day-col">
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div><div class="cal-hour-line"></div>
+            <div class="cal-hour-line"></div>
+            <!-- 10:00-12:00: offset=(10-8)*70=140, height=2*70=140 -->
+            <a href="#" class="cal-event ev-purple" style="top:140px; height:134px;">
+              <div class="cal-event-name">PISM/ENEM</div>
+              <div class="cal-event-sub">10:00 – 12:00 · Prof. Ricardo Dias</div>
+            </a>
+          </div>
+
+        </div><!-- cal-body -->
+      </div><!-- cal-outer -->
+
+    </main>
+  </div>
+</body>
+</html>

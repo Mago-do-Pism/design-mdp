@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Avisos · Admin · Mago do Pism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+    .cat-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
+    .cat-btn {
+      height: 40px; padding: 0 24px; border-radius: 20px;
+      font-family: var(--font-body); font-weight: 600; font-size: 14px;
+      cursor: pointer; transition: all 0.15s;
+      border: 2px solid var(--neutral-500); color: var(--neutral-500);
+      background: var(--neutral-0);
+    }
+    .cat-btn.active {
+      border-color: var(--brand-blue); color: var(--brand-blue);
+      background: rgba(14,147,242,0.08);
+    }
+    .notif-list { display: flex; flex-direction: column; gap: 12px; max-width: 860px; }
+    .notif-card {
+      display: flex; flex-direction: row; align-items: stretch;
+      background: var(--neutral-150); border: 1px solid var(--border-default);
+      border-radius: 8px; overflow: hidden; cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .notif-card:hover { border-color: var(--brand-blue); }
+    .notif-drag {
+      display: flex; align-items: center; padding: 0 16px;
+      color: var(--text-muted); cursor: grab; flex-shrink: 0;
+    }
+    .notif-drag svg { width: 20px; height: 20px; }
+    .notif-thumb {
+      width: 215px; flex-shrink: 0;
+      background: var(--neutral-300) center/cover no-repeat;
+      min-height: 80px;
+    }
+    .notif-body {
+      flex: 1; padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .notif-title { font-weight: 600; font-size: 15px; color: var(--text-primary); }
+    .notif-date  { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+    .notif-del {
+      width: 32px; height: 32px; border-radius: 50%; background: transparent;
+      border: 0; cursor: pointer; color: var(--text-muted);
+      display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .notif-del:hover { background: var(--neutral-200); color: var(--color-danger); }
+    .notif-del svg { width: 18px; height: 18px; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+      <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos</span></a>
+        <a href="alunos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
+        <a href="modulos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
+        <a href="equipe.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Equipe</span></a>
+        <a href="avisos.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Avisos</span></a>
+        <a href="simulados.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg><span>Simulados</span></a>
+        <a href="nivelamentos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Nivelamentos</span></a>
+        <a href="listas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Listas</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <main class="content admin-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:28px;">
+        <h2 class="section-title" style="margin:0;">Avisos</h2>
+        <button class="btn-primary btn-primary--minor">Criar aviso</button>
+      </div>
+
+      <div class="cat-tabs">
+        <button class="cat-btn active" onclick="selectTab(this)">GERAL</button>
+        <button class="cat-btn" onclick="selectTab(this)">SEM TIPO</button>
+        <button class="cat-btn" onclick="selectTab(this)">LEAD</button>
+        <button class="cat-btn" onclick="selectTab(this)">PISM</button>
+        <button class="cat-btn" onclick="selectTab(this)">PISM I</button>
+        <button class="cat-btn" onclick="selectTab(this)">PISM II</button>
+        <button class="cat-btn" onclick="selectTab(this)">PISM III</button>
+        <button class="cat-btn" onclick="selectTab(this)">PISM III/ENEM</button>
+        <button class="cat-btn" onclick="selectTab(this)">ENEM</button>
+      </div>
+
+      <div class="notif-list">
+        <div class="notif-card">
+          <div class="notif-drag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="6" x2="15" y2="6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="18" x2="15" y2="18"/></svg></div>
+          <div class="notif-thumb" style="background-color:var(--brand-blue); background-image:none; display:flex; align-items:center; justify-content:center;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <div class="notif-body">
+            <div>
+              <div class="notif-title">Inscrições abertas — PISM 2025</div>
+              <div class="notif-date">Publicado em 01/07/2026</div>
+            </div>
+            <button class="notif-del"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>
+          </div>
+        </div>
+        <div class="notif-card">
+          <div class="notif-drag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="6" x2="15" y2="6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="18" x2="15" y2="18"/></svg></div>
+          <div class="notif-thumb" style="background-color:#6366f1; background-image:none; display:flex; align-items:center; justify-content:center;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <div class="notif-body">
+            <div>
+              <div class="notif-title">Resultado do Simulado 4 disponível</div>
+              <div class="notif-date">Publicado em 28/06/2026</div>
+            </div>
+            <button class="notif-del"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>
+          </div>
+        </div>
+        <div class="notif-card">
+          <div class="notif-drag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="6" x2="15" y2="6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="18" x2="15" y2="18"/></svg></div>
+          <div class="notif-thumb" style="background-color:var(--color-success); background-image:none; display:flex; align-items:center; justify-content:center;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <div class="notif-body">
+            <div>
+              <div class="notif-title">Plantão de dúvidas — Matemática (9/7)</div>
+              <div class="notif-date">Publicado em 25/06/2026</div>
+            </div>
+            <button class="notif-del"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+    function selectTab(btn) {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+</body>
+</html>

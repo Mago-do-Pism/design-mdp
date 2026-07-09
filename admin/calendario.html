@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calendário · Admin · Mago do Pism</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: inherit; }
+
+    .cal-toolbar { display:flex; align-items:center; gap:14px; margin-bottom:24px; flex-wrap:wrap; }
+    .cal-nav-btn { width:36px; height:36px; border-radius:8px; border:1px solid var(--border-default); background:var(--neutral-0); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-secondary); }
+    .cal-nav-btn:hover { border-color:var(--brand-blue); color:var(--brand-blue); }
+    .cal-nav-btn svg { width:18px; height:18px; }
+    .cal-week-label { font-weight:600; font-size:16px; color:var(--text-primary); }
+    .cal-filter { display:flex; gap:8px; align-items:center; }
+    .cal-filter select { height:36px; padding:0 10px; border-radius:8px; border:1px solid var(--border-default); font-family:var(--font-body); font-size:13px; color:var(--text-primary); background:var(--neutral-0); outline:none; }
+    .cal-filter select:focus { border-color:var(--brand-blue); }
+
+    .cal-outer { background:var(--neutral-0); border-radius:var(--radius-xl); box-shadow:var(--shadow-soft); overflow:auto; }
+    .cal-head { display:grid; grid-template-columns:64px repeat(7,1fr); border-bottom:1px solid var(--border-default); position:sticky; top:0; z-index:10; background:var(--neutral-0); }
+    .cal-head-cell { padding:14px 8px 12px; text-align:center; font-size:13px; font-weight:600; color:var(--text-muted); }
+    .cal-head-cell .day-num { display:block; width:34px; height:34px; border-radius:50%; line-height:34px; margin:4px auto 0; font-size:15px; font-weight:700; color:var(--text-primary); }
+    .cal-head-cell.today { color:var(--brand-blue); }
+    .cal-head-cell.today .day-num { background:var(--brand-blue); color:white; }
+
+    .cal-body { display:grid; grid-template-columns:64px repeat(7,1fr); min-width:800px; }
+    .cal-time-col { border-right:1px solid var(--border-default); }
+    .cal-time-slot { height:70px; display:flex; align-items:flex-start; justify-content:flex-end; padding:6px 10px 0 0; font-size:11px; font-weight:500; color:var(--text-muted); border-bottom:1px solid var(--neutral-200); box-sizing:border-box; }
+    .cal-day-col { position:relative; border-right:1px solid var(--border-default); }
+    .cal-day-col:last-child { border-right:0; }
+    .cal-hour-line { height:70px; border-bottom:1px solid var(--neutral-200); box-sizing:border-box; }
+    .cal-day-col.today-col { background:rgba(14,147,242,0.025); }
+
+    .cal-event { position:absolute; left:4px; right:4px; border-radius:8px; padding:7px 10px; cursor:pointer; overflow:hidden; transition:filter .15s; }
+    .cal-event:hover { filter:brightness(0.92); }
+    .cal-event-name { font-size:12px; font-weight:700; color:white; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px; }
+    .cal-event-sub { font-size:11px; color:rgba(255,255,255,0.78); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .cal-event-prof { font-size:10px; color:rgba(255,255,255,0.60); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .cal-event-badge { display:inline-block; margin-top:4px; padding:2px 7px; border-radius:4px; background:rgba(255,255,255,0.22); font-size:10px; font-weight:700; color:white; letter-spacing:0.5px; text-transform:uppercase; }
+
+    .ev-blue   { background:var(--brand-blue); }
+    .ev-green  { background:#278556; }
+    .ev-purple { background:#7c3aed; }
+    .ev-orange { background:#d97706; }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .ev-live { animation: pulse-ring 1.8s infinite; }
+    @keyframes pulse-ring { 0%{box-shadow:0 0 0 0 rgba(14,147,242,0.5)} 70%{box-shadow:0 0 0 8px rgba(14,147,242,0)} 100%{box-shadow:0 0 0 0 rgba(14,147,242,0)} }
+
+    /* Edit tooltip on hover */
+    .cal-event-actions { display:none; position:absolute; top:6px; right:6px; gap:4px; }
+    .cal-event:hover .cal-event-actions { display:flex; }
+    .ev-action-btn { width:22px; height:22px; border-radius:4px; background:rgba(255,255,255,0.25); border:none; color:white; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+    .ev-action-btn svg { width:12px; height:12px; }
+
+    /* Modal */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.40); z-index:100; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .2s; }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+    .modal { background:var(--neutral-0); border-radius:var(--radius-xl); padding:32px; width:520px; max-width:95vw; box-shadow:var(--shadow-deep); transform:translateY(12px); transition:transform .2s; }
+    .modal-overlay.open .modal { transform:translateY(0); }
+    .modal-title { font-weight:700; font-size:18px; color:var(--text-primary); margin:0 0 24px; }
+    .modal-form { display:flex; flex-direction:column; gap:16px; }
+    .modal-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .modal-field { display:flex; flex-direction:column; gap:6px; }
+    .modal-field label { font-size:13px; font-weight:600; color:var(--text-muted); }
+    .modal-field input, .modal-field select { height:42px; padding:0 12px; border-radius:8px; border:1px solid var(--border-default); font-family:var(--font-body); font-size:14px; color:var(--text-primary); background:var(--neutral-50); outline:none; }
+    .modal-field input:focus, .modal-field select:focus { border-color:var(--brand-blue); }
+    .modal-actions { display:flex; gap:12px; justify-content:flex-end; margin-top:8px; }
+    .btn-cancel { padding:0 20px; height:40px; border-radius:8px; border:1px solid var(--border-default); background:var(--neutral-0); font-family:var(--font-body); font-weight:600; font-size:14px; color:var(--text-secondary); cursor:pointer; }
+    .btn-save { padding:0 24px; height:40px; border-radius:8px; border:none; background:var(--brand-blue); font-family:var(--font-body); font-weight:700; font-size:14px; color:white; cursor:pointer; }
+    .btn-save:hover { background:var(--brand-blue-dark); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+            <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos</span></a>
+        <a href="alunos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
+        <a href="modulos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
+        <a href="equipe.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Equipe</span></a>
+        <a href="avisos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Avisos</span></a>
+        <a href="simulados.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg><span>Simulados</span></a>
+        <a href="nivelamentos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Nivelamentos</span></a>
+        <a href="listas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Listas</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <main class="content admin-content" style="display:flex;flex-direction:column;height:100vh;padding:36px 40px;overflow:hidden;box-sizing:border-box;">
+
+      <!-- Step 1: choose turma -->
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
+        <h2 class="section-title" style="margin:0;">Calendário</h2>
+        <select id="turmaSel" onchange="selectTurma(this.value)" style="height:40px;padding:0 14px;border-radius:8px;border:1px solid var(--border-default);font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--text-primary);background:var(--neutral-0);outline:none;min-width:260px;">
+          <option value="">Selecione uma turma…</option>
+          <option value="pism1t1">Extensivo PISM I — T1</option>
+          <option value="pism1t2">Extensivo PISM I — T2</option>
+          <option value="pism2t3">Extensivo PISM II — T3</option>
+          <option value="pismenem">Extensivo PISM/ENEM — T1</option>
+        </select>
+      </div>
+
+      <!-- Empty state -->
+      <div id="emptyState" style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;color:var(--text-muted);">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <p style="font-size:15px;font-weight:600;color:var(--text-secondary);margin:0;">Selecione uma turma para ver o calendário</p>
+      </div>
+
+      <!-- Calendar (hidden until turma chosen) -->
+      <div id="calView" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+          <button class="cal-nav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <span class="cal-week-label">7 – 12 de julho de 2026</span>
+          <button class="cal-nav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+          <button onclick="openModal()" style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:0 18px;height:38px;border-radius:8px;border:none;background:var(--brand-blue);font-family:var(--font-body);font-weight:700;font-size:13px;color:white;cursor:pointer;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nova Aula
+          </button>
+        </div>
+      <div class="cal-outer" style="flex:1;overflow:auto;">
+        <div class="cal-head">
+          <div class="cal-head-cell"></div>
+          <div class="cal-head-cell today"><span>SEG</span><span class="day-num">7</span></div>
+          <div class="cal-head-cell"><span>TER</span><span class="day-num">8</span></div>
+          <div class="cal-head-cell"><span>QUA</span><span class="day-num">9</span></div>
+          <div class="cal-head-cell"><span>QUI</span><span class="day-num">10</span></div>
+          <div class="cal-head-cell"><span>SEX</span><span class="day-num">11</span></div>
+          <div class="cal-head-cell"><span>SÁB</span><span class="day-num">12</span></div>
+          <div class="cal-head-cell" style="color:var(--text-faint);"><span>DOM</span><span class="day-num">13</span></div>
+        </div>
+        <div class="cal-body" style="height:770px;">
+          <!-- Time col -->
+          <div class="cal-time-col">
+            <div class="cal-time-slot">08:00</div><div class="cal-time-slot">09:00</div><div class="cal-time-slot">10:00</div>
+            <div class="cal-time-slot">11:00</div><div class="cal-time-slot">12:00</div><div class="cal-time-slot">13:00</div>
+            <div class="cal-time-slot">14:00</div><div class="cal-time-slot">15:00</div><div class="cal-time-slot">16:00</div>
+            <div class="cal-time-slot">17:00</div><div class="cal-time-slot">18:00</div>
+          </div>
+          <!-- SEG 7 -->
+          <div class="cal-day-col today-col" id="col-0"><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div></div>
+          <!-- TER 8 -->
+          <div class="cal-day-col" id="col-1"><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div></div>
+          <!-- QUA 9 -->
+          <div class="cal-day-col" id="col-2"><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div></div>
+          <!-- QUI 10 -->
+          <div class="cal-day-col" id="col-3"><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div></div>
+          <!-- SEX 11 -->
+          <div class="cal-day-col" id="col-4"><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div></div>
+          <!-- SAB 12 -->
+          <div class="cal-day-col" id="col-5"><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div></div>
+          <!-- DOM 13 — sem aulas -->
+          <div class="cal-day-col" id="col-6" style="background:rgba(0,0,0,0.015);"><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line"></div><div class="cal-hour-line" style="border-bottom:0;"></div></div>
+        </div>
+      </div><!-- cal-outer -->
+      </div><!-- calView -->
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-form">
+        <div class="modal-field"><label>Professor</label><select><option selected>Prof. Carlos Menezes</option><option>Prof. Ana Lima</option><option>Prof. Ricardo Dias</option><option>Prof. Fernanda Rocha</option></select></div>
+        <div class="modal-field" id="diaSemanaField">
+          <label>Dia da semana</label>
+          <select>
+            <option>Segunda-feira</option>
+            <option>Terça-feira</option>
+            <option>Quarta-feira</option>
+            <option>Quinta-feira</option>
+            <option>Sexta-feira</option>
+            <option>Sábado</option>
+          </select>
+        </div>
+        <div class="modal-field" style="flex-direction:row;align-items:center;gap:10px;">
+          <input type="checkbox" id="chkData" onchange="document.getElementById('dataField').style.display=this.checked?'flex':'none';document.getElementById('diaSemanaField').style.display=this.checked?'none':'flex';" style="width:16px;height:16px;accent-color:var(--brand-blue);cursor:pointer;flex-shrink:0;" />
+          <label for="chkData" style="cursor:pointer;font-size:13px;font-weight:600;color:var(--text-muted);">Definir data específica</label>
+        </div>
+        <div class="modal-field" id="dataField" style="display:none;">
+          <label>Data</label>
+          <input type="date" value="2026-07-07" />
+        </div>
+        <div class="modal-row">
+          <div class="modal-field"><label>Horário</label><input type="time" value="14:00" /></div>
+          <div class="modal-field"><label>Duração</label><select><option>1h</option><option>1h30</option><option selected>2h</option></select></div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+          <button class="btn-save" onclick="closeModal()">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Events per turma: col 0=SEG/7, 1=TER/8, 2=QUA/9, 3=QUI/10, 4=SEX/11, 5=SAB/12
+    // Each event: { col, startH, durH, prof, live }
+    const TURMA_EVENTS = {
+      pism1t1: [
+        { col:0, startH:8,   durH:2,   prof:'Prof. Carlos Menezes', live:false },
+        { col:0, startH:10.5,durH:1.5, prof:'Prof. Ana Lima',        live:false },
+        { col:0, startH:14,  durH:2,   prof:'Prof. Ricardo Dias',    live:true  },
+        { col:1, startH:8,   durH:2,   prof:'Prof. Fernanda Rocha',  live:false },
+        { col:1, startH:14,  durH:2,   prof:'Prof. Carlos Menezes',  live:false },
+        { col:2, startH:9,   durH:2,   prof:'Prof. Ana Lima',        live:false },
+        { col:2, startH:14,  durH:1.5, prof:'Prof. Ricardo Dias',    live:false },
+        { col:2, startH:16,  durH:2,   prof:'Prof. Carlos Menezes',  live:false },
+        { col:3, startH:8,   durH:2,   prof:'Prof. Fernanda Rocha',  live:false },
+        { col:3, startH:14,  durH:2,   prof:'Prof. Carlos Menezes',  live:false },
+        { col:3, startH:16,  durH:1.5, prof:'Prof. Ana Lima',        live:false },
+        { col:4, startH:8,   durH:2,   prof:'Prof. Ricardo Dias',    live:false },
+        { col:4, startH:14,  durH:2,   prof:'Prof. Carlos Menezes',  live:false },
+        { col:5, startH:9,   durH:2,   prof:'Prof. Ana Lima',        live:false },
+        { col:5, startH:14,  durH:2,   prof:'Prof. Fernanda Rocha',  live:false },
+      ],
+      pism1t2: [
+        { col:0, startH:9,   durH:2,   prof:'Prof. Fernanda Rocha',  live:false },
+        { col:0, startH:16,  durH:2,   prof:'Prof. Carlos Menezes',  live:false },
+        { col:1, startH:8,   durH:1.5, prof:'Prof. Ana Lima',        live:false },
+        { col:1, startH:14,  durH:2,   prof:'Prof. Ricardo Dias',    live:false },
+        { col:1, startH:16,  durH:1.5, prof:'Prof. Fernanda Rocha',  live:false },
+        { col:2, startH:9,   durH:2,   prof:'Prof. Carlos Menezes',  live:false },
+        { col:2, startH:14,  durH:2,   prof:'Prof. Ana Lima',        live:false },
+        { col:3, startH:8,   durH:2,   prof:'Prof. Ricardo Dias',    live:false },
+        { col:3, startH:14,  durH:1.5, prof:'Prof. Fernanda Rocha',  live:false },
+        { col:4, startH:9,   durH:2,   prof:'Prof. Carlos Menezes',  live:false },
+        { col:4, startH:14,  durH:2,   prof:'Prof. Ricardo Dias',    live:false },
+        { col:5, startH:10,  durH:2,   prof:'Prof. Ana Lima',        live:false },
+      ],
+      pism2t3: [
+        { col:0, startH:9,   durH:2,   prof:'Prof. Ana Lima',        live:false },
+        { col:0, startH:14,  durH:2,   prof:'Prof. Ricardo Dias',    live:false },
+        { col:1, startH:8,   durH:2,   prof:'Prof. Carlos Menezes',  live:false },
+        { col:1, startH:14,  durH:1.5, prof:'Prof. Ana Lima',        live:false },
+        { col:2, startH:9,   durH:2,   prof:'Prof. Ricardo Dias',    live:false },
+        { col:2, startH:16,  durH:2,   prof:'Prof. Fernanda Rocha',  live:false },
+        { col:3, startH:8,   durH:2,   prof:'Prof. Ana Lima',        live:false },
+        { col:3, startH:14,  durH:2,   prof:'Prof. Carlos Menezes',  live:false },
+        { col:3, startH:16,  durH:1.5, prof:'Prof. Ricardo Dias',    live:false },
+        { col:4, startH:9,   durH:2,   prof:'Prof. Ana Lima',        live:false },
+        { col:4, startH:14,  durH:2,   prof:'Prof. Fernanda Rocha',  live:false },
+        { col:5, startH:10,  durH:2,   prof:'Prof. Ricardo Dias',    live:false },
+        { col:5, startH:14,  durH:1.5, prof:'Prof. Ana Lima',        live:false },
+      ],
+      pismenem: [
+        { col:0, startH:8,   durH:1.5, prof:'Prof. Ricardo Dias',    live:false },
+        { col:0, startH:14,  durH:2,   prof:'Prof. Carlos Menezes',  live:false },
+        { col:0, startH:16,  durH:2,   prof:'Prof. Ana Lima',        live:false },
+        { col:1, startH:9,   durH:2,   prof:'Prof. Fernanda Rocha',  live:false },
+        { col:1, startH:14,  durH:2,   prof:'Prof. Ricardo Dias',    live:false },
+        { col:2, startH:8,   durH:2,   prof:'Prof. Carlos Menezes',  live:false },
+        { col:2, startH:14,  durH:1.5, prof:'Prof. Ana Lima',        live:false },
+        { col:2, startH:16,  durH:2,   prof:'Prof. Ricardo Dias',    live:false },
+        { col:3, startH:9,   durH:2,   prof:'Prof. Fernanda Rocha',  live:false },
+        { col:3, startH:14,  durH:2,   prof:'Prof. Carlos Menezes',  live:false },
+        { col:4, startH:8,   durH:2,   prof:'Prof. Ricardo Dias',    live:false },
+        { col:4, startH:14,  durH:1.5, prof:'Prof. Ana Lima',        live:false },
+        { col:4, startH:16,  durH:2,   prof:'Prof. Carlos Menezes',  live:false },
+        { col:5, startH:10,  durH:2,   prof:'Prof. Fernanda Rocha',  live:false },
+        { col:5, startH:14,  durH:2,   prof:'Prof. Ricardo Dias',    live:false },
+      ],
+    };
+
+    const TURMA_LABELS = {
+      pism1t1: 'Extensivo PISM I — T1',
+      pism1t2: 'Extensivo PISM I — T2',
+      pism2t3: 'Extensivo PISM II — T3',
+      pismenem: 'Extensivo PISM/ENEM — T1',
+    };
+
+    function fmt(h) {
+      const hh = Math.floor(h);
+      const mm = Math.round((h - hh) * 60);
+      return String(hh).padStart(2,'0') + ':' + String(mm).padStart(2,'0');
+    }
+
+    function renderEvents(turma) {
+      // clear existing events from all cols
+      for (let i = 0; i < 6; i++) {
+        const col = document.getElementById('col-'+i);
+        col.querySelectorAll('.cal-event').forEach(e => e.remove());
+      }
+      const events = TURMA_EVENTS[turma] || [];
+      const label = TURMA_LABELS[turma] || turma;
+      events.forEach(ev => {
+        const col = document.getElementById('col-'+ev.col);
+        const top = (ev.startH - 8) * 70;
+        const height = ev.durH * 70 - 6;
+        const endH = ev.startH + ev.durH;
+        const div = document.createElement('div');
+        div.className = 'cal-event ev-blue' + (ev.live ? ' ev-live' : '');
+        div.style.cssText = 'top:'+top+'px;height:'+height+'px;';
+        div.onclick = openModal;
+        div.innerHTML = `
+          <div class="cal-event-name">${label}</div>
+          <div class="cal-event-sub">${fmt(ev.startH)}–${fmt(endH)}</div>
+          <div class="cal-event-prof">${ev.prof}</div>
+          ${ev.live ? '<div class="cal-event-badge">● ao vivo</div>' : ''}
+        `;
+        col.appendChild(div);
+      });
+    }
+
+    function selectTurma(val) {
+      document.getElementById('emptyState').style.display = val ? 'none' : 'flex';
+      const cv = document.getElementById('calView');
+      cv.style.display = val ? 'flex' : 'none';
+      if (val) renderEvents(val);
+    }
+    function openModal(){ document.getElementById('modalOverlay').classList.add('open'); }
+    function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
+  </script>
+</body>
+</html>

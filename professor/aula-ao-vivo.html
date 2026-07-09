@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aula ao Vivo · Professor · Mago do Pism</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; background: #111827; font-family: var(--font-body); }
+    a { color: inherit; text-decoration: none; }
+
+    .room { display: flex; flex-direction: column; height: 100vh; }
+
+    /* ── Top bar ── */
+    .room-topbar {
+      display: flex; align-items: center; gap: 14px;
+      padding: 0 20px; height: 52px;
+      background: #0d1117; border-bottom: 1px solid rgba(255,255,255,0.06);
+      flex-shrink: 0;
+    }
+    .room-topbar-logo { width: 90px; height: 36px; background: url("../assets/logo-azul.png") left center / contain no-repeat; filter: brightness(0) invert(1); opacity: 0.8; flex-shrink: 0; }
+    .room-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.12); }
+    .room-title { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.90); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .room-title span { color: rgba(255,255,255,0.45); font-weight: 500; }
+    .host-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 6px; background: rgba(14,147,242,0.20); border: 1px solid rgba(14,147,242,0.40); font-size: 12px; font-weight: 700; color: #60b4f8; letter-spacing: 0.5px; }
+    .live-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.35); font-size: 12px; font-weight: 700; color: #f87171; letter-spacing: 0.5px; }
+    .live-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #ef4444; animation: blink 1.4s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .room-timer { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.55); font-variant-numeric: tabular-nums; }
+
+    /* ── Body ── */
+    .room-body { display: flex; flex: 1; overflow: hidden; min-height: 0; }
+
+    /* ── Stage ── */
+    .room-stage { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; min-height: 0; }
+    .room-main-video { flex: 1; min-height: 0; background: #1a2235; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+
+    /* Shared screen sim */
+    .screen-share-sim { width: 88%; max-width: 900px; background: #fff; border-radius: 6px; box-shadow: 0 8px 40px rgba(0,0,0,0.5); overflow: hidden; }
+    .screen-share-bar { background: #f5f5f5; height: 32px; display: flex; align-items: center; gap: 6px; padding: 0 12px; border-bottom: 1px solid #e0e0e0; }
+    .screen-share-bar .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .screen-share-content { padding: 28px 36px; background: white; min-height: 300px; }
+    .slide-h1 { font-size: 26px; font-weight: 700; color: #1a1a2e; margin: 0 0 14px; }
+    .slide-h2 { font-size: 16px; font-weight: 600; color: var(--brand-blue); margin: 0 0 18px; }
+    .slide-body { display: flex; gap: 32px; }
+    .slide-col { flex: 1; }
+    .slide-formula { background: rgba(14,147,242,0.06); border-radius: 8px; padding: 14px 18px; font-size: 22px; font-weight: 700; color: #1a1a2e; text-align: center; margin-bottom: 14px; font-family: Georgia, serif; }
+    .slide-list { padding-left: 20px; color: #444; font-size: 14px; line-height: 1.8; }
+    .slide-graph { width: 100%; height: 130px; background: linear-gradient(180deg,rgba(14,147,242,0.08) 0%,rgba(14,147,242,0.02) 100%); border-radius: 8px; border: 1px solid rgba(14,147,242,0.18); display: flex; align-items: flex-end; overflow: hidden; }
+    .slide-graph-bar { flex: 1; margin: 0 1px; background: linear-gradient(180deg,var(--brand-blue) 0%,rgba(14,147,242,0.5) 100%); border-radius: 3px 3px 0 0; }
+
+    /* Prof PiP (self view, prominent) */
+    .prof-pip { position: absolute; bottom: 16px; right: 16px; width: 180px; height: 116px; border-radius: 12px; background: #243044; border: 2px solid rgba(14,147,242,0.6); overflow: hidden; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; }
+    .prof-pip-badge { position: absolute; top: 6px; left: 6px; background: var(--brand-blue); color: white; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px; }
+    .prof-pip-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg,var(--brand-blue-dark),#6366f1); display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 800; color: white; }
+    .prof-pip-name { font-size: 11px; color: rgba(255,255,255,0.7); }
+
+    /* Student tiles strip */
+    .room-strip { height: 130px; background: #0d1117; display: flex; align-items: center; gap: 10px; padding: 0 16px; border-top: 1px solid rgba(255,255,255,0.06); overflow-x: auto; flex-shrink: 0; scrollbar-width: none; }
+    .room-strip::-webkit-scrollbar { display: none; }
+    .student-tile { width: 180px; height: 108px; flex-shrink: 0; border-radius: 10px; background: #1e2d42; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; position: relative; overflow: hidden; transition: border .15s; border: 1px solid transparent; }
+    .student-tile:hover { border: 1px solid rgba(255,255,255,0.25); }
+    .student-tile-avatar { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: white; }
+    .student-tile-name { font-size: 11px; color: rgba(255,255,255,0.75); max-width: 160px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; font-weight: 500; }
+    /* Camera-on tile: full-bleed gradient simulating video */
+    .student-tile.cam-on { padding: 0; }
+    .student-tile.cam-on .tile-cam-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
+    .student-tile.cam-on .student-tile-name { position: absolute; bottom: 6px; left: 8px; margin: 0; font-size: 11px; background: rgba(0,0,0,0.45); border-radius: 4px; padding: 1px 6px; }
+    .student-tile.cam-on .student-tile-avatar { display: none; }
+    .host-actions-tile { position: absolute; inset: 0; background: rgba(0,0,0,0.55); display: none; align-items: center; justify-content: center; gap: 6px; }
+    .student-tile:hover .host-actions-tile { display: flex; }
+    .tile-action { width: 26px; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.15); border: none; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 10px; }
+    .tile-action svg { width: 12px; height: 12px; }
+    .tile-action:hover { background: rgba(255,255,255,0.28); }
+
+    /* ── Sidebar ── */
+    .room-sidebar { width: 300px; flex-shrink: 0; background: #0d1117; border-left: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; }
+    .sidebar-tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .sidebar-tab { flex: 1; padding: 13px 0; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.4); text-align: center; cursor: pointer; border-bottom: 2px solid transparent; transition: color .15s, border-color .15s; }
+    .sidebar-tab.active { color: var(--brand-blue); border-bottom-color: var(--brand-blue); }
+
+    .chat-area { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+    .chat-msg { display: flex; gap: 8px; align-items: flex-start; }
+    .chat-msg-avatar { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; }
+    .chat-msg-body { flex: 1; }
+    .chat-msg-name { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.55); margin-bottom: 3px; }
+    .chat-msg-text { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.45; }
+    .chat-msg-time { font-size: 10px; color: rgba(255,255,255,0.3); margin-left: 6px; }
+    .chat-msg.is-self .chat-msg-name { color: #60b4f8; }
+    .chat-msg.is-self .chat-msg-avatar { background: var(--brand-blue); }
+
+    .chat-input-bar { padding: 12px 14px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; gap: 8px; align-items: center; }
+    .chat-input { flex: 1; height: 36px; padding: 0 12px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: white; font-size: 13px; outline: none; }
+    .chat-input::placeholder { color: rgba(255,255,255,0.25); }
+    .chat-send-btn { width: 36px; height: 36px; border-radius: 8px; background: var(--brand-blue); border: none; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .chat-send-btn svg { width: 16px; height: 16px; }
+
+    .part-list { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 6px; }
+    .part-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; background: rgba(255,255,255,0.04); }
+    .part-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: white; flex-shrink: 0; }
+    .part-name { flex: 1; font-size: 13px; color: rgba(255,255,255,0.80); font-weight: 500; }
+    .part-name small { display: block; font-size: 10px; color: rgba(255,255,255,0.35); font-weight: 400; }
+    .part-icons { display: flex; gap: 4px; }
+    .part-icons svg { width: 14px; height: 14px; color: rgba(255,255,255,0.35); }
+    .part-icons .on { color: rgba(255,255,255,0.7); }
+    .mute-btn { width: 22px; height: 22px; border-radius: 4px; border: none; background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .mute-btn:hover { background: rgba(239,68,68,0.25); color: #f87171; }
+    .mute-btn svg { width: 12px; height: 12px; }
+
+    /* ── Control bar ── */
+    .room-controls { height: 72px; background: #0d1117; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; gap: 10px; flex-shrink: 0; padding: 0 24px; }
+    .ctrl-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0 8px; cursor: pointer; background: transparent; border: none; }
+    .ctrl-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; transition: background .15s; }
+    .ctrl-icon svg { width: 20px; height: 20px; }
+    .ctrl-icon.on { background: rgba(255,255,255,0.10); color: white; }
+    .ctrl-icon.off { background: rgba(255,60,60,0.20); color: #f87171; }
+    .ctrl-icon.host { background: rgba(14,147,242,0.20); color: #60b4f8; }
+    .ctrl-icon.host:hover { background: rgba(14,147,242,0.35); }
+    .ctrl-btn:hover .ctrl-icon.on { background: rgba(255,255,255,0.16); }
+    .ctrl-label { font-size: 10px; color: rgba(255,255,255,0.4); font-weight: 500; }
+    .ctrl-sep { width: 1px; height: 40px; background: rgba(255,255,255,0.08); margin: 0 6px; }
+    .ctrl-btn.end-class .ctrl-icon { background: #dc2626; color: white; }
+    .ctrl-btn.end-class .ctrl-icon:hover { background: #b91c1c; }
+    .ctrl-btn.end-class .ctrl-label { color: #f87171; }
+  </style>
+</head>
+<body>
+  <div class="room">
+    <!-- Topbar -->
+    <div class="room-topbar">
+      <div class="room-topbar-logo"></div>
+      <div class="room-divider"></div>
+      <div class="room-title">PISM I — Turma T1 <span>· Prof. Carlos Menezes</span></div>
+      <div class="host-badge">Prof. Carlos Menezes</div>
+      <div class="live-badge">AO VIVO</div>
+      <div class="room-timer" id="timer">01:24:38</div>
+    </div>
+
+    <div class="room-body">
+      <!-- Stage -->
+      <div class="room-stage">
+        <div class="room-main-video">
+          <div class="screen-share-sim">
+            <div class="screen-share-bar">
+              <div class="dot" style="background:#ff5f57;"></div>
+              <div class="dot" style="background:#ffbd2e;"></div>
+              <div class="dot" style="background:#28c840;"></div>
+              <span style="margin-left:8px;font-size:11px;color:#999;">Sua tela — Compartilhando</span>
+            </div>
+            <div class="screen-share-content">
+              <div class="slide-h1">PISM I — Turma T1</div>
+              <div class="slide-h2">Compartilhamento de tela ativo</div>
+              <div class="slide-body">
+                <div class="slide-col">
+                  <div class="slide-formula">x = −b ± √(b²−4ac) / 2a</div>
+                  <ul class="slide-list">
+                    <li>a &gt; 0 → parábola voltada para cima</li>
+                    <li>a &lt; 0 → parábola voltada para baixo</li>
+                    <li>Vértice: V = (−b/2a, −Δ/4a)</li>
+                    <li>Discriminante Δ = b² − 4ac</li>
+                  </ul>
+                </div>
+                <div class="slide-col">
+                  <div class="slide-graph">
+                    <div class="slide-graph-bar" style="height:40%;"></div>
+                    <div class="slide-graph-bar" style="height:20%;"></div>
+                    <div class="slide-graph-bar" style="height:10%;"></div>
+                    <div class="slide-graph-bar" style="height:8%;"></div>
+                    <div class="slide-graph-bar" style="height:10%;"></div>
+                    <div class="slide-graph-bar" style="height:22%;"></div>
+                    <div class="slide-graph-bar" style="height:42%;"></div>
+                    <div class="slide-graph-bar" style="height:70%;"></div>
+                    <div class="slide-graph-bar" style="height:100%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Professor self PiP -->
+          <div class="prof-pip">
+            <div class="prof-pip-badge">Você</div>
+            <div class="prof-pip-avatar">CM</div>
+            <div class="prof-pip-name">Prof. Carlos Menezes</div>
+          </div>
+        </div>
+
+        <!-- Student grid strip -->
+        <div class="room-strip">
+          <div class="student-tile cam-on">
+            <div class="tile-cam-bg" style="background:linear-gradient(160deg,#1a3a2a 0%,#278556 100%);"></div>
+            <div class="student-tile-avatar" style="background:#278556;">KM</div>
+            <div class="student-tile-name">Karla Moreira</div>
+            <div class="host-actions-tile">
+              <button class="tile-action" title="Silenciar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button>
+              <button class="tile-action" title="Remover">✕</button>
+            </div>
+          </div>
+          <div class="student-tile">
+            <div class="student-tile-avatar" style="background:#0e93f2;">MC</div>
+            <div class="student-tile-name">Matheus Carvalho</div>
+            <div class="host-actions-tile">
+              <button class="tile-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button>
+              <button class="tile-action">✕</button>
+            </div>
+          </div>
+          <div class="student-tile cam-on">
+            <div class="tile-cam-bg" style="background:linear-gradient(160deg,#3a2010 0%,#d97706 100%);"></div>
+            <div class="student-tile-avatar" style="background:#d97706;">BF</div>
+            <div class="student-tile-name">Beatriz Fontes</div>
+            <div class="host-actions-tile">
+              <button class="tile-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button>
+              <button class="tile-action">✕</button>
+            </div>
+          </div>
+          <div class="student-tile cam-on">
+            <div class="tile-cam-bg" style="background:linear-gradient(160deg,#3a0a1a 0%,#db2777 100%);"></div>
+            <div class="student-tile-avatar" style="background:#db2777;">LS</div>
+            <div class="student-tile-name">Lucas Souza</div>
+            <div class="host-actions-tile">
+              <button class="tile-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button>
+              <button class="tile-action">✕</button>
+            </div>
+          </div>
+          <div class="student-tile">
+            <div class="student-tile-avatar" style="background:#6366f1;">PR</div>
+            <div class="student-tile-name">Paula Rezende</div>
+            <div class="host-actions-tile">
+              <button class="tile-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button>
+              <button class="tile-action">✕</button>
+            </div>
+          </div>
+          <div class="student-tile">
+            <div class="student-tile-avatar" style="background:#0891b2;">AN</div>
+            <div class="student-tile-name">André Nascimento</div>
+            <div class="host-actions-tile">
+              <button class="tile-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button>
+              <button class="tile-action">✕</button>
+            </div>
+          </div>
+          <div class="student-tile" style="border-style:dashed; border-color:rgba(255,255,255,0.12);">
+            <div style="font-size:10px;color:rgba(255,255,255,0.3);">+1 aguardando</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="room-sidebar">
+        <div class="sidebar-tabs">
+          <div class="sidebar-tab active" id="tab-btn-chat" onclick="showTab('chat')">Chat</div>
+          <div class="sidebar-tab" id="tab-btn-part" onclick="showTab('part')">Participantes <span style="background:rgba(14,147,242,0.15);color:var(--brand-blue);border-radius:10px;padding:1px 6px;font-size:11px;margin-left:3px;">7</span></div>
+        </div>
+
+        <div id="tab-chat" class="chat-area">
+          <div class="chat-msg">
+            <div class="chat-msg-avatar" style="background:#278556;">KM</div>
+            <div class="chat-msg-body">
+              <div class="chat-msg-name">Karla Moreira <span class="chat-msg-time">14:04</span></div>
+              <div class="chat-msg-text">Professor, quando o discriminante é negativo a equação não tem raízes reais?</div>
+            </div>
+          </div>
+          <div class="chat-msg is-self">
+            <div class="chat-msg-avatar">CM</div>
+            <div class="chat-msg-body">
+              <div class="chat-msg-name">Você (Prof. Carlos) <span class="chat-msg-time">14:05</span></div>
+              <div class="chat-msg-text">Exato, Karla! Quando Δ &lt; 0, a parábola não cruza o eixo x.</div>
+            </div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-msg-avatar" style="background:#0e93f2;">MC</div>
+            <div class="chat-msg-body">
+              <div class="chat-msg-name">Matheus Carvalho <span class="chat-msg-time">14:07</span></div>
+              <div class="chat-msg-text">E o vértice sempre fica em x = -b/2a?</div>
+            </div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-msg-avatar" style="background:#d97706;">BF</div>
+            <div class="chat-msg-body">
+              <div class="chat-msg-name">Beatriz Fontes <span class="chat-msg-time">14:12</span></div>
+              <div class="chat-msg-text">Tem como disponibilizar essa lista depois?</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-part" class="part-list" style="display:none;">
+          <div style="font-size:11px;color:rgba(255,255,255,0.3);padding:2px 4px 6px;font-weight:600;letter-spacing:0.5px;">ALUNOS (6) — Silenciar todos</div>
+          <div class="part-item"><div class="part-avatar" style="background:#278556;">KM</div><div class="part-name">Karla Moreira <small>Aluno · entrou 14:03</small></div><div class="part-icons"><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div><button class="mute-btn" title="Silenciar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button></div>
+          <div class="part-item"><div class="part-avatar" style="background:#0e93f2;">MC</div><div class="part-name">Matheus Carvalho <small>Aluno · entrou 14:05</small></div><div class="part-icons"><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div><button class="mute-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button></div>
+          <div class="part-item"><div class="part-avatar" style="background:#d97706;">BF</div><div class="part-name">Beatriz Fontes <small>Aluno · entrou 14:00</small></div><div class="part-icons"></div><button class="mute-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button></div>
+          <div class="part-item"><div class="part-avatar" style="background:#db2777;">LS</div><div class="part-name">Lucas Souza <small>Aluno · entrou 14:09</small></div><div class="part-icons"><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div><button class="mute-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button></div>
+          <div class="part-item"><div class="part-avatar" style="background:#6366f1;">PR</div><div class="part-name">Paula Rezende <small>Aluno · entrou 14:01</small></div><div class="part-icons"><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div><button class="mute-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button></div>
+          <div class="part-item"><div class="part-avatar" style="background:#0891b2;">AN</div><div class="part-name">André Nascimento <small>Aluno · entrou 14:01</small></div><div class="part-icons"><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div><button class="mute-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button></div>
+        </div>
+
+        <div class="chat-input-bar">
+          <input class="chat-input" type="text" placeholder="Mensagem para a turma…" />
+          <button class="chat-send-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="room-controls">
+      <button class="ctrl-btn" onclick="toggleCtrl(this,'mic-i','mic')"> 
+        <div class="ctrl-icon on" id="mic-i">
+          <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          <svg class="icon-off" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </div>
+        <span class="ctrl-label">Microfone</span>
+      </button>
+      <button class="ctrl-btn" onclick="toggleCtrl(this,'cam-i','cam')">
+        <div class="ctrl-icon on" id="cam-i">
+          <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.723v6.554a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          <svg class="icon-off" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M21 21H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3m3-3h6l2 3h4a2 2 0 0 1 2 2v9.34"/><path d="M15 13a3 3 0 1 1-4.24-4.24"/></svg>
+        </div>
+        <span class="ctrl-label">Câmera</span>
+      </button>
+      <button class="ctrl-btn">
+        <div class="ctrl-icon on" style="background:rgba(14,147,242,0.20);color:#60b4f8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg></div>
+        <span class="ctrl-label" style="color:#60b4f8;">Compartilhando</span>
+      </button>
+      <div class="ctrl-sep"></div>
+      <button class="ctrl-btn">
+        <div class="ctrl-icon host"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <span class="ctrl-label">Silenciar todos</span>
+      </button>
+      <button class="ctrl-btn">
+        <div class="ctrl-icon on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <span class="ctrl-label">Chat</span>
+      </button>
+      <button class="ctrl-btn" onclick="toggleRec(this)" id="recBtn">
+        <div class="ctrl-icon on" id="rec-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg></div>
+        <span class="ctrl-label" id="recLabel">Gravar</span>
+      </button>
+      <div class="ctrl-sep"></div>
+      <button class="ctrl-btn end-class">
+        <div class="ctrl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>
+        <span class="ctrl-label">Encerrar aula</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    let secs = 5078;
+    function pad(n){ return String(n).padStart(2,'0'); }
+    function tick(){ secs++; const h=Math.floor(secs/3600),m=Math.floor((secs%3600)/60),s=secs%60; document.getElementById('timer').textContent=`${pad(h)}:${pad(m)}:${pad(s)}`; }
+    setInterval(tick, 1000);
+
+    let recording = false;
+    function toggleRec(btn) {
+      recording = !recording;
+      const icon = document.getElementById('rec-i');
+      const label = document.getElementById('recLabel');
+      if (recording) {
+        icon.style.background = 'rgba(239,68,68,0.20)';
+        icon.style.color = '#f87171';
+        icon.querySelector('circle:last-child').setAttribute('fill', '#f87171');
+        label.textContent = 'Parar gravação';
+        label.style.color = '#f87171';
+      } else {
+        icon.style.background = '';
+        icon.style.color = '';
+        icon.querySelector('circle:last-child').setAttribute('fill', 'currentColor');
+        label.textContent = 'Gravar';
+        label.style.color = '';
+      }
+    }
+
+    function toggleCtrl(btn, id, type) {
+      const icon = document.getElementById(id);
+      const isOn = icon.classList.contains('on');
+      icon.classList.toggle('on', !isOn);
+      icon.classList.toggle('off',  isOn);
+      icon.querySelector('.icon-on').style.display  =  isOn ? 'none' : '';
+      icon.querySelector('.icon-off').style.display = !isOn ? 'none' : '';
+    }
+
+    function showTab(name) {
+      document.getElementById('tab-btn-chat').classList.toggle('active', name==='chat');
+      document.getElementById('tab-btn-part').classList.toggle('active', name==='part');
+      document.getElementById('tab-chat').style.display = name==='chat' ? 'flex' : 'none';
+      document.getElementById('tab-part').style.display = name==='part' ? 'flex' : 'none';
+    }
+  </script>
+</body>
+</html>
