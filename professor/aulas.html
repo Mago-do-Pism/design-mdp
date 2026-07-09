@@ -27,6 +27,30 @@
     .row-link { color:var(--brand-blue); font-weight:600; font-size:13px; cursor:pointer; background:none; border:none; padding:0; white-space:nowrap; }
     .row-link:hover { text-decoration:underline; }
 
+    /* Drawer tabs */
+    .drawer-tabs { display:flex; gap:0; border-bottom:2px solid var(--border-default); margin:0 0 4px; }
+    .drawer-tab { padding:14px 18px; font-size:13px; font-weight:600; color:var(--text-muted); border:none; background:none; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; transition:color .15s, border-color .15s; }
+    .drawer-tab.active { color:var(--brand-blue); border-bottom-color:var(--brand-blue); }
+    .drawer-tab:hover:not(.active) { color:var(--text-primary); }
+    .tab-panel { display:none; flex-direction:column; gap:24px; }
+    .tab-panel.active { display:flex; }
+
+    /* Desempenho */
+    .desemp-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .desemp-table { width:100%; border-collapse:separate; border-spacing:0; font-size:13px; }
+    .desemp-table th { background:var(--neutral-150); font-weight:700; font-size:11px; color:var(--text-muted); padding:10px 14px; text-align:left; letter-spacing:0.3px; }
+    .desemp-table th:first-child { border-radius:8px 0 0 8px; }
+    .desemp-table th:last-child { border-radius:0 8px 8px 0; }
+    .desemp-table td { padding:10px 14px; border-bottom:1px solid var(--neutral-200); color:var(--text-primary); vertical-align:middle; }
+    .desemp-table tr:last-child td { border-bottom:0; }
+    .score-bar-track { width:60px; height:5px; border-radius:3px; background:var(--neutral-250); overflow:hidden; display:inline-block; vertical-align:middle; margin-right:6px; }
+    .score-bar-fill { height:100%; border-radius:3px; }
+    .score-val { font-weight:700; font-size:12px; color:var(--text-secondary); }
+    .badge-q { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; padding:2px 8px; border-radius:5px; }
+    .badge-q.ok { background:rgba(39,133,86,0.1); color:var(--color-success); }
+    .badge-q.med { background:rgba(217,119,6,0.1); color:#b45309; }
+    .badge-q.low { background:rgba(208,62,62,0.08); color:var(--color-danger); }
+
     /* Drawer */
     .drawer-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:100; opacity:0; pointer-events:none; transition:opacity .2s; }
     .drawer-overlay.open { opacity:1; pointer-events:all; }
@@ -164,17 +188,22 @@
         <button class="drawer-close" onclick="closeDrawer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
       <div class="drawer-body">
-        <div>
-          <p class="section-label">Estatísticas</p>
-          <div class="stats-row">
-            <div class="stat-box"><div class="stat-box-val" id="dPresentes">17</div><div class="stat-box-label">Presentes</div></div>
-            <div class="stat-box"><div class="stat-box-val" id="dAusentes">5</div><div class="stat-box-label">Ausentes</div></div>
-            <div class="stat-box"><div class="stat-box-val" id="dPct">77%</div><div class="stat-box-label">Presença</div></div>
-            <div class="stat-box"><div class="stat-box-val" id="dTempo">1h52</div><div class="stat-box-label">Tempo médio</div></div>
-          </div>
+        <!-- Stats (always visible) -->
+        <div class="stats-row">
+          <div class="stat-box"><div class="stat-box-val" id="dPresentes">17</div><div class="stat-box-label">Presentes</div></div>
+          <div class="stat-box"><div class="stat-box-val" id="dAusentes">5</div><div class="stat-box-label">Ausentes</div></div>
+          <div class="stat-box"><div class="stat-box-val" id="dPct">77%</div><div class="stat-box-label">Presença</div></div>
+          <div class="stat-box"><div class="stat-box-val" id="dTempo">1h52</div><div class="stat-box-label">Tempo médio</div></div>
         </div>
-        <div>
-          <p class="section-label">Presença</p>
+
+        <!-- Tabs -->
+        <div class="drawer-tabs">
+          <button class="drawer-tab active" onclick="switchTab('presenca')">Presença</button>
+          <button class="drawer-tab" onclick="switchTab('desempenho')">Desempenho</button>
+        </div>
+
+        <!-- Tab: Presença -->
+        <div class="tab-panel active" id="tab-presenca">
           <table class="pres-table">
             <thead><tr><th>Aluno</th><th>Entrada</th><th>Saída</th><th>Tempo</th><th></th></tr></thead>
             <tbody>
@@ -187,6 +216,46 @@
             </tbody>
           </table>
         </div>
+
+        <!-- Tab: Desempenho -->
+        <div class="tab-panel" id="tab-desempenho">
+          <div class="desemp-row">
+            <div class="stat-box"><div class="stat-box-val">3</div><div class="stat-box-label">Questões aplicadas</div></div>
+            <div class="stat-box"><div class="stat-box-val">68%</div><div class="stat-box-label">Acerto médio</div></div>
+            <div class="stat-box"><div class="stat-box-val">14/17</div><div class="stat-box-label">Responderam</div></div>
+          </div>
+          <table class="desemp-table">
+            <thead><tr><th>Aluno</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Acerto</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="cell-name"><span class="cell-av" style="background:#0e93f2;">KM</span>Karla Moreira</div></td>
+                <td><span class="badge-q ok">C</span></td><td><span class="badge-q ok">C</span></td><td><span class="badge-q low">E</span></td>
+                <td><div style="display:flex;align-items:center;gap:6px;"><span class="score-bar-track"><span class="score-bar-fill" style="width:67%;background:var(--brand-blue);"></span></span><span class="score-val">67%</span></div></td>
+              </tr>
+              <tr>
+                <td><div class="cell-name"><span class="cell-av" style="background:#278556;">MC</span>Matheus Carvalho</div></td>
+                <td><span class="badge-q ok">C</span></td><td><span class="badge-q ok">C</span></td><td><span class="badge-q ok">C</span></td>
+                <td><div style="display:flex;align-items:center;gap:6px;"><span class="score-bar-track"><span class="score-bar-fill" style="width:100%;background:var(--color-success);"></span></span><span class="score-val">100%</span></div></td>
+              </tr>
+              <tr>
+                <td><div class="cell-name"><span class="cell-av" style="background:#d97706;">BF</span>Beatriz Fontes</div></td>
+                <td colspan="4" style="color:var(--text-muted);font-style:italic;">Ausente</td>
+              </tr>
+              <tr>
+                <td><div class="cell-name"><span class="cell-av" style="background:#db2777;">LS</span>Lucas Souza</div></td>
+                <td><span class="badge-q low">E</span></td><td><span class="badge-q ok">C</span></td><td><span class="badge-q med">—</span></td>
+                <td><div style="display:flex;align-items:center;gap:6px;"><span class="score-bar-track"><span class="score-bar-fill" style="width:33%;background:#d97706;"></span></span><span class="score-val">33%</span></div></td>
+              </tr>
+              <tr>
+                <td><div class="cell-name"><span class="cell-av" style="background:#6366f1;">PR</span>Paula Rezende</div></td>
+                <td colspan="4" style="color:var(--text-muted);font-style:italic;">Ausente</td>
+              </tr>
+              <tr><td style="color:var(--text-muted);font-style:italic;" colspan="5">+ 12 alunos</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Gravação (always visible) -->
         <div>
           <p class="section-label">Gravação</p>
           <div class="publish-box">
@@ -220,6 +289,10 @@
       seg:  { title:'Extensivo PISM I — T1 · 30/06/2026', meta:'Seg, 14:00–16:01 · 2h01', p:20, a:2, pct:'91%', tempo:'1h58' },
       seg2: { title:'Extensivo PISM I — T1 · 26/06/2026', meta:'Qui, 14:00–16:00 · 2h00', p:15, a:7, pct:'68%', tempo:'1h40' },
     };
+    function switchTab(name) {
+      document.querySelectorAll('.drawer-tab').forEach(t => t.classList.toggle('active', t.getAttribute('onclick').includes("'" + name + "'")));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
+    }
     function openDrawer(key) {
       const d = data[key];
       document.getElementById('drawerTitle').textContent = d.title;

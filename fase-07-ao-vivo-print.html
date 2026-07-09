@@ -130,12 +130,13 @@
         <div class="cover-phase">
           <div class="num">FASE 07B</div>
           <h3>Professor · Painel</h3>
-          <p>4 telas — início, aulas e sala de transmissão.</p>
+          <p>5 telas — início, aulas e sala de transmissão.</p>
           <ul>
             <li>Início — próximas aulas + gravações pendentes</li>
             <li>Aulas — lista com upload de gravação</li>
             <li>Presença — registro de presença por aula</li>
             <li>Sala do professor — controles, gravação, alunos</li>
+            <li>Detalhe do aluno — KPIs, presenças e simulados</li>
           </ul>
         </div>
       </div>
@@ -213,7 +214,7 @@
     <h2>Professor<br/>Painel</h2>
     <p>O professor acompanha a agenda, publica gravações e gerencia a sala ao vivo com controles de apresentação, gravação, microfone/câmera dos alunos e chat.</p>
     <div class="meta">
-      <span>4 telas</span>
+      <span>5 telas</span>
       <span>Mago do Pism</span>
     </div>
   </section>
@@ -266,6 +267,18 @@
     <div class="stage"><iframe src="professor/aula-ao-vivo.html" loading="eager" data-screen></iframe></div>
   </article>
 
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07B · 05</span>
+        <span class="title">Detalhe do Aluno · Desempenho</span>
+        <span class="sub">KPIs de presença · presenças recentes · desempenho nos simulados</span>
+      </div>
+      <span class="idx">admin/aluno-detalhe.html</span>
+    </header>
+    <div class="stage"><iframe src="admin/aluno-detalhe.html" loading="eager" data-screen id="detalhe-frame"></iframe></div>
+  </article>
+
   <!-- NOTAS DE DESIGN -->
   <section class="notes">
     <h2>Notas de <em>design</em> &amp; decisões</h2>
@@ -316,6 +329,15 @@
   </section>
 
   <script>
+    // Open Desempenho tab in aluno-detalhe iframe
+    document.getElementById('detalhe-frame').addEventListener('load', function() {
+      try {
+        const doc = this.contentDocument;
+        const tabs = doc.querySelectorAll('.profile-tab');
+        tabs.forEach(t => { if (t.textContent.trim() === 'Desempenho') t.click(); });
+      } catch(e) {}
+    });
+
     // Switch calendar tab in iframe 07A-02
     document.getElementById('cal-frame').addEventListener('load', function() {
       try {
