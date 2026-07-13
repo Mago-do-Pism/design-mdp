@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Documentos · Simulado PISM I · Mago do Pism</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/simulado.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+
+    .doc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      max-width: 880px;
+    }
+
+    .doc-card {
+      background: white;
+      border: 1.5px solid var(--border-default);
+      border-radius: 14px;
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: border-color .15s, transform .15s;
+    }
+    .doc-card:hover {
+      border-color: var(--brand-blue);
+      transform: translateY(-2px);
+    }
+
+    .doc-card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .doc-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border-radius: 10px;
+      background: rgba(14,147,242,0.10);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--brand-blue);
+    }
+    .doc-icon svg { width: 22px; height: 22px; }
+    .doc-meta { flex: 1; min-width: 0; }
+    .doc-tag {
+      display: inline-flex; align-items: center;
+      padding: 3px 9px; border-radius: 6px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+      text-transform: uppercase; margin-bottom: 5px;
+    }
+    .doc-tag.aberta { background: rgba(14,147,242,0.10); color: var(--brand-blue); }
+    .doc-tag.fechada { background: rgba(99,102,241,0.10); color: #5b5fd6; }
+    .doc-name {
+      font-size: 14px; font-weight: 600; color: var(--text-primary);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .doc-size { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+    .doc-actions {
+      display: flex; gap: 8px;
+    }
+    .doc-btn {
+      flex: 1; height: 38px; border-radius: 8px; border: none;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      transition: background .15s;
+    }
+    .doc-btn svg { width: 15px; height: 15px; }
+    .doc-btn.primary { background: var(--brand-blue); color: white; }
+    .doc-btn.primary:hover { background: var(--brand-blue-dark); }
+    .doc-btn.ghost {
+      background: var(--neutral-150); color: var(--text-secondary);
+      border: 1.5px solid var(--border-default);
+    }
+    .doc-btn.ghost:hover { background: var(--neutral-250); }
+
+    .sim-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 999px;
+      background: rgba(14,147,242,0.10); color: var(--brand-blue);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.3px;
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .sim-badge svg { width: 13px; height: 13px; }
+
+    .empty-state {
+      text-align: center; padding: 80px 20px;
+      color: var(--text-muted); font-size: 15px;
+    }
+    .empty-state svg { width: 48px; height: 48px; opacity: .3; margin-bottom: 14px; }
+  </style>
+</head>
+<body>
+
+  <!-- TopBar (simulation=true, simulationStarted=false) -->
+  <nav class="navbar bg-primary" style="height:100px;position:sticky;top:0;z-index:1040;width:100%;">
+    <div class="container-fluid justify-content-center">
+      <a class="navbar-brand" href="#">
+        <img src="../assets/logo-azul.png" alt="Mago do Pism" style="height:70px;filter:brightness(0) invert(1);" />
+      </a>
+    </div>
+  </nav>
+
+  <div class="p-3 p-md-4"><div class="container" style="max-width:860px;">
+
+    <div class="sim-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+      PISM I · Jul 2026
+    </div>
+
+    <h1 class="sim-h1">PDFs do Simulado — PISM I (Jul 2026)</h1>
+    <p style="font-size:14px; color:var(--text-muted); margin: 0 0 36px;">
+      Faça o download das provas em PDF para consulta offline ou impressão.
+    </p>
+
+    <div class="doc-grid">
+
+      <!-- Dia 1 Aberta -->
+      <div class="doc-card">
+        <div class="doc-card-top">
+          <div class="doc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div class="doc-meta">
+            <div class="doc-tag aberta">Aberta</div>
+            <div class="doc-name">Dia 1 — Prova Aberta</div>
+            <div class="doc-size">PISM-I-Jul2026-Dia1-Aberta.pdf · 2,4 MB</div>
+          </div>
+        </div>
+        <div class="doc-actions">
+          <button class="doc-btn primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Baixar
+          </button>
+          <button class="doc-btn ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Ver
+          </button>
+        </div>
+      </div>
+
+      <!-- Dia 2 Aberta -->
+      <div class="doc-card">
+        <div class="doc-card-top">
+          <div class="doc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div class="doc-meta">
+            <div class="doc-tag aberta">Aberta</div>
+            <div class="doc-name">Dia 2 — Prova Aberta</div>
+            <div class="doc-size">PISM-I-Jul2026-Dia2-Aberta.pdf · 1,9 MB</div>
+          </div>
+        </div>
+        <div class="doc-actions">
+          <button class="doc-btn primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Baixar
+          </button>
+          <button class="doc-btn ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Ver
+          </button>
+        </div>
+      </div>
+
+      <!-- Dia 1 Fechada -->
+      <div class="doc-card">
+        <div class="doc-card-top">
+          <div class="doc-icon" style="background:rgba(99,102,241,0.10); color:#5b5fd6;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div class="doc-meta">
+            <div class="doc-tag fechada">Fechada</div>
+            <div class="doc-name">Dia 1 — Prova Fechada</div>
+            <div class="doc-size">PISM-I-Jul2026-Dia1-Fechada.pdf · 3,1 MB</div>
+          </div>
+        </div>
+        <div class="doc-actions">
+          <button class="doc-btn primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Baixar
+          </button>
+          <button class="doc-btn ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Ver
+          </button>
+        </div>
+      </div>
+
+      <!-- Dia 2 Fechada -->
+      <div class="doc-card">
+        <div class="doc-card-top">
+          <div class="doc-icon" style="background:rgba(99,102,241,0.10); color:#5b5fd6;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div class="doc-meta">
+            <div class="doc-tag fechada">Fechada</div>
+            <div class="doc-name">Dia 2 — Prova Fechada</div>
+            <div class="doc-size">PISM-I-Jul2026-Dia2-Fechada.pdf · 2,7 MB</div>
+          </div>
+        </div>
+        <div class="doc-actions">
+          <button class="doc-btn primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Baixar
+          </button>
+          <button class="doc-btn ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Ver
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /doc-grid -->
+  </div></div><!-- /content -->
+</body>
+</html>
