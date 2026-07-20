@@ -109,7 +109,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
               </div>
               <div class="method-info"><strong>Cartão de crédito</strong><em>Visa, Master, Elo e outros</em></div>
-              <div class="method-badge"><span class="discount-badge">10% off à vista</span><span class="or-text">ou 4× sem juros</span></div>
+              <div class="method-badge"><span class="discount-badge">10% off à vista</span><span class="or-text">ou em até 4x sem juros</span></div>
             </button>
 
             <button type="button" class="method-btn" data-method="boleto">
@@ -126,7 +126,7 @@
         <!-- Forma de parcelamento (InstallmentSelector.tsx) -->
         <section class="sec-card">
           <h3 class="sec-card-title">Forma de parcelamento</h3>
-          <div class="installments" id="installments" style="grid-template-columns:repeat(2,1fr);"></div>
+          <div class="installments" id="installments"></div>
           <p style="font-size:11px; color:var(--text-muted); margin:12px 0 0;">As parcelas serão cobradas todo dia 10, com vencimento a partir de 10/08/2026.</p>
         </section>
 
@@ -214,7 +214,7 @@
           </div>
         </div>
 
-        <div class="summary-line"><span>Curso Intensivo 2026 · 4× R$ 260,00</span><span>R$ 1.040,00</span></div>
+        <div class="summary-line"><span id="sumPlanLabel">Curso Intensivo 2026 · 4× R$ 260,00</span><span id="sumPlanVal">R$ 1.040,00</span></div>
 
         <div class="summary-line" id="sumDiscLine" style="color:var(--color-success); display:none;">
           <span id="sumDiscLabel">Desconto à vista (15%)</span>
@@ -255,8 +255,10 @@
       {n:4, label:'4x',         sub:'R$ 260,00/mês · 1-2 dias úteis', payNow:260,  disc:0,   discLabel:'',                       next:'Próxima parcela: 10/09/2026 · R$ 260,00 (2 de 4)'}
     ],
     credit_card: [
-      {n:1, label:'1x à vista', sub:'R$ 936,00 · 10% off',           payNow:936,  disc:104, discLabel:'Desconto à vista (10%)', next:''},
-      {n:4, label:'4x',         sub:'R$ 260,00/mês no cartão',        payNow:260,  disc:0,   discLabel:'',                       next:'Próxima parcela: 10/09/2026 · R$ 260,00 (2 de 4)'}
+      {n:1, label:'1x à vista', sub:'R$ 936,00 · 10% off',           payNow:936,    disc:104, discLabel:'Desconto à vista (10%)', next:''},
+      {n:2, label:'2x',         sub:'R$ 520,00/mês no cartão',        payNow:520,    disc:0,   discLabel:'',                       next:'Próxima parcela: 10/09/2026 · R$ 520,00 (2 de 2)'},
+      {n:3, label:'3x',         sub:'R$ 346,67/mês no cartão',        payNow:346.67, disc:0,   discLabel:'',                       next:'Próxima parcela: 10/09/2026 · R$ 346,67 (2 de 3)'},
+      {n:4, label:'4x',         sub:'R$ 260,00/mês no cartão',        payNow:260,    disc:0,   discLabel:'',                       next:'Próxima parcela: 10/09/2026 · R$ 260,00 (2 de 4)'}
     ]
   };
 
@@ -317,6 +319,11 @@
     const payVal    = document.getElementById('sumPayVal');
     const payLabel  = document.getElementById('sumPayLabel');
     const nextLabel = document.getElementById('sumNextLabel');
+    const planLabel = document.getElementById('sumPlanLabel');
+    const planVal   = document.getElementById('sumPlanVal');
+
+    planLabel.textContent = 'Curso Intensivo 2026 · ' + plan.n + '× ' + fmt(plan.payNow);
+    planVal.textContent   = fmt(plan.payNow * plan.n);
 
     if(plan.disc > 0){
       discLine.style.display = '';
@@ -344,6 +351,7 @@
   // ── Installment list ──────────────────────────────────────────
   function renderInstallments(method){
     const opts = PLANS[method];
+    installList.style.gridTemplateColumns = 'repeat(' + opts.length + ', 1fr)';
     installList.innerHTML = opts.map(o => {
       const sel = o.n === 4 ? ' is-selected' : '';
       return '<div class="opt' + sel + '" data-n="' + o.n + '"><strong>' + o.label + '</strong><span>' + o.sub + '</span></div>';
