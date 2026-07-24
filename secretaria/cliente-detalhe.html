@@ -61,13 +61,30 @@
 
       <section class="sec-card" style="margin-top:20px;">
         <h3 class="sec-card-title">Aluno(s) vinculado(s)</h3>
-        <div style="display:flex; gap:14px; align-items:center; padding:12px 0;">
+        <div style="display:flex; gap:14px; align-items:center; padding:12px 0; border-bottom:1px solid var(--border-default);">
           <div style="width:44px; height:44px; border-radius:50%; background:var(--brand-blue); color:white; display:flex; align-items:center; justify-content:center; font-weight:700;">A</div>
           <div style="flex:1;">
             <div style="font-weight:700; color:var(--neutral-900); font-size:14px;">Arthur dos Santos Alves</div>
             <div style="font-size:12px; color:var(--text-muted);">3º ano · Curso Intensivo 2026 · Matrícula #2026-0142</div>
           </div>
           <span class="pill dot success">Ativo</span>
+        </div>
+        <div style="padding:12px 0 4px;">
+          <div style="display:flex; gap:14px; align-items:center;">
+            <div style="width:44px; height:44px; border-radius:50%; background:var(--neutral-300); color:white; display:flex; align-items:center; justify-content:center; font-weight:700;">B</div>
+            <div style="flex:1;">
+              <div style="font-weight:700; color:var(--neutral-900); font-size:14px;">Bianca dos Santos Alves</div>
+              <div style="font-size:12px; color:var(--text-muted);">1º ano · Curso Intensivo 2026 · matrícula ainda não concluída</div>
+            </div>
+            <span class="pill dot warning">Contrato pendente</span>
+          </div>
+          <div style="margin:10px 0 0 58px;">
+            <label style="display:block; font-size:11px; font-weight:600; color:var(--text-muted); margin-bottom:6px;">Link da matrícula (etapa atual: contrato)</label>
+            <div style="display:flex; gap:8px; align-items:stretch;">
+              <input readonly value="https://magodopism.com.br/matricula?matriculaId=b7a4f2e0-91cd-4a3f-9e2b-6c1a0f4d33f0" style="flex:1; min-width:0; height:34px; padding:0 10px; border:1px solid var(--border-default); border-radius:6px; font-size:11px; font-family:monospace; color:var(--text-secondary); background:var(--neutral-100);"/>
+              <button class="sec-btn primary" style="height:34px; padding:0 12px; font-size:12px;" onclick="navigator.clipboard&&navigator.clipboard.writeText(this.previousElementSibling.value);this.textContent='✓ Copiado';setTimeout(()=>this.textContent='Copiar link',1800);">Copiar link</button>
+            </div>
+          </div>
         </div>
       </section>
     </section>
@@ -108,6 +125,26 @@
           <div class="sec-field"><label>CPF</label><input value="148.227.116-50" readonly/></div>
           <div class="sec-field"><label>Escola atual</label><input value="Colégio Magnum Agostiniano" readonly/></div>
           <div class="sec-field"><label>Início do plano</label><input value="15/02/2026" readonly/></div>
+        </div>
+      </section>
+
+      <section class="sec-card" style="margin-top:20px;">
+        <div style="display:flex; align-items:center; margin-bottom:18px;">
+          <h3 class="sec-card-title" style="margin:0;">Bianca dos Santos Alves</h3>
+          <span class="pill dot warning" style="margin-left:auto;">Contrato pendente</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:16px 28px;">
+          <div class="sec-field"><label>Turma</label><input value="1º ano · Curso Intensivo" readonly/></div>
+          <div class="sec-field"><label>Data de nascimento</label><input value="10/08/2009" readonly/></div>
+          <div class="sec-field"><label>CPF</label><input value="—" readonly/></div>
+          <div class="sec-field"><label>Escola atual</label><input value="Colégio Magnum Agostiniano" readonly/></div>
+        </div>
+        <div style="margin-top:18px; padding-top:16px; border-top:1px solid var(--border-default);">
+          <label style="display:block; font-size:12px; font-weight:600; color:var(--neutral-900); margin-bottom:8px;">Link da matrícula (etapa atual: contrato)</label>
+          <div style="display:flex; gap:8px; align-items:stretch;">
+            <input readonly value="https://magodopism.com.br/matricula?matriculaId=b7a4f2e0-91cd-4a3f-9e2b-6c1a0f4d33f0" style="flex:1; min-width:0; height:38px; padding:0 12px; border:1px solid var(--border-default); border-radius:8px; font-size:11px; font-family:monospace; color:var(--text-secondary); background:var(--neutral-100);"/>
+            <button class="sec-btn primary" onclick="navigator.clipboard&&navigator.clipboard.writeText(this.previousElementSibling.value);this.textContent='✓ Copiado';setTimeout(()=>this.textContent='Copiar',1800);">Copiar</button>
+          </div>
         </div>
       </section>
     </section>
