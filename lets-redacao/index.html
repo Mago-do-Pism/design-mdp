@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lets Redação — Índice de Telas</title>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/tokens.css" />
+  <style>
+    body {
+      background: linear-gradient(180deg, #fffaea 0%, #f5eef3 100%);
+      min-height: 100vh;
+      padding: 96px 32px 96px;
+    }
+    .index-hero {
+      max-width: 980px;
+      margin: 0 auto 64px;
+      text-align: left;
+    }
+    .index-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+    .index-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 56px;
+      line-height: 1.05;
+      letter-spacing: -1.5px;
+      color: var(--neutral-900);
+      margin: 0 0 18px;
+    }
+    .index-title em {
+      font-style: normal;
+      color: var(--brand-primary);
+    }
+    .index-sub {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--text-secondary);
+      max-width: 720px;
+      margin: 0;
+    }
+    .index-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+    }
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      background: var(--brand-primary-chip-bg);
+      color: var(--brand-primary);
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .meta-chip.muted {
+      background: rgba(0,0,0,0.04);
+      color: var(--text-secondary);
+    }
+
+    .phase {
+      max-width: 1280px;
+      margin: 0 auto 80px;
+    }
+    .phase-header {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border-default);
+      margin-bottom: 32px;
+    }
+    .phase-number {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--brand-primary);
+      letter-spacing: 0.2em;
+      font-weight: 500;
+    }
+    .phase-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 28px;
+      letter-spacing: -0.5px;
+      color: var(--neutral-900);
+      margin: 0;
+    }
+    .phase-count {
+      margin-left: auto;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .screen-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+      gap: 28px;
+    }
+    .screen-card {
+      background: var(--neutral-0);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .screen-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(95,95,95,0.30);
+    }
+    .screen-thumb {
+      aspect-ratio: 1440 / 1024;
+      background: var(--neutral-150);
+      overflow: hidden;
+      position: relative;
+    }
+    .screen-thumb iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1440px;
+      height: 1024px;
+      transform-origin: top left;
+      transform: scale(var(--thumb-scale, 0.305));
+      border: 0;
+      pointer-events: none;
+    }
+    .screen-meta {
+      padding: 18px 22px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .screen-meta-text { flex: 1; min-width: 0; }
+    .screen-meta-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--neutral-900);
+      margin: 0 0 2px;
+    }
+    .screen-meta-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .screen-meta a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      background: var(--brand-primary);
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .screen-meta a:hover { background: var(--brand-primary-dark); }
+
+    .footer {
+      max-width: 980px;
+      margin: 80px auto 0;
+      padding: 24px 0;
+      border-top: 1px solid var(--border-default);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <header class="index-hero">
+    <div class="index-eyebrow">Design system · Lets Redação</div>
+    <h1 class="index-title">Lets Redação <em>— design system</em><br />(baseado no Mago do Pism)</h1>
+    <p class="index-sub">
+      Reaproveitamento do design system do Mago do Pism com paleta e logo próprios, escopo reduzido
+      (Admin: Início, Cursos/Conteúdos, Módulos, Temas e Correção · Aluno: Início, Cursos e Redações)
+      e duas telas novas (Temas e Correção) desenhadas seguindo os mesmos componentes visuais.
+    </p>
+    <div class="index-meta">
+      <span class="meta-chip">Cor primária · #C07DDB</span>
+      <span class="meta-chip muted">Fundo · creme #FFFAEA</span>
+      <span class="meta-chip muted">Type · Montserrat / Quicksand</span>
+    </div>
+  </header>
+
+  <!-- ═════════════════════ FASE 01 — AUTENTICAÇÃO ═════════════════════ -->
+  <section class="phase" id="autenticacao">
+    <div class="phase-header">
+      <span class="phase-number">FASE 01</span>
+      <h2 class="phase-title">Autenticação</h2>
+      <span class="phase-count">5 telas</span>
+    </div>
+    <div class="screen-grid">
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="auth/login.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Tela de Login</p>
+            <p class="screen-meta-sub">auth/login.html</p>
+          </div>
+          <a href="auth/login.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="auth/forgot-1.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Esqueci a senha · Pedir e-mail</p>
+            <p class="screen-meta-sub">auth/forgot-1.html</p>
+          </div>
+          <a href="auth/forgot-1.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="auth/forgot-2.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Esqueci a senha · E-mail enviado</p>
+            <p class="screen-meta-sub">auth/forgot-2.html</p>
+          </div>
+          <a href="auth/forgot-2.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="auth/forgot-3.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Esqueci a senha · Nova senha</p>
+            <p class="screen-meta-sub">auth/forgot-3.html</p>
+          </div>
+          <a href="auth/forgot-3.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="auth/forgot-4.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Esqueci a senha · Sucesso</p>
+            <p class="screen-meta-sub">auth/forgot-4.html</p>
+          </div>
+          <a href="auth/forgot-4.html">Abrir →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ═════════════════════ FASE 02 — ADMIN ═════════════════════ -->
+  <section class="phase" id="admin">
+    <div class="phase-header">
+      <span class="phase-number">FASE 02</span>
+      <h2 class="phase-title">Plataforma · Admin</h2>
+      <span class="phase-count">6 telas</span>
+    </div>
+    <div class="screen-grid">
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/inicio.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Início</p>
+            <p class="screen-meta-sub">admin/inicio.html</p>
+          </div>
+          <a href="admin/inicio.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/cursos.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Cursos/Conteúdos</p>
+            <p class="screen-meta-sub">admin/cursos.html</p>
+          </div>
+          <a href="admin/cursos.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/modulos.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Módulos</p>
+            <p class="screen-meta-sub">admin/modulos.html</p>
+          </div>
+          <a href="admin/modulos.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/temas.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Temas</p>
+            <p class="screen-meta-sub">admin/temas.html · novo</p>
+          </div>
+          <a href="admin/temas.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/correcao.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Correção</p>
+            <p class="screen-meta-sub">admin/correcao.html · novo</p>
+          </div>
+          <a href="admin/correcao.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="admin/perfil.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Meu Perfil</p>
+            <p class="screen-meta-sub">admin/perfil.html</p>
+          </div>
+          <a href="admin/perfil.html">Abrir →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ═════════════════════ FASE 03 — ALUNO ═════════════════════ -->
+  <section class="phase" id="aluno">
+    <div class="phase-header">
+      <span class="phase-number">FASE 03</span>
+      <h2 class="phase-title">Plataforma · Aluno</h2>
+      <span class="phase-count">4 telas</span>
+    </div>
+    <div class="screen-grid">
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="alunos/inicio.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Início</p>
+            <p class="screen-meta-sub">alunos/inicio.html</p>
+          </div>
+          <a href="alunos/inicio.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="alunos/cursos.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Cursos</p>
+            <p class="screen-meta-sub">alunos/cursos.html</p>
+          </div>
+          <a href="alunos/cursos.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="alunos/redacoes.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Redações</p>
+            <p class="screen-meta-sub">alunos/redacoes.html · novo</p>
+          </div>
+          <a href="alunos/redacoes.html">Abrir →</a>
+        </div>
+      </article>
+
+      <article class="screen-card">
+        <div class="screen-thumb"><iframe src="alunos/perfil.html" loading="lazy"></iframe></div>
+        <div class="screen-meta">
+          <div class="screen-meta-text">
+            <p class="screen-meta-title">Meu Perfil</p>
+            <p class="screen-meta-sub">alunos/perfil.html</p>
+          </div>
+          <a href="alunos/perfil.html">Abrir →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>Lets Redação — design system</span>
+    <span>Base: Mago do Pism</span>
+  </footer>
+</body>
+</html>

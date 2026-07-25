@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Temas · Admin · Lets Redação</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+
+    .sim-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+      max-width: 1086px;
+    }
+    .sim-card {
+      background: var(--neutral-150);
+      border-radius: 10px; padding: 32px;
+      display: flex; flex-direction: column; gap: 10px;
+      cursor: pointer; transition: transform 0.2s ease;
+    }
+    .sim-card:hover { transform: scale(1.02); }
+    .sim-card-title { font-size: 17px; font-weight: 600; color: var(--text-primary); }
+    .sim-card-date  { font-size: 13px; color: var(--text-secondary); }
+    .tag-inline {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: max-content; padding: 3px 12px; border-radius: 6px;
+      font-size: 12px; font-weight: 600; margin-top: 4px;
+    }
+    .tag-inline.ativo { background: var(--brand-primary-chip-bg); color: var(--brand-primary); }
+    .tag-inline.arquivado { background: var(--neutral-250); color: var(--text-muted); }
+
+    .pub-layout {
+      display: grid;
+      grid-template-columns: minmax(320px, 480px) 1fr;
+      gap: 48px;
+      max-width: 1180px;
+      align-items: start;
+    }
+    @media (max-width: 900px) { .pub-layout { grid-template-columns: 1fr; } }
+    .pub-preview-card {
+      background: var(--neutral-0);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+    .pub-preview-body { padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+    .pub-preview-title { font-weight: 700; font-size: 17px; color: var(--text-primary); margin: 0; }
+    .pub-preview-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
+    .rec-meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .rec-tag {
+      display: inline-flex; align-items: center;
+      padding: 3px 9px; border-radius: 5px;
+      font-size: 11px; font-weight: 600;
+      background: var(--brand-primary-chip-bg); color: var(--brand-primary);
+    }
+    .pub-form { display: flex; flex-direction: column; gap: 20px; max-width: 560px; }
+    .pub-field { display: flex; flex-direction: column; gap: 7px; }
+    .pub-field label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+    .pub-field input, .pub-field select, .pub-field textarea {
+      padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-default);
+      font-family: var(--font-body); font-size: 14px; color: var(--text-primary);
+      background: var(--neutral-50); outline: none; width: 100%;
+    }
+    .pub-field input:focus, .pub-field select:focus, .pub-field textarea:focus { border-color: var(--brand-primary); }
+    .pub-field textarea { min-height: 110px; resize: vertical; }
+    .attach-area {
+      border: 2px dashed var(--border-default); border-radius: 10px;
+      padding: 20px; text-align: center; color: var(--text-muted);
+      font-size: 13px; cursor: pointer; transition: border-color .15s;
+    }
+    .attach-area:hover { border-color: var(--brand-primary); }
+    .attach-area svg { width: 28px; height: 28px; margin-bottom: 8px; display: block; margin-inline: auto; }
+    .pub-actions {
+      display: flex; gap: 10px; justify-content: flex-end;
+      padding-top: 16px; margin-top: 4px; border-top: 1px solid var(--border-default);
+    }
+    .btn-cancel {
+      padding: 0 20px; height: 42px; border-radius: 8px; border: 1px solid var(--border-default);
+      background: transparent; font-family: var(--font-body); font-weight: 600; font-size: 14px;
+      color: var(--text-secondary); cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .btn-confirm {
+      padding: 0 26px; height: 42px; border-radius: 8px; border: none;
+      background: var(--brand-primary); font-family: var(--font-body); font-weight: 700; font-size: 14px;
+      color: white; cursor: pointer; transition: background .15s;
+    }
+    .btn-confirm:hover { background: var(--brand-primary-dark); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Lets Redação"></div>
+      <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos/Conteúdos</span></a>
+        <a href="modulos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
+        <a href="temas.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg><span>Temas</span></a>
+        <a href="correcao.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Correção</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <main class="content admin-content">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;max-width:1086px;">
+        <h2 class="section-title" style="margin:0">Temas de Redação</h2>
+        <button class="btn-primary compact" onclick="toggleNovoTema(true)">+ Novo tema</button>
+      </div>
+
+      <div id="temaLista" class="sim-grid">
+        <div class="sim-card">
+          <div class="sim-card-title">Os desafios da saúde mental na era digital</div>
+          <div class="sim-card-date">Criado em 10/06/2026</div>
+          <div class="tag-inline ativo">Ativo</div>
+        </div>
+        <div class="sim-card">
+          <div class="sim-card-title">Impactos da inteligência artificial no mercado de trabalho</div>
+          <div class="sim-card-date">Criado em 22/06/2026</div>
+          <div class="tag-inline ativo">Ativo</div>
+        </div>
+        <div class="sim-card">
+          <div class="sim-card-title">Desafios para valorização de povos e comunidades tradicionais</div>
+          <div class="sim-card-date">Criado em 01/07/2026</div>
+          <div class="tag-inline ativo">Ativo</div>
+        </div>
+        <div class="sim-card">
+          <div class="sim-card-title">Caminhos para combater a desinformação nas redes sociais</div>
+          <div class="sim-card-date">Criado em 15/03/2026</div>
+          <div class="tag-inline arquivado">Arquivado</div>
+        </div>
+        <div class="sim-card">
+          <div class="sim-card-title">A persistência da violência contra a mulher na sociedade brasileira</div>
+          <div class="sim-card-date">Criado em 02/02/2026</div>
+          <div class="tag-inline arquivado">Arquivado</div>
+        </div>
+      </div>
+
+      <form id="temaForm" class="pub-layout" style="display:none;" onsubmit="return mockCreateTema(event)">
+        <div class="pub-preview-card">
+          <div class="pub-preview-body">
+            <p class="pub-preview-title" id="previewTemaTitulo">—</p>
+            <p class="pub-preview-desc" id="previewTemaResumo">Texto motivador aparecerá aqui…</p>
+            <div class="rec-meta"><span class="rec-tag">Ativo</span></div>
+          </div>
+        </div>
+        <div class="pub-form">
+          <div class="pub-field"><label>Título do tema</label><input type="text" id="inputTemaTitulo" oninput="document.getElementById('previewTemaTitulo').textContent=this.value||'—'" /></div>
+          <div class="pub-field"><label>Texto motivador / resumo</label><textarea id="inputTemaResumo" oninput="document.getElementById('previewTemaResumo').textContent=this.value||'Texto motivador aparecerá aqui…'" placeholder="Cole ou escreva o texto motivador…"></textarea></div>
+          <div class="pub-field"><label>Anexar motivadores (PDF ou imagem)</label>
+            <div class="attach-area">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+              Arraste arquivos ou clique para anexar
+            </div>
+          </div>
+          <div class="pub-field"><label>Status</label><select><option>Ativo</option><option>Arquivado</option></select></div>
+          <div class="pub-actions">
+            <button type="button" class="btn-cancel" onclick="toggleNovoTema(false)">Cancelar</button>
+            <button type="submit" class="btn-confirm">Salvar tema</button>
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    function toggleNovoTema(show) {
+      document.getElementById('temaLista').style.display = show ? 'none' : 'grid';
+      document.getElementById('temaForm').style.display = show ? 'grid' : 'none';
+    }
+    function mockCreateTema(e) {
+      e.preventDefault();
+      toggleNovoTema(false);
+      return false;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meu Perfil · Aluno · Lets Redação</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/app.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+    .avatar-wrap {
+      position: relative; width: 120px; height: 120px;
+      border-radius: 50%; overflow: visible; flex-shrink: 0;
+    }
+    .avatar-circle {
+      width: 120px; height: 120px; border-radius: 50%;
+      background: var(--neutral-300); overflow: hidden;
+      box-shadow: 0 0 12px var(--brand-primary-avatar-glow);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .avatar-circle svg { width: 64px; height: 64px; color: var(--text-muted); }
+    .avatar-edit-btn {
+      position: absolute; right: -4px; bottom: -4px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--brand-primary); color: white;
+      border: 3px solid var(--neutral-50);
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+    .avatar-edit-btn svg { width: 16px; height: 16px; }
+    .logout-row {
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer; color: var(--color-danger);
+      margin-top: auto; padding-top: 2rem;
+    }
+    .logout-row svg { width: 24px; height: 24px; }
+    .logout-row h6 { margin: 0; font-size: 16px; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Lets Redação"></div>
+      <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M15.625 21.8751V13.5418C15.625 13.2655 15.5153 13.0006 15.3199 12.8052C15.1246 12.6099 14.8596 12.5001 14.5833 12.5001H10.4167C10.1404 12.5001 9.87545 12.6099 9.6801 12.8052C9.48475 13.0006 9.375 13.2655 9.375 13.5418V21.8751M3.125 10.4168C3.12493 10.1137 3.19097 9.8143 3.31853 9.5394C3.44609 9.26449 3.63208 9.02073 3.86354 8.82511L11.1552 2.57615C11.5312 2.25835 12.0077 2.08398 12.5 2.08398C12.9923 2.08398 13.4688 2.25835 13.8448 2.57615L21.1365 8.82511C21.3679 9.02073 21.5539 9.26449 21.6815 9.5394C21.809 9.8143 21.8751 10.1137 21.875 10.4168V19.7918C21.875 20.3443 21.6555 20.8742 21.2648 21.2649C20.8741 21.6556 20.3442 21.8751 19.7917 21.8751H5.20833C4.6558 21.8751 4.12589 21.6556 3.73519 21.2649C3.34449 20.8742 3.125 20.3443 3.125 19.7918V10.4168Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M7.29167 21.875H17.7083M10.4167 8.07292C10.4169 7.93416 10.4541 7.79797 10.5245 7.67835C10.5948 7.55874 10.6957 7.46002 10.8169 7.39235C10.938 7.32467 11.075 7.29048 11.2137 7.29329C11.3525 7.2961 11.488 7.33581 11.6062 7.40833L15.4229 9.75104C15.5367 9.82094 15.6306 9.91882 15.6958 10.0353C15.7609 10.1519 15.7951 10.2832 15.7951 10.4167C15.7951 10.5502 15.7609 10.6815 15.6958 10.798C15.6306 10.9145 15.5367 11.0124 15.4229 11.0823L11.6062 13.426C11.4878 13.4987 11.3521 13.5384 11.2132 13.5411C11.0743 13.5438 10.9372 13.5094 10.816 13.4415C10.6948 13.3736 10.5939 13.2746 10.5237 13.1547C10.4535 13.0348 10.4166 12.8983 10.4167 12.7594V8.07292ZM4.16667 3.125H20.8333C21.9839 3.125 22.9167 4.05774 22.9167 5.20833V15.625C22.9167 16.7756 21.9839 17.7083 20.8333 17.7083H4.16667C3.01607 17.7083 2.08333 16.7756 2.08333 15.625V5.20833C2.08333 4.05774 3.01607 3.125 4.16667 3.125Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Cursos</span></a>
+        <a href="redacoes.html" class="sidebar-item">
+          <svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M14.5833 2.08333H6.25C5.69746 2.08333 5.16756 2.30283 4.77686 2.69353C4.38616 3.08423 4.16666 3.61414 4.16666 4.16667V20.8333C4.16666 21.3859 4.38616 21.9158 4.77686 22.3065C5.16756 22.6972 5.69746 22.9167 6.25 22.9167H18.75C19.3025 22.9167 19.8324 22.6972 20.2231 22.3065C20.6138 21.9158 20.8333 21.3859 20.8333 20.8333V8.33333L14.5833 2.08333Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.5833 2.08333V8.33333H20.8333" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.375 12.5H15.625M9.375 16.6667H15.625" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Redações</span>
+        </a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item is-active"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M19.7917 21.875V19.7917C19.7917 18.6866 19.3527 17.6268 18.5713 16.8454C17.7899 16.064 16.7301 15.625 15.625 15.625H9.375C8.26993 15.625 7.21013 16.064 6.42872 16.8454C5.64732 17.6268 5.20834 18.6866 5.20834 19.7917V21.875M16.6667 7.29167C16.6667 9.59285 14.8012 11.4583 12.5 11.4583C10.1988 11.4583 8.33334 9.59285 8.33334 7.29167C8.33334 4.99048 10.1988 3.125 12.5 3.125C14.8012 3.125 16.6667 4.99048 16.6667 7.29167Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <main class="content student-content" style="overflow-y:auto;">
+      <div class="row" style="display:flex; flex-wrap:wrap;">
+        <div style="width:100%; max-width:600px; min-height:calc(100vh - 120px); display:flex; flex-direction:column;">
+
+          <h5 class="mb-4 text-primary text-start">Foto de perfil</h5>
+
+          <div class="d-flex mb-4">
+            <div class="avatar-wrap">
+              <div class="avatar-circle">
+                <svg viewBox="0 0 25 25" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.7917 21.875V19.7917C19.7917 18.6866 19.3527 17.6268 18.5713 16.8454C17.7899 16.064 16.7301 15.625 15.625 15.625H9.375C8.26993 15.625 7.21013 16.064 6.42872 16.8454C5.64732 17.6268 5.20834 18.6866 5.20834 19.7917V21.875M16.6667 7.29167C16.6667 9.59285 14.8012 11.4583 12.5 11.4583C10.1988 11.4583 8.33334 9.59285 8.33334 7.29167C8.33334 4.99048 10.1988 3.125 12.5 3.125C14.8012 3.125 16.6667 4.99048 16.6667 7.29167Z"/></svg>
+              </div>
+              <button class="avatar-edit-btn" aria-label="Trocar foto">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <h5 class="mb-4 text-primary text-start" style="margin-top:30px;">Dados pessoais</h5>
+
+          <div style="max-width:400px; display:flex; flex-direction:column; gap:0;">
+            <label class="field" style="margin-top:15px;">
+              <span class="field-label">Nome completo</span>
+              <input class="input" type="text" value="Karla Moreira" disabled />
+            </label>
+            <label class="field" style="margin-top:24px;">
+              <span class="field-label">E-mail</span>
+              <input class="input" type="email" value="karla.moreira@email.com" disabled />
+            </label>
+            <button class="btn-primary" style="margin-top:32px; width:100%; max-width:400px; height:50px;">
+              Alterar senha
+            </button>
+          </div>
+
+          <div class="logout-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h6>Sair da conta</h6>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
