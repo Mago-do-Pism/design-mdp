@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Redações · Aluno · Lets Redação</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/app.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+    .sim-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .sim-card {
+      background: var(--neutral-150);
+      border-radius: 10px; padding: 32px;
+      display: flex; flex-direction: column; gap: 10px;
+      cursor: pointer; transition: transform 0.2s ease;
+    }
+    .sim-card:hover { transform: scale(1.02); }
+    .sim-card-title { font-size: 17px; font-weight: 600; color: var(--text-primary); }
+    .sim-card-date  { font-size: 13px; color: var(--text-secondary); }
+    .sim-status { font-size: 12px; font-weight: 600; }
+    .sim-status.pendente   { color: var(--text-muted); }
+    .sim-status.emcorrecao { color: var(--brand-primary); }
+    .sim-status.corrigida  { color: var(--color-success); }
+
+    .attach-area {
+      border: 2px dashed var(--border-default); border-radius: 10px;
+      padding: 20px; text-align: center; color: var(--text-muted);
+      font-size: 13px; cursor: pointer; transition: border-color .15s;
+    }
+    .attach-area:hover { border-color: var(--brand-primary); }
+    .attach-area svg { width: 28px; height: 28px; margin-bottom: 8px; display: block; margin-inline: auto; }
+
+    .btn-cancel {
+      padding: 0 20px; height: 42px; border-radius: 8px; border: 1px solid var(--border-default);
+      background: transparent; font-family: var(--font-body); font-weight: 600; font-size: 14px;
+      color: var(--text-secondary); cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .btn-confirm {
+      padding: 0 26px; height: 42px; border-radius: 8px; border: none;
+      background: var(--brand-primary); font-family: var(--font-body); font-weight: 700; font-size: 14px;
+      color: white; cursor: pointer; transition: background .15s;
+    }
+    .btn-confirm:hover { background: var(--brand-primary-dark); }
+
+    .annot-surface {
+      position: relative; min-height: 200px; max-height: 900px; overflow: auto;
+      background: #fdfaf3; border-radius: 10px; margin-bottom: 4px;
+    }
+    .annot-surface.is-texto { padding: 22px 26px; font-size: 14px; line-height: 1.9; color: var(--text-primary); white-space: pre-wrap; }
+    .annot-surface img { display: block; width: 100%; }
+    .paper-badge {
+      position: absolute; top: 10px; left: 10px; z-index: 2; pointer-events: none;
+      background: rgba(0,0,0,0.55); color: white; font-size: 10px; font-weight: 700;
+      letter-spacing: .3px; padding: 4px 9px; border-radius: 999px;
+    }
+    .annot-pin {
+      position: absolute; width: 22px; height: 22px; border-radius: 50%; transform: translate(-50%, -50%);
+      display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: 700;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.35); cursor: pointer; z-index: 3; border: 2px solid white;
+    }
+    .annot-pin.is-highlight { outline: 3px solid rgba(0,0,0,0.3); }
+    .annot-list-wrap { margin-top: 14px; margin-bottom: 20px; }
+    .annot-list-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 8px; }
+    .annot-item { display: flex; gap: 10px; align-items: flex-start; padding: 8px 4px; border-radius: 6px; cursor: pointer; transition: background .12s; }
+    .annot-item:hover { background: var(--neutral-50); }
+    .annot-item .num { width: 20px; height: 20px; border-radius: 50%; color: white; font-size: 10.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .annot-item .body { flex: 1; min-width: 0; }
+    .annot-item .tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
+    .annot-item .txt { font-size: 12.5px; color: var(--text-secondary); margin-top: 2px; }
+    .annot-empty { font-size: 12px; color: var(--text-muted); font-style: italic; padding: 4px; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Lets Redação"></div>
+      <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M15.625 21.8751V13.5418C15.625 13.2655 15.5153 13.0006 15.3199 12.8052C15.1246 12.6099 14.8596 12.5001 14.5833 12.5001H10.4167C10.1404 12.5001 9.87545 12.6099 9.6801 12.8052C9.48475 13.0006 9.375 13.2655 9.375 13.5418V21.8751M3.125 10.4168C3.12493 10.1137 3.19097 9.8143 3.31853 9.5394C3.44609 9.26449 3.63208 9.02073 3.86354 8.82511L11.1552 2.57615C11.5312 2.25835 12.0077 2.08398 12.5 2.08398C12.9923 2.08398 13.4688 2.25835 13.8448 2.57615L21.1365 8.82511C21.3679 9.02073 21.5539 9.26449 21.6815 9.5394C21.809 9.8143 21.8751 10.1137 21.875 10.4168V19.7918C21.875 20.3443 21.6555 20.8742 21.2648 21.2649C20.8741 21.6556 20.3442 21.8751 19.7917 21.8751H5.20833C4.6558 21.8751 4.12589 21.6556 3.73519 21.2649C3.34449 20.8742 3.125 20.3443 3.125 19.7918V10.4168Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M7.29167 21.875H17.7083M10.4167 8.07292C10.4169 7.93416 10.4541 7.79797 10.5245 7.67835C10.5948 7.55874 10.6957 7.46002 10.8169 7.39235C10.938 7.32467 11.075 7.29048 11.2137 7.29329C11.3525 7.2961 11.488 7.33581 11.6062 7.40833L15.4229 9.75104C15.5367 9.82094 15.6306 9.91882 15.6958 10.0353C15.7609 10.1519 15.7951 10.2832 15.7951 10.4167C15.7951 10.5502 15.7609 10.6815 15.6958 10.798C15.6306 10.9145 15.5367 11.0124 15.4229 11.0823L11.6062 13.426C11.4878 13.4987 11.3521 13.5384 11.2132 13.5411C11.0743 13.5438 10.9372 13.5094 10.816 13.4415C10.6948 13.3736 10.5939 13.2746 10.5237 13.1547C10.4535 13.0348 10.4166 12.8983 10.4167 12.7594V8.07292ZM4.16667 3.125H20.8333C21.9839 3.125 22.9167 4.05774 22.9167 5.20833V15.625C22.9167 16.7756 21.9839 17.7083 20.8333 17.7083H4.16667C3.01607 17.7083 2.08333 16.7756 2.08333 15.625V5.20833C2.08333 4.05774 3.01607 3.125 4.16667 3.125Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Cursos</span></a>
+        <a href="redacoes.html" class="sidebar-item is-active">
+          <svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M14.5833 2.08333H6.25C5.69746 2.08333 5.16756 2.30283 4.77686 2.69353C4.38616 3.08423 4.16666 3.61414 4.16666 4.16667V20.8333C4.16666 21.3859 4.38616 21.9158 4.77686 22.3065C5.16756 22.6972 5.69746 22.9167 6.25 22.9167H18.75C19.3025 22.9167 19.8324 22.6972 20.2231 22.3065C20.6138 21.9158 20.8333 21.3859 20.8333 20.8333V8.33333L14.5833 2.08333Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.5833 2.08333V8.33333H20.8333" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.375 12.5H15.625M9.375 16.6667H15.625" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Redações</span>
+        </a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M19.7917 21.875V19.7917C19.7917 18.6866 19.3527 17.6268 18.5713 16.8454C17.7899 16.064 16.7301 15.625 15.625 15.625H9.375C8.26993 15.625 7.21013 16.064 6.42872 16.8454C5.64732 17.6268 5.20834 18.6866 5.20834 19.7917V21.875M16.6667 7.29167C16.6667 9.59285 14.8012 11.4583 12.5 11.4583C10.1988 11.4583 8.33334 9.59285 8.33334 7.29167C8.33334 4.99048 10.1988 3.125 12.5 3.125C14.8012 3.125 16.6667 4.99048 16.6667 7.29167Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <main class="content student-content" style="overflow-y:auto;">
+      <div id="viewListaRed">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+          <h4 class="text-primary" style="margin:0;">Minhas Redações</h4>
+          <button class="btn-primary btn-primary--minor" onclick="toggleNovaRedacao(true)">+ Nova redação</button>
+        </div>
+        <div class="sim-grid">
+          <div class="sim-card" onclick="abrirDetalheRedacao('m1')">
+            <div class="sim-card-title">Os desafios da saúde mental na era digital</div>
+            <div class="sim-card-date">Enviada em 20/07/2026</div>
+            <div class="sim-status pendente">Pendente</div>
+          </div>
+          <div class="sim-card" onclick="abrirDetalheRedacao('m2')">
+            <div class="sim-card-title">Impactos da inteligência artificial no mercado de trabalho</div>
+            <div class="sim-card-date">Enviada em 15/07/2026</div>
+            <div class="sim-status emcorrecao">Em correção</div>
+          </div>
+          <div class="sim-card" onclick="abrirDetalheRedacao('m3')">
+            <div class="sim-card-title">Caminhos para combater a desinformação nas redes sociais</div>
+            <div class="sim-card-date">Corrigida em 10/07/2026</div>
+            <div class="sim-status corrigida">Corrigida · 860/1000</div>
+          </div>
+        </div>
+      </div>
+
+      <form id="viewNovaRedacao" style="display:none;max-width:600px;" onsubmit="return mockEnviarRedacao(event)">
+        <h4 class="text-primary mb-4">Nova Redação</h4>
+        <div class="profile-tabs" style="display:flex;gap:24px;border-bottom:1px solid var(--border-default);margin-bottom:24px;">
+          <button type="button" class="profile-tab is-active" onclick="switchEnvioTab('arquivo', this)" style="background:transparent;border:none;padding:12px 0;font-family:var(--font-body);font-weight:500;font-size:14px;cursor:pointer;border-bottom:2px solid transparent;">Enviar arquivo</button>
+          <button type="button" class="profile-tab" onclick="switchEnvioTab('texto', this)" style="background:transparent;border:none;padding:12px 0;font-family:var(--font-body);font-weight:500;font-size:14px;cursor:pointer;border-bottom:2px solid transparent;">Escrever no navegador</button>
+        </div>
+        <label class="field" style="margin-bottom:16px;display:flex;flex-direction:column;gap:6px;">
+          <span class="field-label">Tema</span>
+          <select class="input">
+            <option>Os desafios da saúde mental na era digital</option>
+            <option>Impactos da inteligência artificial no mercado de trabalho</option>
+            <option>Desafios para valorização de povos e comunidades tradicionais</option>
+          </select>
+        </label>
+        <div id="envioArquivo" class="attach-area" style="margin-bottom:16px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          Arraste uma foto ou arquivo da sua redação, ou clique para anexar
+        </div>
+        <textarea id="envioTexto" class="input" style="display:none;min-height:220px;margin-bottom:16px;" placeholder="Escreva sua redação aqui…"></textarea>
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <button type="button" class="btn-cancel" onclick="toggleNovaRedacao(false)">Cancelar</button>
+          <button type="submit" class="btn-confirm">Enviar redação</button>
+        </div>
+      </form>
+
+      <div id="viewDetalheRedacao" style="display:none;max-width:720px;">
+        <button class="btn-cancel" style="margin-bottom:24px;" onclick="voltarLista()">← Voltar</button>
+        <h4 class="text-primary" id="detTema">—</h4>
+        <p class="text-muted" id="detMeta" style="margin-top:-8px;">—</p>
+        <div id="detNotaBlock" class="card" style="margin-top:16px;">
+          <div class="annot-surface" id="detAnnotSurface"></div>
+          <div class="annot-list-wrap">
+            <div class="annot-list-title">Marcações do corretor</div>
+            <div id="detAnnotList"></div>
+          </div>
+          <div style="font-size:32px;font-weight:700;color:var(--brand-primary);" id="detTotal">— / 1000</div>
+          <div id="detCompetencias" style="display:flex;flex-direction:column;gap:10px;margin-top:16px;"></div>
+          <p class="form-section-title" style="font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--text-primary);margin:24px 0 0;">Comentário do corretor</p>
+          <p id="detComentario" style="color:var(--text-secondary);">—</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleNovaRedacao(show) {
+      document.getElementById('viewListaRed').style.display = show ? 'none' : 'block';
+      document.getElementById('viewNovaRedacao').style.display = show ? 'block' : 'none';
+    }
+    function switchEnvioTab(tab, btn) {
+      document.querySelectorAll('#viewNovaRedacao .profile-tab').forEach(function (b) {
+        b.classList.remove('is-active');
+        b.style.color = 'var(--text-muted)';
+        b.style.borderBottomColor = 'transparent';
+      });
+      btn.classList.add('is-active');
+      btn.style.color = 'var(--brand-primary)';
+      btn.style.borderBottomColor = 'var(--brand-primary)';
+      document.getElementById('envioArquivo').style.display = tab === 'arquivo' ? 'block' : 'none';
+      document.getElementById('envioTexto').style.display = tab === 'texto' ? 'block' : 'none';
+    }
+    function mockEnviarRedacao(e) {
+      e.preventDefault();
+      toggleNovaRedacao(false);
+      return false;
+    }
+
+    var redacoesMock = {
+      m3: {
+        tema: 'Caminhos para combater a desinformação nas redes sociais',
+        meta: 'Corrigida em 10/07/2026',
+        total: 860,
+        tipo: 'texto',
+        conteudo: 'No cenário contemporâneo, marcado pela disseminação acelerada de informações através das redes sociais…',
+        marcacoes: [
+          { x: 22, y: 20, comp: 'c1', texto: 'Ótimo domínio da norma culta neste trecho.' },
+          { x: 55, y: 60, comp: 'c5', texto: 'Detalhe melhor o agente da proposta de intervenção.' },
+        ],
+        competencias: [
+          ['Competência 1 — Domínio da norma padrão', 180],
+          ['Competência 2 — Compreensão da proposta', 170],
+          ['Competência 3 — Argumentos e informações', 180],
+          ['Competência 4 — Mecanismos linguísticos', 160],
+          ['Competência 5 — Proposta de intervenção', 170],
+        ],
+        comentario: 'Bom domínio da norma culta e argumentação consistente. Aprimore a articulação entre parágrafos e detalhe melhor os agentes da proposta de intervenção.',
+      },
+    };
+
+    var compColors = { c1: '#0E93F2', c2: '#7B4FE0', c3: '#E08A2B', c4: '#1E9E75', c5: '#D6488B', geral: '#6b7280' };
+    var compLabels = { c1: 'C1 · Norma padrão', c2: 'C2 · Compreensão da proposta', c3: 'C3 · Argumentos', c4: 'C4 · Mecanismos linguísticos', c5: 'C5 · Proposta de intervenção', geral: 'Geral' };
+
+    function renderDetSurface(r) {
+      var surface = document.getElementById('detAnnotSurface');
+      surface.innerHTML = '';
+      surface.classList.toggle('is-texto', r.tipo === 'texto');
+      if (r.tipo === 'imagem') {
+        var badge = document.createElement('div');
+        badge.className = 'paper-badge';
+        badge.textContent = '📷 Sua redação enviada';
+        surface.appendChild(badge);
+        var img = document.createElement('img');
+        img.src = '../assets/redacao.png';
+        img.alt = 'Foto da redação enviada';
+        surface.appendChild(img);
+      } else {
+        var p = document.createElement('div');
+        p.textContent = r.conteudo || '';
+        surface.appendChild(p);
+      }
+      (r.marcacoes || []).forEach(function (m, idx) {
+        var pin = document.createElement('div');
+        pin.className = 'annot-pin';
+        pin.id = 'detPin-' + idx;
+        pin.style.left = m.x + '%';
+        pin.style.top = m.y + '%';
+        pin.style.background = compColors[m.comp] || compColors.geral;
+        pin.textContent = idx + 1;
+        pin.title = m.texto;
+        pin.onclick = function (evt) { evt.stopPropagation(); highlightDetAnnotItem(idx); };
+        surface.appendChild(pin);
+      });
+    }
+
+    function renderDetAnnotList(r) {
+      var wrap = document.getElementById('detAnnotList');
+      var list = r.marcacoes || [];
+      wrap.innerHTML = '';
+      if (!list.length) {
+        wrap.innerHTML = '<div class="annot-empty">O corretor não deixou marcações nesta redação.</div>';
+        return;
+      }
+      list.forEach(function (m, idx) {
+        var color = compColors[m.comp] || compColors.geral;
+        var item = document.createElement('div');
+        item.className = 'annot-item';
+        item.onclick = function () { highlightDetPin(idx); };
+        item.innerHTML =
+          '<div class="num" style="background:' + color + ';">' + (idx + 1) + '</div>' +
+          '<div class="body">' +
+            '<div class="tag" style="color:' + color + ';">' + (compLabels[m.comp] || 'Geral') + '</div>' +
+            '<div class="txt"></div>' +
+          '</div>';
+        item.querySelector('.txt').textContent = m.texto;
+        wrap.appendChild(item);
+      });
+    }
+
+    function highlightDetPin(idx) {
+      var pin = document.getElementById('detPin-' + idx);
+      if (!pin) return;
+      pin.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      pin.classList.add('is-highlight');
+      setTimeout(function () { pin.classList.remove('is-highlight'); }, 1200);
+    }
+
+    function highlightDetAnnotItem(idx) {
+      var items = document.querySelectorAll('#detAnnotList .annot-item');
+      var item = items[idx];
+      if (!item) return;
+      item.scrollIntoView({ block: 'nearest' });
+      item.style.background = 'var(--brand-primary-chip-bg)';
+      setTimeout(function () { item.style.background = ''; }, 1200);
+    }
+
+    function abrirDetalheRedacao(id) {
+      var r = redacoesMock[id];
+      document.getElementById('viewListaRed').style.display = 'none';
+      document.getElementById('viewDetalheRedacao').style.display = 'block';
+      if (!r) {
+        document.getElementById('detTema').textContent = 'Redação ainda não corrigida';
+        document.getElementById('detMeta').textContent = '';
+        document.getElementById('detNotaBlock').style.display = 'none';
+        return;
+      }
+      document.getElementById('detNotaBlock').style.display = 'block';
+      document.getElementById('detTema').textContent = r.tema;
+      document.getElementById('detMeta').textContent = r.meta;
+      document.getElementById('detTotal').textContent = r.total + ' / 1000';
+      document.getElementById('detComentario').textContent = r.comentario;
+      renderDetSurface(r);
+      renderDetAnnotList(r);
+      var wrap = document.getElementById('detCompetencias');
+      wrap.innerHTML = '';
+      r.competencias.forEach(function (c) {
+        var pct = Math.round((c[1] / 200) * 100);
+        wrap.innerHTML +=
+          '<div><div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-secondary);margin-bottom:4px;"><span>' +
+          c[0] + '</span><span>' + c[1] + '/200</span></div><div class="progress-bar"><span style="width:' + pct + '%;"></span></div></div>';
+      });
+    }
+
+    function voltarLista() {
+      document.getElementById('viewDetalheRedacao').style.display = 'none';
+      document.getElementById('viewListaRed').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
