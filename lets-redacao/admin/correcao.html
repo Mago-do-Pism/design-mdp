@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Correção · Admin · Lets Redação</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+
+    .sim-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+      max-width: 1086px;
+    }
+    .sim-card {
+      background: var(--neutral-150);
+      border-radius: 10px; padding: 32px;
+      display: flex; flex-direction: column; gap: 10px;
+      cursor: pointer; transition: transform 0.2s ease;
+    }
+    .sim-card:hover { transform: scale(1.02); }
+    .sim-card-title { font-size: 17px; font-weight: 600; color: var(--text-primary); }
+    .sim-card-date  { font-size: 13px; color: var(--text-secondary); }
+    .sim-status { font-size: 12px; font-weight: 600; }
+    .sim-status.pendente    { color: var(--text-muted); }
+    .sim-status.emcorrecao  { color: var(--brand-primary); }
+    .sim-status.corrigida   { color: var(--color-success); }
+    .group-month { font-size: 15px; font-weight: 600; color: var(--text-primary); margin: 24px 0 10px; }
+    .group-month:first-of-type { margin-top: 0; }
+
+    .pub-layout {
+      display: grid;
+      grid-template-columns: minmax(320px, 480px) 1fr;
+      gap: 48px;
+      max-width: 1180px;
+      align-items: start;
+    }
+    @media (max-width: 900px) { .pub-layout { grid-template-columns: 1fr; } }
+    .pub-preview-card {
+      background: var(--neutral-0);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+    .pub-preview-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; }
+    .pub-preview-title { font-weight: 700; font-size: 17px; color: var(--text-primary); margin: 0; }
+    .rec-meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .rec-tag {
+      display: inline-flex; align-items: center;
+      padding: 3px 9px; border-radius: 5px;
+      font-size: 11px; font-weight: 600;
+      background: var(--brand-primary-chip-bg); color: var(--brand-primary);
+    }
+    .rec-prof { font-size: 12px; color: var(--text-muted); }
+
+    .pub-form { display: flex; flex-direction: column; gap: 18px; max-width: 560px; }
+    .pub-field { display: flex; flex-direction: column; gap: 7px; }
+    .pub-field label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+    .pub-field textarea {
+      padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-default);
+      font-family: var(--font-body); font-size: 14px; color: var(--text-primary);
+      background: var(--neutral-50); outline: none; width: 100%; min-height: 90px; resize: vertical;
+    }
+    .pub-field textarea:focus { border-color: var(--brand-primary); }
+    .corr-score {
+      padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-default);
+      font-family: var(--font-body); font-size: 14px; color: var(--text-primary);
+      background: var(--neutral-50); outline: none; width: 140px;
+      -moz-appearance: textfield;
+    }
+    .corr-score:focus { border-color: var(--brand-primary); }
+    .corr-total-box {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 18px; background: var(--brand-primary-chip-bg);
+      border-radius: 10px; font-family: var(--font-body);
+      color: var(--brand-primary); font-size: 15px; font-weight: 600;
+    }
+    .corr-total-box strong { font-size: 20px; }
+
+    .annot-surface {
+      position: relative;
+      min-height: 420px;
+      max-height: 520px;
+      overflow: auto;
+      cursor: crosshair;
+      background: #fdfaf3;
+      user-select: none;
+    }
+    .annot-surface.is-texto { padding: 22px 26px; font-size: 14px; line-height: 1.9; color: var(--text-primary); white-space: pre-wrap; }
+    .paper-badge {
+      position: absolute; top: 10px; left: 10px; z-index: 2; pointer-events: none;
+      background: rgba(0,0,0,0.55); color: white; font-size: 10px; font-weight: 700;
+      letter-spacing: .3px; padding: 4px 9px; border-radius: 999px;
+    }
+    .paper-lines { position: absolute; inset: 0; background-image: repeating-linear-gradient(180deg, transparent 0 27px, rgba(0,0,0,0.07) 27px 29px); }
+    .paper-scrawl { position: absolute; height: 11px; border-radius: 6px; background: rgba(60,55,50,0.24); }
+
+    .annot-pin {
+      position: absolute; width: 22px; height: 22px; border-radius: 50%; transform: translate(-50%, -50%);
+      display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: 700;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.35); cursor: pointer; z-index: 3; border: 2px solid white;
+    }
+    .annot-pin.is-highlight { outline: 3px solid rgba(0,0,0,0.3); }
+
+    .annot-pop {
+      position: absolute; z-index: 10; width: 230px; background: white; border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.22); padding: 12px; display: flex; flex-direction: column; gap: 8px;
+    }
+    .annot-pop select, .annot-pop textarea {
+      border: 1px solid var(--border-default); border-radius: 6px; padding: 6px 8px; font-size: 12px;
+      font-family: var(--font-body); width: 100%; box-sizing: border-box;
+    }
+    .annot-pop textarea { min-height: 60px; resize: vertical; }
+    .annot-pop-actions { display: flex; gap: 6px; justify-content: flex-end; }
+
+    .annot-list-wrap { padding: 16px 20px 20px; border-top: 1px solid var(--border-default); }
+    .annot-list-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 8px; }
+    .annot-item { display: flex; gap: 10px; align-items: flex-start; padding: 8px 4px; border-radius: 6px; cursor: pointer; transition: background .12s; }
+    .annot-item:hover { background: var(--neutral-50); }
+    .annot-item .num { width: 20px; height: 20px; border-radius: 50%; color: white; font-size: 10.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .annot-item .body { flex: 1; min-width: 0; }
+    .annot-item .tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
+    .annot-item .txt { font-size: 12.5px; color: var(--text-secondary); margin-top: 2px; }
+    .annot-item .rm { background: none; border: 0; color: var(--text-muted); cursor: pointer; font-size: 15px; line-height: 1; padding: 2px 4px; flex-shrink: 0; }
+    .annot-item .rm:hover { color: #c0392b; }
+    .annot-empty { font-size: 12px; color: var(--text-muted); font-style: italic; padding: 4px; }
+
+    .pub-actions {
+      display: flex; gap: 10px; justify-content: flex-end;
+      padding-top: 16px; margin-top: 4px; border-top: 1px solid var(--border-default);
+    }
+    .btn-cancel {
+      padding: 0 20px; height: 42px; border-radius: 8px; border: 1px solid var(--border-default);
+      background: transparent; font-family: var(--font-body); font-weight: 600; font-size: 14px;
+      color: var(--text-secondary); cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .btn-confirm {
+      padding: 0 26px; height: 42px; border-radius: 8px; border: none;
+      background: var(--brand-primary); font-family: var(--font-body); font-weight: 700; font-size: 14px;
+      color: white; cursor: pointer; transition: background .15s;
+    }
+    .btn-confirm:hover { background: var(--brand-primary-dark); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Lets Redação"></div>
+      <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos/Conteúdos</span></a>
+        <a href="modulos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
+        <a href="temas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg><span>Temas</span></a>
+        <a href="correcao.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Correção</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <main class="content admin-content">
+      <div id="viewFila">
+        <h2 class="section-title">Correção de Redações</h2>
+
+        <div class="group-month">Pendentes</div>
+        <div class="sim-grid">
+          <div class="sim-card" onclick="abrirCorrecao('r1')">
+            <div class="sim-card-title">Karla Moreira</div>
+            <div class="sim-card-date">Os desafios da saúde mental na era digital · enviada 20/07/2026</div>
+            <div class="sim-status pendente">Pendente</div>
+          </div>
+          <div class="sim-card" onclick="abrirCorrecao('r2')">
+            <div class="sim-card-title">Vitor Augusto</div>
+            <div class="sim-card-date">Impactos da IA no mercado de trabalho · enviada 21/07/2026</div>
+            <div class="sim-status pendente">Pendente</div>
+          </div>
+        </div>
+
+        <div class="group-month">Em correção</div>
+        <div class="sim-grid">
+          <div class="sim-card" onclick="abrirCorrecao('r3')">
+            <div class="sim-card-title">Beatriz Nunes</div>
+            <div class="sim-card-date">Desafios para valorização de povos tradicionais · desde 22/07/2026</div>
+            <div class="sim-status emcorrecao">Em correção</div>
+          </div>
+        </div>
+
+        <div class="group-month">Corrigidas</div>
+        <div class="sim-grid">
+          <div class="sim-card" onclick="abrirCorrecao('r4')">
+            <div class="sim-card-title">Lucas Prado</div>
+            <div class="sim-card-date">Caminhos para combater a desinformação · corrigida 18/07/2026</div>
+            <div class="sim-status corrigida">Corrigida · 860/1000</div>
+          </div>
+          <div class="sim-card" onclick="abrirCorrecao('r5')">
+            <div class="sim-card-title">Ana Clara</div>
+            <div class="sim-card-date">A persistência da violência contra a mulher · corrigida 15/07/2026</div>
+            <div class="sim-status corrigida">Corrigida · 920/1000</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="viewCorrecao" style="display:none;">
+        <button class="btn-cancel" style="margin-bottom:24px;" onclick="voltarFila()">← Voltar para a fila</button>
+
+        <div class="pub-layout">
+          <div class="pub-preview-card">
+            <div class="annot-surface" id="annotSurface" onclick="onSurfaceClick(event)"></div>
+            <div class="pub-preview-body">
+              <p class="pub-preview-title" id="corrAluno">—</p>
+              <div class="rec-meta"><span class="rec-tag" id="corrTema">—</span></div>
+              <div class="rec-prof" id="corrData">—</div>
+            </div>
+            <div class="annot-list-wrap">
+              <div class="annot-list-title">Marcações</div>
+              <div id="annotList"></div>
+            </div>
+          </div>
+
+          <form class="pub-form" onsubmit="return salvarCorrecao(event)">
+            <div class="pub-field"><label>Competência 1 — Domínio da norma padrão da língua escrita</label>
+              <input type="number" class="corr-score" id="score1" min="0" max="200" step="5" value="0" oninput="calcTotal()" /></div>
+            <div class="pub-field"><label>Competência 2 — Compreensão da proposta e aplicação de conceitos</label>
+              <input type="number" class="corr-score" id="score2" min="0" max="200" step="5" value="0" oninput="calcTotal()" /></div>
+            <div class="pub-field"><label>Competência 3 — Seleção e organização de argumentos</label>
+              <input type="number" class="corr-score" id="score3" min="0" max="200" step="5" value="0" oninput="calcTotal()" /></div>
+            <div class="pub-field"><label>Competência 4 — Mecanismos linguísticos de argumentação</label>
+              <input type="number" class="corr-score" id="score4" min="0" max="200" step="5" value="0" oninput="calcTotal()" /></div>
+            <div class="pub-field"><label>Competência 5 — Proposta de intervenção</label>
+              <input type="number" class="corr-score" id="score5" min="0" max="200" step="5" value="0" oninput="calcTotal()" /></div>
+
+            <div class="corr-total-box">
+              <span>Nota total</span>
+              <strong><span id="totalScore">0</span> / 1000</strong>
+            </div>
+
+            <div class="pub-field"><label>Comentário / feedback geral</label>
+              <textarea id="corrComentario" placeholder="Escreva o feedback para o aluno…"></textarea></div>
+
+            <div class="pub-actions">
+              <button type="button" class="btn-cancel" onclick="voltarFila()">Cancelar</button>
+              <button type="submit" class="btn-confirm">Salvar correção</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    var essaysMock = {
+      r1: { aluno: 'Karla Moreira', tema: 'Os desafios da saúde mental na era digital', data: 'Enviada em 20/07/2026', tipo: 'texto', conteudo: 'A saúde mental, tema outrora relegado à periferia do debate público, ganhou centralidade na sociedade contemporânea…', marcacoes: [] },
+      r2: { aluno: 'Vitor Augusto', tema: 'Impactos da IA no mercado de trabalho', data: 'Enviada em 21/07/2026', tipo: 'imagem', marcacoes: [] },
+      r3: { aluno: 'Beatriz Nunes', tema: 'Desafios para valorização de povos tradicionais', data: 'Em correção desde 22/07/2026', tipo: 'imagem', marcacoes: [
+        { x: 30, y: 14, comp: 'c1', texto: 'Desvio de concordância verbal nesta linha.' },
+        { x: 64, y: 42, comp: 'c3', texto: 'Bom uso de repertório sociocultural aqui.' },
+      ] },
+      r4: { aluno: 'Lucas Prado', tema: 'Caminhos para combater a desinformação', data: 'Corrigida em 18/07/2026', tipo: 'texto', conteudo: 'No cenário contemporâneo, marcado pela disseminação acelerada de informações através das redes sociais…', notas: [180,170,180,160,170], comentario: 'Bom domínio da norma culta e argumentação consistente. Aprimore a articulação entre parágrafos e detalhe melhor os agentes da proposta de intervenção.', marcacoes: [
+        { x: 22, y: 20, comp: 'c1', texto: 'Ótimo domínio da norma culta neste trecho.' },
+        { x: 55, y: 60, comp: 'c5', texto: 'Detalhe melhor o agente da proposta de intervenção.' },
+      ] },
+      r5: { aluno: 'Ana Clara', tema: 'A persistência da violência contra a mulher', data: 'Corrigida em 15/07/2026', tipo: 'texto', conteudo: 'A violência contra a mulher, mazela histórica da sociedade brasileira, permanece como um desafio a ser superado…', notas: [190,180,190,180,180], comentario: 'Excelente articulação de repertório sociocultural e proposta de intervenção bem detalhada. Poucos deslizes de coesão entre o segundo e o terceiro parágrafo.', marcacoes: [
+        { x: 18, y: 25, comp: 'c3', texto: 'Excelente articulação de repertório sociocultural.' },
+        { x: 60, y: 65, comp: 'geral', texto: 'Poucos deslizes de coesão entre o 2º e o 3º parágrafo.' },
+      ] },
+    };
+
+    var currentEssayId = null;
+    var compColors = { c1: '#0E93F2', c2: '#7B4FE0', c3: '#E08A2B', c4: '#1E9E75', c5: '#D6488B', geral: '#6b7280' };
+    var compLabels = { c1: 'C1 · Norma padrão', c2: 'C2 · Compreensão da proposta', c3: 'C3 · Argumentos', c4: 'C4 · Mecanismos linguísticos', c5: 'C5 · Proposta de intervenção', geral: 'Geral' };
+
+    function abrirCorrecao(id) {
+      currentEssayId = id;
+      var e = essaysMock[id];
+      document.getElementById('viewFila').style.display = 'none';
+      document.getElementById('viewCorrecao').style.display = 'block';
+      document.getElementById('corrAluno').textContent = e.aluno;
+      document.getElementById('corrTema').textContent = e.tema;
+      document.getElementById('corrData').textContent = e.data;
+
+      renderSurface(e);
+      renderAnnotList();
+
+      var notas = e.notas || [0, 0, 0, 0, 0];
+      for (var i = 0; i < 5; i++) document.getElementById('score' + (i + 1)).value = notas[i];
+      document.getElementById('corrComentario').value = e.comentario || '';
+      calcTotal();
+    }
+
+    function renderSurface(e) {
+      var surface = document.getElementById('annotSurface');
+      surface.innerHTML = '';
+      surface.classList.toggle('is-texto', e.tipo === 'texto');
+      if (e.tipo === 'imagem') {
+        var badge = document.createElement('div');
+        badge.className = 'paper-badge';
+        badge.textContent = '📷 Foto enviada pelo aluno';
+        surface.appendChild(badge);
+        var lines = document.createElement('div');
+        lines.className = 'paper-lines';
+        surface.appendChild(lines);
+        var widths = [88, 62, 74, 90, 55, 80, 68, 92, 60, 77, 84, 58, 70];
+        widths.forEach(function (w, i) {
+          var s = document.createElement('div');
+          s.className = 'paper-scrawl';
+          s.style.top = (36 + i * 29) + 'px';
+          s.style.left = '24px';
+          s.style.width = w + '%';
+          surface.appendChild(s);
+        });
+        surface.style.minHeight = (36 + widths.length * 29 + 30) + 'px';
+      } else {
+        var p = document.createElement('div');
+        p.textContent = e.conteudo || '';
+        surface.appendChild(p);
+      }
+      (e.marcacoes || []).forEach(function (m, idx) { addPinEl(idx, m); });
+    }
+
+    function addPinEl(idx, m) {
+      var surface = document.getElementById('annotSurface');
+      var pin = document.createElement('div');
+      pin.className = 'annot-pin';
+      pin.id = 'pin-' + idx;
+      pin.style.left = m.x + '%';
+      pin.style.top = m.y + '%';
+      pin.style.background = compColors[m.comp] || compColors.geral;
+      pin.textContent = idx + 1;
+      pin.title = m.texto;
+      pin.onclick = function (evt) { evt.stopPropagation(); highlightAnnotItem(idx); };
+      surface.appendChild(pin);
+    }
+
+    function onSurfaceClick(evt) {
+      if (evt.target.closest('.annot-pin') || evt.target.closest('.annot-pop')) return;
+      var surface = document.getElementById('annotSurface');
+      var rect = surface.getBoundingClientRect();
+      var x = ((evt.clientX - rect.left + surface.scrollLeft) / surface.scrollWidth) * 100;
+      var y = ((evt.clientY - rect.top + surface.scrollTop) / surface.scrollHeight) * 100;
+      openAnnotPopover(x, y);
+    }
+
+    function openAnnotPopover(x, y) {
+      closeAnnotPopover();
+      var surface = document.getElementById('annotSurface');
+      var pop = document.createElement('div');
+      pop.className = 'annot-pop';
+      pop.id = 'annotPop';
+      pop.style.left = Math.min(x, 58) + '%';
+      pop.style.top = Math.min(y, 78) + '%';
+      pop.innerHTML =
+        '<select id="annotCompInput">' +
+          '<option value="geral">Geral</option>' +
+          '<option value="c1">C1 · Norma padrão</option>' +
+          '<option value="c2">C2 · Compreensão da proposta</option>' +
+          '<option value="c3">C3 · Argumentos</option>' +
+          '<option value="c4">C4 · Mecanismos linguísticos</option>' +
+          '<option value="c5">C5 · Proposta de intervenção</option>' +
+        '</select>' +
+        '<textarea id="annotTextInput" placeholder="O que marcar aqui?"></textarea>' +
+        '<div class="annot-pop-actions">' +
+          '<button type="button" class="btn-cancel" style="height:30px;padding:0 10px;font-size:12px;" onclick="closeAnnotPopover()">Cancelar</button>' +
+          '<button type="button" class="btn-confirm" style="height:30px;padding:0 14px;font-size:12px;" onclick="saveAnnotFromPopover(' + x + ',' + y + ')">Salvar</button>' +
+        '</div>';
+      surface.appendChild(pop);
+      document.getElementById('annotTextInput').focus();
+    }
+
+    function closeAnnotPopover() {
+      var pop = document.getElementById('annotPop');
+      if (pop) pop.remove();
+    }
+
+    function saveAnnotFromPopover(x, y) {
+      var input = document.getElementById('annotTextInput');
+      var texto = input.value.trim();
+      if (!texto) { closeAnnotPopover(); return; }
+      var comp = document.getElementById('annotCompInput').value;
+      var e = essaysMock[currentEssayId];
+      e.marcacoes = e.marcacoes || [];
+      e.marcacoes.push({ x: x, y: y, comp: comp, texto: texto });
+      closeAnnotPopover();
+      renderSurface(e);
+      renderAnnotList();
+    }
+
+    function renderAnnotList() {
+      var wrap = document.getElementById('annotList');
+      var e = essaysMock[currentEssayId];
+      var list = e.marcacoes || [];
+      wrap.innerHTML = '';
+      if (!list.length) {
+        wrap.innerHTML = '<div class="annot-empty">Nenhuma marcação ainda. Clique na redação acima pra marcar um trecho.</div>';
+        return;
+      }
+      list.forEach(function (m, idx) {
+        var color = compColors[m.comp] || compColors.geral;
+        var item = document.createElement('div');
+        item.className = 'annot-item';
+        item.onclick = function () { highlightPin(idx); };
+        item.innerHTML =
+          '<div class="num" style="background:' + color + ';">' + (idx + 1) + '</div>' +
+          '<div class="body">' +
+            '<div class="tag" style="color:' + color + ';">' + (compLabels[m.comp] || 'Geral') + '</div>' +
+            '<div class="txt"></div>' +
+          '</div>' +
+          '<button type="button" class="rm" title="Remover">×</button>';
+        item.querySelector('.txt').textContent = m.texto;
+        item.querySelector('.rm').onclick = function (evt) { evt.stopPropagation(); removeAnnot(idx); };
+        wrap.appendChild(item);
+      });
+    }
+
+    function removeAnnot(idx) {
+      var e = essaysMock[currentEssayId];
+      e.marcacoes.splice(idx, 1);
+      renderSurface(e);
+      renderAnnotList();
+    }
+
+    function highlightPin(idx) {
+      var pin = document.getElementById('pin-' + idx);
+      if (!pin) return;
+      pin.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      pin.classList.add('is-highlight');
+      setTimeout(function () { pin.classList.remove('is-highlight'); }, 1200);
+    }
+
+    function highlightAnnotItem(idx) {
+      var items = document.querySelectorAll('.annot-item');
+      var item = items[idx];
+      if (!item) return;
+      item.scrollIntoView({ block: 'nearest' });
+      item.style.background = 'var(--brand-primary-chip-bg)';
+      setTimeout(function () { item.style.background = ''; }, 1200);
+    }
+
+    function calcTotal() {
+      var ids = ['score1', 'score2', 'score3', 'score4', 'score5'];
+      var total = 0;
+      ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        var v = parseInt(el.value, 10);
+        if (isNaN(v)) v = 0;
+        if (v < 0) v = 0;
+        if (v > 200) v = 200;
+        el.value = v;
+        total += v;
+      });
+      document.getElementById('totalScore').textContent = total;
+    }
+
+    function salvarCorrecao(event) {
+      event.preventDefault();
+      voltarFila();
+      return false;
+    }
+
+    function voltarFila() {
+      closeAnnotPopover();
+      document.getElementById('viewCorrecao').style.display = 'none';
+      document.getElementById('viewFila').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
