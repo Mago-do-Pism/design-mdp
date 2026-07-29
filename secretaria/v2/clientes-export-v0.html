@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Exportar Clientes · Secretaria · Mago do Pism</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../../styles/tokens.css"/><link rel="stylesheet" href="../../styles/platform.css"/><link rel="stylesheet" href="../../styles/secretaria.css"/>
+<style>
+  /* ── Modal (padrão de secretaria/formularios-v0.html) ── */
+  .modal-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:200; align-items:center; justify-content:center; }
+  .modal-backdrop.open { display:flex; }
+  .modal { background:white; border-radius:14px; padding:30px 30px 26px; width:460px; max-width:95vw; box-shadow:0 24px 60px rgba(0,0,0,0.2); position:relative; }
+  .modal-close { position:absolute; top:14px; right:14px; background:none; border:0; cursor:pointer; color:var(--text-muted); padding:4px; line-height:0; border-radius:4px; }
+  .modal-close:hover { background:var(--neutral-100); color:var(--neutral-900); }
+  .modal-close svg { width:18px; height:18px; }
+  .modal h3 { font-size:17px; font-weight:700; color:var(--neutral-900); margin:0 0 4px; }
+  .modal .modal-sub { font-size:13px; color:var(--text-muted); margin:0 0 22px; line-height:1.5; }
+  .export-option { display:flex; align-items:flex-start; gap:10px; padding:12px 14px; border:1.5px solid var(--border-default); border-radius:9px; margin-bottom:10px; cursor:pointer; transition:border-color .12s, background .12s; }
+  .export-option:hover { border-color: var(--brand-blue); }
+  .export-option.is-active { border-color: var(--brand-blue); background: rgba(14,147,242,0.06); }
+  .export-option input[type="radio"] { margin-top:2px; accent-color: var(--brand-blue); }
+  .export-option-label { font-size:13.5px; font-weight:700; color:var(--neutral-900); }
+  .export-option select { margin-top:8px; width:100%; height:38px; border:1.5px solid var(--border-default); border-radius:7px; padding:0 10px; font-size:13px; color:var(--neutral-900); background:white; }
+  .export-option select:disabled { background: var(--neutral-100); color: var(--text-muted); cursor:not-allowed; }
+  .modal-confirm-btn { width:100%; height:46px; background:var(--brand-blue); color:white; border:0; border-radius:8px; font-size:14.5px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:background .15s; margin-top:6px; }
+  .modal-confirm-btn:hover { background: var(--brand-blue-dark); }
+  .modal-confirm-btn svg { width:16px; height:16px; }
+  /* ── Toast ── */
+  .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(70px); background:var(--neutral-900); color:white; padding:12px 20px; border-radius:9px; font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:9px; box-shadow:0 8px 28px rgba(0,0,0,0.2); opacity:0; transition:transform .22s ease, opacity .22s ease; pointer-events:none; z-index:999; }
+  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+  .toast svg { width:15px; height:15px; color:#5fd49a; }
+</style>
+</head><body><div class="app-shell"><aside class="sidebar">
+    <div class="sidebar-logo" role="img" aria-label="Mago do Pism" style="background:url('../../assets/logo-azul.png') center/contain no-repeat; filter:brightness(0) invert(1);"></div>
+    <nav class="sidebar-nav">
+      <a href="painel.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Painel</span></a><a href="clientes.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2.3 1.5-4 3.7-4 1.6 0 2.8.9 3.3 2.2"/></svg><span>Clientes</span></a><a href="faturas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg><span>Contas a Receber</span></a><a href="inadimplentes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.8" fill="currentColor"/></svg><span>Inadimplência</span></a>
+    </nav>
+  </aside><main class="main"><div class="sec-page">
+<nav class="sec-breadcrumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><a href="painel.html">Principal</a><span class="sep">/</span><span>Clientes</span></nav>
+<div class="sec-page-head">
+  <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2.3 1.5-4 3.7-4 1.6 0 2.8.9 3.3 2.2"/></svg>Clientes</h1>
+  <div class="sec-actions">
+    <button class="sec-btn dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar Cliente</button>
+    <button class="sec-btn outline" onclick="openModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>Exportar dados</button>
+  </div>
+</div>
+
+<div style="margin-bottom:14px;"><label class="sec-toggle"><input type="checkbox" checked><span class="switch"></span>Habilitar notificações para novos clientes</label></div>
+
+<div class="sec-filters">
+  <div class="sec-filters-row cols-3">
+    <div class="sec-filter"><label>Status</label><select><option>Todos</option><option>Ativo</option><option>Inadimplente</option></select></div>
+    <div class="sec-filter"><label>Notificações de Recebíveis</label><select><option>Todos</option></select></div>
+    <div class="sec-filter"><label>Cobrança de Inadimplência</label><select><option>Todos</option></select></div>
+  </div>
+  <div class="sec-search">
+    <input placeholder="🔎 Filtrar por nome, CPF ou e-mail..."/>
+    <div class="sec-show">Mostrar <select><option>10</option><option>25</option><option>50</option></select> entradas</div>
+  </div>
+</div>
+
+<section class="sec-table-card">
+  <table class="sec-table">
+    <thead><tr><th class="col-check"><input type="checkbox"></th><th><span class="sortable">Responsável</span></th><th>Aluno vinculado</th><th>Contato</th><th>Tipo</th><th>Status</th><th>Notificações</th><th class="col-actions">Ações</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><input type="checkbox"></td>
+        <td><a href="cliente-detalhe.html" style="color:var(--brand-blue);font-weight:700;text-decoration:none;">Higino Reis Lira</a><div style="font-size:11px;color:#999;">074.871.486-37</div></td>
+        <td><div style="font-weight:600;">João Pedro Lira</div><div style="font-size:11px;color:#999;">3º ano · Cursinho</div></td>
+        <td><div>higinolira@hotmail.com</div><div style="font-size:11px;color:#999;">(31) 99876-1234</div></td>
+        <td><span class="pill info">PESSOA FÍSICA</span></td>
+        <td><span class="pill dot success">Ativo</span></td>
+        <td><span style="color:var(--color-success);">📧</span> <span style="color:var(--color-success);">💬</span></td>
+        <td class="col-actions">
+          <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="ico-btn" title="Cobrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></button>
+          <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </td>
+      </tr><tr>
+        <td><input type="checkbox"></td>
+        <td><a href="cliente-detalhe.html" style="color:var(--brand-blue);font-weight:700;text-decoration:none;">Estefani Paula Oliveira Blumer</a><div style="font-size:11px;color:#999;">036.051.386-21</div></td>
+        <td><div style="font-weight:600;">Sofia Blumer</div><div style="font-size:11px;color:#999;">3º ano · Cursinho</div></td>
+        <td><div>estefani.blumer@gmail.com</div><div style="font-size:11px;color:#999;">(31) 98765-3456</div></td>
+        <td><span class="pill info">PESSOA FÍSICA</span></td>
+        <td><span class="pill dot success">Ativo</span></td>
+        <td><span style="color:var(--color-success);">📧</span> <span style="color:var(--color-success);">💬</span></td>
+        <td class="col-actions">
+          <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="ico-btn" title="Cobrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></button>
+          <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </td>
+      </tr><tr>
+        <td><input type="checkbox"></td>
+        <td><a href="cliente-detalhe.html" style="color:var(--brand-blue);font-weight:700;text-decoration:none;">Wander Miguel Neto</a><div style="font-size:11px;color:#999;">956.463.876-91</div></td>
+        <td><div style="font-weight:600;">Rafael Neto</div><div style="font-size:11px;color:#999;">3º ano · Cursinho</div></td>
+        <td><div>wander.neto@gmail.com</div><div style="font-size:11px;color:#999;">(31) 99123-4567</div></td>
+        <td><span class="pill info">PESSOA FÍSICA</span></td>
+        <td><span class="pill dot danger">Inadimplente</span></td>
+        <td><span style="color:var(--color-success);">📧</span> <span style="color:var(--color-success);">💬</span></td>
+        <td class="col-actions">
+          <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="ico-btn" title="Cobrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></button>
+          <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </td>
+      </tr><tr>
+        <td><input type="checkbox"></td>
+        <td><a href="cliente-detalhe.html" style="color:var(--brand-blue);font-weight:700;text-decoration:none;">Lidici de Melo Sampaio</a><div style="font-size:11px;color:#999;">039.734.466-01</div></td>
+        <td><div style="font-weight:600;">Beatriz Sampaio</div><div style="font-size:11px;color:#999;">3º ano · Cursinho</div></td>
+        <td><div>lidicimelo@gmail.com</div><div style="font-size:11px;color:#999;">(31) 99654-7890</div></td>
+        <td><span class="pill info">PESSOA FÍSICA</span></td>
+        <td><span class="pill dot success">Ativo</span></td>
+        <td><span style="color:var(--color-success);">📧</span> <span style="color:var(--color-success);">💬</span></td>
+        <td class="col-actions">
+          <button class="ico-btn" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="ico-btn" title="Cobrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></button>
+          <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="sec-pagination">
+    <div>Mostrando 1 a 4 de 30 entradas</div>
+    <div class="pages"><a href="#">Anterior</a><a class="active">1</a><a href="#">2</a><a href="#">3</a><span class="ellipsis">...</span><a href="#">Próximo</a></div>
+  </div>
+</section>
+</div></main></div>
+
+<!-- ─── Modal: Exportar clientes ─── -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="handleBackdropClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <h3>Exportar clientes</h3>
+    <p class="modal-sub">Gera uma planilha (.xlsx) com nome do aluno matriculado, telefone do responsável e status da matrícula.</p>
+
+    <div class="export-option is-active" id="optAll" onclick="selectExportMode('all')">
+      <input type="radio" name="exportMode" checked>
+      <div style="flex:1;">
+        <div class="export-option-label">Todos os clientes</div>
+      </div>
+    </div>
+    <div class="export-option" id="optStatus" onclick="selectExportMode('status')">
+      <input type="radio" name="exportMode">
+      <div style="flex:1;">
+        <div class="export-option-label">Filtrar por status</div>
+        <select id="exportStatusSelect" disabled onclick="event.stopPropagation()">
+          <option>Pendente</option>
+          <option>Contrato assinado</option>
+          <option selected>Ativo</option>
+          <option>Inadimplente</option>
+          <option>Cancelado</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="modal-confirm-btn" onclick="exportFile()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Exportar arquivo (.xlsx)
+    </button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastText">Exportação iniciada!</span>
+</div>
+
+<script>
+  function openModal() {
+    document.getElementById('modalBackdrop').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('modalBackdrop').classList.remove('open');
+  }
+  function handleBackdropClick(e) {
+    if (e.target === document.getElementById('modalBackdrop')) closeModal();
+  }
+  function selectExportMode(mode) {
+    const isAll = mode === 'all';
+    document.getElementById('optAll').classList.toggle('is-active', isAll);
+    document.getElementById('optStatus').classList.toggle('is-active', !isAll);
+    document.querySelectorAll('input[name="exportMode"]').forEach((radio, i) => radio.checked = (isAll ? i === 0 : i === 1));
+    document.getElementById('exportStatusSelect').disabled = isAll;
+  }
+  const toast = document.getElementById('toast');
+  function showToast(msg) {
+    document.getElementById('toastText').textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+  function exportFile() {
+    const status = document.getElementById('optStatus').classList.contains('is-active')
+      ? document.getElementById('exportStatusSelect').value
+      : 'Todos';
+    closeModal();
+    showToast('Exportando clientes (' + status + ')...');
+  }
+</script>
+</body></html>
