@@ -129,6 +129,30 @@
     .sim-track { flex: 1; height: 8px; background: var(--neutral-200); border-radius: 4px; overflow: hidden; }
     .sim-fill  { height: 100%; border-radius: 4px; background: var(--brand-blue); }
     .sim-pct   { font-size: 12px; font-weight: 700; color: var(--text-secondary); width: 36px; text-align: right; flex-shrink: 0; }
+
+    /* ── Aba Acessos: mapa mockup ── */
+    .map-mock {
+      position: relative; height: 220px; border-radius: var(--radius-lg);
+      background:
+        radial-gradient(circle at 22% 28%, rgba(14,147,242,0.08), transparent 55%),
+        radial-gradient(circle at 78% 68%, rgba(14,147,242,0.06), transparent 55%),
+        var(--neutral-150);
+      background-image: radial-gradient(rgba(160,160,160,0.4) 1px, transparent 1px);
+      background-size: 16px 16px;
+      border: 1px solid var(--border-default);
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+    .map-pin { position: absolute; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -100%); }
+    .map-pin svg { width: 22px; height: 22px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.22)); }
+    .map-pin.recent svg { color: var(--brand-blue); }
+    .map-pin.old svg { color: var(--neutral-500); }
+    .map-pin-label {
+      margin-top: 2px; font-size: 10px; font-weight: 700; color: var(--text-secondary);
+      background: var(--neutral-0); padding: 1px 6px; border-radius: 4px; white-space: nowrap;
+      box-shadow: var(--shadow-soft);
+    }
+    .loc-unresolved { color: var(--text-faint); font-style: italic; }
   </style>
 </head>
 <body>
@@ -171,6 +195,7 @@
         <button class="profile-tab" onclick="showTab('senha', this)">Senha</button>
         <button class="profile-tab" onclick="showTab('cursos', this)">Cursos</button>
         <button class="profile-tab" onclick="showTab('desempenho', this)">Desempenho</button>
+        <button class="profile-tab" onclick="showTab('acessos', this)">Acessos</button>
       </div>
 
       <!-- TAB: Dados -->
@@ -346,6 +371,48 @@
 
       </div>
 
+      <!-- TAB: Acessos -->
+      <div id="tab-acessos" style="display:none; max-width:860px;">
+
+        <div class="kpi-row">
+          <div class="kpi-box"><div class="kpi-val warn" id="kpi-acessos-estados">4</div><div class="kpi-lbl">Estados distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val warn" id="kpi-acessos-paises">2</div><div class="kpi-lbl">Países distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val" id="kpi-acessos-ips">6</div><div class="kpi-lbl">IPs distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val" id="kpi-acessos-total">7</div><div class="kpi-lbl">Acessos no período</div></div>
+        </div>
+
+        <div class="desemp-section">
+          <p class="desemp-section-title">Mapa de acessos · últimos 30 dias</p>
+          <div class="map-mock">
+            <div class="map-pin recent" style="top:36%; left:60%;" title="São Paulo, SP"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">São Paulo, SP</span></div>
+            <div class="map-pin old" style="top:58%; left:46%;" title="Curitiba, PR"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Curitiba, PR</span></div>
+            <div class="map-pin old" style="top:20%; left:30%;" title="Brasília, DF"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Brasília, DF</span></div>
+            <div class="map-pin old" style="top:75%; left:80%;" title="Buenos Aires, Argentina"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Buenos Aires, AR</span></div>
+          </div>
+        </div>
+
+        <div class="desemp-section">
+          <p class="desemp-section-title">Histórico de acessos</p>
+          <div class="card" style="padding:0; overflow:hidden;">
+            <table class="mini-table">
+              <thead>
+                <tr><th>Data/Hora</th><th>IP</th><th>Localização</th><th>Dispositivo</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>05/08/2026 · 14:32</td><td>187.23.**.**</td><td>São Paulo, SP</td><td>Windows · Chrome</td></tr>
+                <tr><td>02/08/2026 · 21:05</td><td>179.90.**.**</td><td>Curitiba, PR</td><td>Android · App</td></tr>
+                <tr><td>28/07/2026 · 08:47</td><td>201.7.**.**</td><td>Brasília, DF</td><td>Windows · Chrome</td></tr>
+                <tr><td>24/07/2026 · 23:12</td><td>190.210.**.**</td><td>Buenos Aires, Argentina</td><td>iOS · App</td></tr>
+                <tr><td>19/07/2026 · 17:20</td><td>138.204.**.**</td><td class="loc-unresolved">Localização não identificada</td><td>Android · App</td></tr>
+                <tr><td>18/07/2026 · 10:30</td><td>187.23.**.**</td><td>São Paulo, SP</td><td>Windows · Chrome</td></tr>
+                <tr><td>10/07/2026 · 19:54</td><td>138.204.**.**</td><td>São Paulo, SP</td><td>Android · App</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
     </main>
   </div>
 
@@ -359,9 +426,15 @@
     function showTab(name, btn) {
       document.querySelectorAll('.profile-tab').forEach(b => b.classList.remove('is-active'));
       btn.classList.add('is-active');
-      ['dados','senha','cursos','desempenho'].forEach(id => {
+      ['dados','senha','cursos','desempenho','acessos'].forEach(id => {
         document.getElementById('tab-' + id).style.display = id === name ? 'block' : 'none';
       });
+    }
+
+    if (location.hash === '#acessos') {
+      const acessosBtn = Array.from(document.querySelectorAll('.profile-tab'))
+        .find(b => b.textContent.trim() === 'Acessos');
+      if (acessosBtn) showTab('acessos', acessosBtn);
     }
 
     function switchTurma(val) {

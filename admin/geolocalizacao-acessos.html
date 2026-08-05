@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Geolocalização de Acessos · Admin · Mago do Pism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+
+    .page-sub { font-size: 13px; color: var(--text-muted); max-width: 660px; margin: -20px 0 28px; line-height: 1.5; }
+
+    /* ── Filtro de data ── */
+    .geo-filters { display: flex; align-items: flex-end; gap: 14px; margin-bottom: 28px; max-width: 1086px; }
+    .geo-field { display: flex; flex-direction: column; gap: 6px; }
+    .geo-field label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+    .geo-field input {
+      height: 42px; padding: 0 12px; border-radius: 8px;
+      border: 1px solid var(--border-default); font-family: var(--font-body);
+      font-size: 14px; color: var(--text-primary); background: var(--neutral-0); outline: none;
+    }
+    .geo-field input:focus { border-color: var(--brand-blue); }
+    .btn-filter {
+      height: 42px; padding: 0 22px; border-radius: 8px; border: none;
+      background: var(--brand-blue); color: white; font-family: var(--font-body);
+      font-weight: 700; font-size: 14px;
+    }
+    .btn-filter:hover { background: var(--brand-blue-dark); }
+
+    /* ── Ênfase de dispersão (sem veredito automático, só destaque visual) ── */
+    .disp-val { font-weight: 700; }
+    .disp-val.high { color: var(--color-danger); }
+    .disp-val.mid  { color: var(--text-primary); }
+    .disp-val.low  { color: var(--text-muted); font-weight: 500; }
+    .disp-note { font-size: 11px; color: var(--text-faint); font-style: italic; margin-top: 2px; }
+    .row-empty td { color: var(--text-faint); }
+    .row-empty .cell-user-name { color: var(--text-muted); }
+    .row-clickable { cursor: pointer; }
+
+    /* ── Mapa mockup (ilustrativo, sem tiles externos) ── */
+    .map-mock {
+      position: relative; height: 240px; border-radius: var(--radius-lg);
+      background:
+        radial-gradient(circle at 22% 28%, rgba(14,147,242,0.08), transparent 55%),
+        radial-gradient(circle at 78% 68%, rgba(14,147,242,0.06), transparent 55%),
+        var(--neutral-150);
+      background-image: radial-gradient(rgba(160,160,160,0.4) 1px, transparent 1px);
+      background-size: 16px 16px;
+      border: 1px solid var(--border-default);
+      overflow: hidden;
+    }
+    .map-pin { position: absolute; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -100%); }
+    .map-pin svg { width: 22px; height: 22px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.22)); }
+    .map-pin.recent svg { color: var(--brand-blue); }
+    .map-pin.old svg { color: var(--neutral-500); }
+    .map-pin-label {
+      margin-top: 2px; font-size: 10px; font-weight: 700; color: var(--text-secondary);
+      background: var(--neutral-0); padding: 1px 6px; border-radius: 4px; white-space: nowrap;
+      box-shadow: var(--shadow-soft);
+    }
+    .map-empty {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      color: var(--text-faint); font-size: 13px; text-align: center; padding: 24px; line-height: 1.5;
+    }
+
+    /* ── Modal de detalhe ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.40); z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-geo {
+      background: var(--neutral-0); border-radius: var(--radius-xl); padding: 28px;
+      width: 780px; max-width: 95vw; max-height: 88vh; overflow-y: auto;
+      box-shadow: var(--shadow-deep); transform: translateY(12px); transition: transform .2s;
+    }
+    .modal-overlay.open .modal-geo { transform: translateY(0); }
+    .modal-geo-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .modal-geo-title { font-weight: 700; font-size: 17px; color: var(--text-primary); margin: 0; }
+    .modal-close { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 4px; }
+    .modal-close svg { width: 20px; height: 20px; }
+    .modal-geo-sub { font-size: 12px; color: var(--text-muted); margin: 0 0 20px; }
+    .modal-geo-grid { display: grid; grid-template-columns: 280px 1fr; gap: 20px; }
+    @media (max-width: 720px) { .modal-geo-grid { grid-template-columns: 1fr; } }
+    .modal-geo-foot { display: flex; justify-content: flex-end; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-default); }
+    .link-ficha { color: var(--brand-blue); font-weight: 600; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+    .link-ficha:hover { text-decoration: underline; }
+
+    /* ── mini-table (mesma linguagem visual de aluno-detalhe.html) ── */
+    .mini-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+    .mini-table th {
+      background: var(--neutral-150); font-weight: 700; font-size: 11px;
+      color: var(--text-muted); padding: 9px 14px; text-align: left; letter-spacing: 0.3px;
+    }
+    .mini-table th:first-child { border-radius: 8px 0 0 8px; }
+    .mini-table th:last-child  { border-radius: 0 8px 8px 0; }
+    .mini-table td { padding: 10px 14px; border-bottom: 1px solid var(--neutral-200); vertical-align: middle; }
+    .mini-table tr:last-child td { border-bottom: 0; }
+    .loc-unresolved { color: var(--text-faint); font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+      <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos</span></a>
+        <a href="alunos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
+        <a href="modulos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
+        <a href="gravacoes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 8L16 12L22 16V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg><span>Gravações</span></a>
+        <a href="equipe.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Equipe</span></a>
+        <a href="avisos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Avisos</span></a>
+        <a href="simulados.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg><span>Simulados</span></a>
+        <a href="nivelamentos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Nivelamentos</span></a>
+        <a href="listas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Listas</span></a>
+        <a href="geolocalizacao-acessos.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Geolocalização</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <main class="content admin-content">
+      <h2 class="section-title">Geolocalização de Acessos</h2>
+      <p class="page-sub">
+        Alunos ordenados por dispersão geográfica de acesso à conta no período selecionado (nº de estados e países distintos).
+        O painel não emite veredito automático de compartilhamento — apenas prioriza quem investigar primeiro.
+      </p>
+
+      <div class="geo-filters">
+        <div class="geo-field">
+          <label>De</label>
+          <input type="date" value="2026-07-06" />
+        </div>
+        <div class="geo-field">
+          <label>Até</label>
+          <input type="date" value="2026-08-05" />
+        </div>
+        <button class="btn-filter">Filtrar</button>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Aluno</th>
+              <th class="center">Estados</th>
+              <th class="center">Países</th>
+              <th class="center">IPs distintos</th>
+              <th>Último acesso</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-clickable" onclick="openModal('karla')">
+              <td>
+                <div class="cell-user">
+                  <div class="cell-user-avatar" style="background-image:url('../assets/aluno-1.png')"></div>
+                  <div><div class="cell-user-name">Karla Moreira</div><div class="cell-mail">karla.moreira@email.com</div></div>
+                </div>
+              </td>
+              <td class="center"><span class="disp-val high">4</span></td>
+              <td class="center"><span class="disp-val high">2</span></td>
+              <td class="center">6</td>
+              <td>Hoje · 14:32</td>
+              <td><div class="row-actions"><button class="edit" title="Ver detalhe" onclick="event.stopPropagation(); openModal('karla')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></td>
+            </tr>
+            <tr class="row-clickable" onclick="openModal('beatriz')">
+              <td>
+                <div class="cell-user">
+                  <div class="cell-user-avatar" style="background-image:url('../assets/aluno-1.png')"></div>
+                  <div><div class="cell-user-name">Beatriz Andrade</div><div class="cell-mail">beatriz.andrade@email.com</div></div>
+                </div>
+              </td>
+              <td class="center"><span class="disp-val high">3</span></td>
+              <td class="center"><span class="disp-val high">2</span></td>
+              <td class="center">5</td>
+              <td>22/07/2026 · 09:15</td>
+              <td><div class="row-actions"><button class="edit" title="Ver detalhe" onclick="event.stopPropagation(); openModal('beatriz')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></td>
+            </tr>
+            <tr class="row-clickable" onclick="openModal('rafael')">
+              <td>
+                <div class="cell-user">
+                  <div class="cell-user-avatar" style="background-image:url('../assets/aluno-1.png')"></div>
+                  <div><div class="cell-user-name">Rafael Nogueira</div><div class="cell-mail">rafael.nogueira@email.com</div></div>
+                </div>
+              </td>
+              <td class="center"><span class="disp-val high">3</span></td>
+              <td class="center"><span class="disp-val low">1</span></td>
+              <td class="center">4</td>
+              <td>Ontem · 20:10</td>
+              <td><div class="row-actions"><button class="edit" title="Ver detalhe" onclick="event.stopPropagation(); openModal('rafael')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></td>
+            </tr>
+            <tr class="row-clickable" onclick="openModal('thiago')">
+              <td>
+                <div class="cell-user">
+                  <div class="cell-user-avatar" style="background-image:url('../assets/aluno-1.png')"></div>
+                  <div><div class="cell-user-name">Thiago Ramos</div><div class="cell-mail">thiago.ramos@email.com</div></div>
+                </div>
+              </td>
+              <td class="center"><span class="disp-val mid">2</span></td>
+              <td class="center"><span class="disp-val low">1</span></td>
+              <td class="center">3</td>
+              <td>21/07/2026 · 18:40</td>
+              <td><div class="row-actions"><button class="edit" title="Ver detalhe" onclick="event.stopPropagation(); openModal('thiago')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></td>
+            </tr>
+            <tr class="row-clickable" onclick="openModal('fernanda')">
+              <td>
+                <div class="cell-user">
+                  <div class="cell-user-avatar" style="background-image:url('../assets/aluno-1.png')"></div>
+                  <div><div class="cell-user-name">Fernanda Lopes</div><div class="cell-mail">fernanda.lopes@email.com</div></div>
+                </div>
+              </td>
+              <td class="center"><span class="disp-val mid">2</span></td>
+              <td class="center"><span class="disp-val low">1</span></td>
+              <td class="center">2</td>
+              <td>20/07/2026 · 11:02</td>
+              <td><div class="row-actions"><button class="edit" title="Ver detalhe" onclick="event.stopPropagation(); openModal('fernanda')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></td>
+            </tr>
+            <tr class="row-clickable" onclick="openModal('diego')">
+              <td>
+                <div class="cell-user">
+                  <div class="cell-user-avatar" style="background-image:url('../assets/aluno-1.png')"></div>
+                  <div><div class="cell-user-name">Diego Martins</div><div class="cell-mail">diego.martins@email.com</div></div>
+                </div>
+              </td>
+              <td class="center"><span class="disp-val low">1</span></td>
+              <td class="center"><span class="disp-val low">1</span></td>
+              <td class="center">1</td>
+              <td>19/07/2026 · 08:20</td>
+              <td><div class="row-actions"><button class="edit" title="Ver detalhe" onclick="event.stopPropagation(); openModal('diego')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></td>
+            </tr>
+            <tr class="row-clickable" onclick="openModal('igor')">
+              <td>
+                <div class="cell-user">
+                  <div class="cell-user-avatar" style="background-image:url('../assets/aluno-1.png')"></div>
+                  <div><div class="cell-user-name">Igor Sales</div><div class="cell-mail">igor.sales@email.com</div></div>
+                </div>
+              </td>
+              <td class="center">
+                <span class="disp-val low">0</span>
+                <div class="disp-note">IP não resolvido</div>
+              </td>
+              <td class="center"><span class="disp-val low">0</span></td>
+              <td class="center">1</td>
+              <td>Ontem · 22:10</td>
+              <td><div class="row-actions"><button class="edit" title="Ver detalhe" onclick="event.stopPropagation(); openModal('igor')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></td>
+            </tr>
+            <tr class="row-empty">
+              <td>
+                <div class="cell-user">
+                  <div class="cell-user-avatar" style="background-image:url('../assets/aluno-1.png')"></div>
+                  <div><div class="cell-user-name">Camila Duarte</div><div class="cell-mail">camila.duarte@email.com</div></div>
+                </div>
+              </td>
+              <td class="center">—</td>
+              <td class="center">—</td>
+              <td class="center">—</td>
+              <td>Sem acessos no período</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal de detalhe -->
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal-geo">
+
+      <div class="modal-body" id="modal-karla" style="display:none;">
+        <div class="modal-geo-head">
+          <p class="modal-geo-title">Karla Moreira</p>
+          <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <p class="modal-geo-sub">karla.moreira@email.com · Período: últimos 30 dias · 4 estados · 2 países · 6 IPs distintos</p>
+        <div class="modal-geo-grid">
+          <div class="map-mock">
+            <div class="map-pin recent" style="top:36%; left:60%;" title="São Paulo, SP"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">São Paulo, SP</span></div>
+            <div class="map-pin old" style="top:58%; left:46%;" title="Curitiba, PR"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Curitiba, PR</span></div>
+            <div class="map-pin old" style="top:20%; left:30%;" title="Brasília, DF"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Brasília, DF</span></div>
+            <div class="map-pin old" style="top:75%; left:80%;" title="Buenos Aires, Argentina"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Buenos Aires, AR</span></div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="mini-table">
+              <thead><tr><th>Data/Hora</th><th>IP</th><th>Localização</th><th>Dispositivo</th></tr></thead>
+              <tbody>
+                <tr><td>05/08/2026 · 14:32</td><td>187.23.**.**</td><td>São Paulo, SP</td><td>Windows · Chrome</td></tr>
+                <tr><td>02/08/2026 · 21:05</td><td>179.90.**.**</td><td>Curitiba, PR</td><td>Android · App</td></tr>
+                <tr><td>28/07/2026 · 08:47</td><td>201.7.**.**</td><td>Brasília, DF</td><td>Windows · Chrome</td></tr>
+                <tr><td>24/07/2026 · 23:12</td><td>190.210.**.**</td><td>Buenos Aires, Argentina</td><td>iOS · App</td></tr>
+                <tr><td>18/07/2026 · 10:30</td><td>187.23.**.**</td><td>São Paulo, SP</td><td>Windows · Chrome</td></tr>
+                <tr><td>10/07/2026 · 19:54</td><td>138.204.**.**</td><td>São Paulo, SP</td><td>Android · App</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-geo-foot">
+          <a class="link-ficha" href="aluno-detalhe.html#acessos">Ver ficha completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+
+      <div class="modal-body" id="modal-beatriz" style="display:none;">
+        <div class="modal-geo-head">
+          <p class="modal-geo-title">Beatriz Andrade</p>
+          <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <p class="modal-geo-sub">beatriz.andrade@email.com · Período: últimos 30 dias · 3 estados · 2 países · 5 IPs distintos</p>
+        <div class="modal-geo-grid">
+          <div class="map-mock">
+            <div class="map-pin recent" style="top:30%; left:55%;" title="Belo Horizonte, MG"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Belo Horizonte, MG</span></div>
+            <div class="map-pin old" style="top:52%; left:70%;" title="Rio de Janeiro, RJ"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Rio de Janeiro, RJ</span></div>
+            <div class="map-pin old" style="top:68%; left:25%;" title="Lisboa, Portugal"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Lisboa, PT</span></div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="mini-table">
+              <thead><tr><th>Data/Hora</th><th>IP</th><th>Localização</th><th>Dispositivo</th></tr></thead>
+              <tbody>
+                <tr><td>22/07/2026 · 09:15</td><td>200.18.**.**</td><td>Belo Horizonte, MG</td><td>Windows · Edge</td></tr>
+                <tr><td>19/07/2026 · 22:40</td><td>177.32.**.**</td><td>Rio de Janeiro, RJ</td><td>Android · App</td></tr>
+                <tr><td>15/07/2026 · 07:18</td><td>85.244.**.**</td><td>Lisboa, Portugal</td><td>iOS · App</td></tr>
+                <tr><td>09/07/2026 · 20:02</td><td>200.18.**.**</td><td>Belo Horizonte, MG</td><td>Windows · Edge</td></tr>
+                <tr><td>03/07/2026 · 12:55</td><td>187.60.**.**</td><td>Rio de Janeiro, RJ</td><td>Android · App</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-geo-foot">
+          <a class="link-ficha" href="aluno-detalhe.html">Ver ficha completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+
+      <div class="modal-body" id="modal-rafael" style="display:none;">
+        <div class="modal-geo-head">
+          <p class="modal-geo-title">Rafael Nogueira</p>
+          <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <p class="modal-geo-sub">rafael.nogueira@email.com · Período: últimos 30 dias · 3 estados · 1 país · 4 IPs distintos</p>
+        <div class="modal-geo-grid">
+          <div class="map-mock">
+            <div class="map-pin recent" style="top:40%; left:50%;" title="Salvador, BA"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Salvador, BA</span></div>
+            <div class="map-pin old" style="top:22%; left:35%;" title="Fortaleza, CE"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Fortaleza, CE</span></div>
+            <div class="map-pin old" style="top:60%; left:68%;" title="Recife, PE"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Recife, PE</span></div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="mini-table">
+              <thead><tr><th>Data/Hora</th><th>IP</th><th>Localização</th><th>Dispositivo</th></tr></thead>
+              <tbody>
+                <tr><td>04/08/2026 · 20:10</td><td>179.184.**.**</td><td>Salvador, BA</td><td>Android · App</td></tr>
+                <tr><td>30/07/2026 · 09:33</td><td>177.42.**.**</td><td>Fortaleza, CE</td><td>Windows · Chrome</td></tr>
+                <tr><td>25/07/2026 · 16:47</td><td>200.98.**.**</td><td>Recife, PE</td><td>Windows · Chrome</td></tr>
+                <tr><td>17/07/2026 · 08:05</td><td>179.184.**.**</td><td>Salvador, BA</td><td>Android · App</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-geo-foot">
+          <a class="link-ficha" href="aluno-detalhe.html">Ver ficha completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+
+      <div class="modal-body" id="modal-thiago" style="display:none;">
+        <div class="modal-geo-head">
+          <p class="modal-geo-title">Thiago Ramos</p>
+          <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <p class="modal-geo-sub">thiago.ramos@email.com · Período: últimos 30 dias · 2 estados · 1 país · 3 IPs distintos</p>
+        <div class="modal-geo-grid">
+          <div class="map-mock">
+            <div class="map-pin recent" style="top:35%; left:45%;" title="Goiânia, GO"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Goiânia, GO</span></div>
+            <div class="map-pin old" style="top:55%; left:60%;" title="Uberlândia, MG"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Uberlândia, MG</span></div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="mini-table">
+              <thead><tr><th>Data/Hora</th><th>IP</th><th>Localização</th><th>Dispositivo</th></tr></thead>
+              <tbody>
+                <tr><td>21/07/2026 · 18:40</td><td>177.55.**.**</td><td>Goiânia, GO</td><td>Windows · Chrome</td></tr>
+                <tr><td>16/07/2026 · 07:52</td><td>189.90.**.**</td><td>Uberlândia, MG</td><td>Android · App</td></tr>
+                <tr><td>08/07/2026 · 21:10</td><td>177.55.**.**</td><td>Goiânia, GO</td><td>Windows · Chrome</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-geo-foot">
+          <a class="link-ficha" href="aluno-detalhe.html">Ver ficha completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+
+      <div class="modal-body" id="modal-fernanda" style="display:none;">
+        <div class="modal-geo-head">
+          <p class="modal-geo-title">Fernanda Lopes</p>
+          <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <p class="modal-geo-sub">fernanda.lopes@email.com · Período: últimos 30 dias · 2 estados · 1 país · 2 IPs distintos</p>
+        <div class="modal-geo-grid">
+          <div class="map-mock">
+            <div class="map-pin recent" style="top:45%; left:40%;" title="Porto Alegre, RS"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Porto Alegre, RS</span></div>
+            <div class="map-pin old" style="top:30%; left:58%;" title="Florianópolis, SC"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Florianópolis, SC</span></div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="mini-table">
+              <thead><tr><th>Data/Hora</th><th>IP</th><th>Localização</th><th>Dispositivo</th></tr></thead>
+              <tbody>
+                <tr><td>20/07/2026 · 11:02</td><td>177.15.**.**</td><td>Porto Alegre, RS</td><td>Windows · Firefox</td></tr>
+                <tr><td>12/07/2026 · 15:44</td><td>200.150.**.**</td><td>Florianópolis, SC</td><td>iOS · App</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-geo-foot">
+          <a class="link-ficha" href="aluno-detalhe.html">Ver ficha completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+
+      <div class="modal-body" id="modal-diego" style="display:none;">
+        <div class="modal-geo-head">
+          <p class="modal-geo-title">Diego Martins</p>
+          <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <p class="modal-geo-sub">diego.martins@email.com · Período: últimos 30 dias · 1 estado · 1 país · 1 IP distinto</p>
+        <div class="modal-geo-grid">
+          <div class="map-mock">
+            <div class="map-pin recent" style="top:42%; left:52%;" title="Campinas, SP"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Campinas, SP</span></div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="mini-table">
+              <thead><tr><th>Data/Hora</th><th>IP</th><th>Localização</th><th>Dispositivo</th></tr></thead>
+              <tbody>
+                <tr><td>19/07/2026 · 08:20</td><td>138.97.**.**</td><td>Campinas, SP</td><td>Windows · Chrome</td></tr>
+                <tr><td>05/07/2026 · 19:11</td><td>138.97.**.**</td><td>Campinas, SP</td><td>Windows · Chrome</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-geo-foot">
+          <a class="link-ficha" href="aluno-detalhe.html">Ver ficha completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+
+      <div class="modal-body" id="modal-igor" style="display:none;">
+        <div class="modal-geo-head">
+          <p class="modal-geo-title">Igor Sales</p>
+          <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <p class="modal-geo-sub">igor.sales@email.com · Período: últimos 30 dias · 0 estados · 0 países · 1 IP distinto</p>
+        <div class="modal-geo-grid">
+          <div class="map-mock">
+            <div class="map-empty">Localização não identificada para os acessos deste aluno no período</div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="mini-table">
+              <thead><tr><th>Data/Hora</th><th>IP</th><th>Localização</th><th>Dispositivo</th></tr></thead>
+              <tbody>
+                <tr><td>04/08/2026 · 22:10</td><td>201.54.**.**</td><td class="loc-unresolved">Localização não identificada</td><td>Android · App</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-geo-foot">
+          <a class="link-ficha" href="aluno-detalhe.html">Ver ficha completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function openModal(key) {
+      document.querySelectorAll('.modal-body').forEach(el => el.style.display = 'none');
+      document.getElementById('modal-' + key).style.display = 'block';
+      document.getElementById('modalOverlay').classList.add('open');
+    }
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+    }
+  </script>
+</body>
+</html>
