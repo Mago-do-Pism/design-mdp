@@ -28,6 +28,142 @@
     }
     .cell-star { display: inline-flex; align-items: center; gap: 5px; color: var(--brand-blue); font-weight: 600; }
     .cell-star svg { width: 16px; height: 16px; fill: var(--brand-blue); }
+
+    /* ── Modal: detalhe do aluno (mesmo conteúdo que era a tela aluno-detalhe.html) ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.40); z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-aluno {
+      background: var(--neutral-0); border-radius: var(--radius-xl); padding: 32px;
+      width: 900px; max-width: 95vw; max-height: 88vh; overflow-y: auto;
+      box-shadow: var(--shadow-deep); transform: translateY(12px); transition: transform .2s;
+    }
+    .modal-overlay.open .modal-aluno { transform: translateY(0); }
+    .modal-close { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 4px; flex-shrink: 0; }
+    .modal-close svg { width: 20px; height: 20px; }
+
+    .modal-aluno-head { display: flex; align-items: center; gap: 14px; margin-bottom: 4px; }
+    .aluno-avatar {
+      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--brand-blue), #6366f1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 800; color: white;
+    }
+    .aluno-status {
+      display: inline-flex; align-items: center;
+      padding: 4px 12px; border-radius: 6px;
+      background: rgba(39,133,86,0.10); color: var(--color-success);
+      font-size: 12px; font-weight: 600;
+    }
+    .aluno-email { font-size: 13px; color: var(--text-muted); margin: 0 0 24px 58px; }
+
+    /* Input eye toggle */
+    .input-eye { position: relative; }
+    .input-eye .input { padding-right: 44px; }
+    .input-eye-btn {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0;
+    }
+    .input-eye-btn svg { width: 18px; height: 18px; }
+
+    .btn-email { display: inline-flex; align-items: center; gap: 8px; }
+    .btn-email svg { width: 16px; height: 16px; }
+
+    .form-divider { height: 1px; background: var(--border-default); margin: 4px 0; }
+    .form-group-title { font-weight: 700; font-size: 15px; color: var(--text-primary); margin: 0 0 6px; }
+    .form-group-sub { font-size: 13px; color: var(--text-muted); margin: 0 0 16px; line-height: 1.5; }
+
+    .search-courses {
+      width: 100%; height: 44px; padding: 0 14px 0 40px; border-radius: 10px;
+      border: 1.5px solid var(--border-default); font-family: var(--font-body);
+      font-size: 14px; color: var(--text-primary); background: var(--neutral-50);
+      outline: none; box-sizing: border-box;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: 12px center;
+    }
+    .search-courses:focus { border-color: var(--brand-blue); outline: none; }
+    .course-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+    .course-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; background: var(--neutral-150); border-radius: 10px;
+    }
+    .course-item-name { font-weight: 600; font-size: 14px; color: var(--text-primary); }
+    .btn-remove-course {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1.5px solid rgba(208,62,62,0.3);
+      background: transparent; color: var(--color-danger);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0;
+    }
+    .btn-remove-course:hover { background: rgba(208,62,62,0.08); }
+    .btn-remove-course svg { width: 14px; height: 14px; }
+
+    .desemp-turma-sel {
+      height: 40px; padding: 0 14px; border-radius: 8px;
+      border: 1px solid var(--border-default); font-family: var(--font-body);
+      font-size: 14px; font-weight: 600; color: var(--text-primary);
+      background: var(--neutral-0); outline: none; min-width: 260px; margin-bottom: 24px;
+    }
+    .desemp-turma-sel:focus { border-color: var(--brand-blue); }
+
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+    .kpi-box { background: var(--neutral-150); border-radius: 10px; padding: 16px 18px; }
+    .kpi-val { font-weight: 800; font-size: 24px; color: var(--text-primary); line-height: 1; }
+    .kpi-val.green { color: var(--color-success); }
+    .kpi-val.warn  { color: #d97706; }
+    .kpi-val.bad   { color: var(--color-danger); }
+    .kpi-lbl { font-size: 11px; color: var(--text-muted); margin-top: 5px; font-weight: 500; }
+
+    .desemp-section { margin-bottom: 28px; }
+    .desemp-section-title {
+      font-weight: 700; font-size: 14px; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.4px; margin: 0 0 14px;
+    }
+
+    .mini-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+    .mini-table th {
+      background: var(--neutral-150); font-weight: 700; font-size: 11px;
+      color: var(--text-muted); padding: 9px 14px; text-align: left; letter-spacing: 0.3px;
+    }
+    .mini-table th:first-child { border-radius: 8px 0 0 8px; }
+    .mini-table th:last-child  { border-radius: 0 8px 8px 0; }
+    .mini-table td { padding: 10px 14px; border-bottom: 1px solid var(--neutral-200); vertical-align: middle; }
+    .mini-table tr:last-child td { border-bottom: 0; }
+    .pchip { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 5px; font-size: 11px; font-weight: 600; }
+    .pchip.p { background: rgba(14,147,242,0.08); color: var(--brand-blue); }
+    .pchip.a { background: rgba(208,62,62,0.08); color: var(--color-danger); }
+    .loc-unresolved { color: var(--text-faint); font-style: italic; }
+
+    .sim-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .sim-label { font-size: 13px; color: var(--text-primary); font-weight: 500; width: 160px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sim-track { flex: 1; height: 8px; background: var(--neutral-200); border-radius: 4px; overflow: hidden; }
+    .sim-fill  { height: 100%; border-radius: 4px; background: var(--brand-blue); }
+    .sim-pct   { font-size: 12px; font-weight: 700; color: var(--text-secondary); width: 36px; text-align: right; flex-shrink: 0; }
+
+    .map-mock {
+      position: relative; height: 220px; border-radius: var(--radius-lg);
+      background:
+        radial-gradient(circle at 22% 28%, rgba(14,147,242,0.08), transparent 55%),
+        radial-gradient(circle at 78% 68%, rgba(14,147,242,0.06), transparent 55%),
+        var(--neutral-150);
+      background-image: radial-gradient(rgba(160,160,160,0.4) 1px, transparent 1px);
+      background-size: 16px 16px;
+      border: 1px solid var(--border-default);
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+    .map-pin { position: absolute; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -100%); }
+    .map-pin svg { width: 22px; height: 22px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.22)); }
+    .map-pin.recent svg { color: var(--brand-blue); }
+    .map-pin.old svg { color: var(--neutral-500); }
+    .map-pin-label {
+      margin-top: 2px; font-size: 10px; font-weight: 700; color: var(--text-secondary);
+      background: var(--neutral-0); padding: 1px 6px; border-radius: 4px; white-space: nowrap;
+      box-shadow: var(--shadow-soft);
+    }
   </style>
 </head>
 <body>
@@ -90,7 +226,7 @@
               <td><span class="cell-star"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4,9</span></td>
               <td>128 aulas</td>
               <td><div class="chips-row"><span class="course-chip green">EPI T1</span><span class="course-chip">EPII T2</span></div></td>
-              <td><div class="row-actions"><a href="aluno-detalhe.html" class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></a></div></td>
+              <td><div class="row-actions"><button class="edit" onclick="openAlunoModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button></div></td>
             </tr>
             <tr>
               <td>
@@ -103,7 +239,7 @@
               <td><span class="cell-star"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4,7</span></td>
               <td>45 aulas</td>
               <td><div class="chips-row"><span class="course-chip green">EPI T1</span></div></td>
-              <td><div class="row-actions"><a href="aluno-detalhe.html" class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></a></div></td>
+              <td><div class="row-actions"><button class="edit" onclick="openAlunoModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button></div></td>
             </tr>
             <tr>
               <td>
@@ -116,7 +252,7 @@
               <td><span class="cell-star"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4,2</span></td>
               <td>22 aulas</td>
               <td><div class="chips-row"><span class="course-chip">EPII T2</span></div></td>
-              <td><div class="row-actions"><a href="aluno-detalhe.html" class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></a></div></td>
+              <td><div class="row-actions"><button class="edit" onclick="openAlunoModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button></div></td>
             </tr>
             <tr>
               <td>
@@ -129,7 +265,7 @@
               <td><span class="cell-star"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>5,0</span></td>
               <td>17 aulas</td>
               <td><div class="chips-row"><span class="course-chip green">EPI T1</span><span class="course-chip">EPII T2</span></div></td>
-              <td><div class="row-actions"><a href="aluno-detalhe.html" class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></a></div></td>
+              <td><div class="row-actions"><button class="edit" onclick="openAlunoModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button></div></td>
             </tr>
             <tr>
               <td>
@@ -142,7 +278,7 @@
               <td><span class="cell-star"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4,8</span></td>
               <td>43 aulas</td>
               <td><div class="chips-row"><span class="course-chip green">EPI T1</span><span class="course-chip">EPII T2</span><span class="extra-chip">+1</span></div></td>
-              <td><div class="row-actions"><a href="aluno-detalhe.html" class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></a></div></td>
+              <td><div class="row-actions"><button class="edit" onclick="openAlunoModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button></div></td>
             </tr>
             <tr>
               <td>
@@ -155,12 +291,287 @@
               <td><span class="cell-star"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4,8</span></td>
               <td>24 aulas</td>
               <td><div class="chips-row"><span class="course-chip green">EPI T1</span></div></td>
-              <td><div class="row-actions"><a href="aluno-detalhe.html" class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></a></div></td>
+              <td><div class="row-actions"><button class="edit" onclick="openAlunoModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button></div></td>
             </tr>
           </tbody>
         </table>
       </div>
     </main>
   </div>
+
+  <!-- Modal: detalhe do aluno -->
+  <div class="modal-overlay" id="alunoModalOverlay" onclick="if(event.target===this) closeAlunoModal()">
+    <div class="modal-aluno">
+
+      <div class="modal-aluno-head">
+        <div class="aluno-avatar">KM</div>
+        <h2 class="section-title" style="margin:0;">Karla Moreira</h2>
+        <span class="aluno-status">Ativo</span>
+        <button class="modal-close" style="margin-left:auto;" onclick="closeAlunoModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <p class="aluno-email">karla.moreira@email.com</p>
+
+      <!-- Tabs -->
+      <div class="profile-tabs" style="display:flex; gap:32px; border-bottom:1px solid var(--border-default); margin-bottom:36px; max-width:620px;">
+        <button class="profile-tab is-active" onclick="showAlunoTab('dados', this)">Dados</button>
+        <button class="profile-tab" onclick="showAlunoTab('senha', this)">Senha</button>
+        <button class="profile-tab" onclick="showAlunoTab('cursos', this)">Cursos</button>
+        <button class="profile-tab" onclick="showAlunoTab('desempenho', this)">Desempenho</button>
+        <button class="profile-tab" onclick="showAlunoTab('acessos', this)">Acessos</button>
+      </div>
+
+      <!-- TAB: Dados -->
+      <div id="aluno-tab-dados" class="card" style="max-width:480px;">
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <label class="field">
+            <span class="field-label">Nome</span>
+            <input class="input" type="text" value="KARLA MOREIRA" />
+          </label>
+          <label class="field">
+            <span class="field-label">E-mail</span>
+            <input class="input" type="email" value="karla.moreira@email.com" />
+          </label>
+          <label class="field">
+            <span class="field-label">Telefone (opcional)</span>
+            <input class="input" type="tel" placeholder="(00) 00000-0000" />
+          </label>
+          <label class="field">
+            <span class="field-label">CPF (opcional)</span>
+            <input class="input" type="text" placeholder="000.000.000-00" />
+          </label>
+          <label class="field">
+            <span class="field-label">Status</span>
+            <select class="input">
+              <option selected>Ativo</option>
+              <option>Inativo</option>
+              <option>Suspenso</option>
+            </select>
+          </label>
+          <div>
+            <button class="btn-primary btn-primary--minor">Salvar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Senha -->
+      <div id="aluno-tab-senha" class="card" style="max-width:480px; display:none;">
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <div>
+            <p class="form-group-title">E-mail para criar a própria senha</p>
+            <p class="form-group-sub">O aluno receberá um e-mail para criar sua própria senha.</p>
+            <button class="btn-primary btn-primary--minor btn-email">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Enviar e-mail
+            </button>
+          </div>
+          <div class="form-divider"></div>
+          <div>
+            <p class="form-group-title">Definir senha do aluno</p>
+          </div>
+          <label class="field">
+            <span class="field-label">Nova senha</span>
+            <div class="input-eye">
+              <input class="input" type="password" placeholder="Digite a nova senha" />
+              <button class="input-eye-btn" type="button" onclick="toggleAlunoPwd(this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </label>
+          <label class="field">
+            <span class="field-label">Confirmar senha</span>
+            <div class="input-eye">
+              <input class="input" type="password" placeholder="Confirme a nova senha" />
+              <button class="input-eye-btn" type="button" onclick="toggleAlunoPwd(this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </label>
+          <div>
+            <button class="btn-primary btn-primary--minor">Alterar senha</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Cursos -->
+      <div id="aluno-tab-cursos" class="card" style="max-width:480px; display:none;">
+        <div style="display:flex; flex-direction:column; gap:0;">
+          <label class="field" style="margin-bottom:0;">
+            <span class="field-label">Matrículas</span>
+            <input class="search-courses" type="text" placeholder="Pesquisar curso" />
+          </label>
+          <div class="course-list">
+            <div class="course-item">
+              <span class="course-item-name">EXTENSIVO PISM I — T1</span>
+              <button class="btn-remove-course" title="Remover">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              </button>
+            </div>
+            <div class="course-item">
+              <span class="course-item-name">EXTENSIVO PISM II — T3</span>
+              <button class="btn-remove-course" title="Remover">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              </button>
+            </div>
+            <div class="course-item">
+              <span class="course-item-name">EXTENSIVO PISM/ENEM — T1</span>
+              <button class="btn-remove-course" title="Remover">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              </button>
+            </div>
+          </div>
+          <div style="margin-top:20px;">
+            <button class="btn-primary btn-primary--minor">Salvar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Desempenho -->
+      <div id="aluno-tab-desempenho" style="display:none; max-width:860px;">
+
+        <select class="desemp-turma-sel" onchange="switchAlunoTurma(this.value)">
+          <option value="pism1t1">Extensivo PISM I — T1</option>
+          <option value="pism2t3">Extensivo PISM II — T3</option>
+          <option value="pismenem">Extensivo PISM/ENEM — T1</option>
+        </select>
+
+        <div class="kpi-row">
+          <div class="kpi-box"><div class="kpi-val green" id="aluno-kpi-presenca">86%</div><div class="kpi-lbl">Presença nas aulas</div></div>
+          <div class="kpi-box"><div class="kpi-val" id="aluno-kpi-aulas">18/21</div><div class="kpi-lbl">Aulas assistidas</div></div>
+          <div class="kpi-box"><div class="kpi-val warn" id="aluno-kpi-simulados">72%</div><div class="kpi-lbl">Média nos simulados</div></div>
+          <div class="kpi-box"><div class="kpi-val" id="aluno-kpi-nsim">4</div><div class="kpi-lbl">Simulados realizados</div></div>
+        </div>
+
+        <div class="desemp-section">
+          <p class="desemp-section-title">Presenças recentes</p>
+          <div class="card" style="padding:0; overflow:hidden;">
+            <table class="mini-table">
+              <thead>
+                <tr><th>Data</th><th>Professor</th><th>Duração</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr><td>09/07/2026 · Qua</td><td>Prof. Carlos Menezes</td><td>2h02</td><td><span class="pchip p">Presente</span></td></tr>
+                <tr><td>03/07/2026 · Qui</td><td>Prof. Carlos Menezes</td><td>1h58</td><td><span class="pchip p">Presente</span></td></tr>
+                <tr><td>30/06/2026 · Seg</td><td>Prof. Ana Lima</td><td>—</td><td><span class="pchip a">Ausente</span></td></tr>
+                <tr><td>26/06/2026 · Qui</td><td>Prof. Carlos Menezes</td><td>2h01</td><td><span class="pchip p">Presente</span></td></tr>
+                <tr><td>23/06/2026 · Seg</td><td>Prof. Ricardo Dias</td><td>1h55</td><td><span class="pchip p">Presente</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="desemp-section">
+          <p class="desemp-section-title">Desempenho nos simulados</p>
+          <div class="card">
+            <div class="sim-row">
+              <span class="sim-label">Simulado 1 · Jun/26</span>
+              <div class="sim-track"><div class="sim-fill" style="width:68%;"></div></div>
+              <span class="sim-pct">68%</span>
+            </div>
+            <div class="sim-row">
+              <span class="sim-label">Simulado 2 · Jun/19</span>
+              <div class="sim-track"><div class="sim-fill" style="width:74%;"></div></div>
+              <span class="sim-pct">74%</span>
+            </div>
+            <div class="sim-row">
+              <span class="sim-label">Simulado 3 · Jun/12</span>
+              <div class="sim-track"><div class="sim-fill" style="width:71%;"></div></div>
+              <span class="sim-pct">71%</span>
+            </div>
+            <div class="sim-row">
+              <span class="sim-label">Simulado 4 · Jun/05</span>
+              <div class="sim-track"><div class="sim-fill" style="width:76%;"></div></div>
+              <span class="sim-pct">76%</span>
+            </div>
+            <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--border-default); display:flex; justify-content:flex-end;">
+              <button class="btn-primary btn-primary--minor" style="display:inline-flex; align-items:center; gap:8px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Baixar relatório
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB: Acessos -->
+      <div id="aluno-tab-acessos" style="display:none; max-width:860px;">
+
+        <div class="kpi-row">
+          <div class="kpi-box"><div class="kpi-val warn">4</div><div class="kpi-lbl">Estados distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val warn">2</div><div class="kpi-lbl">Países distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">6</div><div class="kpi-lbl">IPs distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">7</div><div class="kpi-lbl">Acessos no período</div></div>
+        </div>
+
+        <div class="desemp-section">
+          <p class="desemp-section-title">Mapa de acessos · últimos 30 dias</p>
+          <div class="map-mock">
+            <div class="map-pin recent" style="top:36%; left:60%;" title="São Paulo, SP"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">São Paulo, SP</span></div>
+            <div class="map-pin old" style="top:58%; left:46%;" title="Curitiba, PR"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Curitiba, PR</span></div>
+            <div class="map-pin old" style="top:20%; left:30%;" title="Brasília, DF"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Brasília, DF</span></div>
+            <div class="map-pin old" style="top:75%; left:80%;" title="Buenos Aires, Argentina"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Buenos Aires, AR</span></div>
+          </div>
+        </div>
+
+        <div class="desemp-section">
+          <p class="desemp-section-title">Histórico de acessos</p>
+          <div class="card" style="padding:0; overflow:hidden;">
+            <table class="mini-table">
+              <thead>
+                <tr><th>Data/Hora</th><th>IP</th><th>Localização</th><th>Dispositivo</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>05/08/2026 · 14:32</td><td>187.23.**.**</td><td>São Paulo, SP</td><td>Windows · Chrome</td></tr>
+                <tr><td>02/08/2026 · 21:05</td><td>179.90.**.**</td><td>Curitiba, PR</td><td>Android · App</td></tr>
+                <tr><td>28/07/2026 · 08:47</td><td>201.7.**.**</td><td>Brasília, DF</td><td>Windows · Chrome</td></tr>
+                <tr><td>24/07/2026 · 23:12</td><td>190.210.**.**</td><td>Buenos Aires, Argentina</td><td>iOS · App</td></tr>
+                <tr><td>19/07/2026 · 17:20</td><td>138.204.**.**</td><td class="loc-unresolved">Localização não identificada</td><td>Android · App</td></tr>
+                <tr><td>18/07/2026 · 10:30</td><td>187.23.**.**</td><td>São Paulo, SP</td><td>Windows · Chrome</td></tr>
+                <tr><td>10/07/2026 · 19:54</td><td>138.204.**.**</td><td>São Paulo, SP</td><td>Android · App</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const alunoTurmaData = {
+      pism1t1:  { presenca:'86%', aulas:'18/21', simulados:'72%', nsim:'4' },
+      pism2t3:  { presenca:'91%', aulas:'11/12', simulados:'65%', nsim:'2' },
+      pismenem: { presenca:'78%', aulas:'7/9',   simulados:'80%', nsim:'3' },
+    };
+
+    function openAlunoModal() {
+      document.getElementById('alunoModalOverlay').classList.add('open');
+    }
+    function closeAlunoModal() {
+      document.getElementById('alunoModalOverlay').classList.remove('open');
+    }
+
+    function showAlunoTab(name, btn) {
+      document.querySelectorAll('#alunoModalOverlay .profile-tab').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      ['dados','senha','cursos','desempenho','acessos'].forEach(id => {
+        document.getElementById('aluno-tab-' + id).style.display = id === name ? 'block' : 'none';
+      });
+    }
+
+    function switchAlunoTurma(val) {
+      const d = alunoTurmaData[val] || alunoTurmaData.pism1t1;
+      document.getElementById('aluno-kpi-presenca').textContent = d.presenca;
+      document.getElementById('aluno-kpi-aulas').textContent = d.aulas;
+      document.getElementById('aluno-kpi-simulados').textContent = d.simulados;
+      document.getElementById('aluno-kpi-nsim').textContent = d.nsim;
+    }
+
+    function toggleAlunoPwd(btn) {
+      const input = btn.parentElement.querySelector('input');
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+  </script>
 </body>
 </html>
