@@ -11,8 +11,6 @@
   <style>
     a { color: inherit; text-decoration: none; }
 
-    .page-sub { font-size: 13px; color: var(--text-muted); max-width: 660px; margin: -20px 0 28px; line-height: 1.5; }
-
     /* ── Filtro de data ── */
     .geo-filters { display: flex; align-items: flex-end; gap: 14px; margin-bottom: 28px; max-width: 1086px; }
     .geo-field { display: flex; flex-direction: column; gap: 6px; }
@@ -40,9 +38,16 @@
     .row-empty .cell-user-name { color: var(--text-muted); }
     .row-clickable { cursor: pointer; }
 
+    /* ── KPIs do modal (mesmo padrão de aluno-detalhe.html) ── */
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px; }
+    .kpi-box { background: var(--neutral-150); border-radius: 10px; padding: 16px 18px; }
+    .kpi-val { font-weight: 800; font-size: 24px; color: var(--text-primary); line-height: 1; }
+    .kpi-val.warn { color: #d97706; }
+    .kpi-lbl { font-size: 11px; color: var(--text-muted); margin-top: 5px; font-weight: 500; }
+
     /* ── Mapa mockup (ilustrativo, sem tiles externos) ── */
     .map-mock {
-      position: relative; height: 240px; border-radius: var(--radius-lg);
+      position: relative; height: 280px; border-radius: var(--radius-lg);
       background:
         radial-gradient(circle at 22% 28%, rgba(14,147,242,0.08), transparent 55%),
         radial-gradient(circle at 78% 68%, rgba(14,147,242,0.06), transparent 55%),
@@ -74,21 +79,18 @@
     }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
     .modal-geo {
-      background: var(--neutral-0); border-radius: var(--radius-xl); padding: 28px;
-      width: 780px; max-width: 95vw; max-height: 88vh; overflow-y: auto;
+      background: var(--neutral-0); border-radius: var(--radius-xl); padding: 32px;
+      width: 940px; max-width: 95vw; max-height: 88vh; overflow-y: auto;
       box-shadow: var(--shadow-deep); transform: translateY(12px); transition: transform .2s;
     }
     .modal-overlay.open .modal-geo { transform: translateY(0); }
     .modal-geo-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
-    .modal-geo-title { font-weight: 700; font-size: 17px; color: var(--text-primary); margin: 0; }
+    .modal-geo-title { font-weight: 700; font-size: 19px; color: var(--text-primary); margin: 0; }
     .modal-close { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 4px; }
     .modal-close svg { width: 20px; height: 20px; }
     .modal-geo-sub { font-size: 12px; color: var(--text-muted); margin: 0 0 20px; }
-    .modal-geo-grid { display: grid; grid-template-columns: 280px 1fr; gap: 20px; }
-    @media (max-width: 720px) { .modal-geo-grid { grid-template-columns: 1fr; } }
-    .modal-geo-foot { display: flex; justify-content: flex-end; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-default); }
-    .link-ficha { color: var(--brand-blue); font-weight: 600; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
-    .link-ficha:hover { text-decoration: underline; }
+    .modal-geo-grid { display: grid; grid-template-columns: 360px 1fr; gap: 24px; }
+    @media (max-width: 800px) { .modal-geo-grid { grid-template-columns: 1fr; } }
 
     /* ── mini-table (mesma linguagem visual de aluno-detalhe.html) ── */
     .mini-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
@@ -127,10 +129,6 @@
 
     <main class="content admin-content">
       <h2 class="section-title">Geolocalização de Acessos</h2>
-      <p class="page-sub">
-        Alunos ordenados por dispersão geográfica de acesso à conta no período selecionado (nº de estados e países distintos).
-        O painel não emite veredito automático de compartilhamento — apenas prioriza quem investigar primeiro.
-      </p>
 
       <div class="geo-filters">
         <div class="geo-field">
@@ -279,7 +277,13 @@
           <p class="modal-geo-title">Karla Moreira</p>
           <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
-        <p class="modal-geo-sub">karla.moreira@email.com · Período: últimos 30 dias · 4 estados · 2 países · 6 IPs distintos</p>
+        <p class="modal-geo-sub">karla.moreira@email.com · Período: últimos 30 dias</p>
+        <div class="kpi-row">
+          <div class="kpi-box"><div class="kpi-val warn">4</div><div class="kpi-lbl">Estados distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val warn">2</div><div class="kpi-lbl">Países distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">6</div><div class="kpi-lbl">IPs distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">6</div><div class="kpi-lbl">Acessos no período</div></div>
+        </div>
         <div class="modal-geo-grid">
           <div class="map-mock">
             <div class="map-pin recent" style="top:36%; left:60%;" title="São Paulo, SP"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">São Paulo, SP</span></div>
@@ -301,9 +305,6 @@
             </table>
           </div>
         </div>
-        <div class="modal-geo-foot">
-          <a class="link-ficha" href="aluno-detalhe.html#acessos">Ver ficha completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
       </div>
 
       <div class="modal-body" id="modal-beatriz" style="display:none;">
@@ -311,7 +312,13 @@
           <p class="modal-geo-title">Beatriz Andrade</p>
           <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
-        <p class="modal-geo-sub">beatriz.andrade@email.com · Período: últimos 30 dias · 3 estados · 2 países · 5 IPs distintos</p>
+        <p class="modal-geo-sub">beatriz.andrade@email.com · Período: últimos 30 dias</p>
+        <div class="kpi-row">
+          <div class="kpi-box"><div class="kpi-val warn">3</div><div class="kpi-lbl">Estados distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val warn">2</div><div class="kpi-lbl">Países distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">5</div><div class="kpi-lbl">IPs distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">5</div><div class="kpi-lbl">Acessos no período</div></div>
+        </div>
         <div class="modal-geo-grid">
           <div class="map-mock">
             <div class="map-pin recent" style="top:30%; left:55%;" title="Belo Horizonte, MG"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Belo Horizonte, MG</span></div>
@@ -331,9 +338,6 @@
             </table>
           </div>
         </div>
-        <div class="modal-geo-foot">
-          <a class="link-ficha" href="aluno-detalhe.html">Ver ficha completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
       </div>
 
       <div class="modal-body" id="modal-rafael" style="display:none;">
@@ -341,7 +345,13 @@
           <p class="modal-geo-title">Rafael Nogueira</p>
           <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
-        <p class="modal-geo-sub">rafael.nogueira@email.com · Período: últimos 30 dias · 3 estados · 1 país · 4 IPs distintos</p>
+        <p class="modal-geo-sub">rafael.nogueira@email.com · Período: últimos 30 dias</p>
+        <div class="kpi-row">
+          <div class="kpi-box"><div class="kpi-val warn">3</div><div class="kpi-lbl">Estados distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">1</div><div class="kpi-lbl">Países distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">4</div><div class="kpi-lbl">IPs distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">4</div><div class="kpi-lbl">Acessos no período</div></div>
+        </div>
         <div class="modal-geo-grid">
           <div class="map-mock">
             <div class="map-pin recent" style="top:40%; left:50%;" title="Salvador, BA"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Salvador, BA</span></div>
@@ -360,9 +370,6 @@
             </table>
           </div>
         </div>
-        <div class="modal-geo-foot">
-          <a class="link-ficha" href="aluno-detalhe.html">Ver ficha completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
       </div>
 
       <div class="modal-body" id="modal-thiago" style="display:none;">
@@ -370,7 +377,13 @@
           <p class="modal-geo-title">Thiago Ramos</p>
           <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
-        <p class="modal-geo-sub">thiago.ramos@email.com · Período: últimos 30 dias · 2 estados · 1 país · 3 IPs distintos</p>
+        <p class="modal-geo-sub">thiago.ramos@email.com · Período: últimos 30 dias</p>
+        <div class="kpi-row">
+          <div class="kpi-box"><div class="kpi-val">2</div><div class="kpi-lbl">Estados distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">1</div><div class="kpi-lbl">Países distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">3</div><div class="kpi-lbl">IPs distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">3</div><div class="kpi-lbl">Acessos no período</div></div>
+        </div>
         <div class="modal-geo-grid">
           <div class="map-mock">
             <div class="map-pin recent" style="top:35%; left:45%;" title="Goiânia, GO"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Goiânia, GO</span></div>
@@ -387,9 +400,6 @@
             </table>
           </div>
         </div>
-        <div class="modal-geo-foot">
-          <a class="link-ficha" href="aluno-detalhe.html">Ver ficha completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
       </div>
 
       <div class="modal-body" id="modal-fernanda" style="display:none;">
@@ -397,7 +407,13 @@
           <p class="modal-geo-title">Fernanda Lopes</p>
           <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
-        <p class="modal-geo-sub">fernanda.lopes@email.com · Período: últimos 30 dias · 2 estados · 1 país · 2 IPs distintos</p>
+        <p class="modal-geo-sub">fernanda.lopes@email.com · Período: últimos 30 dias</p>
+        <div class="kpi-row">
+          <div class="kpi-box"><div class="kpi-val">2</div><div class="kpi-lbl">Estados distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">1</div><div class="kpi-lbl">Países distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">2</div><div class="kpi-lbl">IPs distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">2</div><div class="kpi-lbl">Acessos no período</div></div>
+        </div>
         <div class="modal-geo-grid">
           <div class="map-mock">
             <div class="map-pin recent" style="top:45%; left:40%;" title="Porto Alegre, RS"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Porto Alegre, RS</span></div>
@@ -413,9 +429,6 @@
             </table>
           </div>
         </div>
-        <div class="modal-geo-foot">
-          <a class="link-ficha" href="aluno-detalhe.html">Ver ficha completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
       </div>
 
       <div class="modal-body" id="modal-diego" style="display:none;">
@@ -423,7 +436,13 @@
           <p class="modal-geo-title">Diego Martins</p>
           <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
-        <p class="modal-geo-sub">diego.martins@email.com · Período: últimos 30 dias · 1 estado · 1 país · 1 IP distinto</p>
+        <p class="modal-geo-sub">diego.martins@email.com · Período: últimos 30 dias</p>
+        <div class="kpi-row">
+          <div class="kpi-box"><div class="kpi-val">1</div><div class="kpi-lbl">Estados distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">1</div><div class="kpi-lbl">Países distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">1</div><div class="kpi-lbl">IPs distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">2</div><div class="kpi-lbl">Acessos no período</div></div>
+        </div>
         <div class="modal-geo-grid">
           <div class="map-mock">
             <div class="map-pin recent" style="top:42%; left:52%;" title="Campinas, SP"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.7 11.1 7.3 11.6.2.2.5.3.7.3s.5-.1.7-.3C13.3 21.1 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg><span class="map-pin-label">Campinas, SP</span></div>
@@ -438,9 +457,6 @@
             </table>
           </div>
         </div>
-        <div class="modal-geo-foot">
-          <a class="link-ficha" href="aluno-detalhe.html">Ver ficha completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
       </div>
 
       <div class="modal-body" id="modal-igor" style="display:none;">
@@ -448,7 +464,14 @@
           <p class="modal-geo-title">Igor Sales</p>
           <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
-        <p class="modal-geo-sub">igor.sales@email.com · Período: últimos 30 dias · 0 estados · 0 países · 1 IP distinto</p>
+        <p class="modal-geo-sub">igor.sales@email.com · Período: últimos 30 dias</p>
+        <div class="kpi-row">
+          <div class="kpi-box"><div class="kpi-val">0</div><div class="kpi-lbl">Estados distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">0</div><div class="kpi-lbl">Países distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">1</div><div class="kpi-lbl">IPs distintos</div></div>
+          <div class="kpi-box"><div class="kpi-val">1</div><div class="kpi-lbl">Acessos no período</div></div>
+        </div>
+        <p class="disp-note" style="margin:-16px 0 20px;">IP não resolvido — não conta pra dispersão</p>
         <div class="modal-geo-grid">
           <div class="map-mock">
             <div class="map-empty">Localização não identificada para os acessos deste aluno no período</div>
@@ -461,9 +484,6 @@
               </tbody>
             </table>
           </div>
-        </div>
-        <div class="modal-geo-foot">
-          <a class="link-ficha" href="aluno-detalhe.html">Ver ficha completa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </div>
 
