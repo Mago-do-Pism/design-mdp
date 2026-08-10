@@ -1,0 +1,15 @@
+/* lets redação — webfonts.
+   SUBSTITUTION FLAG: the original PDF's fonts were not supplied as files.
+   Display  → source is a 70s-style geometric round display with swash alternates
+              (the f/k/ç in "feedbacks", "redação"). Nearest free match: Comfortaa.
+   Body     → source is a compact bold neo-grotesque. Nearest free match: Archivo.
+   Script   → the wordmark "lets" is hand-lettered monoline script. Nearest: Caveat.
+              Prefer assets/logo-lets-redacao.png over typesetting the wordmark. */
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800&family=Caveat:wght@500;700&display=swap");
+
+:root {
+  --font-display: "Comfortaa", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-script: "Caveat", "Segoe Script", cursive;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+}

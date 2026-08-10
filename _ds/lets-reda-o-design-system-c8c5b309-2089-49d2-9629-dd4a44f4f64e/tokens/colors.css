@@ -1,0 +1,83 @@
+:root {
+  /* --- base: cream (the page itself) --- */
+  --cream-50: #fffcf2;
+  --cream-100: #fffaea;
+  --cream-200: #fff6dc;
+  --cream-300: #f7eecd;
+
+  /* --- base: lime (blobs, waves, highlights) --- */
+  --lime-200: #e6fdca;
+  --lime-300: #d8fba4;
+  --lime-400: #c6f87f;
+  --lime-500: #b6f35f;
+  --lime-600: #9fe23f;
+
+  /* --- base: purple (ink + lilac surfaces) --- */
+  --purple-900: #3f0f5c;
+  --purple-800: #5b1e80;
+  --purple-700: #6b2e8e;
+  --purple-600: #8a3fae;
+  --purple-500: #a860c8;
+  --purple-400: #c07ddb;
+  --purple-300: #d88fe8;
+  --purple-200: #ebc4f5;
+  --purple-100: #f6e4fb;
+
+  /* --- base: yellow (marker highlight, sparkles) --- */
+  --yellow-200: #fff6c4;
+  --yellow-300: #ffed8e;
+  --yellow-400: #ffe45c;
+
+  /* --- base: pink (wordmark) --- */
+  --pink-300: #f5aedb;
+  --pink-500: #e56cb8;
+  --pink-600: #d24fa2;
+
+  /* --- neutrals (chat bubbles, screenshots, rules) --- */
+  --neutral-0: #ffffff;
+  --neutral-100: #f2f2f2;
+  --neutral-200: #e6e6e6;
+  --neutral-400: #b3b3b3;
+  --neutral-600: #6e6e6e;
+  --neutral-900: #1b1b1b;
+
+  /* ================= semantic ================= */
+  --surface-page: var(--cream-100);
+  --surface-card: var(--cream-50);
+  --surface-sunken: var(--cream-200);
+  --surface-accent: var(--lime-400);
+  --surface-accent-soft: var(--lime-300);
+  --surface-invert: var(--purple-300);
+  --surface-invert-strong: var(--purple-800);
+  --surface-bubble: var(--neutral-100);
+
+  --text-body: var(--purple-800);
+  --text-strong: var(--purple-900);
+  --text-heading: var(--purple-500);
+  --text-muted: var(--purple-600);
+  --text-on-invert: var(--cream-50);
+  --text-on-accent: var(--purple-800);
+  --text-script: var(--pink-500);
+
+  --marker: var(--yellow-300);
+  --marker-lime: var(--lime-400);
+
+  --border-subtle: rgba(91, 30, 128, 0.14);
+  --border-strong: var(--purple-800);
+  --border-on-invert: rgba(255, 252, 242, 0.5);
+
+  --link: var(--purple-600);
+  --link-hover: var(--purple-800);
+
+  --action-bg: var(--purple-800);
+  --action-fg: var(--cream-50);
+  --action-bg-hover: var(--purple-900);
+  --action-accent-bg: var(--lime-400);
+  --action-accent-fg: var(--purple-800);
+  --action-accent-bg-hover: var(--lime-500);
+
+  --focus-ring: var(--purple-500);
+  --success: var(--lime-600);
+  --warning: var(--yellow-400);
+  --danger: var(--pink-600);
+}

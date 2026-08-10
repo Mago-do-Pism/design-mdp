@@ -115,7 +115,7 @@
       <h1 class="cover-title">Aulas <em>ao vivo</em> —<br/>sala do aluno e do <em>professor</em></h1>
       <p class="cover-sub">Documento da Fase <strong>07</strong>. Infraestrutura de aulas ao vivo: listagem e calendário para o aluno, tela preparatória estilo Meet, sala de vídeo com chat e participantes, e painel do professor com controles de apresentação e gravação.</p>
 
-      <div class="cover-phases">
+      <div class="cover-phases" style="grid-template-columns:1fr 1fr 1fr;">
         <div class="cover-phase">
           <div class="num">FASE 07A</div>
           <h3>Aluno · Ao vivo</h3>
@@ -137,6 +137,14 @@
             <li>Presença — registro de presença por aula</li>
             <li>Sala do professor — controles, gravação, alunos</li>
             <li>Detalhe do aluno — KPIs, presenças e simulados</li>
+          </ul>
+        </div>
+        <div class="cover-phase">
+          <div class="num">FASE 07C</div>
+          <h3>Gestor de Conteúdo</h3>
+          <p>1 tela — acesso restrito, sem sala ao vivo.</p>
+          <ul>
+            <li>Banco de gravações — publicar aula no curso, por turma</li>
           </ul>
         </div>
       </div>
@@ -279,12 +287,35 @@
     <div class="stage"><iframe src="admin/aluno-detalhe.html" loading="eager" data-screen id="detalhe-frame"></iframe></div>
   </article>
 
+  <!-- 07C DIVIDER -->
+  <section class="divider">
+    <div class="num">FASE 07C</div>
+    <h2>Gestor de<br/>Conteúdo</h2>
+    <p>Papel administrativo sem acesso à sala ao vivo: recebe as gravações publicadas pelo professor, organizadas por turma, e publica no curso.</p>
+    <div class="meta">
+      <span>1 tela</span>
+      <span>Mago do Pism</span>
+    </div>
+  </section>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07C · 01</span>
+        <span class="title">Banco de Gravações</span>
+        <span class="sub">Escolha de turma · gravações por data · publicar no curso · baixar arquivo</span>
+      </div>
+      <span class="idx">admin/gravacoes.html</span>
+    </header>
+    <div class="stage"><iframe src="admin/gravacoes.html" loading="eager" data-screen></iframe></div>
+  </article>
+
   <!-- NOTAS DE DESIGN -->
   <section class="notes">
     <h2>Notas de <em>design</em> &amp; decisões</h2>
     <p class="lead">Princípios que sustentam as telas da Fase 07. A sala de aulas ao vivo usa tema escuro (como ferramentas de vídeo consolidadas) enquanto todo o restante da plataforma mantém tema claro — a transição é intencional e contextual.</p>
 
-    <div class="notes-grid">
+    <div class="notes-grid" style="grid-template-columns:repeat(3,1fr);">
       <article class="note-card">
         <div class="num">01</div>
         <h3>Tema escuro só na sala</h3>
@@ -319,6 +350,12 @@
         <div class="num">06</div>
         <h3>Calendário semanal</h3>
         <p>Grade de segunda a sábado com eventos coloridos por curso (PISM I, PISM II, PISM/ENEM). Aula ao vivo tem efeito pulse. Navegação por semana com botão "Hoje".</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">07</div>
+        <h3>Gestor de conteúdo</h3>
+        <p>Papel sem acesso à sala ao vivo. No menu, a aba <strong>Gravações</strong> abre o banco de gravações: primeiro escolhe a turma nas abas superiores, depois vê as aulas gravadas daquela turma por data para publicar no curso.</p>
       </article>
     </div>
 

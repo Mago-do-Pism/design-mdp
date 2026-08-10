@@ -1,0 +1,36 @@
+:root {
+  /* weights actually used in the source material */
+  --fw-body: 400; /* @kind font */
+  --fw-body-strong: 700; /* @kind font */
+  --fw-body-black: 800; /* @kind font */
+  --fw-display: 500; /* @kind font */
+  --fw-display-bold: 700; /* @kind font */
+
+  /* display / section titles — always --font-display, always lowercase */
+  --fs-display-xl: 76px;
+  --fs-display-lg: 60px;
+  --fs-display-md: 44px;
+  --fs-display-sm: 32px;
+  --lh-display: 1.05; /* @kind font */
+  --ls-display: -0.005em; /* @kind font */
+
+  /* body — always --font-body */
+  --fs-body-xl: 22px;
+  --fs-body-lg: 19px;
+  --fs-body-md: 17px;
+  --fs-body-sm: 15px;
+  --fs-body-xs: 13px;
+  --lh-body: 1.42; /* @kind font */
+  --lh-body-tight: 1.28; /* @kind font */
+  --ls-body: 0; /* @kind font */
+
+  /* labels / eyebrows / buttons */
+  --fs-label: 15px;
+  --ls-label: 0.02em; /* @kind font */
+  --fs-eyebrow: 13px;
+  --ls-eyebrow: 0.1em; /* @kind font */
+
+  /* handwritten accent — sparing, wordmark-adjacent only */
+  --fs-script-lg: 44px;
+  --fs-script-md: 28px;
+}

@@ -1,0 +1,26 @@
+:root {
+  /* The source artwork is FLAT — no shadows anywhere. Default to none. */
+  --shadow-none: none;
+  /* Additions for interactive UI only (not present in the print material). */
+  --shadow-soft: 0 6px 18px rgba(91, 30, 128, 0.10);
+  --shadow-lift: 0 10px 28px rgba(91, 30, 128, 0.16);
+  --shadow-inset-marker: inset 0 -0.34em 0 var(--marker);
+
+  --ring-focus: 0 0 0 3px var(--purple-200), 0 0 0 5px var(--purple-500);
+
+  --border-hairline: 1px solid var(--border-subtle); /* @kind other */
+  --border-ink: 2px solid var(--border-strong); /* @kind other */
+
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1); /* @kind other */
+  --ease-in-out: cubic-bezier(0.45, 0.05, 0.55, 0.95); /* @kind other */
+  --dur-fast: 120ms; /* @kind other */
+  --dur-base: 200ms; /* @kind other */
+  --dur-slow: 420ms; /* @kind other */
+
+  --press-scale: 0.975; /* @kind other */
+  --hover-lift: -2px; /* @kind other */
+
+  --blur-veil: blur(10px); /* @kind other */
+  --veil-cream: rgba(255, 250, 234, 0.82); /* @kind other */
+  --veil-purple: rgba(63, 15, 92, 0.55); /* @kind other */
+}

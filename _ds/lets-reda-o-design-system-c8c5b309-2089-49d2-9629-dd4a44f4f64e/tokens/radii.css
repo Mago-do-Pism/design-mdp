@@ -1,0 +1,10 @@
+:root {
+  --radius-xs: 6px;
+  --radius-sm: 10px;   /* chat bubbles */
+  --radius-md: 16px;
+  --radius-lg: 24px;   /* result cards in the carousel */
+  --radius-xl: 32px;
+  --radius-2xl: 44px;
+  --radius-pill: 999px;
+  --radius-blob: 46% 54% 58% 42% / 52% 44% 56% 48%;
+}
