@@ -11,26 +11,27 @@
 </header>
 <main class="pub-content" style="padding-top:60px;">
   <div style="width:100%; max-width:920px; text-align:center;">
-    <p style="font-size:14px; color:var(--text-muted); font-weight:600; margin:0 0 10px;">Que bom te ver por aqui! ✨</p>
-    <h1 style="font-family:var(--font-display); font-weight:600; font-size:28px; color:var(--neutral-900); margin:0 0 36px;">Pra começar, quem vai estudar?</h1>
+    <a href="escolha.html" style="display:inline-block; font-size:13px; color:var(--text-muted); font-weight:600; text-decoration:none; margin-bottom:18px;">← Voltar</a>
+    <h1 style="font-family:var(--font-display); font-weight:600; font-size:32px; color:var(--neutral-900); margin:0 0 8px;">Quantos filhos você vai matricular?</h1>
+    <p style="font-size:15px; color:var(--text-secondary); margin:0 0 36px;">Isso muda os dados que pedimos e já aplica o desconto certo.</p>
 
     <div class="choice-grid cols-2">
-      <a href="escolha-filhos.html" class="choice-card">
+      <a href="cadastro.html" class="choice-card">
         <div class="choice-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8.5" cy="6.5" r="3.3"/><path d="M2.5 21c0-4.3 2.7-7.8 6-7.8s6 3.5 6 7.8"/><circle cx="18" cy="10.5" r="2.2"/><path d="M14 21c0-2.9 1.8-5.2 4-5.2s4 2.3 4 5.2"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
         </div>
-        <h3>Meu filho(a) menor de idade</h3>
-        <p>Você é o responsável e vai matricular um ou mais filhos com menos de 18 anos.</p>
-        <span class="choice-cta">Continuar →</span>
+        <h3>1 filho(a)</h3>
+        <p>Vou matricular só 1 filho(a) agora. Pedimos meus dados de responsável e os dele(a).</p>
+        <span class="choice-cta">Matricular meu filho(a) →</span>
       </a>
 
-      <a href="cadastro.html?tipo=maior" class="choice-card">
+      <a href="cadastro.html?tipo=irmaos" class="choice-card">
         <div class="choice-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="8" r="4"/><path d="M2 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/><circle cx="19" cy="18" r="4.5" fill="currentColor" opacity="0.12" stroke="none"/><path d="M16.8 18l1.4 1.4L21 16.4"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 21c0-3.9 2.7-7 6-7s6 3.1 6 7"/><path d="M13 15.2c2.8.4 4.9 3 4.9 5.8"/></svg>
         </div>
-        <h3>Sou aluno(a) e de maior</h3>
-        <p>Você tem 18 anos ou mais e vai estudar. Os dados são só seus.</p>
-        <span class="choice-cta">Matricular a mim mesmo(a) →</span>
+        <h3>2 ou mais (irmãos)</h3>
+        <p>Vou matricular meus filhos juntos, com desconto de irmãos aplicado automaticamente.</p>
+        <span class="choice-cta">Matricular meus filhos →</span>
       </a>
     </div>
 
@@ -41,10 +42,11 @@
 <style>
 .choice-grid {
   display:grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap:20px;
+  max-width:680px;
+  margin:0 auto;
 }
-.choice-grid.cols-2 { grid-template-columns: repeat(2, 1fr); max-width:680px; margin:0 auto; }
 @media (max-width: 800px) { .choice-grid { grid-template-columns: 1fr; } }
 .choice-card {
   display:flex; flex-direction:column;
