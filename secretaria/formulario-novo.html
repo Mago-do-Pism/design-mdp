@@ -82,6 +82,24 @@
   .calc-box .row.tot { font-weight:700; font-size:14px; color:var(--neutral-900); padding-top:8px; margin-top:6px; border-top:1px dashed #cfe6fa; }
   .calc-box .row .v { font-family:var(--font-akagi); font-weight:600; }
 
+  /* Subseção dentro do card */
+  .subsec { margin:22px 0 12px; padding-top:18px; border-top:1px solid var(--neutral-200); }
+  .subsec:first-of-type { margin-top:0; padding-top:0; border-top:0; }
+  .subsec h3 { font-size:13px; font-weight:700; color:var(--neutral-900); margin:0 0 3px; }
+  .subsec .sub2 { font-size:11.5px; color:var(--text-muted); margin-bottom:12px; }
+
+  /* Chips de seleção múltipla */
+  .chip-select { display:flex; gap:8px; flex-wrap:wrap; }
+  .chip-select .chip { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border:1.5px solid var(--border-default); border-radius:999px; font-size:12.5px; font-weight:600; color:var(--text-secondary); cursor:pointer; background:white; transition:.15s; user-select:none; }
+  .chip-select .chip.is-selected { border-color:var(--brand-blue); background:#f0f8ff; color:var(--brand-blue); }
+  .chip-select .chip input { display:none; }
+
+  /* Toggle simples (checkbox + label) que revela campos */
+  .toggle-check-row { display:flex; align-items:center; gap:8px; margin-bottom:12px; font-size:12.5px; color:var(--neutral-900); font-weight:600; cursor:pointer; }
+  .toggle-check-row input[type=checkbox] { width:16px; height:16px; accent-color:var(--brand-blue); cursor:pointer; }
+
+  /* Cronograma de corte de parcelamento */
+
   /* Action bar */
   .wiz-actions { display:flex; justify-content:space-between; gap:8px; margin-top:24px; padding-top:18px; border-top:1px solid var(--neutral-200); }
   .wiz-actions .right { display:inline-flex; gap:8px; }
@@ -175,23 +193,10 @@
         <div class="hint">URL final que será compartilhada. Use letras minúsculas, números e hífens.</div>
       </div>
 
-      <div class="field-row cols-2">
-        <div class="field">
-          <label>Curso / turma vinculada</label>
-          <select id="f-curso">
-            <option>Curso Intensivo PISM 2026 · turma manhã</option>
-            <option>Curso Intensivo PISM 2026 · turma tarde</option>
-            <option>Cursinho Extensivo Anual 2026</option>
-            <option>Aulão de Véspera 2026</option>
-            <option>Não vincular</option>
-          </select>
-          <div class="hint">Aluno será matriculado nesta turma ao assinar.</div>
-        </div>
-        <div class="field">
-          <label>Validade do link <span style="font-weight:400;color:var(--text-muted);">(opcional)</span></label>
-          <input type="date" id="f-validade" value="" placeholder="Sem validade"/>
-          <div class="hint">Deixe em branco para link permanente sem validade. Preencha apenas se quiser que o link expire em uma data específica.</div>
-        </div>
+      <div class="field">
+        <label>Validade do link <span style="font-weight:400;color:var(--text-muted);">(opcional)</span></label>
+        <input type="date" id="f-validade" value="" placeholder="Sem validade"/>
+        <div class="hint">Deixe em branco para link permanente sem validade. Preencha apenas se quiser que o link expire em uma data específica.</div>
       </div>
 
       <div class="field">
@@ -210,8 +215,9 @@
     <!-- ETAPA 2 — Modelo ZapSign -->
     <section class="wiz-card hidden" data-pane="2">
       <h2>Modelo do ZapSign <span class="zs-tag">ZapSign</span></h2>
-      <p class="sub">Escolha qual modelo de contrato será gerado quando o responsável preencher e enviar o formulário.</p>
+      <p class="sub">O sistema gera contratos com até dois modelos por formulário: um para matrícula normal e outro para matrícula com desconto de irmãos (se este formulário aceitar esse desconto).</p>
 
+      <h3 style="font-size:13px; font-weight:700; color:var(--neutral-900); margin:0 0 10px;">Modelo — matrícula normal</h3>
       <div class="model-search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input id="modelSearch" placeholder="Buscar modelo por nome ou token…"/>
@@ -268,9 +274,71 @@
         </label>
       </div>
 
-      <div style="margin-top:14px; padding:11px 14px; background:var(--neutral-50); border:1px dashed var(--border-default); border-radius:7px; font-size:12px; color:var(--text-secondary); display:flex; align-items:center; gap:8px;">
+      <div style="margin-top:14px; padding:11px 14px; background:var(--neutral-50); border:1px dashed var(--border-default); border-radius:7px; font-size:12px; color:var(--text-secondary); display:flex; align-items:center; gap:10px;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; color:var(--brand-blue); flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="0.6" fill="currentColor"/></svg>
-        Não encontrou o modelo? <a href="https://app.zapsign.com.br/painel-do-usuario/modelos" target="_blank" style="color:var(--brand-blue); font-weight:600; margin-left:4px;">Crie no painel da ZapSign ↗</a> e clique em <strong style="color:var(--neutral-900); margin-left:4px;">Sincronizar</strong> nos formulários.
+        <span>Não encontrou o modelo? <a href="https://app.zapsign.com.br/painel-do-usuario/modelos" target="_blank" style="color:var(--brand-blue); font-weight:600; margin-left:4px;">Crie no painel da ZapSign ↗</a> e sincronize a lista abaixo.</span>
+        <button type="button" class="sec-btn outline" style="height:30px; padding:0 12px; font-size:11.5px; margin-left:auto; flex-shrink:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Sincronizar</button>
+      </div>
+
+      <div class="subsec">
+        <h3>Modelo — matrícula com desconto de irmãos <span style="color:var(--color-warning);">*</span></h3>
+        <div class="sub2">Usado sempre que o contrato sair com desconto de irmãos aplicado. Pode ser o mesmo modelo da matrícula normal, se preferir.</div>
+
+        <div class="model-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="modelSearchSibling" placeholder="Buscar modelo por nome ou token…"/>
+        </div>
+
+        <div class="model-list" id="modelListSibling">
+          <label class="model-card is-selected" data-model="Curso Intensivo PISM 2026" data-token="152f8416-1aaf785dd335">
+            <div class="thumb"><span class="ext">DOCX</span></div>
+            <div class="info">
+              <strong>Curso Intensivo PISM 2026</strong>
+              <div class="meta">152f8416-…-1aaf785dd335 · atualizado em 02/05/2026</div>
+            </div>
+            <div class="radio"></div>
+          </label>
+          <label class="model-card" data-model="Cursinho Extensivo · Anual" data-token="3a1f9c52-7e44b2ad88a1">
+            <div class="thumb"><span class="ext">DOCX</span></div>
+            <div class="info">
+              <strong>Cursinho Extensivo · Anual (9 parcelas)</strong>
+              <div class="meta">3a1f9c52-…-7e44b2ad88a1 · atualizado em 28/04/2026</div>
+            </div>
+            <div class="radio"></div>
+          </label>
+          <label class="model-card" data-model="Caderno de Provas — Avulso" data-token="9b22d740-c5e188fa01b3">
+            <div class="thumb"><span class="ext pdf">PDF</span></div>
+            <div class="info">
+              <strong>Caderno de Provas — Avulso</strong>
+              <div class="meta">9b22d740-…-c5e188fa01b3 · atualizado em 15/03/2026</div>
+            </div>
+            <div class="radio"></div>
+          </label>
+          <label class="model-card" data-model="Bolsa Parcial 50%" data-token="d5a7e213-9f81b00cc456">
+            <div class="thumb"><span class="ext">DOCX</span></div>
+            <div class="info">
+              <strong>Bolsa Parcial 50% — com cláusulas adicionais</strong>
+              <div class="meta">d5a7e213-…-9f81b00cc456 · atualizado em 19/04/2026</div>
+            </div>
+            <div class="radio"></div>
+          </label>
+          <label class="model-card" data-model="Rematrícula 2026" data-token="7c0e2d8a-2b6549f110d8">
+            <div class="thumb"><span class="ext">DOCX</span></div>
+            <div class="info">
+              <strong>Rematrícula 2026 — Veteranos</strong>
+              <div class="meta">7c0e2d8a-…-2b6549f110d8 · atualizado em 10/04/2026</div>
+            </div>
+            <div class="radio"></div>
+          </label>
+          <label class="model-card" data-model="Termo de Imagem" data-token="b8e34cc1-6a2718d9fef0">
+            <div class="thumb"><span class="ext pdf">PDF</span></div>
+            <div class="info">
+              <strong>Termo de Autorização de Imagem (menor)</strong>
+              <div class="meta">b8e34cc1-…-6a2718d9fef0 · atualizado em 22/02/2026</div>
+            </div>
+            <div class="radio"></div>
+          </label>
+        </div>
       </div>
 
       <div class="wiz-actions">
@@ -284,63 +352,117 @@
     <!-- ETAPA 3 — Valor & pagamento -->
     <section class="wiz-card hidden" data-pane="3">
       <h2>Valor & forma de pagamento</h2>
-      <p class="sub">Esses valores serão preenchidos automaticamente nas variáveis do contrato e exibidos para o responsável antes da assinatura.</p>
+      <p class="sub">Esses valores serão preenchidos automaticamente nas variáveis do contrato e exibidos para o responsável antes da assinatura. Cada formulário define seu próprio preço, parcelamento, desconto e vencimento — não depende mais de uma configuração global do sistema.</p>
 
-      <div class="field">
-        <label>Valor total <span style="color:var(--brand-warning);">*</span></label>
-        <div class="input-prefix">
-          <span class="prefix">R$</span>
-          <input type="text" id="f-valor" value="3.420,00" placeholder="0,00"/>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Forma de pagamento</label>
-        <div class="pay-mode">
-          <div class="opt is-selected" data-mode="vista">
-            <strong>À vista</strong>
-            <span>PIX, cartão de crédito ou boleto único</span>
+      <div class="subsec">
+        <div class="field">
+          <label>Valor total <span style="color:var(--brand-warning);">*</span></label>
+          <div class="input-prefix">
+            <span class="prefix">R$</span>
+            <input type="text" id="f-valor" value="3.420,00" placeholder="0,00"/>
           </div>
-          <div class="opt" data-mode="parcelado">
-            <strong>Parcelado</strong>
-            <span>Boleto mensal ou cartão recorrente</span>
+        </div>
+
+        <div class="field">
+          <label>Métodos de pagamento aceitos</label>
+          <div class="chip-select" id="metodoChips">
+            <label class="chip is-selected"><input type="checkbox" value="pix" checked/>PIX</label>
+            <label class="chip is-selected"><input type="checkbox" value="boleto" checked/>Boleto</label>
+            <label class="chip is-selected"><input type="checkbox" value="cartao" checked/>Cartão de crédito</label>
           </div>
         </div>
       </div>
 
-      <div class="field" id="parcelas-field" style="display:none;">
-        <label>Número de parcelas</label>
-        <div class="parc-grid" id="parcGrid">
-          <button data-n="2">2×</button>
-          <button data-n="3">3×</button>
-          <button data-n="4">4×</button>
-          <button data-n="6">6×</button>
-          <button data-n="9">9×</button>
-          <button data-n="10">10×</button>
-          <button data-n="12" class="is-selected">12×</button>
+      <div class="subsec">
+        <h3>Parcelamento</h3>
+        <div class="sub2">Defina até quantas parcelas este formulário aceita. Use 1× para aceitar apenas pagamento à vista.</div>
+        <div class="field-row cols-2">
+          <div class="field">
+            <label>Parcelamento máximo</label>
+            <div class="input-prefix">
+              <input type="number" id="f-maxparc" min="1" max="24" value="12"/>
+              <span class="prefix" style="border-right:0;border-left:1px solid var(--border-default);">×</span>
+            </div>
+          </div>
+          <div class="field">
+            <label>Vencimento da 1ª parcela <span style="font-weight:400;color:var(--text-muted);">(data base)</span></label>
+            <input type="date" id="f-vcto" value="2026-08-10"/>
+            <div class="hint">As faturas seguintes vencem no mesmo dia dos meses seguintes.</div>
+          </div>
         </div>
       </div>
 
-      <div class="field-row cols-2">
-        <div class="field">
-          <label>Vencimento da 1ª parcela</label>
-          <input type="date" id="f-vcto" value="2026-02-10"/>
+      <div class="subsec">
+        <h3>Desconto para pagamento à vista (1×)</h3>
+        <label class="toggle-check-row"><input type="checkbox" id="f-disc-custom" checked/>Personalizar o desconto por método de pagamento</label>
+
+        <div class="field" id="disc-unico-field" style="display:none;">
+          <label>Desconto à vista (todos os métodos)</label>
+          <div class="input-prefix">
+            <span class="prefix">R$</span>
+            <input type="text" id="f-disc-unico" value="520,00" placeholder="0,00"/>
+          </div>
         </div>
-        <div class="field">
-          <label>Métodos aceitos</label>
-          <select id="f-metodo">
-            <option>PIX, boleto e cartão</option>
-            <option>Apenas PIX</option>
-            <option>Apenas cartão de crédito</option>
-            <option>Apenas boleto</option>
-          </select>
+
+        <div class="field-row cols-3" id="disc-metodo-fields">
+          <div class="field">
+            <label>Desconto · PIX</label>
+            <div class="input-prefix"><span class="prefix">R$</span><input type="text" id="f-disc-pix" value="520,00"/></div>
+          </div>
+          <div class="field">
+            <label>Desconto · Boleto</label>
+            <div class="input-prefix"><span class="prefix">R$</span><input type="text" id="f-disc-boleto" value="520,00"/></div>
+          </div>
+          <div class="field">
+            <label>Desconto · Cartão</label>
+            <div class="input-prefix"><span class="prefix">R$</span><input type="text" id="f-disc-cartao" value="346,00"/></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsec">
+        <h3>Desconto para matrícula de irmãos <span style="font-weight:400;color:var(--text-muted);">(opcional)</span></h3>
+        <label class="toggle-check-row"><input type="checkbox" id="f-sibling-on" checked/>Este formulário aceita desconto de irmãos</label>
+        <div class="hint" style="margin:-6px 0 12px;">Aplicado por aluno, quando dois ou mais irmãos se matriculam juntos neste formulário.</div>
+        <div class="field-row cols-2" id="sibling-fields">
+          <div class="field">
+            <label>Tipo</label>
+            <select id="f-sibling-type">
+              <option value="percentual">Percentual</option>
+              <option value="fixo">Valor fixo</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Valor do desconto</label>
+            <div class="input-prefix">
+              <span class="prefix" id="f-sibling-prefix">%</span>
+              <input type="text" id="f-sibling-value" value="20"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsec">
+        <h3>Cronograma automático de vencimento & teto de parcelamento</h3>
+        <div class="sub2">Calculado sozinho a partir da data base acima: a cada mês corrido, o vencimento da 1ª parcela avança para o mesmo dia do mês seguinte e o parcelamento máximo cai 1×. Não precisa configurar linha por linha.</div>
+        <div style="border:1px solid var(--border-default); border-radius:8px; overflow:hidden;">
+          <table style="width:100%; border-collapse:collapse; font-size:12.5px;">
+            <thead>
+              <tr style="background:var(--neutral-50);">
+                <th style="text-align:left; padding:8px 12px; color:var(--text-muted); font-weight:700; font-size:10.5px; text-transform:uppercase; letter-spacing:0.4px;">Mês de adesão</th>
+                <th style="text-align:left; padding:8px 12px; color:var(--text-muted); font-weight:700; font-size:10.5px; text-transform:uppercase; letter-spacing:0.4px;">Vencimento da 1ª parcela</th>
+                <th style="text-align:right; padding:8px 12px; color:var(--text-muted); font-weight:700; font-size:10.5px; text-transform:uppercase; letter-spacing:0.4px;">Parcelamento máximo</th>
+              </tr>
+            </thead>
+            <tbody id="cutoffScheduleBody"></tbody>
+          </table>
         </div>
       </div>
 
       <div class="calc-box" id="calcBox">
         <div class="row"><span>Valor total</span><span class="v" id="calcTot">R$ 3.420,00</span></div>
-        <div class="row"><span>Forma</span><span class="v" id="calcForma">À vista (PIX/cartão/boleto)</span></div>
-        <div class="row tot"><span>Valor da parcela</span><span class="v" id="calcParc">R$ 3.420,00 (entrada única)</span></div>
+        <div class="row"><span>À vista</span><span class="v" id="calcVista">R$ 2.900,00</span></div>
+        <div class="row tot"><span>Parcelado no teto atual</span><span class="v" id="calcParc">12× de R$ 285,00</span></div>
       </div>
 
       <div class="wiz-actions">
@@ -369,20 +491,28 @@
           <div style="background:var(--neutral-50); border:1px solid var(--border-default); border-radius:7px; padding:14px;">
             <div style="font-weight:700; font-size:14px; margin-bottom:4px;" id="rev-modelo">Curso Intensivo PISM 2026</div>
             <div style="font-size:11.5px; color:var(--text-muted); font-family:var(--font-mono);" id="rev-token">152f8416-…-1aaf785dd335</div>
+            <div style="font-size:11.5px; color:var(--text-muted); margin-top:6px; padding-top:6px; border-top:1px dashed var(--border-default);" id="rev-modelo-sibling">Modelo de irmãos: mesmo modelo acima</div>
           </div>
         </div>
         <div>
           <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; font-weight:700; letter-spacing:0.5px; margin-bottom:6px;">Valor & pagamento</div>
           <div style="background:var(--neutral-50); border:1px solid var(--border-default); border-radius:7px; padding:14px;">
             <div style="font-family:var(--font-akagi); font-size:18px; font-weight:700; color:var(--neutral-900); margin-bottom:4px;" id="rev-valor">R$ 3.420,00</div>
-            <div style="font-size:11.5px; color:var(--text-muted);" id="rev-forma">À vista · PIX, cartão ou boleto</div>
+            <div style="font-size:11.5px; color:var(--text-muted);" id="rev-forma">À vista R$ 2.900,00 · até 12× de R$ 285,00</div>
+            <div style="font-size:11.5px; color:var(--text-muted); margin-top:4px;" id="rev-metodos">PIX, Boleto, Cartão de crédito</div>
           </div>
         </div>
         <div>
-          <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; font-weight:700; letter-spacing:0.5px; margin-bottom:6px;">Validade & turma</div>
+          <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; font-weight:700; letter-spacing:0.5px; margin-bottom:6px;">Validade do link</div>
           <div style="background:var(--neutral-50); border:1px solid var(--border-default); border-radius:7px; padding:14px;">
-            <div style="font-weight:700; font-size:13.5px; margin-bottom:4px;" id="rev-curso">Curso Intensivo PISM 2026 · turma manhã</div>
-            <div style="font-size:11.5px; color:var(--text-muted);">Link válido até <span id="rev-validade">31/12/2026</span></div>
+            <div style="font-size:13.5px; color:var(--neutral-900);">Link válido até <span id="rev-validade">31/12/2026</span></div>
+          </div>
+        </div>
+        <div style="grid-column:1 / -1;">
+          <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; font-weight:700; letter-spacing:0.5px; margin-bottom:6px;">Descontos & cronograma</div>
+          <div style="background:var(--neutral-50); border:1px solid var(--border-default); border-radius:7px; padding:14px; font-size:12.5px; color:var(--neutral-800); line-height:1.7;">
+            <div id="rev-sibling">Desconto de irmãos: não configurado</div>
+            <div id="rev-cutoff">Cronograma: parcelamento cai 1× a cada mês corrido a partir de 10/08/2026</div>
           </div>
         </div>
       </div>
@@ -431,9 +561,11 @@
       <div class="body">
         <div class="row"><span class="lbl">Nome</span><span class="val" id="p-nome">Intensivo PISM 2026</span></div>
         <div class="row"><span class="lbl">Modelo</span><span class="val" id="p-modelo">Curso Intensivo PISM 2026</span></div>
+        <div class="row"><span class="lbl">Modelo (irmãos)</span><span class="val muted" id="p-modelo-sibling">mesmo modelo acima</span></div>
         <div class="row"><span class="lbl">Valor</span><span class="val" id="p-valor">R$ 3.420,00</span></div>
-        <div class="row"><span class="lbl">Pagamento</span><span class="val" id="p-pag">à vista</span></div>
-        <div class="row"><span class="lbl">Curso/turma</span><span class="val" id="p-curso">Intensivo · manhã</span></div>
+        <div class="row"><span class="lbl">Pagamento</span><span class="val" id="p-pag">à vista R$ 2.900,00 · até 12×</span></div>
+        <div class="row"><span class="lbl">Métodos</span><span class="val" id="p-metodos">PIX, Boleto, Cartão</span></div>
+        <div class="row"><span class="lbl">Desc. irmãos</span><span class="val muted" id="p-sibling">não configurado</span></div>
         <div class="row"><span class="lbl">Validade</span><span class="val" id="p-validade">31/12/2026</span></div>
       </div>
       <div class="url-preview">
@@ -453,56 +585,107 @@
   const state = {
     nome: 'Intensivo PISM 2026',
     slug: 'intensivo-2026',
-    curso: 'Curso Intensivo PISM 2026 · turma manhã',
     validade: '',  // sem validade por padrão
     modelo: 'Curso Intensivo PISM 2026',
     token: '152f8416-…-1aaf785dd335',
+    modeloSibling: 'Curso Intensivo PISM 2026',
+    tokenSibling: '152f8416-…-1aaf785dd335',
     valor: 3420,
-    mode: 'vista',
-    parcelas: 12,
-    metodo: 'PIX, boleto e cartão',
+    metodos: ['pix', 'boleto', 'cartao'],
+    maxParcelas: 12,
     vcto: '2026-02-10',
+    discCustom: true,
+    discUnico: 520,
+    discPix: 520,
+    discBoleto: 520,
+    discCartao: 346,
+    siblingOn: true,
+    siblingType: 'percentual',
+    siblingValue: '20',
   };
+
+  const METODO_LABEL = { pix: 'PIX', boleto: 'Boleto', cartao: 'Cartão de crédito' };
 
   const toast = document.getElementById('toast');
   const toastText = document.getElementById('toastText');
   function showToast(m){ toastText.textContent = m; toast.classList.add('show'); clearTimeout(showToast._t); showToast._t = setTimeout(()=>toast.classList.remove('show'), 1800); }
 
   function fmtBR(n){ return 'R$ ' + n.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
-  function fmtDate(iso){ if(!iso) return 'Sem validade'; const [y,m,d]=iso.split('-'); return `${d}/${m}/${y}`; }
+  function fmtDate(iso){ if(!iso) return 'sem data'; const [y,m,d]=iso.split('-'); return `${d}/${m}/${y}`; }
   function parseValor(s){ return parseFloat(String(s).replace(/\./g,'').replace(',','.')) || 0; }
+  function metodosLabel(){ return state.metodos.length ? state.metodos.map(m => METODO_LABEL[m]).join(', ') : '—'; }
+  function discAVista(){ return state.discCustom ? state.discPix : state.discUnico; }
 
   function updatePreview(){
+    const avista = Math.max(state.valor - discAVista(), 0);
+    const parcelaValor = state.maxParcelas > 0 ? state.valor / state.maxParcelas : state.valor;
+    const siblingLabel = state.siblingType === 'percentual' ? `${state.siblingValue}%` : fmtBR(parseValor(state.siblingValue));
+
     document.getElementById('p-nome').textContent = state.nome || '—';
     document.getElementById('p-modelo').textContent = state.modelo || '—';
+    document.getElementById('p-modelo-sibling').textContent = state.modeloSibling || '—';
     document.getElementById('p-valor').textContent = fmtBR(state.valor);
-    document.getElementById('p-pag').textContent = state.mode === 'vista' ? 'à vista' : `${state.parcelas}× de ${fmtBR(state.valor/state.parcelas)}`;
-    document.getElementById('p-curso').textContent = state.curso || '—';
+    document.getElementById('p-pag').textContent = state.maxParcelas <= 1
+      ? `à vista ${fmtBR(avista)}`
+      : `à vista ${fmtBR(avista)} · até ${state.maxParcelas}×`;
+    document.getElementById('p-metodos').textContent = metodosLabel();
+    const pSibling = document.getElementById('p-sibling');
+    pSibling.textContent = state.siblingOn ? `${siblingLabel} por aluno` : 'não configurado';
+    pSibling.classList.toggle('muted', !state.siblingOn);
     document.getElementById('p-validade').textContent = fmtDate(state.validade);
     document.getElementById('p-url').textContent = `https://magodopism.com.br/f/${state.slug || '...'}`;
 
     // Calc box
     document.getElementById('calcTot').textContent = fmtBR(state.valor);
-    document.getElementById('calcForma').textContent = state.mode === 'vista'
-      ? 'À vista (' + state.metodo.toLowerCase() + ')'
-      : `Parcelado em ${state.parcelas}× — ${state.metodo}`;
-    document.getElementById('calcParc').textContent = state.mode === 'vista'
+    document.getElementById('calcVista').textContent = fmtBR(avista);
+    document.getElementById('calcParc').textContent = state.maxParcelas <= 1
       ? fmtBR(state.valor) + ' (entrada única)'
-      : `${state.parcelas}× de ${fmtBR(state.valor/state.parcelas)}`;
+      : `${state.maxParcelas}× de ${fmtBR(parcelaValor)}`;
 
     // Review
     document.getElementById('rev-nome').textContent = state.nome;
     document.getElementById('rev-url').textContent = `magodopism.com.br/f/${state.slug}`;
     document.getElementById('rev-modelo').textContent = state.modelo;
     document.getElementById('rev-token').textContent = state.token;
+    document.getElementById('rev-modelo-sibling').textContent = `Modelo de irmãos: ${state.modeloSibling} (${state.tokenSibling})`;
     document.getElementById('rev-valor').textContent = fmtBR(state.valor);
-    document.getElementById('rev-forma').textContent = state.mode === 'vista'
-      ? `À vista · ${state.metodo}`
-      : `${state.parcelas}× de ${fmtBR(state.valor/state.parcelas)} · ${state.metodo}`;
-    document.getElementById('rev-curso').textContent = state.curso;
+    document.getElementById('rev-forma').textContent = state.maxParcelas <= 1
+      ? `À vista ${fmtBR(avista)}`
+      : `À vista ${fmtBR(avista)} · até ${state.maxParcelas}× de ${fmtBR(parcelaValor)}`;
+    document.getElementById('rev-metodos').textContent = metodosLabel();
     document.getElementById('rev-validade').textContent = fmtDate(state.validade);
+    document.getElementById('rev-sibling').textContent = state.siblingOn
+      ? `Desconto de irmãos: ${siblingLabel} por aluno`
+      : 'Desconto de irmãos: não configurado';
+    document.getElementById('rev-cutoff').textContent = state.vcto
+      ? `Cronograma: parcelamento cai 1× a cada mês corrido a partir de ${fmtDate(state.vcto)}`
+      : 'Cronograma: defina a data da 1ª parcela para calcular';
 
     document.getElementById('finalUrl').textContent = `https://magodopism.com.br/f/${state.slug}`;
+    renderCutoffSchedule();
+  }
+
+  const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  function renderCutoffSchedule(){
+    const body = document.getElementById('cutoffScheduleBody');
+    if (!body) return;
+    body.innerHTML = '';
+    if (!state.vcto) {
+      body.innerHTML = '<tr><td colspan="3" style="padding:10px 12px;color:var(--text-muted);font-style:italic;">Defina a data da 1ª parcela acima para gerar o cronograma.</td></tr>';
+      return;
+    }
+    const [y, m, d] = state.vcto.split('-').map(Number);
+    const totalRows = Math.max(state.maxParcelas, 1);
+    for (let i = 0; i < totalRows; i++) {
+      const dt = new Date(y, (m - 1) + i, d);
+      const maxN = Math.max(state.maxParcelas - i, 1);
+      const mesLabel = `${MESES[dt.getMonth()]}/${dt.getFullYear()}`;
+      const vctoLabel = `${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()}`;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td style="padding:8px 12px;border-top:1px solid var(--neutral-200);">${mesLabel}</td><td style="padding:8px 12px;border-top:1px solid var(--neutral-200);font-family:var(--font-mono);">${vctoLabel}</td><td style="padding:8px 12px;border-top:1px solid var(--neutral-200);text-align:right;font-weight:600;">${maxN}×</td>`;
+      body.appendChild(tr);
+      if (maxN <= 1) break;
+    }
   }
 
   // Step navigation
@@ -525,12 +708,11 @@
   // Step 1 inputs
   document.getElementById('f-nome').addEventListener('input', e => { state.nome = e.target.value; updatePreview(); });
   document.getElementById('f-slug').addEventListener('input', e => { state.slug = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g,'-'); e.target.value = state.slug; updatePreview(); });
-  document.getElementById('f-curso').addEventListener('change', e => { state.curso = e.target.value; updatePreview(); });
   document.getElementById('f-validade').addEventListener('change', e => { state.validade = e.target.value; updatePreview(); });
 
-  // Step 2 model picker
-  document.querySelectorAll('.model-card').forEach(card => card.addEventListener('click', () => {
-    document.querySelectorAll('.model-card').forEach(c => c.classList.remove('is-selected'));
+  // Step 2 model picker — matrícula normal
+  document.querySelectorAll('#modelList .model-card').forEach(card => card.addEventListener('click', () => {
+    document.querySelectorAll('#modelList .model-card').forEach(c => c.classList.remove('is-selected'));
     card.classList.add('is-selected');
     state.modelo = card.dataset.model;
     state.token = card.dataset.token.replace(/^([^-]+)-(.+)$/, '$1-…-$2');
@@ -538,30 +720,71 @@
   }));
   document.getElementById('modelSearch').addEventListener('input', e => {
     const q = e.target.value.toLowerCase();
-    document.querySelectorAll('.model-card').forEach(c => {
+    document.querySelectorAll('#modelList .model-card').forEach(c => {
       const t = c.textContent.toLowerCase();
       c.style.display = t.includes(q) ? '' : 'none';
     });
   });
 
-  // Step 3 inputs
-  document.getElementById('f-valor').addEventListener('input', e => { state.valor = parseValor(e.target.value); updatePreview(); });
-  document.getElementById('f-metodo').addEventListener('change', e => { state.metodo = e.target.value; updatePreview(); });
-  document.getElementById('f-vcto').addEventListener('change', e => { state.vcto = e.target.value; updatePreview(); });
+  document.querySelectorAll('#modelListSibling .model-card').forEach(card => card.addEventListener('click', () => {
+    document.querySelectorAll('#modelListSibling .model-card').forEach(c => c.classList.remove('is-selected'));
+    card.classList.add('is-selected');
+    state.modeloSibling = card.dataset.model;
+    state.tokenSibling = card.dataset.token.replace(/^([^-]+)-(.+)$/, '$1-…-$2');
+    updatePreview();
+  }));
+  document.getElementById('modelSearchSibling').addEventListener('input', e => {
+    const q = e.target.value.toLowerCase();
+    document.querySelectorAll('#modelListSibling .model-card').forEach(c => {
+      const t = c.textContent.toLowerCase();
+      c.style.display = t.includes(q) ? '' : 'none';
+    });
+  });
 
-  document.querySelectorAll('.pay-mode .opt').forEach(opt => opt.addEventListener('click', () => {
-    document.querySelectorAll('.pay-mode .opt').forEach(o => o.classList.remove('is-selected'));
-    opt.classList.add('is-selected');
-    state.mode = opt.dataset.mode;
-    document.getElementById('parcelas-field').style.display = state.mode === 'parcelado' ? '' : 'none';
+  // Step 3 — valor base
+  document.getElementById('f-valor').addEventListener('input', e => { state.valor = parseValor(e.target.value); updatePreview(); });
+  document.getElementById('f-vcto').addEventListener('change', e => { state.vcto = e.target.value; updatePreview(); });
+  document.getElementById('f-maxparc').addEventListener('input', e => { state.maxParcelas = parseInt(e.target.value) || 1; updatePreview(); });
+
+  // Step 3 — métodos de pagamento (chips)
+  document.querySelectorAll('#metodoChips input[type=checkbox]').forEach(input => {
+    input.addEventListener('change', () => {
+      input.closest('.chip').classList.toggle('is-selected', input.checked);
+      state.metodos = Array.from(document.querySelectorAll('#metodoChips input:checked')).map(i => i.value);
+      updatePreview();
+    });
+  });
+
+  // Step 3 — desconto à vista
+  const discCustomEl = document.getElementById('f-disc-custom');
+  const discUnicoField = document.getElementById('disc-unico-field');
+  const discMetodoFields = document.getElementById('disc-metodo-fields');
+  discCustomEl.addEventListener('change', () => {
+    state.discCustom = discCustomEl.checked;
+    discUnicoField.style.display = state.discCustom ? 'none' : '';
+    discMetodoFields.style.display = state.discCustom ? 'grid' : 'none';
     updatePreview();
-  }));
-  document.querySelectorAll('#parcGrid button').forEach(b => b.addEventListener('click', () => {
-    document.querySelectorAll('#parcGrid button').forEach(x => x.classList.remove('is-selected'));
-    b.classList.add('is-selected');
-    state.parcelas = parseInt(b.dataset.n);
+  });
+  document.getElementById('f-disc-unico').addEventListener('input', e => { state.discUnico = parseValor(e.target.value); updatePreview(); });
+  document.getElementById('f-disc-pix').addEventListener('input', e => { state.discPix = parseValor(e.target.value); updatePreview(); });
+  document.getElementById('f-disc-boleto').addEventListener('input', e => { state.discBoleto = parseValor(e.target.value); updatePreview(); });
+  document.getElementById('f-disc-cartao').addEventListener('input', e => { state.discCartao = parseValor(e.target.value); updatePreview(); });
+
+  // Step 3 — desconto de irmãos
+  const siblingOnEl = document.getElementById('f-sibling-on');
+  const siblingFields = document.getElementById('sibling-fields');
+  siblingOnEl.addEventListener('change', () => {
+    state.siblingOn = siblingOnEl.checked;
+    siblingFields.style.display = state.siblingOn ? 'grid' : 'none';
     updatePreview();
-  }));
+  });
+  document.getElementById('f-sibling-type').addEventListener('change', e => {
+    state.siblingType = e.target.value;
+    document.getElementById('f-sibling-prefix').textContent = state.siblingType === 'percentual' ? '%' : 'R$';
+    updatePreview();
+  });
+  document.getElementById('f-sibling-value').addEventListener('input', e => { state.siblingValue = e.target.value; updatePreview(); });
+
 
   // Create
   document.getElementById('createBtn').addEventListener('click', () => {

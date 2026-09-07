@@ -4,16 +4,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
 <style>
-  /* Banner ZapSign */
-  .zs-banner { display:flex; align-items:center; gap:14px; padding:13px 18px; background:linear-gradient(90deg, #f3f9fe, #fafdff); border:1px solid #cfe6fa; border-radius:10px; margin-bottom:18px; }
-  .zs-banner .zs-logo { width:36px; height:36px; border-radius:8px; background:#0E93F2; color:white; display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex-shrink:0; letter-spacing:-0.5px; }
-  .zs-banner .zs-text { flex:1; min-width:0; }
-  .zs-banner .zs-text strong { display:block; font-size:13px; color:var(--neutral-900); }
-  .zs-banner .zs-text span { font-size:11.5px; color:var(--text-secondary); }
-  .zs-banner .zs-conn { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:var(--color-success); padding:5px 10px; background:rgba(39,133,86,0.1); border-radius:999px; }
-  .zs-banner .zs-conn .dot { width:6px; height:6px; border-radius:50%; background:var(--color-success); animation:zs-pulse 1.8s ease-in-out infinite; }
-  @keyframes zs-pulse { 0%,100%{ opacity:1;} 50%{ opacity:0.4;} }
-
   /* KPIs */
   .ct-summary { display:grid; grid-template-columns: repeat(4, 1fr); gap:14px; margin-bottom:18px; }
   @media (max-width:900px){ .ct-summary { grid-template-columns: repeat(2,1fr); } }
@@ -42,8 +32,6 @@
 
   .fm-name strong { display:block; font-size:13.5px; color:var(--neutral-900); font-weight:600; line-height:1.3; }
   .fm-name .meta { font-size:11.5px; color:var(--text-muted); margin-top:3px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-  .fm-name .meta .tpl-chip { display:inline-flex; align-items:center; gap:4px; padding:1px 7px; background:rgba(14,147,242,0.08); color:var(--brand-blue); border-radius:4px; font-weight:600; font-size:11px; }
-  .fm-name .meta .tpl-chip svg { width:10px; height:10px; }
   .fm-name .meta .sep { color:var(--neutral-300); }
 
   .fm-amount { font-family:var(--font-akagi); font-weight:700; color:var(--neutral-900); font-size:14px; line-height:1.2; }
@@ -116,18 +104,9 @@
 <div class="sec-page-head">
   <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></svg>Formulários</h1>
   <div class="sec-actions">
-    <button class="sec-btn outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Sincronizar com ZapSign</button>
+    <button class="sec-btn outline" title="Lista os modelos direto do painel ZapSign"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Sincronizar com ZapSign</button>
     <a href="formulario-novo.html" class="sec-btn dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Criar formulário</a>
   </div>
-</div>
-
-<div class="zs-banner">
-  <div class="zs-logo">ZS</div>
-  <div class="zs-text">
-    <strong>Cada formulário combina um modelo do ZapSign + um valor de pagamento</strong>
-    <span>O link público gerado pode ser enviado ao responsável (WhatsApp, e-mail, redes). Ele preenche os dados pessoais do aluno, confirma e segue para o contrato + pagamento.</span>
-  </div>
-  <div class="zs-conn"><span class="dot"></span>API ZapSign</div>
 </div>
 
 <div class="ct-summary">
@@ -153,8 +132,7 @@
   <table class="fm-table">
     <thead>
       <tr>
-        <th style="width:32%;">Formulário</th>
-        <th>Valor</th>
+        <th style="width:38%;">Formulário</th>
         <th>Status</th>
         <th>Usos</th>
         <th>Link público <span style="font-weight:400;color:var(--text-muted);font-size:10px;text-transform:none;letter-spacing:0;">(permanente)</span></th>
@@ -168,13 +146,10 @@
           <div class="fm-name">
             <strong>Intensivo PISM 2026</strong>
             <div class="meta">
-              <span class="tpl-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Curso Intensivo PISM 2026</span>
-              <span class="sep">·</span>
               <span>criado em 28/04/2026</span>
             </div>
           </div>
         </td>
-        <td><div class="fm-amount">R$ 3.420,00<span class="sub">à vista ou em até 12×</span></div></td>
         <td><span class="fm-status active"><span class="dot"></span>Ativo</span></td>
         <td><div class="fm-uses"><span class="num">109 <em>contratos</em></span></div></td>
         <td>
@@ -200,13 +175,10 @@
           <div class="fm-name">
             <strong>Extensivo Anual 2026</strong>
             <div class="meta">
-              <span class="tpl-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Cursinho Extensivo · Anual</span>
-              <span class="sep">·</span>
               <span>criado em 22/04/2026</span>
             </div>
           </div>
         </td>
-        <td><div class="fm-amount">R$ 4.500,00<span class="sub">à vista ou em até 9×</span></div></td>
         <td><span class="fm-status active"><span class="dot"></span>Ativo</span></td>
         <td><div class="fm-uses"><span class="num">28 <em>contratos</em></span></div></td>
         <td>
@@ -232,13 +204,10 @@
           <div class="fm-name">
             <strong>Bolsa Parcial 50% · Intensivo</strong>
             <div class="meta">
-              <span class="tpl-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Bolsa Parcial 50%</span>
-              <span class="sep">·</span>
               <span>criado em 19/04/2026</span>
             </div>
           </div>
         </td>
-        <td><div class="fm-amount">R$ 1.800,00<span class="sub">à vista ou em até 12×</span></div></td>
         <td><span class="fm-status active"><span class="dot"></span>Ativo</span></td>
         <td><div class="fm-uses"><span class="num">8 <em>contratos</em></span></div></td>
         <td>
@@ -264,13 +233,10 @@
           <div class="fm-name">
             <strong>Rematrícula Veteranos 2026</strong>
             <div class="meta">
-              <span class="tpl-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Rematrícula 2026 · Veteranos</span>
-              <span class="sep">·</span>
               <span>criado em 10/04/2026</span>
             </div>
           </div>
         </td>
-        <td><div class="fm-amount">R$ 3.240,00<span class="sub">10% off · até 12×</span></div></td>
         <td><span class="fm-status paused"><span class="dot"></span>Pausado</span></td>
         <td><div class="fm-uses"><span class="num">35 <em>contratos</em></span></div></td>
         <td>
@@ -290,13 +256,10 @@
           <div class="fm-name">
             <strong>Caderno de Provas — Avulso</strong>
             <div class="meta">
-              <span class="tpl-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Caderno de Provas — Avulso</span>
-              <span class="sep">·</span>
               <span>criado em 02/03/2026</span>
             </div>
           </div>
         </td>
-        <td><div class="fm-amount">R$ 180,00<span class="sub">pagamento único</span></div></td>
         <td><span class="fm-status active"><span class="dot"></span>Ativo</span></td>
         <td><div class="fm-uses"><span class="num">14 <em>contratos</em></span></div></td>
         <td>
@@ -322,13 +285,10 @@
           <div class="fm-name">
             <strong>Aulão de Véspera 2026</strong>
             <div class="meta">
-              <span class="tpl-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Aulão de Véspera 2026</span>
-              <span class="sep">·</span>
               <span>expirou em 28/04/2026</span>
             </div>
           </div>
         </td>
-        <td><div class="fm-amount">R$ 90,00<span class="sub">pagamento único</span></div></td>
         <td><span class="fm-status expired"><span class="dot"></span>Expirado</span></td>
         <td><div class="fm-uses"><span class="num">63 <em>contratos</em></span></div></td>
         <td>
