@@ -1,412 +1,1186 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rematrícula · Aluno · Mago do Pism</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles/tokens.css" />
-  <link rel="stylesheet" href="../styles/platform.css" />
-  <link rel="stylesheet" href="../styles/app.css" />
-  <style>
-    a { color: inherit; text-decoration: none; }
-    .rm-section { margin: 0 0 56px; }
-    .rm-section-head { max-width: 620px; margin: 0 0 28px; }
-    .rm-section-head .kicker { font-family: var(--font-akagi); font-weight: 700; font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--brand-blue); margin: 0 0 8px; }
-    .rm-section-head h2 { font-family: var(--font-display); font-weight: 700; font-size: 24px; color: var(--neutral-900); margin: 0 0 8px; }
-    .rm-section-head p { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin: 0; }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rematrícula · Aluno · Mago do Pism</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/tokens.css" />
+    <link rel="stylesheet" href="../styles/platform.css" />
+    <link rel="stylesheet" href="../styles/app.css" />
+    <style>
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .rm-section {
+        margin: 0 0 56px;
+      }
+      .rm-section-head {
+        max-width: 620px;
+        margin: 0 0 28px;
+      }
+      .rm-section-head .kicker {
+        font-family: var(--font-akagi);
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        color: var(--brand-blue);
+        margin: 0 0 8px;
+      }
+      .rm-section-head h2 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 24px;
+        color: var(--neutral-900);
+        margin: 0 0 8px;
+      }
+      .rm-section-head p {
+        font-size: 14px;
+        color: var(--text-muted);
+        line-height: 1.5;
+        margin: 0;
+      }
 
-    /* ─── Hero ─── */
-    .rm-hero {
-      background: linear-gradient(135deg, #1686D8, #0E93F2);
-      border-radius: var(--radius-xl);
-      padding: 48px 44px;
-      color: white;
-    }
-    .rm-hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; }
-    .rm-hero .kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; opacity: 0.85; margin: 0 0 12px; }
-    .rm-hero h1 { font-family: var(--font-display); font-weight: 700; font-size: 32px; line-height: 1.18; margin: 0 0 14px; }
-    .rm-hero p { font-size: 15px; line-height: 1.55; opacity: 0.92; margin: 0 0 24px; }
-    .rm-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 26px; }
-    .rm-badge { font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.16); }
-    .rm-hero-actions { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
-    .rm-hero .btn-primary { background: white; color: var(--brand-blue); }
-    .rm-hero .btn-primary:hover { background: var(--neutral-150); }
-    .rm-link-ghost { font-size: 13px; font-weight: 600; color: white; opacity: 0.85; border-bottom: 1px solid rgba(255,255,255,0.5); padding-bottom: 2px; }
-    .rm-link-ghost:hover { opacity: 1; }
+      /* ─── Hero ─── */
+      .rm-hero {
+        background: linear-gradient(135deg, #1686d8, #0e93f2);
+        border-radius: var(--radius-xl);
+        padding: 48px 44px;
+        color: white;
+      }
+      .rm-hero-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 40px;
+        align-items: center;
+      }
+      .rm-hero .kicker {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        opacity: 0.85;
+        margin: 0 0 12px;
+      }
+      .rm-hero h1 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 32px;
+        line-height: 1.18;
+        margin: 0 0 14px;
+      }
+      .rm-hero p {
+        font-size: 15px;
+        line-height: 1.55;
+        opacity: 0.92;
+        margin: 0 0 24px;
+      }
+      .rm-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 26px;
+      }
+      .rm-badge {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+      }
+      .rm-hero-actions {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+      .rm-hero .btn-primary {
+        background: white;
+        color: var(--brand-blue);
+      }
+      .rm-hero .btn-primary:hover {
+        background: var(--neutral-150);
+      }
+      .rm-link-ghost {
+        font-size: 13px;
+        font-weight: 600;
+        color: white;
+        opacity: 0.85;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        padding-bottom: 2px;
+      }
+      .rm-link-ghost:hover {
+        opacity: 1;
+      }
 
-    /* ─── VSL (vídeo do hero) ─── */
-    .rm-hero-video {
-      aspect-ratio: 16/9; border-radius: var(--radius-lg); overflow: hidden;
-      position: relative; cursor: pointer;
-      background: linear-gradient(160deg, rgba(0,0,0,0.35), rgba(0,0,0,0.05)), radial-gradient(circle at 30% 20%, rgba(255,255,255,0.18), transparent 60%), #0b5aa0;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.25);
-    }
-    .rm-hero-play {
-      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    }
-    .rm-hero-play .circle {
-      width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.92);
-      display: flex; align-items: center; justify-content: center; transition: transform 0.15s ease;
-    }
-    .rm-hero-video:hover .rm-hero-play .circle { transform: scale(1.08); }
-    .rm-hero-play svg { width: 22px; height: 22px; color: var(--brand-blue); margin-left: 2px; }
-    .rm-hero-video-duration {
-      position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.55); color: white;
-      font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 4px;
-    }
-    .rm-hero-video-caption { font-size: 12px; color: rgba(255,255,255,0.75); text-align: center; margin-top: 10px; }
+      /* ─── VSL (vídeo do hero) ─── */
+      .rm-hero-video {
+        aspect-ratio: 16/9;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+        background:
+          linear-gradient(160deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.05)),
+          radial-gradient(
+            circle at 30% 20%,
+            rgba(255, 255, 255, 0.18),
+            transparent 60%
+          ),
+          #0b5aa0;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+      }
+      .rm-hero-play {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .rm-hero-play .circle {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.92);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.15s ease;
+      }
+      .rm-hero-video:hover .rm-hero-play .circle {
+        transform: scale(1.08);
+      }
+      .rm-hero-play svg {
+        width: 22px;
+        height: 22px;
+        color: var(--brand-blue);
+        margin-left: 2px;
+      }
+      .rm-hero-video-duration {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        background: rgba(0, 0, 0, 0.55);
+        color: white;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 4px;
+      }
+      .rm-hero-video-caption {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.75);
+        text-align: center;
+        margin-top: 10px;
+      }
 
-    /* ─── Stats ─── */
-    .rm-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 36px 0 0; }
-    .rm-stat { background: var(--neutral-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); padding: 20px 18px; text-align: center; }
-    .rm-stat .num { font-family: var(--font-display); font-weight: 700; font-size: 26px; color: var(--brand-blue); letter-spacing: -0.5px; }
-    .rm-stat .lbl { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.35; }
+      /* ─── Stats ─── */
+      .rm-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin: 36px 0 0;
+      }
+      .rm-stat {
+        background: var(--neutral-0);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-soft);
+        padding: 20px 18px;
+        text-align: center;
+      }
+      .rm-stat .num {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 26px;
+        color: var(--brand-blue);
+        letter-spacing: -0.5px;
+      }
+      .rm-stat .lbl {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 4px;
+        line-height: 1.35;
+      }
 
-    /* ─── Benefícios ─── */
-    .rm-benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .rm-benefit { background: var(--neutral-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); padding: 20px; }
-    .rm-benefit .ico { width: 38px; height: 38px; border-radius: 10px; background: rgba(14,147,242,0.10); color: var(--brand-blue); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
-    .rm-benefit .ico svg { width: 19px; height: 19px; }
-    .rm-benefit h3 { font-size: 13.5px; font-weight: 700; color: var(--neutral-900); margin: 0 0 4px; }
-    .rm-benefit p { font-size: 12.5px; color: var(--text-muted); margin: 0; line-height: 1.5; }
+      /* ─── Benefícios ─── */
+      .rm-benefits {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .rm-benefit {
+        background: var(--neutral-0);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-soft);
+        padding: 20px;
+      }
+      .rm-benefit .ico {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: rgba(14, 147, 242, 0.1);
+        color: var(--brand-blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+      .rm-benefit .ico svg {
+        width: 19px;
+        height: 19px;
+      }
+      .rm-benefit h3 {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: var(--neutral-900);
+        margin: 0 0 4px;
+      }
+      .rm-benefit p {
+        font-size: 12.5px;
+        color: var(--text-muted);
+        margin: 0;
+        line-height: 1.5;
+      }
 
-    /* ─── Depoimentos ─── */
-    .rm-quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .rm-quote { background: var(--neutral-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); padding: 22px; display: flex; flex-direction: column; gap: 14px; }
-    .rm-quote p { font-size: 13.5px; color: var(--text-primary); line-height: 1.55; margin: 0; }
-    .rm-quote .who { display: flex; align-items: center; gap: 10px; }
-    .rm-quote .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--brand-blue); color: white; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .rm-quote .name { font-size: 12.5px; font-weight: 700; color: var(--neutral-900); }
-    .rm-quote .meta { font-size: 11px; color: var(--text-muted); }
+      /* ─── Depoimentos ─── */
+      .rm-quotes {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .rm-quote {
+        background: var(--neutral-0);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-soft);
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .rm-quote p {
+        font-size: 13.5px;
+        color: var(--text-primary);
+        line-height: 1.55;
+        margin: 0;
+      }
+      .rm-quote .who {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .rm-quote .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--brand-blue);
+        color: white;
+        font-size: 12px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .rm-quote .name {
+        font-size: 12.5px;
+        font-weight: 700;
+        color: var(--neutral-900);
+      }
+      .rm-quote .meta {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
 
-    /* ─── Reasseguro ─── */
-    .rm-reassure { display: flex; align-items: center; gap: 18px; background: var(--neutral-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); padding: 22px 26px; }
-    .rm-reassure .ico { width: 44px; height: 44px; border-radius: 50%; background: rgba(39,133,86,0.10); color: var(--color-success); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .rm-reassure .ico svg { width: 22px; height: 22px; }
-    .rm-reassure strong { display: block; font-size: 14px; color: var(--neutral-900); margin-bottom: 2px; }
-    .rm-reassure span { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+      /* ─── Reasseguro ─── */
+      .rm-reassure {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        background: var(--neutral-0);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-soft);
+        padding: 22px 26px;
+      }
+      .rm-reassure .ico {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(39, 133, 86, 0.1);
+        color: var(--color-success);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .rm-reassure .ico svg {
+        width: 22px;
+        height: 22px;
+      }
+      .rm-reassure strong {
+        display: block;
+        font-size: 14px;
+        color: var(--neutral-900);
+        margin-bottom: 2px;
+      }
+      .rm-reassure span {
+        font-size: 12.5px;
+        color: var(--text-muted);
+        line-height: 1.5;
+      }
 
-    /* ─── FAQ ─── */
-    .rm-faq { display: flex; flex-direction: column; gap: 10px; max-width: 720px; }
-    .rm-faq-item { background: var(--neutral-0); border-radius: var(--radius-md); box-shadow: var(--shadow-soft); overflow: hidden; }
-    .rm-faq-q { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; cursor: pointer; font-size: 13.5px; font-weight: 700; color: var(--neutral-900); }
-    .rm-faq-q svg { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; transition: transform 0.15s ease; }
-    .rm-faq-item.is-open .rm-faq-q svg { transform: rotate(45deg); }
-    .rm-faq-a { display: none; padding: 0 20px 18px; font-size: 13px; color: var(--text-muted); line-height: 1.55; }
-    .rm-faq-item.is-open .rm-faq-a { display: block; }
+      /* ─── FAQ ─── */
+      .rm-faq {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 720px;
+      }
+      .rm-faq-item {
+        background: var(--neutral-0);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-soft);
+        overflow: hidden;
+      }
+      .rm-faq-q {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 16px 20px;
+        cursor: pointer;
+        font-size: 13.5px;
+        font-weight: 700;
+        color: var(--neutral-900);
+      }
+      .rm-faq-q svg {
+        width: 16px;
+        height: 16px;
+        color: var(--text-muted);
+        flex-shrink: 0;
+        transition: transform 0.15s ease;
+      }
+      .rm-faq-item.is-open .rm-faq-q svg {
+        transform: rotate(45deg);
+      }
+      .rm-faq-a {
+        display: none;
+        padding: 0 20px 18px;
+        font-size: 13px;
+        color: var(--text-muted);
+        line-height: 1.55;
+      }
+      .rm-faq-item.is-open .rm-faq-a {
+        display: block;
+      }
 
-    /* ─── CTA final ─── */
-    .rm-final-cta {
-      display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
-      background: var(--neutral-900); color: white; border-radius: var(--radius-xl); padding: 26px 32px;
-    }
-    .rm-final-cta .kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin: 0 0 4px; }
-    .rm-final-cta h3 { font-family: var(--font-display); font-size: 19px; font-weight: 700; margin: 0; }
-    .rm-final-cta .btn-primary { flex-shrink: 0; }
+      /* ─── CTA final ─── */
+      .rm-final-cta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+        background: var(--neutral-900);
+        color: white;
+        border-radius: var(--radius-xl);
+        padding: 26px 32px;
+      }
+      .rm-final-cta .kicker {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.6);
+        margin: 0 0 4px;
+      }
+      .rm-final-cta h3 {
+        font-family: var(--font-display);
+        font-size: 19px;
+        font-weight: 700;
+        margin: 0;
+      }
+      .rm-final-cta .btn-primary {
+        flex-shrink: 0;
+      }
 
-    /* ─── Modal: Confirmar interesse ─── */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-      display: none; align-items: center; justify-content: center;
-      z-index: 100; padding: 20px;
-    }
-    .modal-overlay.is-open { display: flex; }
-    .modal {
-      background: var(--neutral-0); border-radius: var(--radius-xl);
-      width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;
-      box-shadow: var(--shadow-deep); position: relative;
-    }
-    .modal-close {
-      position: absolute; top: 16px; right: 16px; width: 34px; height: 34px;
-      border-radius: 50%; border: 0; background: var(--neutral-150); color: var(--text-muted);
-      cursor: pointer; display: inline-flex; align-items: center; justify-content: center; z-index: 2;
-    }
-    .modal-close:hover { background: var(--neutral-250); color: var(--neutral-900); }
-    .modal-close svg { width: 16px; height: 16px; }
-    .modal-body { padding: 40px 36px; }
+      /* ─── Modal: Confirmar interesse ─── */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+        padding: 20px;
+      }
+      .modal-overlay.is-open {
+        display: flex;
+      }
+      .modal {
+        background: var(--neutral-0);
+        border-radius: var(--radius-xl);
+        width: 100%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-deep);
+        position: relative;
+      }
+      .modal-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 0;
+        background: var(--neutral-150);
+        color: var(--text-muted);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+      }
+      .modal-close:hover {
+        background: var(--neutral-250);
+        color: var(--neutral-900);
+      }
+      .modal-close svg {
+        width: 16px;
+        height: 16px;
+      }
+      .modal-body {
+        padding: 40px 36px;
+      }
 
-    /* ─── Formulário de interesse ─── */
-    .rm-form-card h2 { font-size: 20px; font-weight: 700; color: var(--neutral-900); margin: 0 0 6px; text-align: center; }
-    .rm-form-card .sub { font-size: 13px; color: var(--text-muted); margin: 0 0 24px; text-align: center; }
-    .rm-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
-    .rm-form-grid .full { grid-column: 1 / -1; }
-    @media (max-width: 700px) { .rm-form-grid { grid-template-columns: 1fr; } }
-    .rm-field-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.2px; margin-bottom: 6px; }
-    .rm-readonly { background: var(--neutral-100); color: var(--text-muted); cursor: not-allowed; }
-    .rm-form-actions { margin-top: 28px; }
+      /* ─── Formulário de interesse ─── */
+      .rm-form-card h2 {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--neutral-900);
+        margin: 0 0 6px;
+        text-align: center;
+      }
+      .rm-form-card .sub {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin: 0 0 24px;
+        text-align: center;
+      }
+      .rm-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px 18px;
+      }
+      .rm-form-grid .full {
+        grid-column: 1 / -1;
+      }
+      @media (max-width: 700px) {
+        .rm-form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .rm-field-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        letter-spacing: 0.2px;
+        margin-bottom: 6px;
+      }
+      .rm-readonly {
+        background: var(--neutral-100);
+        color: var(--text-muted);
+        cursor: not-allowed;
+      }
+      .rm-form-actions {
+        margin-top: 28px;
+      }
 
-    /* ─── Estado de sucesso ─── */
-    #successCard { display: none; text-align: center; }
-    #successCard p { font-size: 14px; color: var(--text-muted); max-width: 380px; margin: 0 auto 26px; line-height: 1.5; }
-    #successCard h2 { font-size: 20px; font-weight: 700; color: var(--neutral-900); margin: 0 0 8px; }
+      /* ─── Estado de sucesso ─── */
+      #successCard {
+        display: none;
+        text-align: center;
+      }
+      #successCard p {
+        font-size: 14px;
+        color: var(--text-muted);
+        max-width: 380px;
+        margin: 0 auto 26px;
+        line-height: 1.5;
+      }
+      #successCard h2 {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--neutral-900);
+        margin: 0 0 8px;
+      }
 
-    @media (max-width: 900px) {
-      .rm-hero { padding: 32px 24px; }
-      .rm-hero-grid { grid-template-columns: 1fr; gap: 24px; }
-      .rm-stats, .rm-benefits, .rm-quotes { grid-template-columns: 1fr; }
-      .modal-body { padding: 28px 22px; }
-      .rm-final-cta { text-align: center; justify-content: center; }
-    }
-  </style>
-</head>
-<body>
-  <div class="app-shell">
-    <aside class="sidebar">
-      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
-      <nav class="sidebar-nav">
-        <a href="inicio.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M15.625 21.8751V13.5418C15.625 13.2655 15.5153 13.0006 15.3199 12.8052C15.1246 12.6099 14.8596 12.5001 14.5833 12.5001H10.4167C10.1404 12.5001 9.87545 12.6099 9.6801 12.8052C9.48475 13.0006 9.375 13.2655 9.375 13.5418V21.8751M3.125 10.4168C3.12493 10.1137 3.19097 9.8143 3.31853 9.5394C3.44609 9.26449 3.63208 9.02073 3.86354 8.82511L11.1552 2.57615C11.5312 2.25835 12.0077 2.08398 12.5 2.08398C12.9923 2.08398 13.4688 2.25835 13.8448 2.57615L21.1365 8.82511C21.3679 9.02073 21.5539 9.26449 21.6815 9.5394C21.809 9.8143 21.8751 10.1137 21.875 10.4168V19.7918C21.875 20.3443 21.6555 20.8742 21.2648 21.2649C20.8741 21.6556 20.3442 21.8751 19.7917 21.8751H5.20833C4.6558 21.8751 4.12589 21.6556 3.73519 21.2649C3.34449 20.8742 3.125 20.3443 3.125 19.7918V10.4168Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Início</span></a>
-        <a href="rematricula.html" class="sidebar-item is-active"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.49 9A9 9 0 0 0 5.6 5.6L3 8M3 8V3M3 8H8M3.51 15A9 9 0 0 0 18.4 18.4L21 16M21 16V21M21 16H16" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Rematrícula</span></a>
-        <a href="cursos.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M7.29167 21.875H17.7083M4.16667 3.125H20.8333C21.9839 3.125 22.9167 4.05774 22.9167 5.20833V15.625C22.9167 16.7756 21.9839 17.7083 20.8333 17.7083H4.16667C3.01607 17.7083 2.08333 16.7756 2.08333 15.625V5.20833C2.08333 4.05774 3.01607 3.125 4.16667 3.125Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Cursos</span></a>
-        <a href="ao-vivo.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.723v6.554a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ao vivo</span></a>
-        <a href="links.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Links</span></a>
-        <a href="simulados.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M4.16666 20.3127V4.68766C4.16666 3.99699 4.44103 3.33461 4.92941 2.84624C5.41778 2.35786 6.08016 2.0835 6.77083 2.0835H19.7917C20.0679 2.0835 20.3329 2.19324 20.5282 2.38859C20.7236 2.58394 20.8333 2.8489 20.8333 3.12516V21.8752C20.8333 22.1514 20.7236 22.4164 20.5282 22.6117C20.3329 22.8071 20.0679 22.9168 19.7917 22.9168H6.77083C6.08016 22.9168 5.41778 22.6425 4.92941 22.1541C4.44103 21.6657 4.16666 21.0033 4.16666 20.3127ZM4.16666 20.3127C4.16666 19.622 4.44103 18.9596 4.92941 18.4712C5.41778 17.9829 6.08016 17.7085 6.77083 17.7085H20.8333M9.375 9.896L11.4583 11.9793L15.625 7.81266" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Simulados</span></a>
-        <a href="nivelamentos.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M13.957 2.08365H6.2487C5.69616 2.08365 5.16626 2.30314 4.77556 2.69385C4.38486 3.08455 4.16536 3.61445 4.16536 4.16698V20.8337C4.16536 21.3862 4.38486 21.9161 4.77556 22.3068C5.16626 22.6975 5.69616 22.917 6.2487 22.917H18.7487C19.3012 22.917 19.8311 22.6975 20.2218 22.3068C20.6125 21.9161 20.832 21.3862 20.832 20.8337V13.1253M22.2674 2.73157L13.9195 7.9524L12.5206 11.8316L16.156 11.6055L22.2674 5.86073C22.9155 5.17932 22.9155 4.29615 22.2674 2.73157Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Nivelamentos</span></a>
-        <a href="lista-questoes.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M15.625 12.5H10.4167M15.625 8.33333H10.4167M19.7917 17.7083V5.20833C19.7917 4.6558 19.5722 4.12589 19.1815 3.73519C18.7908 3.34449 18.2609 3.125 17.7083 3.125H4.16667M4.16667 3.125C4.7192 3.125 5.2491 3.34449 5.6398 3.73519C6.03051 4.12589 6.25 4.6558 6.25 5.20833V19.7917C6.25 20.3442 6.46949 20.8741 6.86019 21.2648C7.25089 21.6555 7.7808 21.875 8.33333 21.875M8.33333 21.875H20.8333C21.3859 21.875 21.9158 21.6555 22.3065 21.2648C22.6972 20.8741 22.9167 20.3442 22.9167 19.7917V18.75H10.4167V19.7917C10.4167 20.3442 10.1972 20.8741 9.80647 21.2648C9.41577 21.6555 8.88587 21.875 8.33333 21.875Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Listas</span></a>
-      </nav>
-      <div class="sidebar-foot">
-        <a href="perfil.html" class="sidebar-item"><svg width="22" height="22" viewBox="0 0 25 25" fill="none"><path d="M19.7917 21.875V19.7917C19.7917 18.6866 19.3527 17.6268 18.5713 16.8454C17.7899 16.064 16.7301 15.625 15.625 15.625H9.375C8.26993 15.625 7.21013 16.064 6.42872 16.8454C5.64732 17.6268 5.20834 18.6866 5.20834 19.7917V21.875M16.6667 7.29167C16.6667 9.59285 14.8012 11.4583 12.5 11.4583C10.1988 11.4583 8.33334 9.59285 8.33334 7.29167C8.33334 4.99048 10.1988 3.125 12.5 3.125C14.8012 3.125 16.6667 4.99048 16.6667 7.29167Z" stroke="#FCFCFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Meu Perfil</span></a>
-      </div>
-    </aside>
+      @media (max-width: 900px) {
+        .rm-hero {
+          padding: 32px 24px;
+        }
+        .rm-hero-grid {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+        .rm-stats,
+        .rm-benefits,
+        .rm-quotes {
+          grid-template-columns: 1fr;
+        }
+        .modal-body {
+          padding: 28px 22px;
+        }
+        .rm-final-cta {
+          text-align: center;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+        <nav class="sidebar-nav">
+          <a href="inicio.html" class="sidebar-item"
+            ><svg width="22" height="22" viewBox="0 0 25 25" fill="none">
+              <path
+                d="M15.625 21.8751V13.5418C15.625 13.2655 15.5153 13.0006 15.3199 12.8052C15.1246 12.6099 14.8596 12.5001 14.5833 12.5001H10.4167C10.1404 12.5001 9.87545 12.6099 9.6801 12.8052C9.48475 13.0006 9.375 13.2655 9.375 13.5418V21.8751M3.125 10.4168C3.12493 10.1137 3.19097 9.8143 3.31853 9.5394C3.44609 9.26449 3.63208 9.02073 3.86354 8.82511L11.1552 2.57615C11.5312 2.25835 12.0077 2.08398 12.5 2.08398C12.9923 2.08398 13.4688 2.25835 13.8448 2.57615L21.1365 8.82511C21.3679 9.02073 21.5539 9.26449 21.6815 9.5394C21.809 9.8143 21.8751 10.1137 21.875 10.4168V19.7918C21.875 20.3443 21.6555 20.8742 21.2648 21.2649C20.8741 21.6556 20.3442 21.8751 19.7917 21.8751H5.20833C4.6558 21.8751 4.12589 21.6556 3.73519 21.2649C3.34449 20.8742 3.125 20.3443 3.125 19.7918V10.4168Z"
+                stroke="#FCFCFC"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+            ><span>Início</span></a
+          >
+          <a href="rematricula.html" class="sidebar-item is-active"
+            ><svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M20.49 9A9 9 0 0 0 5.6 5.6L3 8M3 8V3M3 8H8M3.51 15A9 9 0 0 0 18.4 18.4L21 16M21 16V21M21 16H16"
+                stroke="#FCFCFC"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+            ><span>Rematrícula</span></a
+          >
+          <a href="cursos.html" class="sidebar-item"
+            ><svg width="22" height="22" viewBox="0 0 25 25" fill="none">
+              <path
+                d="M7.29167 21.875H17.7083M4.16667 3.125H20.8333C21.9839 3.125 22.9167 4.05774 22.9167 5.20833V15.625C22.9167 16.7756 21.9839 17.7083 20.8333 17.7083H4.16667C3.01607 17.7083 2.08333 16.7756 2.08333 15.625V5.20833C2.08333 4.05774 3.01607 3.125 4.16667 3.125Z"
+                stroke="#FCFCFC"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+            ><span>Cursos</span></a
+          >
+          <a href="ao-vivo.html" class="sidebar-item"
+            ><svg width="22" height="22" viewBox="0 0 25 25" fill="none">
+              <path
+                d="M15 10l4.553-2.276A1 1 0 0 1 21 8.723v6.554a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+                stroke="#FCFCFC"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+            ><span>Ao vivo</span></a
+          >
+          <a href="links.html" class="sidebar-item"
+            ><svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+                stroke="#FCFCFC"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+            ><span>Links</span></a
+          >
+          <a href="simulados.html" class="sidebar-item"
+            ><svg width="22" height="22" viewBox="0 0 25 25" fill="none">
+              <path
+                d="M4.16666 20.3127V4.68766C4.16666 3.99699 4.44103 3.33461 4.92941 2.84624C5.41778 2.35786 6.08016 2.0835 6.77083 2.0835H19.7917C20.0679 2.0835 20.3329 2.19324 20.5282 2.38859C20.7236 2.58394 20.8333 2.8489 20.8333 3.12516V21.8752C20.8333 22.1514 20.7236 22.4164 20.5282 22.6117C20.3329 22.8071 20.0679 22.9168 19.7917 22.9168H6.77083C6.08016 22.9168 5.41778 22.6425 4.92941 22.1541C4.44103 21.6657 4.16666 21.0033 4.16666 20.3127ZM4.16666 20.3127C4.16666 19.622 4.44103 18.9596 4.92941 18.4712C5.41778 17.9829 6.08016 17.7085 6.77083 17.7085H20.8333M9.375 9.896L11.4583 11.9793L15.625 7.81266"
+                stroke="#FCFCFC"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+            ><span>Simulados</span></a
+          >
+          <a href="nivelamentos.html" class="sidebar-item"
+            ><svg width="22" height="22" viewBox="0 0 25 25" fill="none">
+              <path
+                d="M13.957 2.08365H6.2487C5.69616 2.08365 5.16626 2.30314 4.77556 2.69385C4.38486 3.08455 4.16536 3.61445 4.16536 4.16698V20.8337C4.16536 21.3862 4.38486 21.9161 4.77556 22.3068C5.16626 22.6975 5.69616 22.917 6.2487 22.917H18.7487C19.3012 22.917 19.8311 22.6975 20.2218 22.3068C20.6125 21.9161 20.832 21.3862 20.832 20.8337V13.1253M22.2674 2.73157L13.9195 7.9524L12.5206 11.8316L16.156 11.6055L22.2674 5.86073C22.9155 5.17932 22.9155 4.29615 22.2674 2.73157Z"
+                stroke="#FCFCFC"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+            ><span>Nivelamentos</span></a
+          >
+          <a href="lista-questoes.html" class="sidebar-item"
+            ><svg width="22" height="22" viewBox="0 0 25 25" fill="none">
+              <path
+                d="M15.625 12.5H10.4167M15.625 8.33333H10.4167M19.7917 17.7083V5.20833C19.7917 4.6558 19.5722 4.12589 19.1815 3.73519C18.7908 3.34449 18.2609 3.125 17.7083 3.125H4.16667M4.16667 3.125C4.7192 3.125 5.2491 3.34449 5.6398 3.73519C6.03051 4.12589 6.25 4.6558 6.25 5.20833V19.7917C6.25 20.3442 6.46949 20.8741 6.86019 21.2648C7.25089 21.6555 7.7808 21.875 8.33333 21.875M8.33333 21.875H20.8333C21.3859 21.875 21.9158 21.6555 22.3065 21.2648C22.6972 20.8741 22.9167 20.3442 22.9167 19.7917V18.75H10.4167V19.7917C10.4167 20.3442 10.1972 20.8741 9.80647 21.2648C9.41577 21.6555 8.88587 21.875 8.33333 21.875Z"
+                stroke="#FCFCFC"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+            ><span>Listas</span></a
+          >
+        </nav>
+        <div class="sidebar-foot">
+          <a href="perfil.html" class="sidebar-item"
+            ><svg width="22" height="22" viewBox="0 0 25 25" fill="none">
+              <path
+                d="M19.7917 21.875V19.7917C19.7917 18.6866 19.3527 17.6268 18.5713 16.8454C17.7899 16.064 16.7301 15.625 15.625 15.625H9.375C8.26993 15.625 7.21013 16.064 6.42872 16.8454C5.64732 17.6268 5.20834 18.6866 5.20834 19.7917V21.875M16.6667 7.29167C16.6667 9.59285 14.8012 11.4583 12.5 11.4583C10.1988 11.4583 8.33334 9.59285 8.33334 7.29167C8.33334 4.99048 10.1988 3.125 12.5 3.125C14.8012 3.125 16.6667 4.99048 16.6667 7.29167Z"
+                stroke="#FCFCFC"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+            ><span>Meu Perfil</span></a
+          >
+        </div>
+      </aside>
 
-    <main class="content">
-      <!-- Hero -->
-      <section class="rm-section">
-        <div class="rm-hero">
-          <div class="rm-hero-grid">
-            <div>
-              <div class="kicker">Rematrícula · Turma 2027</div>
-              <h1>Garanta sua vaga na turma 2027</h1>
-              <p>Você faz parte do pré-PISM que aprovou mais de 514 alunos em 2025 — 20% de todo o PISM do ano passado. Continue com a gente.</p>
-              <div class="rm-badges">
-                <span class="rm-badge">Atendimento direto</span>
-                <span class="rm-badge">Desconto de renovante</span>
-                <span class="rm-badge">Vagas limitadas</span>
+      <main class="content">
+        <!-- Hero -->
+        <section class="rm-section">
+          <div class="rm-hero">
+            <div class="rm-hero-grid">
+              <div>
+                <div class="kicker">Rematrícula · Turma 2027</div>
+                <h1>Garanta sua vaga na turma 2027</h1>
+                <p>
+                  Você faz parte do pré-PISM que aprovou mais de 514 alunos em
+                  2025 — 20% de todo o PISM do ano passado. Continue com a
+                  gente.
+                </p>
+                <div class="rm-badges">
+                  <span class="rm-badge">Atendimento direto</span>
+                  <span class="rm-badge">Desconto de renovante</span>
+                  <span class="rm-badge">Vagas limitadas</span>
+                </div>
+                <div class="rm-hero-actions">
+                  <button class="btn-primary" data-open-modal>
+                    Garantir minha vaga →
+                  </button>
+                  <a href="#beneficios" class="rm-link-ghost"
+                    >Ver o que continua valendo pra você</a
+                  >
+                </div>
               </div>
-              <div class="rm-hero-actions">
-                <button class="btn-primary" data-open-modal>Garantir minha vaga →</button>
-                <a href="#beneficios" class="rm-link-ghost">Ver o que continua valendo pra você</a>
+              <div>
+                <div class="rm-hero-video">
+                  <div class="rm-hero-play">
+                    <div class="circle">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="rm-hero-video-duration">1:42</div>
+                </div>
+                <div class="rm-hero-video-caption">
+                  Assista: o que muda (e o que não muda) na sua rematrícula
+                </div>
               </div>
             </div>
-            <div>
-              <div class="rm-hero-video">
-                <div class="rm-hero-play"><div class="circle"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
-                <div class="rm-hero-video-duration">1:42</div>
+          </div>
+
+          <div class="rm-stats">
+            <div class="rm-stat">
+              <div class="num">+514</div>
+              <div class="lbl">aprovados em 2025</div>
+            </div>
+            <div class="rm-stat">
+              <div class="num">20%</div>
+              <div class="lbl">de todo o PISM</div>
+            </div>
+            <div class="rm-stat">
+              <div class="num">+85%</div>
+              <div class="lbl">de acerto nas projeções</div>
+            </div>
+            <div class="rm-stat">
+              <div class="num">68</div>
+              <div class="lbl">aprovações em Medicina</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Benefícios -->
+        <section class="rm-section" id="beneficios">
+          <div class="rm-section-head">
+            <div class="kicker">Continuando com a gente</div>
+            <h2>O que segue valendo pra você</h2>
+            <p>
+              Nada muda no que já funciona — seu histórico, sua turma e seu
+              acompanhamento seguem no mesmo lugar.
+            </p>
+          </div>
+          <div class="rm-benefits">
+            <div class="rm-benefit">
+              <div class="ico">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="3" y="4" width="18" height="14" rx="2" />
+                  <path d="M8 21h8M12 17v4" />
+                </svg>
               </div>
-              <div class="rm-hero-video-caption">Assista: o que muda (e o que não muda) na sua rematrícula</div>
+              <h3>Aulas ao vivo gravadas</h3>
+              <p>Estuda no seu ritmo, sem perder nada do que já rolou.</p>
+            </div>
+            <div class="rm-benefit">
+              <div class="ico">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 21c0-4 4-7 8-7s8 3 8 7" />
+                </svg>
+              </div>
+              <h3>Mentoria individual</h3>
+              <p>Seu acompanhamento pessoal continua com o mesmo time.</p>
+            </div>
+            <div class="rm-benefit">
+              <div class="ico">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                  />
+                </svg>
+              </div>
+              <h3>Tira-dúvidas no WhatsApp</h3>
+              <p>Direto com o professor, sem passar por fila de atendimento.</p>
+            </div>
+            <div class="rm-benefit">
+              <div class="ico">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                  <path
+                    d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+                  />
+                </svg>
+              </div>
+              <h3>Plataforma Magoflix</h3>
+              <p>Seu histórico e progresso continuam no mesmo lugar.</p>
+            </div>
+            <div class="rm-benefit">
+              <div class="ico">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="12" cy="12" r="0.6" fill="currentColor" />
+                </svg>
+              </div>
+              <h3>Projeção de questões</h3>
+              <p>
+                Antecipa o que mais cai na prova, com base no histórico do PISM.
+              </p>
+            </div>
+            <div class="rm-benefit">
+              <div class="ico">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="8" y1="6" x2="21" y2="6" />
+                  <line x1="8" y1="12" x2="21" y2="12" />
+                  <line x1="8" y1="18" x2="21" y2="18" />
+                  <line x1="3" y1="6" x2="3.01" y2="6" />
+                  <line x1="3" y1="12" x2="3.01" y2="12" />
+                  <line x1="3" y1="18" x2="3.01" y2="18" />
+                </svg>
+              </div>
+              <h3>Listas por relevância estatística</h3>
+              <p>
+                Foco nas questões que mais aparecem, não em tudo de uma vez.
+              </p>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div class="rm-stats">
-          <div class="rm-stat"><div class="num">+514</div><div class="lbl">aprovados em 2025</div></div>
-          <div class="rm-stat"><div class="num">20%</div><div class="lbl">de todo o PISM</div></div>
-          <div class="rm-stat"><div class="num">+85%</div><div class="lbl">de acerto nas projeções</div></div>
-          <div class="rm-stat"><div class="num">68</div><div class="lbl">aprovações em Medicina</div></div>
-        </div>
-      </section>
+        <!-- Depoimentos -->
+        <section class="rm-section">
+          <div class="rm-section-head">
+            <div class="kicker">Quem já renovou</div>
+            <h2>O que os alunos dizem sobre continuar</h2>
+          </div>
+          <div class="rm-quotes">
+            <div class="rm-quote">
+              <p>
+                "Renovei sem pensar duas vezes. O que faz diferença é o
+                acompanhamento — e isso não muda de um ano pro outro."
+              </p>
+              <div class="who">
+                <div class="avatar">AS</div>
+                <div>
+                  <div class="name">Arthur S.</div>
+                  <div class="meta">PISM 2 · Intensivo</div>
+                </div>
+              </div>
+            </div>
+            <div class="rm-quote">
+              <p>
+                "Fiquei com a mesma mentoria e os mesmos professores. Só ficou
+                melhor com o tempo."
+              </p>
+              <div class="who">
+                <div class="avatar">SB</div>
+                <div>
+                  <div class="name">Sofia B.</div>
+                  <div class="meta">PISM 3 · Intensivo</div>
+                </div>
+              </div>
+            </div>
+            <div class="rm-quote">
+              <p>
+                "O desconto de renovante ajudou bastante a fechar a conta pra
+                continuar em 2027."
+              </p>
+              <div class="who">
+                <div class="avatar">RN</div>
+                <div>
+                  <div class="name">Rafael N.</div>
+                  <div class="meta">ENEM · Extensivo</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-      <!-- Benefícios -->
-      <section class="rm-section" id="beneficios">
-        <div class="rm-section-head">
-          <div class="kicker">Continuando com a gente</div>
-          <h2>O que segue valendo pra você</h2>
-          <p>Nada muda no que já funciona — seu histórico, sua turma e seu acompanhamento seguem no mesmo lugar.</p>
-        </div>
-        <div class="rm-benefits">
-          <div class="rm-benefit">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
-            <h3>Aulas ao vivo gravadas</h3>
-            <p>Estuda no seu ritmo, sem perder nada do que já rolou.</p>
-          </div>
-          <div class="rm-benefit">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg></div>
-            <h3>Mentoria individual</h3>
-            <p>Seu acompanhamento pessoal continua com o mesmo time.</p>
-          </div>
-          <div class="rm-benefit">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-            <h3>Tira-dúvidas no WhatsApp</h3>
-            <p>Direto com o professor, sem passar por fila de atendimento.</p>
-          </div>
-          <div class="rm-benefit">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-            <h3>Plataforma Magoflix</h3>
-            <p>Seu histórico e progresso continuam no mesmo lugar.</p>
-          </div>
-          <div class="rm-benefit">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.6" fill="currentColor"/></svg></div>
-            <h3>Projeção de questões</h3>
-            <p>Antecipa o que mais cai na prova, com base no histórico do PISM.</p>
-          </div>
-          <div class="rm-benefit">
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div>
-            <h3>Listas por relevância estatística</h3>
-            <p>Foco nas questões que mais aparecem, não em tudo de uma vez.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Depoimentos -->
-      <section class="rm-section">
-        <div class="rm-section-head">
-          <div class="kicker">Quem já renovou</div>
-          <h2>O que os alunos dizem sobre continuar</h2>
-        </div>
-        <div class="rm-quotes">
-          <div class="rm-quote">
-            <p>"Renovei sem pensar duas vezes. O que faz diferença é o acompanhamento — e isso não muda de um ano pro outro."</p>
-            <div class="who"><div class="avatar">AS</div><div><div class="name">Arthur S.</div><div class="meta">PISM 2 · Intensivo</div></div></div>
-          </div>
-          <div class="rm-quote">
-            <p>"Fiquei com a mesma mentoria e os mesmos professores. Só ficou melhor com o tempo."</p>
-            <div class="who"><div class="avatar">SB</div><div><div class="name">Sofia B.</div><div class="meta">PISM 3 · Intensivo</div></div></div>
-          </div>
-          <div class="rm-quote">
-            <p>"O desconto de renovante ajudou bastante a fechar a conta pra continuar em 2027."</p>
-            <div class="who"><div class="avatar">RN</div><div><div class="name">Rafael N.</div><div class="meta">ENEM · Extensivo</div></div></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Reasseguro -->
-      <section class="rm-section">
-        <div class="rm-reassure">
-          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div>
-            <strong>Confirmar aqui não te compromete com nada agora</strong>
-            <span>A secretaria entra em contato pelo WhatsApp ou e-mail pra fechar os detalhes da sua rematrícula. Sem cobrança automática.</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- FAQ -->
-      <section class="rm-section">
-        <div class="rm-section-head">
-          <div class="kicker">Dúvidas comuns</div>
-          <h2>Perguntas sobre a rematrícula</h2>
-        </div>
-        <div class="rm-faq" id="faqList">
-          <div class="rm-faq-item is-open">
-            <div class="rm-faq-q">Confirmar aqui já me deixa matriculado?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-            <div class="rm-faq-a">Não. Isso registra seu interesse. A secretaria confirma os detalhes com você e só depois seguimos pro contrato e pagamento.</div>
-          </div>
-          <div class="rm-faq-item">
-            <div class="rm-faq-q">Posso mudar de turma na rematrícula?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-            <div class="rm-faq-a">Sim, de intensivo pra extensivo ou o contrário. É só marcar isso na conversa com a secretaria depois que você confirmar o interesse aqui.</div>
-          </div>
-          <div class="rm-faq-item">
-            <div class="rm-faq-q">Até quando posso confirmar?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-            <div class="rm-faq-a">O quanto antes, melhor: as vagas de 2027 são limitadas e o desconto de renovante vale só até o fim do período de rematrícula.</div>
-          </div>
-          <div class="rm-faq-item">
-            <div class="rm-faq-q">O desconto de renovante vale pra qualquer forma de pagamento?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-            <div class="rm-faq-a">Vale pra boleto, cartão e Pix. A secretaria passa o valor exato depois que você confirma o interesse.</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- CTA final -->
-      <section class="rm-section">
-        <div class="rm-final-cta">
-          <div>
-            <div class="kicker">Intensivo 2027 · Vagas limitadas</div>
-            <h3>Garanta sua vaga antes que o desconto de renovante acabe.</h3>
-          </div>
-          <button class="btn-primary" data-open-modal>Garantir minha vaga →</button>
-        </div>
-      </section>
-
-    </main>
-  </div>
-
-  <!-- Modal: Confirmar interesse -->
-  <div class="modal-overlay" id="formModal">
-    <div class="modal">
-      <button class="modal-close" id="modalClose" aria-label="Fechar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-      <div class="modal-body">
-        <div class="rm-form-card" id="formCard">
-          <h2>Confirme seus dados</h2>
-          <p class="sub">Já preenchemos com os dados do seu cadastro — pode editar antes de confirmar.</p>
-          <div class="rm-form-grid">
-            <div class="full">
-              <label class="rm-field-label">Nome completo</label>
-              <input class="input rm-readonly" id="rmNome" value="Arthur dos Santos Alves" readonly />
+        <!-- Reasseguro -->
+        <section class="rm-section">
+          <div class="rm-reassure">
+            <div class="ico">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
             </div>
             <div>
-              <label class="rm-field-label">E-mail</label>
-              <input class="input" id="rmEmail" type="email" value="arthur.salves@gmail.com" />
-            </div>
-            <div>
-              <label class="rm-field-label">Telefone (WhatsApp)</label>
-              <input class="input" id="rmTelefone" value="(31) 99234-1098" />
-            </div>
-            <div class="full">
-              <label class="rm-field-label">Turma atual</label>
-              <input class="input rm-readonly" value="PISM 2 · Intensivo 2026" readonly />
+              <strong>Confirmar aqui não te compromete com nada agora</strong>
+              <span
+                >A secretaria entra em contato pelo WhatsApp ou e-mail pra
+                fechar os detalhes da sua rematrícula. Sem cobrança
+                automática.</span
+              >
             </div>
           </div>
-          <div class="rm-form-actions">
-            <button class="btn-primary" id="btnSubmitForm" style="width:100%;">Confirmar interesse</button>
-          </div>
-        </div>
+        </section>
 
-        <div class="rm-form-card" id="successCard">
-          <div style="width:64px;height:64px;border-radius:50%;background:var(--color-success);color:white;display:inline-flex;align-items:center;justify-content:center;margin:0 auto 20px;">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <!-- FAQ -->
+        <section class="rm-section">
+          <div class="rm-section-head">
+            <div class="kicker">Dúvidas comuns</div>
+            <h2>Perguntas sobre a rematrícula</h2>
           </div>
-          <h2>Recebemos seu interesse</h2>
-          <p>A secretaria vai te contatar em breve pelo e-mail ou WhatsApp informado pra seguir com a rematrícula.</p>
-          <button class="btn-primary" id="btnCloseSuccess">Fechar</button>
+          <div class="rm-faq" id="faqList">
+            <div class="rm-faq-item is-open">
+              <div class="rm-faq-q">
+                Confirmar aqui já me deixa matriculado?<svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </div>
+              <div class="rm-faq-a">
+                Não. Isso registra seu interesse. A secretaria confirma os
+                detalhes com você e só depois seguimos pro contrato e pagamento.
+              </div>
+            </div>
+            <div class="rm-faq-item">
+              <div class="rm-faq-q">
+                Posso mudar de turma na rematrícula?<svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </div>
+              <div class="rm-faq-a">
+                Sim, de intensivo pra extensivo ou o contrário. É só marcar isso
+                na conversa com a secretaria depois que você confirmar o
+                interesse aqui.
+              </div>
+            </div>
+            <div class="rm-faq-item">
+              <div class="rm-faq-q">
+                Até quando posso confirmar?<svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </div>
+              <div class="rm-faq-a">
+                O quanto antes, melhor: as vagas de 2027 são limitadas e o
+                desconto de renovante vale só até o fim do período de
+                rematrícula.
+              </div>
+            </div>
+            <div class="rm-faq-item">
+              <div class="rm-faq-q">
+                O desconto de renovante vale pra qualquer forma de
+                pagamento?<svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </div>
+              <div class="rm-faq-a">
+                Vale pra boleto, cartão e Pix. A secretaria passa o valor exato
+                depois que você confirma o interesse.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA final -->
+        <section class="rm-section">
+          <div class="rm-final-cta">
+            <div>
+              <div class="kicker">Intensivo 2027 · Vagas limitadas</div>
+              <h3>Garanta sua vaga antes que o desconto de renovante acabe.</h3>
+            </div>
+            <button class="btn-primary" data-open-modal>
+              Garantir minha vaga →
+            </button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Modal: Confirmar interesse -->
+    <div class="modal-overlay" id="formModal">
+      <div class="modal">
+        <button class="modal-close" id="modalClose" aria-label="Fechar">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+        <div class="modal-body">
+          <div class="rm-form-card" id="formCard">
+            <h2>Confirme seus dados</h2>
+            <p class="sub">
+              Já preenchemos com os dados do seu cadastro — pode editar antes de
+              confirmar.
+            </p>
+            <div class="rm-form-grid">
+              <div class="full">
+                <label class="rm-field-label">Nome completo</label>
+                <input
+                  class="input rm-readonly"
+                  id="rmNome"
+                  value="Arthur dos Santos Alves"
+                  readonly
+                />
+              </div>
+              <div>
+                <label class="rm-field-label">E-mail</label>
+                <input
+                  class="input"
+                  id="rmEmail"
+                  type="email"
+                  value="arthur.salves@gmail.com"
+                />
+              </div>
+              <div>
+                <label class="rm-field-label">Telefone (WhatsApp)</label>
+                <input class="input" id="rmTelefone" value="(31) 99234-1098" />
+              </div>
+              <div class="full">
+                <label class="rm-field-label">Turma atual</label>
+                <input
+                  class="input rm-readonly"
+                  value="PISM 2 · Intensivo 2026"
+                  readonly
+                />
+              </div>
+            </div>
+            <div class="rm-form-actions">
+              <button
+                class="btn-primary"
+                id="btnSubmitForm"
+                style="width: 100%"
+              >
+                Confirmar interesse
+              </button>
+            </div>
+          </div>
+
+          <div class="rm-form-card" id="successCard">
+            <div
+              style="
+                width: 64px;
+                height: 64px;
+                border-radius: 50%;
+                background: var(--color-success);
+                color: white;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 20px;
+              "
+            >
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <h2>Recebemos seu interesse</h2>
+            <p>
+              A secretaria vai te contatar em breve pelo e-mail ou WhatsApp
+              informado pra seguir com a rematrícula.
+            </p>
+            <button class="btn-primary" id="btnCloseSuccess">Fechar</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <script>
-    (function () {
-      var overlay = document.getElementById('formModal');
-      var formCard = document.getElementById('formCard');
-      var successCard = document.getElementById('successCard');
+    <script>
+      (function () {
+        var overlay = document.getElementById("formModal");
+        var formCard = document.getElementById("formCard");
+        var successCard = document.getElementById("successCard");
 
-      function openModal() {
-        formCard.style.display = 'block';
-        successCard.style.display = 'none';
-        overlay.classList.add('is-open');
-      }
-      function closeModal() {
-        overlay.classList.remove('is-open');
-      }
+        function openModal() {
+          formCard.style.display = "block";
+          successCard.style.display = "none";
+          overlay.classList.add("is-open");
+        }
+        function closeModal() {
+          overlay.classList.remove("is-open");
+        }
 
-      document.querySelectorAll('[data-open-modal]').forEach(function (btn) {
-        btn.addEventListener('click', openModal);
-      });
-      document.getElementById('modalClose').addEventListener('click', closeModal);
-      document.getElementById('btnCloseSuccess').addEventListener('click', closeModal);
-      overlay.addEventListener('click', function (e) {
-        if (e.target === overlay) closeModal();
-      });
-
-      document.querySelectorAll('.rm-faq-q').forEach(function (q) {
-        q.addEventListener('click', function () {
-          q.parentElement.classList.toggle('is-open');
+        document.querySelectorAll("[data-open-modal]").forEach(function (btn) {
+          btn.addEventListener("click", openModal);
         });
-      });
+        document
+          .getElementById("modalClose")
+          .addEventListener("click", closeModal);
+        document
+          .getElementById("btnCloseSuccess")
+          .addEventListener("click", closeModal);
+        overlay.addEventListener("click", function (e) {
+          if (e.target === overlay) closeModal();
+        });
 
-      var telefone = document.getElementById('rmTelefone');
-      telefone.addEventListener('input', function () {
-        var v = telefone.value.replace(/\D/g, '').slice(0, 11);
-        v = v.replace(/(\d{2})(\d)/, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2');
-        telefone.value = v;
-      });
+        document.querySelectorAll(".rm-faq-q").forEach(function (q) {
+          q.addEventListener("click", function () {
+            q.parentElement.classList.toggle("is-open");
+          });
+        });
 
-      document.getElementById('btnSubmitForm').addEventListener('click', function () {
-        formCard.style.display = 'none';
-        successCard.style.display = 'block';
-      });
-    })();
-  </script>
-</body>
+        var telefone = document.getElementById("rmTelefone");
+        telefone.addEventListener("input", function () {
+          var v = telefone.value.replace(/\D/g, "").slice(0, 11);
+          v = v
+            .replace(/(\d{2})(\d)/, "($1) $2")
+            .replace(/(\d{5})(\d)/, "$1-$2");
+          telefone.value = v;
+        });
+
+        document
+          .getElementById("btnSubmitForm")
+          .addEventListener("click", function () {
+            formCard.style.display = "none";
+            successCard.style.display = "block";
+          });
+      })();
+    </script>
+  </body>
 </html>
