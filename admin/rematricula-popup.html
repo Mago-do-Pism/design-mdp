@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pop-up de Rematrícula · Admin · Mago do Pism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+
+    .cfg-grid { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; max-width: 1100px; }
+    @media (max-width: 1000px) { .cfg-grid { grid-template-columns: 1fr; } }
+
+    .cfg-field { margin-bottom: 20px; }
+    .cfg-field:last-child { margin-bottom: 0; }
+
+    .img-drop {
+      border: 2px dashed var(--border-strong); border-radius: var(--radius-lg);
+      aspect-ratio: 16/10; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; color: var(--text-muted); font-size: 13px; cursor: pointer; position: relative;
+      background-size: cover; background-position: center; overflow: hidden;
+      background-image: linear-gradient(135deg, #1686D8, #0E93F2);
+    }
+    .img-drop svg { width: 28px; height: 28px; }
+    .img-drop input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .img-drop span { background: rgba(0,0,0,0.45); color: white; padding: 4px 10px; border-radius: 999px; }
+
+    .cfg-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-top: 1px solid var(--border-default); margin-top: 8px; }
+    .cfg-toggle-row strong { display: block; font-size: 13px; color: var(--neutral-900); }
+    .cfg-toggle-row span { font-size: 12px; color: var(--text-muted); }
+    .switch-toggle { width: 40px; height: 22px; border-radius: 999px; background: var(--neutral-300); position: relative; cursor: pointer; flex-shrink: 0; transition: background 0.15s ease; }
+    .switch-toggle::after { content: ""; position: absolute; left: 2px; top: 2px; width: 18px; height: 18px; border-radius: 50%; background: white; transition: transform 0.15s ease; }
+    .switch-toggle.is-on { background: var(--color-success); }
+    .switch-toggle.is-on::after { transform: translateX(18px); }
+
+    /* Preview do pop-up (mesma anatomia de alunos/rematricula-popup.html) */
+    .preview-frame {
+      background: var(--neutral-200); border-radius: var(--radius-lg); padding: 24px 16px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .preview-modal { background: white; border-radius: var(--radius-lg); width: 100%; max-width: 280px; overflow: hidden; box-shadow: var(--shadow-deep); }
+    .preview-img { width: 100%; aspect-ratio: 16/10; object-fit: cover; background-size: cover; background-position: center; background-image: linear-gradient(135deg, #1686D8, #0E93F2); }
+    .preview-body { padding: 16px 16px 18px; text-align: center; }
+    .preview-body h4 { font-size: 14px; font-weight: 700; color: var(--neutral-900); margin: 0 0 6px; }
+    .preview-body p { font-size: 11px; color: var(--text-muted); margin: 0 0 14px; line-height: 1.4; }
+    .preview-btn { display: block; width: 100%; padding: 9px; background: var(--brand-blue); color: white; border-radius: 8px; font-size: 12px; font-weight: 700; text-align: center; }
+
+    .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(70px); background:var(--neutral-900); color:white; padding:12px 20px; border-radius:9px; font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:9px; box-shadow:0 8px 28px rgba(0,0,0,0.2); opacity:0; transition:transform .22s ease, opacity .22s ease; pointer-events:none; z-index:999; }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+    .toast svg { width:15px; height:15px; color:#5fd49a; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+      <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos</span></a>
+        <a href="alunos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
+        <a href="modulos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
+        <a href="gravacoes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M7 21h10"/><path d="M9 17v4"/><path d="M15 17v4"/><polygon points="10 8 15 11 10 14 10 8" fill="currentColor" stroke="none"/></svg><span>Gravações</span></a>
+        <a href="equipe.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Equipe</span></a>
+        <a href="avisos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Avisos</span></a>
+        <a href="rematricula-popup.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.49 9A9 9 0 0 0 5.6 5.6L3 8M3 8V3M3 8H8M3.51 15A9 9 0 0 0 18.4 18.4L21 16M21 16V21M21 16H16"/></svg><span>Rematrícula</span></a>
+        <a href="simulados.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg><span>Simulados</span></a>
+        <a href="nivelamentos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Nivelamentos</span></a>
+        <a href="listas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Listas</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <main class="content admin-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <h2 class="section-title" style="margin:0;">Pop-up de Rematrícula</h2>
+      </div>
+      <p style="font-size:13px; color:var(--text-muted); margin:0 0 28px; max-width:640px;">Configure a imagem, o texto e o link do botão que aparecem no pop-up exibido pra alunos ao entrar na plataforma. Ele reaparece a cada 2 semanas pra quem ainda não clicou no botão.</p>
+
+      <div class="cfg-grid">
+        <div class="card">
+          <div class="cfg-field">
+            <label class="field-label">Imagem do banner</label>
+            <label class="img-drop" id="dropZone">
+              <input type="file" id="imgInput" accept="image/*" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              <span>Arraste uma imagem ou clique para enviar</span>
+            </label>
+          </div>
+
+          <div class="cfg-field">
+            <label class="field-label">Título do pop-up</label>
+            <input class="input" id="popupTitle" value="Já pensou na sua rematrícula 2027? ✨" />
+          </div>
+
+          <div class="cfg-field">
+            <label class="field-label">Texto do pop-up</label>
+            <textarea class="input" id="popupBody" style="height:auto; min-height:70px; padding-top:10px; resize:vertical;">Garanta sua vaga e mantenha o desconto de aluno renovante. Leva só 1 minuto pra confirmar seu interesse.</textarea>
+          </div>
+
+          <div class="cfg-field">
+            <label class="field-label">Texto do botão (CTA)</label>
+            <input class="input" id="ctaText" value="Quero me rematricular →" />
+          </div>
+
+          <div class="cfg-field">
+            <label class="field-label">Link do botão</label>
+            <input class="input" id="ctaLink" value="/rematricula" />
+          </div>
+
+          <div class="cfg-toggle-row">
+            <div>
+              <strong>Pop-up ativo</strong>
+              <span>Quando desativado, o pop-up para de aparecer pra todo mundo.</span>
+            </div>
+            <div class="switch-toggle is-on" id="activeToggle"></div>
+          </div>
+
+          <button class="btn-primary" id="saveBtn" style="width:100%; margin-top:24px;">Salvar alterações</button>
+        </div>
+
+        <div class="card">
+          <label class="field-label" style="margin-bottom:14px; display:block;">Pré-visualização</label>
+          <div class="preview-frame">
+            <div class="preview-modal">
+              <div class="preview-img" id="previewImg"></div>
+              <div class="preview-body">
+                <h4 id="previewTitle">Já pensou na sua rematrícula 2027? ✨</h4>
+                <p id="previewText">Garanta sua vaga e mantenha o desconto de aluno renovante. Leva só 1 minuto pra confirmar seu interesse.</p>
+                <a href="#" class="preview-btn" id="previewBtn">Quero me rematricular →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Alterações salvas com sucesso.</div>
+
+  <script>
+    (function () {
+      document.getElementById('imgInput').addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function (ev) {
+          var url = 'url(' + ev.target.result + ')';
+          document.getElementById('dropZone').style.backgroundImage = url;
+          document.getElementById('previewImg').style.backgroundImage = url;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      document.getElementById('popupTitle').addEventListener('input', function (e) {
+        document.getElementById('previewTitle').textContent = e.target.value;
+      });
+      document.getElementById('popupBody').addEventListener('input', function (e) {
+        document.getElementById('previewText').textContent = e.target.value;
+      });
+
+      document.getElementById('ctaText').addEventListener('input', function (e) {
+        document.getElementById('previewBtn').textContent = e.target.value || 'Quero me rematricular →';
+      });
+      document.getElementById('ctaLink').addEventListener('input', function (e) {
+        document.getElementById('previewBtn').setAttribute('href', e.target.value);
+      });
+
+      document.getElementById('activeToggle').addEventListener('click', function () {
+        this.classList.toggle('is-on');
+      });
+
+      document.getElementById('saveBtn').addEventListener('click', function () {
+        var toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(function () { toast.classList.remove('show'); }, 2600);
+      });
+    })();
+  </script>
+</body>
+</html>
