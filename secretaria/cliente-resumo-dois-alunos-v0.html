@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Resumo (dois alunos) · Cliente · Secretaria · Mago do Pism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
+<style>
+  /* ── Modal (padrão de secretaria/clientes-export-v0.html) ── */
+  .modal-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:200; align-items:center; justify-content:center; }
+  .modal-backdrop.open { display:flex; }
+  .modal { background:white; border-radius:14px; padding:26px 32px 26px; width:460px; max-width:95vw; box-shadow:0 24px 60px rgba(0,0,0,0.2); position:relative; }
+  .modal.modal-lg { width:720px; }
+  .modal-close { position:absolute; top:14px; right:14px; background:none; border:0; cursor:pointer; color:var(--text-muted); padding:4px; line-height:0; border-radius:4px; }
+  .modal-close:hover { background:var(--neutral-100); color:var(--neutral-900); }
+  .modal-close svg { width:18px; height:18px; }
+  .modal h3 { font-size:17px; font-weight:700; color:var(--brand-blue); margin:0; }
+  .modal .sec-tabs { margin:16px 0 0; }
+  /* ── Toast ── */
+  .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(70px); background:var(--neutral-900); color:white; padding:12px 20px; border-radius:9px; font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:9px; box-shadow:0 8px 28px rgba(0,0,0,0.2); opacity:0; transition:transform .22s ease, opacity .22s ease; pointer-events:none; z-index:999; }
+  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+  .toast svg { width:15px; height:15px; color:#5fd49a; }
+  /* ── Resumo tab ── */
+  .student-name-link { display:inline; background:none; border:0; padding:0; margin:0; font:inherit; font-size:16px; font-weight:700; color:var(--neutral-900); cursor:pointer; text-decoration:underline; }
+  .student-name-link:hover { color:var(--brand-blue); }
+  .resumo-status-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:18px; padding-top:18px; border-top:1px solid var(--border-default); }
+  .resumo-status-grid .lbl { display:block; font-size:10.5px; font-weight:600; text-transform:uppercase; letter-spacing:.3px; color:var(--text-muted); margin-bottom:6px; }
+</style>
+</head><body><div class="app-shell"><aside class="sidebar">
+    <div class="sidebar-logo" role="img" aria-label="Mago do Pism" style="background:url('../assets/logo-azul.png') center/contain no-repeat; filter:brightness(0) invert(1);"></div>
+    <nav class="sidebar-nav">
+      <a href="painel.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Painel</span></a><a href="clientes.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2.3 1.5-4 3.7-4 1.6 0 2.8.9 3.3 2.2"/></svg><span>Clientes</span></a><a href="formularios.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></svg><span>Formulários</span></a><a href="faturas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg><span>Contas a Receber</span></a><a href="inadimplentes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.8" fill="currentColor"/></svg><span>Inadimplência</span></a><a href="cobranca.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg><span>Régua de Cobrança</span></a>
+    </nav>
+  </aside><main class="main"><div class="sec-page">
+<nav class="sec-breadcrumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><a href="painel.html">Principal</a><span class="sep">/</span><a href="painel.html">Clientes</a><span class="sep">/</span><span>Fernanda Cardoso</span></nav>
+<div class="sec-page-head">
+  <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>Fernanda Cardoso <span class="pill dot success" style="margin-left:12px; vertical-align:middle;">Ativo</span></h1>
+  <div class="sec-actions">
+    <button class="sec-btn outline">Enviar cobrança</button>
+    <button class="sec-btn dark" style="background:var(--color-danger);">Cancelar cliente</button>
+  </div>
+</div>
+
+<div class="sec-detail-grid" style="grid-template-columns:1fr;">
+  <div>
+    <div class="sec-tabs">
+      <button class="sec-tab is-active" data-tab="resumo">Resumo</button>
+      <button class="sec-tab" data-tab="dados">Dados</button>
+      <button class="sec-tab" data-tab="faturas">Faturas</button>
+      <button class="sec-tab" data-tab="aluno">Aluno vinculado</button>
+      <button class="sec-tab" data-tab="historico">Histórico de cobranças</button>
+      <button class="sec-tab" data-tab="documentos">Documentos</button>
+      <button class="sec-tab" data-tab="auditoria">Auditoria</button>
+    </div>
+
+    <!-- TAB: Resumo (novo) — variação com dois alunos vinculados -->
+    <section class="sec-tab-panel is-active" data-panel="resumo">
+      <section class="sec-card">
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div class="sec-profile-avatar">JV</div>
+          <div>
+            <button type="button" class="student-name-link" onclick="openStudentModal('João Vitor Cardoso','joao.vitor@email.com','(61) 99123-1111','234.567.890-11','Ativo')">João Vitor Cardoso</button>
+            <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Aluno · CPF 234.567.890-11</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;"><span class="pill info">Intensivo · Pism II</span></div>
+        <div class="resumo-status-grid">
+          <div><span class="lbl">Status na plataforma</span><span class="pill dot success">Ativo</span></div>
+          <div><span class="lbl">Status na secretaria</span><span class="pill dot success">Ativo</span></div>
+        </div>
+      </section>
+
+      <section class="sec-card" style="margin-top:20px;">
+        <h3 class="sec-card-title">Histórico — João Vitor</h3>
+        <ul class="sec-timeline">
+          <li><span class="dot info"></span><div><strong>Matrícula realizada — Intensivo · Pism II</strong><span>01/02/2026</span></div></li>
+          <li><span class="dot success"></span><div><strong>Contrato assinado</strong><span>03/02/2026</span></div></li>
+          <li><span class="dot success"></span><div><strong>Pagamento da parcela 1 confirmado</strong><span>10/03/2026</span></div></li>
+        </ul>
+      </section>
+
+      <section class="sec-card" style="margin-top:20px;">
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div class="sec-profile-avatar" style="background:var(--color-warning, #c97a14);">BC</div>
+          <div>
+            <button type="button" class="student-name-link" onclick="openStudentModal('Beatriz Cardoso','beatriz.cardoso@email.com','(61) 99123-2222','234.567.890-22','Bloqueado')">Beatriz Cardoso</button>
+            <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Aluna · CPF 234.567.890-22</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;"><span class="pill info">Extensivo · Pism I</span></div>
+        <div class="resumo-status-grid">
+          <div><span class="lbl">Status na plataforma</span><span class="pill dot muted">Inativo</span></div>
+          <div><span class="lbl">Status na secretaria</span><span class="pill dot warning">Contrato pendente</span></div>
+        </div>
+      </section>
+
+      <section class="sec-card" style="margin-top:20px;">
+        <h3 class="sec-card-title">Histórico — Beatriz</h3>
+        <ul class="sec-timeline">
+          <li><span class="dot info"></span><div><strong>Matrícula realizada — Extensivo · Pism I</strong><span>15/07/2026</span></div></li>
+          <li><span class="dot warning"></span><div><strong>Mensagem de cobrança enviada — contrato pendente</strong><span>20/07/2026</span></div></li>
+        </ul>
+      </section>
+    </section>
+
+    <!-- TAB: Dados -->
+    <section class="sec-tab-panel" data-panel="dados" hidden>
+      <section class="sec-card">
+        <div style="display:flex; align-items:center; margin-bottom:18px;">
+          <h3 class="sec-card-title" style="margin:0;">Dados do responsável</h3>
+          <button class="sec-btn outline" style="margin-left:auto; height:32px; padding:0 14px; font-size:12px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+            Editar
+          </button>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:16px 28px;">
+          <div class="sec-field"><label>Nome completo</label><input value="Fernanda Cardoso" readonly/></div>
+          <div class="sec-field"><label>Status</label><input value="Ativo desde 01/02/2026" readonly/></div>
+          <div class="sec-field"><label>CPF</label><input value="345.678.901-22" readonly/></div>
+          <div class="sec-field"><label>E-mail</label><input value="fernanda.cardoso@email.com" readonly/></div>
+          <div class="sec-field"><label>Telefone (WhatsApp)</label><input value="(61) 99123-4567" readonly/></div>
+          <div class="sec-field"><label>Cidade / UF</label><input value="Brasília / DF" readonly/></div>
+        </div>
+      </section>
+
+      <section class="sec-card" style="margin-top:20px;">
+        <h3 class="sec-card-title">Aluno(s) vinculado(s)</h3>
+        <div style="display:flex; gap:14px; align-items:center; padding:12px 0; border-bottom:1px solid var(--border-default);">
+          <div style="width:44px; height:44px; border-radius:50%; background:var(--brand-blue); color:white; display:flex; align-items:center; justify-content:center; font-weight:700;">JV</div>
+          <div style="flex:1;">
+            <div style="font-weight:700; color:var(--neutral-900); font-size:14px;">João Vitor Cardoso</div>
+            <div style="font-size:12px; color:var(--text-muted);">CPF 234.567.890-11</div>
+          </div>
+          <span class="pill dot success">Ativo</span>
+        </div>
+        <div style="display:flex; gap:14px; align-items:center; padding:12px 0;">
+          <div style="width:44px; height:44px; border-radius:50%; background:var(--brand-blue); color:white; display:flex; align-items:center; justify-content:center; font-weight:700;">BC</div>
+          <div style="flex:1;">
+            <div style="font-weight:700; color:var(--neutral-900); font-size:14px;">Beatriz Cardoso</div>
+            <div style="font-size:12px; color:var(--text-muted);">CPF 234.567.890-22</div>
+          </div>
+          <span class="pill dot warning">Contrato pendente</span>
+        </div>
+      </section>
+    </section>
+
+    <!-- TAB: Faturas -->
+    <section class="sec-tab-panel" data-panel="faturas" hidden>
+      <section class="sec-card placeholder-card" style="text-align:center; padding:60px 24px; color:var(--text-muted); font-size:13px;">
+        Conteúdo desta aba já existe na tela atual — sem alterações neste desenho.
+      </section>
+    </section>
+
+    <!-- TAB: Aluno vinculado -->
+    <section class="sec-tab-panel" data-panel="aluno" hidden>
+      <section class="sec-card placeholder-card" style="text-align:center; padding:60px 24px; color:var(--text-muted); font-size:13px;">
+        Conteúdo desta aba já existe na tela atual — sem alterações neste desenho.
+      </section>
+    </section>
+
+    <!-- TAB: Histórico de cobranças -->
+    <section class="sec-tab-panel" data-panel="historico" hidden>
+      <section class="sec-card placeholder-card" style="text-align:center; padding:60px 24px; color:var(--text-muted); font-size:13px;">
+        Conteúdo desta aba já existe na tela atual — sem alterações neste desenho.
+      </section>
+    </section>
+
+    <!-- TAB: Documentos -->
+    <section class="sec-tab-panel" data-panel="documentos" hidden>
+      <section class="sec-card placeholder-card" style="text-align:center; padding:60px 24px; color:var(--text-muted); font-size:13px;">
+        Conteúdo desta aba já existe na tela atual — sem alterações neste desenho.
+      </section>
+    </section>
+
+    <!-- TAB: Auditoria -->
+    <section class="sec-tab-panel" data-panel="auditoria" hidden>
+      <section class="sec-card placeholder-card" style="text-align:center; padding:60px 24px; color:var(--text-muted); font-size:13px;">
+        Conteúdo desta aba já existe na tela atual — sem alterações neste desenho.
+      </section>
+    </section>
+  </div>
+</div>
+</div></main></div>
+
+<!-- ─── Modal: Editar aluno (mesmo modal já usado hoje ao clicar no nome do aluno na listagem de Clientes) ─── -->
+<div class="modal-backdrop" id="studentModalBackdrop" onclick="handleStudentBackdropClick(event)">
+  <div class="modal modal-lg">
+    <button class="modal-close" onclick="closeStudentModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <h3>Editar aluno</h3>
+    <div class="sec-tabs" id="studentModalTabs">
+      <button class="sec-tab is-active" data-etab="dados">Dados</button>
+      <button class="sec-tab" data-etab="senha">Senha</button>
+      <button class="sec-tab" data-etab="cursos">Cursos</button>
+      <button class="sec-tab" data-etab="acessos">Acessos</button>
+    </div>
+    <div style="padding-top:20px;">
+      <section data-epanel="dados">
+        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:16px 24px; margin-bottom:16px;">
+          <div class="sec-field"><label>Nome</label><input id="stuName"/></div>
+          <div class="sec-field"><label>E-mail</label><input id="stuEmail"/></div>
+          <div class="sec-field"><label>Telefone</label><input id="stuPhone"/></div>
+          <div class="sec-field"><label>CPF</label><input id="stuCpf"/></div>
+          <div class="sec-field"><label>Status</label><select id="stuStatus"><option>Ativo</option><option>Bloqueado</option></select></div>
+        </div>
+        <button class="sec-btn outline" style="height:32px; padding:0 14px; font-size:12px;">Baixar relatório</button>
+      </section>
+      <section data-epanel="senha" hidden>
+        <p style="font-size:13px; color:var(--text-muted); padding:40px 0; text-align:center;">Conteúdo desta aba já existe hoje no EditStudentModal — sem alterações neste desenho.</p>
+      </section>
+      <section data-epanel="cursos" hidden>
+        <p style="font-size:13px; color:var(--text-muted); padding:40px 0; text-align:center;">Conteúdo desta aba já existe hoje no EditStudentModal — sem alterações neste desenho.</p>
+      </section>
+      <section data-epanel="acessos" hidden>
+        <p style="font-size:13px; color:var(--text-muted); padding:40px 0; text-align:center;">Conteúdo desta aba já existe hoje no EditStudentModal — sem alterações neste desenho.</p>
+      </section>
+    </div>
+    <div id="studentModalFoot" style="display:flex; justify-content:flex-end; padding-top:16px; margin-top:6px; border-top:1px solid var(--border-default);">
+      <button class="sec-btn dark" onclick="saveStudent()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastText">Aluno atualizado com sucesso!</span>
+</div>
+
+<script>
+(function(){
+  const tabs = document.querySelectorAll('.sec-tab[data-tab]');
+  const panels = document.querySelectorAll('.sec-tab-panel[data-panel]');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('is-active'));
+    t.classList.add('is-active');
+    const key = t.dataset.tab;
+    panels.forEach(p => {
+      const on = p.dataset.panel === key;
+      p.hidden = !on;
+      p.classList.toggle('is-active', on);
+    });
+  }));
+})();
+
+function openStudentModal(name, email, phone, cpf, status) {
+  document.getElementById('stuName').value = name;
+  document.getElementById('stuEmail').value = email;
+  document.getElementById('stuPhone').value = phone;
+  document.getElementById('stuCpf').value = cpf;
+  document.getElementById('stuStatus').value = status;
+  selectEditTab('dados');
+  document.getElementById('studentModalBackdrop').classList.add('open');
+}
+function closeStudentModal() {
+  document.getElementById('studentModalBackdrop').classList.remove('open');
+}
+function handleStudentBackdropClick(e) {
+  if (e.target === document.getElementById('studentModalBackdrop')) closeStudentModal();
+}
+function selectEditTab(key) {
+  document.querySelectorAll('#studentModalTabs .sec-tab').forEach(t => t.classList.toggle('is-active', t.dataset.etab === key));
+  document.querySelectorAll('[data-epanel]').forEach(p => p.hidden = p.dataset.epanel !== key);
+  document.getElementById('studentModalFoot').style.display = key === 'dados' ? 'flex' : 'none';
+}
+document.querySelectorAll('#studentModalTabs .sec-tab').forEach(t => t.addEventListener('click', () => selectEditTab(t.dataset.etab)));
+
+const toast = document.getElementById('toast');
+function showToast(msg) {
+  document.getElementById('toastText').textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove('show'), 1800);
+}
+function saveStudent() {
+  closeStudentModal();
+  showToast('Aluno atualizado com sucesso!');
+}
+</script>
+</body></html>
