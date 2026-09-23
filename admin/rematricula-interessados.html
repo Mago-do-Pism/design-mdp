@@ -65,9 +65,8 @@
 </div>
 
 <div class="sec-filters">
-  <div class="sec-filters-row cols-3">
+  <div class="sec-filters-row" style="grid-template-columns: repeat(2, 1fr);">
     <div class="sec-filter"><label>Turma atual</label><select><option>Todas</option><option>PISM 1 · Intensivo 2026</option><option>PISM 2 · Intensivo 2026</option><option>PISM 3 · Intensivo 2026</option><option>ENEM · Extensivo 2026</option></select></div>
-    <div class="sec-filter"><label>Status de contato</label><select><option>Todos</option><option>Novo</option><option>Contatado</option><option>Rematriculado</option></select></div>
     <div class="sec-filter"><label>Período de interesse</label><select><option>Todo o período</option><option>Últimos 7 dias</option><option>Últimos 30 dias</option></select></div>
   </div>
   <div class="sec-search">
@@ -78,16 +77,14 @@
 
 <section class="sec-table-card">
   <table class="sec-table">
-    <thead><tr><th><span class="sortable">Aluno</span></th><th>Contato</th><th>Turma atual</th><th><span class="sortable">Interesse em</span></th><th>Status</th><th class="col-actions">Ações</th></tr></thead>
+    <thead><tr><th><span class="sortable">Aluno</span></th><th>Contato</th><th>Turma atual</th><th><span class="sortable">Interesse em</span></th><th class="col-actions">Ações</th></tr></thead>
     <tbody>
       <tr>
         <td><div style="font-weight:700;color:var(--neutral-900);">Arthur dos Santos Alves</div></td>
         <td><div>arthur.salves@gmail.com</div><div style="font-size:11px;color:#999;">(31) 99234-1098</div></td>
         <td>PISM 2 · Intensivo 2026</td>
         <td>04/09/2026</td>
-        <td><span class="pill dot info">Novo</span></td>
         <td class="col-actions">
-          <button class="ico-btn" title="Marcar como contatado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></button>
           <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
         </td>
       </tr><tr>
@@ -95,9 +92,7 @@
         <td><div>sofia.blumer@gmail.com</div><div style="font-size:11px;color:#999;">(31) 98765-3456</div></td>
         <td>PISM 3 · Intensivo 2026</td>
         <td>02/09/2026</td>
-        <td><span class="pill dot warning">Contatado</span></td>
         <td class="col-actions">
-          <button class="ico-btn" title="Marcar como contatado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></button>
           <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
         </td>
       </tr><tr>
@@ -105,9 +100,7 @@
         <td><div>rafael.neto@gmail.com</div><div style="font-size:11px;color:#999;">(31) 99123-4567</div></td>
         <td>ENEM · Extensivo 2026</td>
         <td>29/08/2026</td>
-        <td><span class="pill dot success">Rematriculado</span></td>
         <td class="col-actions">
-          <button class="ico-btn" title="Marcar como contatado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></button>
           <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
         </td>
       </tr><tr>
@@ -115,9 +108,7 @@
         <td><div>beatriz.sampaio@gmail.com</div><div style="font-size:11px;color:#999;">(31) 99654-7890</div></td>
         <td>PISM 2 · Intensivo 2026</td>
         <td>27/08/2026</td>
-        <td><span class="pill dot info">Novo</span></td>
         <td class="col-actions">
-          <button class="ico-btn" title="Marcar como contatado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></button>
           <button class="ico-btn" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
         </td>
       </tr>
