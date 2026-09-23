@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Mago do Pism — Rematrícula 2026 (PDF)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/tokens.css" />
+  <style>
+    :root {
+      --page-w: 1085px;
+      --page-h: 756px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: #f3f4f6;
+      font-family: var(--font-body, "Montserrat", system-ui, sans-serif);
+      color: #111;
+    }
+
+    /* Cover */
+    .cover {
+      width: var(--page-w); height: var(--page-h);
+      margin: 24px auto; background: white;
+      padding: 64px 72px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      page-break-after: page; break-after: page;
+    }
+    .cover-eyebrow { font-family: "Roboto Mono", monospace; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: #6b7280; }
+    .cover-title { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 52px; letter-spacing: -1px; line-height: 1.05; color: #0e1116; margin: 16px 0 24px; }
+    .cover-title em { font-style: normal; color: var(--brand-blue, #0e93f2); }
+    .cover-sub { font-size: 16px; color: #4b5563; max-width: 760px; line-height: 1.55; }
+    .cover-phases { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; }
+    .cover-phase { border: 1px solid #e5e7eb; border-radius: 14px; padding: 22px 24px; }
+    .cover-phase .num { font-family: "Roboto Mono", monospace; font-size: 11px; letter-spacing: 0.22em; color: var(--brand-blue, #0e93f2); }
+    .cover-phase h3 { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 22px; margin: 8px 0 6px; color: #0e1116; }
+    .cover-phase p { margin: 0; font-size: 13px; color: #6b7280; }
+    .cover-phase ul { margin: 12px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr; gap: 4px; }
+    .cover-phase li { font-size: 12px; color: #4b5563; }
+    .cover-phase li::before { content: "·"; margin-right: 6px; color: #9ca3af; }
+    .cover-foot { display: flex; justify-content: space-between; align-items: baseline; font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #9ca3af; }
+
+    /* Divider */
+    .divider {
+      width: var(--page-w); height: var(--page-h);
+      margin: 24px auto; background: #0e1116; color: white;
+      padding: 96px 88px;
+      display: flex; flex-direction: column; justify-content: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      page-break-after: page; break-after: page;
+      position: relative;
+    }
+    .divider .num { font-family: "Roboto Mono", monospace; font-size: 12px; letter-spacing: 0.28em; color: var(--brand-blue, #0e93f2); }
+    .divider h2 { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 72px; letter-spacing: -2px; line-height: 1; margin: 18px 0 24px; }
+    .divider p { font-size: 17px; color: #d1d5db; max-width: 720px; margin: 0; line-height: 1.55; }
+    .divider .meta { position: absolute; bottom: 64px; left: 88px; right: 88px; display: flex; justify-content: space-between; font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #6b7280; }
+
+    /* Screen page */
+    .page {
+      width: var(--page-w); height: var(--page-h);
+      margin: 24px auto; background: white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      display: flex; flex-direction: column;
+      page-break-after: page; break-after: page;
+      overflow: hidden;
+    }
+    .page:last-child { page-break-after: auto; break-after: auto; }
+    .page-head {
+      flex: 0 0 auto; display: flex; justify-content: space-between; align-items: baseline;
+      padding: 14px 22px 12px; border-bottom: 1px solid #e5e7eb;
+    }
+    .page-head .left { display: flex; align-items: baseline; gap: 14px; }
+    .page-head .num { font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.22em; color: var(--brand-blue, #0e93f2); }
+    .page-head .title { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 18px; color: #0e1116; }
+    .page-head .sub { font-size: 12px; color: #6b7280; }
+    .page-head .idx { font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.22em; color: #9ca3af; }
+    .stage { flex: 1 1 auto; position: relative; background: #f9fafb; overflow: hidden; }
+    .stage iframe { position: absolute; top: 0; left: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; background: white; }
+
+    /* Notes */
+    .notes {
+      width: var(--page-w); height: var(--page-h);
+      margin: 24px auto; background: white;
+      padding: 56px 72px;
+      display: flex; flex-direction: column;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      page-break-after: page; break-after: page;
+    }
+    .notes h2 { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 36px; letter-spacing: -0.5px; color: #0e1116; margin: 0 0 8px; }
+    .notes h2 em { font-style: normal; color: var(--brand-blue, #0e93f2); }
+    .notes .lead { font-size: 14px; color: #4b5563; max-width: 720px; line-height: 1.55; margin: 0 0 28px; }
+    .notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 32px; flex: 1; }
+    .note-card { border: 1px solid #e5e7eb; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; }
+    .note-card .num { font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.22em; color: var(--brand-blue, #0e93f2); }
+    .note-card h3 { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 17px; color: #0e1116; margin: 0; }
+    .note-card p { margin: 0; font-size: 12.5px; line-height: 1.5; color: #4b5563; }
+    .note-card ul { margin: 4px 0 0; padding: 0 0 0 14px; font-size: 12px; color: #4b5563; line-height: 1.55; }
+    .note-foot { margin-top: 18px; font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #9ca3af; display: flex; justify-content: space-between; }
+
+    @page { size: A4 landscape; margin: 0.5cm; }
+    @media print {
+      html, body { background: white; }
+      .cover, .divider, .page, .notes { margin: 0 auto; box-shadow: none; }
+      .stage iframe { border: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- COVER -->
+  <section class="cover">
+    <div>
+      <div class="cover-eyebrow">Mago do Pism · Curso do Mago</div>
+      <h1 class="cover-title">Rematrícula <em>2026</em> —<br/>captação e <em>conversão</em></h1>
+      <p class="cover-sub">Apresentação das 5 telas da funcionalidade de Rematrícula: pop-up de entrada, landing de conversão e o painel de admin pra manter tudo atualizado sozinho, sem depender de desenvolvimento pra cada mudança de conteúdo.</p>
+
+      <div class="cover-phases">
+        <div class="cover-phase">
+          <div class="num">ALUNO</div>
+          <h3>Pop-up + Landing</h3>
+          <p>2 telas — do primeiro contato até a confirmação de interesse.</p>
+          <ul>
+            <li>Pop-up de rematrícula — aparece ao entrar na plataforma</li>
+            <li>Landing de conversão — hero, mural, PISM, comparativo</li>
+          </ul>
+        </div>
+        <div class="cover-phase">
+          <div class="num">ADMIN</div>
+          <h3>Configuração e captação</h3>
+          <p>3 telas — edição de conteúdo e acompanhamento de interessados.</p>
+          <ul>
+            <li>Config do pop-up — imagem, texto e link</li>
+            <li>Edição da landing — direto na própria página</li>
+            <li>Interessados — lista, filtros e exportação</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="cover-foot">
+      <span>v1 · Setembro 2026</span>
+      <span>Mago do Pism — Rematrícula 2026</span>
+    </div>
+  </section>
+
+  <!-- DIVIDER · ALUNO -->
+  <section class="divider">
+    <div class="num">ALUNO</div>
+    <h2>Pop-up<br/>e Landing</h2>
+    <p>O aluno vê o pop-up promocional ao entrar na plataforma e, ao clicar, chega numa landing de conversão que termina no formulário de interesse — já pré-preenchido com os dados do cadastro.</p>
+    <div class="meta">
+      <span>2 telas</span>
+      <span>Mago do Pism</span>
+    </div>
+  </section>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">01</span>
+        <span class="title">Pop-up de Rematrícula</span>
+        <span class="sub">Aparece ao entrar na plataforma · reaparece a cada 2 semanas se não houver clique</span>
+      </div>
+      <span class="idx">alunos/rematricula-popup.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/rematricula-popup.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">02</span>
+        <span class="title">Landing de Rematrícula 2026</span>
+        <span class="sub">Hero + vídeo · desconto · mural de aprovados · mecânica do PISM · comparativo · captação de interesse</span>
+      </div>
+      <span class="idx">alunos/rematricula.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/rematricula.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <!-- DIVIDER · ADMIN -->
+  <section class="divider">
+    <div class="num">ADMIN</div>
+    <h2>Configuração<br/>e captação</h2>
+    <p>O time do Mago edita o pop-up e o conteúdo inteiro da landing sem depender de desenvolvimento, e acompanha quem demonstrou interesse — direto no painel de admin, não na secretaria.</p>
+    <div class="meta">
+      <span>3 telas</span>
+      <span>Mago do Pism</span>
+    </div>
+  </section>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">03</span>
+        <span class="title">Config · Pop-up</span>
+        <span class="sub">Imagem, texto e link editáveis · preview ao vivo · ativar/desativar</span>
+      </div>
+      <span class="idx">admin/rematricula-popup.html</span>
+    </header>
+    <div class="stage"><iframe src="admin/rematricula-popup.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">04</span>
+        <span class="title">Config · Landing (edição inline)</span>
+        <span class="sub">Edição direto na própria página — textos, vídeo, mural de aprovados e listas</span>
+      </div>
+      <span class="idx">admin/rematricula-landing-editor.html</span>
+    </header>
+    <div class="stage"><iframe src="admin/rematricula-landing-editor.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">05</span>
+        <span class="title">Interessados em Rematrícula</span>
+        <span class="sub">Lista, filtros por turma/período e exportação em XLSX/CSV</span>
+      </div>
+      <span class="idx">admin/rematricula-interessados.html</span>
+    </header>
+    <div class="stage"><iframe src="admin/rematricula-interessados.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <!-- NOTAS DE DESIGN -->
+  <section class="notes">
+    <h2>Notas de <em>design</em> &amp; decisões</h2>
+    <p class="lead">Princípios que sustentam as telas da Rematrícula 2026. Todo o conteúdo variável (desconto, vídeo, mural, números por curso) é editável pelo próprio time do Mago — nada fica hardcoded no design.</p>
+
+    <div class="notes-grid">
+      <article class="note-card">
+        <div class="num">01</div>
+        <h3>Estrutura em blocos densos</h3>
+        <p>A landing tem 4 seções densas (Hero, Resultados, Pesos do PISM, Adaptabilidade+CTA), não uma dúzia de seções finas — segue o padrão real de landing pages de alta conversão.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">02</div>
+        <h3>Paleta 100% do design system</h3>
+        <p>Só azul da marca + neutros do <code>tokens.css</code>, nenhuma cor nova. Contraste de botão vem de branco-sobre-azul e sombra "chunky", não de uma cor de destaque inventada.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">03</div>
+        <h3>Pop-up com regra de reaparecimento</h3>
+        <p>Reaproveita a anatomia de modal já usada em <code>admin/comunidades.html</code>. Se o aluno não clicar no CTA, o pop-up volta a aparecer automaticamente a cada 2 semanas.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">04</div>
+        <h3>Edição inline, não formulário separado</h3>
+        <p>O painel de admin da landing é a própria página, em modo de edição — texto clicável (contenteditable), upload de mídia no hover, e adicionar/remover itens do mural e das listas direto ali.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">05</div>
+        <h3>Interessados fica com o Admin</h3>
+        <p>Decisão explícita: quem acompanha e contata os interessados é o time do Mago pelo painel de admin — não é uma fila de trabalho da secretaria.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">06</div>
+        <h3>Formulário pré-preenchido</h3>
+        <p>O formulário de interesse (nome, e-mail, telefone) já vem preenchido com os dados do cadastro do aluno logado — reduz fricção pra confirmar o interesse.</p>
+      </article>
+    </div>
+
+    <div class="note-foot">
+      <span>Rematrícula 2026</span>
+      <span>v1 · Setembro 2026</span>
+    </div>
+  </section>
+
+  <script>
+    function scaleStages() {
+      document.querySelectorAll('.stage').forEach(stage => {
+        const iframe = stage.querySelector('iframe[data-screen]');
+        if (!iframe) return;
+        const w = stage.clientWidth;
+        const h = stage.clientHeight;
+        const s = Math.min(w / 1440, h / 900);
+        iframe.style.transform = `scale(${s})`;
+        iframe.style.left = ((w - 1440 * s) / 2) + 'px';
+        iframe.style.top  = ((h - 900  * s) / 2) + 'px';
+      });
+    }
+    window.addEventListener('load', scaleStages);
+    window.addEventListener('resize', scaleStages);
+    scaleStages();
+  </script>
+
+</body>
+</html>
