@@ -7,9 +7,18 @@
 <title>Rematrícula 2026 · Mago do PISM</title>
 <meta name="description" content="Renove a sua vaga no Mago do PISM, o maior pré-PISM do Brasil, antes de abrir as inscrições pro Instagram. Continue com quem mais aprova, bem na hora em que cada ponto pesa mais."/>
 
-<link rel="stylesheet" href="../styles/tokens.css"/>
+<link rel="stylesheet" href="../styles/tokens-rematricula.css"/>
 
 <style>
+/* ===== Fontes da v2 de referencia (Bricolage Grotesque + Sora) =====
+   Sora sem face 700 de proposito: na referencia o peso 700 cai no SemiBold. */
+@font-face{font-family:"Bricolage Grotesque";src:url("https://fonts.gstatic.com/s/bricolagegrotesque/v9/3y9K6as8bTXq_nANBjzKo3IeZx8z6up5BeSl9D4dj_x9PpZBMlGIInE.woff2") format("woff2");font-weight:200 800;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Bricolage Grotesque";src:url("https://fonts.gstatic.com/s/bricolagegrotesque/v9/3y9K6as8bTXq_nANBjzKo3IeZx8z6up5BeSl9D4dj_x9PpZBMlGGInHEVA.woff2") format("woff2");font-weight:200 800;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Sora";src:url("https://fonts.gstatic.com/s/sora/v17/xMQ9uFFYT72X5wkB_18qmnndmSdSnh2BAfO5mnuyOo1lfiQwV6-x.woff2") format("woff2");font-weight:400;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Sora";src:url("https://fonts.gstatic.com/s/sora/v17/xMQ9uFFYT72X5wkB_18qmnndmSdSnh2BAfO5mnuyOo1lfiQwWa-xsaQ.woff2") format("woff2");font-weight:400;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Sora";src:url("https://fonts.gstatic.com/s/sora/v17/xMQ9uFFYT72X5wkB_18qmnndmSdSnh2BAfO5mnuyOo1lfiQwV6-x.woff2") format("woff2");font-weight:600;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Sora";src:url("https://fonts.gstatic.com/s/sora/v17/xMQ9uFFYT72X5wkB_18qmnndmSdSnh2BAfO5mnuyOo1lfiQwWa-xsaQ.woff2") format("woff2");font-weight:600;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+
 /* ===== Paleta Magoflix: #007BFF (primaria exata) + branco. Dourado SO na barra PISM III. ===== */
 :root{
   --blue:#007BFF; --blue-deep:#0062CC;
@@ -254,9 +263,9 @@ mark{background:none;color:var(--blue);font-weight:inherit}
 
 <!-- ===================== TOPBAR ===================== -->
 <header class="top"><div class="wrap">
-  <a href="#topo" aria-label="Mago do PISM"><img class="logo" src="../assets/logo-azul.png" alt="Mago do PISM"/></a>
+  <a href="#topo" aria-label="Mago do PISM"><img class="logo" src="../assets/logo-mago-do-pism.svg" alt="Mago do PISM"/></a>
   <div class="top-r">
-    <a href="inicio.html" class="back">← Início</a>
+    <a href="inicio.html" class="back">Início</a>
     <button class="btn" data-open>Fazer rematrícula</button>
   </div>
 </div></header>
@@ -419,7 +428,7 @@ mark{background:none;color:var(--blue);font-weight:inherit}
 
 <!-- ===================== FOOTER ===================== -->
 <footer class="foot"><div class="wrap">
-  <img class="logo" src="../assets/logo-azul.png" alt="Mago do PISM"/>
+  <img class="logo" src="../assets/logo-mago-do-pism.svg" alt="Mago do PISM"/>
   <p>O maior pré-PISM do Brasil. Rematrícula 2026 pra quem já é de casa.</p>
   <p class="small">Números de aprovação referentes ao PISM 2025. [Espaço pra razão social, CNPJ e contato do Mago do PISM.]</p>
 </div></footer>
