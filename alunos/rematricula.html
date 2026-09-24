@@ -3,394 +3,482 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Rematrícula 2026 · Mago do Pism</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<meta name="theme-color" content="#007BFF"/>
+<title>Rematrícula 2026 · Mago do PISM</title>
+<meta name="description" content="Renove a sua vaga no Mago do PISM, o maior pré-PISM do Brasil, antes de abrir as inscrições pro Instagram. Continue com quem mais aprova, bem na hora em que cada ponto pesa mais."/>
+
 <link rel="stylesheet" href="../styles/tokens.css"/>
+
 <style>
-*{box-sizing:border-box}html,body{margin:0;padding:0}html{scroll-behavior:smooth}
-:root{--navy:#061C33;--navy-2:#0A2A4A;--ink:#0B1622;--blue:var(--brand-blue);--blue-d:#0B6FC0;--gold:#FFC90F}
-body{font-family:var(--font-body);color:var(--ink);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased}
-a{color:var(--blue);text-decoration:none}a:hover{color:var(--blue-d)}
-mark{background:none;color:var(--blue);font-weight:inherit}
-h1,h2,h3{text-wrap:balance}p{text-wrap:pretty}
-.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
-.star{width:14px;height:14px;fill:currentColor;flex-shrink:0}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-weight:700;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--blue);margin-bottom:20px}
-.h2{font-family:var(--font-display);font-weight:700;font-size:clamp(34px,4.6vw,56px);line-height:1.02;letter-spacing:-2px;margin:0 0 20px;color:var(--ink)}
-.lead{font-size:19px;line-height:1.6;color:#44505E;margin:0}
-
-/* Button */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:64px;padding:0 34px;border-radius:var(--radius-pill);border:0;cursor:pointer;font-family:var(--font-body);font-weight:700;font-size:17px;letter-spacing:-.2px;background:var(--gold);color:var(--ink);box-shadow:0 6px 0 #C99A00,0 18px 40px -12px rgba(255,201,15,.55);transition:transform .12s,box-shadow .12s,filter .15s;white-space:nowrap}
-.btn:hover{filter:brightness(1.05);color:var(--ink)}
-.btn:active{transform:translateY(5px);box-shadow:0 1px 0 #C99A00}
-.btn .arr{display:inline-flex;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--gold);align-items:center;justify-content:center;font-size:15px;transition:transform .2s}
-.btn:hover .arr{transform:translateX(3px)}
-.btn.blue{background:var(--blue);color:#fff;box-shadow:0 6px 0 var(--blue-d),0 18px 40px -12px rgba(14,147,242,.6)}
-.btn.blue .arr{background:#fff;color:var(--blue)}
-
-/* Topbar */
-.top{position:sticky;top:0;z-index:60;background:rgba(6,28,51,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08)}
-.top .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
-.logo{font-family:var(--font-display);font-weight:700;font-size:19px;letter-spacing:-.3px;color:#fff}.logo span{color:var(--blue)}
-.top-r{display:flex;align-items:center;gap:22px}
-.top-r .back{font-size:14px;font-weight:600;color:rgba(255,255,255,.7)}.top-r .back:hover{color:#fff}
-.top-cta{height:42px;padding:0 20px;border-radius:var(--radius-pill);border:0;background:var(--gold);color:var(--ink);font-family:var(--font-body);font-weight:700;font-size:14px;cursor:pointer}
-.top-cta:hover{filter:brightness(1.05)}
-
-/* Hero */
-.hero{position:relative;overflow:hidden;background:radial-gradient(900px 520px at 85% 10%,rgba(14,147,242,.45),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(14,147,242,.25),transparent 60%),var(--navy);color:#fff;padding:72px 0 96px;margin-top:-68px;padding-top:140px}
-.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse at 60% 30%,#000 20%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at 60% 30%,#000 20%,transparent 75%)}
-.hero .wrap{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:64px;align-items:center}
-.hero-tag{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);padding:8px 16px 8px 10px;border-radius:var(--radius-pill);font-size:13.5px;font-weight:600;color:#fff;margin-bottom:28px}
-.hero-tag .dot{width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--ink);display:inline-flex;align-items:center;justify-content:center}
-.hero-tag .dot svg{width:12px;height:12px}
-.hero h1{font-family:var(--font-display);font-weight:700;font-size:clamp(38px,5.2vw,66px);line-height:1;letter-spacing:-2.4px;margin:0 0 32px}
-.hero h1 mark{color:var(--gold);position:relative;white-space:nowrap}
-.hero h1 mark::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:6px;border-radius:6px;background:var(--gold);opacity:.35}
-.points{display:flex;flex-direction:column;gap:14px;margin:0 0 36px;padding:0;list-style:none}
-.points li{display:flex;gap:12px;align-items:flex-start;font-size:16.5px;color:rgba(255,255,255,.8);line-height:1.5}
-.points li b{color:#fff}
-.points svg{width:22px;height:22px;flex-shrink:0;padding:4px;border-radius:50%;background:rgba(14,147,242,.25);color:#7CC6FF;margin-top:1px}
-.hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:22px}
-.trust{display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.72);line-height:1.35}
-.trust b{color:#fff}
-.avatars{display:flex}.avatars span{width:34px;height:34px;border-radius:50%;border:2px solid var(--navy);margin-left:-10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background:var(--blue)}
-.avatars span:first-child{margin-left:0}.avatars span:nth-child(2){background:#0B6FC0}.avatars span:nth-child(3){background:#278556}.avatars span:nth-child(4){background:#1F4D7A}
-
-.vid-wrap{position:relative}
-.video{position:relative;aspect-ratio:16/10;border-radius:24px;overflow:hidden;cursor:pointer;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.18),transparent 55%),linear-gradient(150deg,#0E93F2,#0A4F8F 70%);box-shadow:0 40px 80px -24px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.12) inset;transition:transform .3s}
-.video:hover{transform:translateY(-4px)}
-.play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-.play .c{position:relative;width:92px;height:92px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(0,0,0,.3)}
-.play .c::before{content:"";position:absolute;inset:-14px;border-radius:50%;border:2px solid rgba(255,255,255,.5);animation:pulse 2.2s ease-out infinite}
-@keyframes pulse{0%{transform:scale(.85);opacity:1}100%{transform:scale(1.35);opacity:0}}
-.play svg{width:32px;height:32px;color:var(--blue);margin-left:4px}
-.dur{position:absolute;bottom:16px;right:16px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:700;padding:5px 11px;border-radius:7px;font-family:var(--font-mono)}
-.ticket{position:absolute;left:-28px;bottom:-34px;display:flex;align-items:center;gap:14px;background:var(--gold);color:var(--ink);border-radius:18px;padding:16px 22px 16px 18px;box-shadow:0 24px 40px -14px rgba(0,0,0,.5);transform:rotate(-3deg)}
-.ticket b{font-family:var(--font-display);font-size:46px;line-height:.9;letter-spacing:-2px}
-.ticket span{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;line-height:1.3;max-width:120px}
-
-/* Results */
-.sec{padding:128px 0}
-.res-head{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:56px;align-items:end;margin-bottom:72px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.stat{border-radius:22px;padding:28px 26px;background:var(--navy);color:#fff;position:relative;overflow:hidden}
-.stat:nth-child(2){background:var(--blue)}
-.stat .n{font-family:var(--font-display);font-weight:700;font-size:64px;line-height:.9;letter-spacing:-3px}
-.stat .l{display:block;margin-top:10px;font-size:14px;font-weight:600;opacity:.75}
-.mural-bar{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:22px;padding-top:28px;border-top:1px solid #E6EAEF}
-.mural-bar h3{font-family:var(--font-display);font-weight:700;font-size:24px;margin:0;letter-spacing:-.5px}
-.mural-bar p{margin:0;font-size:14px;color:#6B7684}
-.mural{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:12px;margin-bottom:96px}
-.tile{position:relative;aspect-ratio:3/4;border-radius:16px;overflow:hidden;background:linear-gradient(170deg,#0E93F2,#0A4F8F);transition:transform .25s,box-shadow .25s}
-.tile:nth-child(even){background:linear-gradient(170deg,#0A2A4A,#0E6FBF)}
-.tile:hover{transform:translateY(-6px) rotate(-1deg);box-shadow:0 20px 30px -14px rgba(6,28,51,.5)}
-.tile .rib{position:absolute;top:10px;left:10px;background:#278556;color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:6px}
-.tile .ini{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:34px;color:rgba(255,255,255,.92);letter-spacing:-1px}
-.tile .cap{position:absolute;left:0;right:0;bottom:0;padding:26px 10px 12px;background:linear-gradient(transparent,rgba(0,0,0,.6));text-align:center}
-.tile .cap strong{display:block;font-size:12px;color:#fff;line-height:1.2}
-.tile .cap span{display:block;font-size:10.5px;color:rgba(255,255,255,.75)}
-
-.method{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);gap:48px;align-items:center}
-.claim{font-family:var(--font-display);font-weight:700;font-size:clamp(28px,3.2vw,40px);line-height:1.05;letter-spacing:-1.2px;margin:0 0 20px}
-.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(14,147,242,.1);color:var(--blue);font-weight:700;font-size:14px;padding:10px 18px;border-radius:var(--radius-pill)}
-.courses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid #E6EAEF;border-radius:22px;overflow:hidden}
-.course{position:relative;padding:26px 24px;border-right:1px solid #E6EAEF;border-bottom:1px solid #E6EAEF;background:#fff}
-.course:nth-child(3n){border-right:0}.course:nth-child(n+4){border-bottom:0}
-.course .n{font-family:var(--font-display);font-weight:700;font-size:48px;line-height:1;letter-spacing:-2px;color:var(--ink)}
-.course .l{font-size:14px;font-weight:600;color:#6B7684;margin-top:6px}
-.course.top{background:var(--navy)}.course.top .n{color:var(--gold)}.course.top .l{color:rgba(255,255,255,.75)}
-.course.top::after{content:"recorde histórico";position:absolute;top:18px;right:18px;background:var(--gold);color:var(--ink);font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:4px 9px;border-radius:6px}
-
-/* Pesos */
-.pesos{background:var(--navy);color:#fff;position:relative;overflow:hidden}
-.pesos::before{content:"";position:absolute;right:-200px;top:-200px;width:700px;height:700px;border-radius:50%;background:radial-gradient(rgba(14,147,242,.3),transparent 65%)}
-.pesos .wrap{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:72px;align-items:center}
-.pesos .h2{color:#fff}.pesos .lead{color:rgba(255,255,255,.72)}.pesos .eyebrow{color:#7CC6FF}
-.punch{font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin:32px 0 0}
-.tie{font-size:17px;line-height:1.65;color:rgba(255,255,255,.78);margin:28px 0 0;padding-top:28px;border-top:1px solid rgba(255,255,255,.12)}
-.tie mark{color:var(--gold)}
-.chart-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:28px;padding:36px 32px 28px}
-.chart{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:end;height:300px}
-.bcol{display:flex;flex-direction:column;justify-content:flex-end;height:100%}
-.bar{border-radius:14px 14px 4px 4px;background:linear-gradient(180deg,#3AAEFF,#0B6FC0);display:flex;justify-content:center;padding-top:14px;height:0;transition:height 1.1s cubic-bezier(.2,.8,.2,1)}
-.bcol:nth-child(3) .bar{background:linear-gradient(180deg,#FFD84A,#E0A800)}
-.bcol:nth-child(3) .bar .pts{color:var(--ink)}
-.bar .pts{font-family:var(--font-display);font-weight:700;font-size:24px;color:#fff;letter-spacing:-.5px}
-.blabel{margin-top:14px}
-.blabel .m{display:block;font-weight:700;font-size:15px}
-.blabel .y{display:block;font-size:12.5px;color:rgba(255,255,255,.55)}
-.blabel .c{display:block;font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,.4);margin-top:4px}
-.total{display:flex;align-items:baseline;gap:12px;margin-top:28px;padding-top:22px;border-top:1px dashed rgba(255,255,255,.18)}
-.total b{font-family:var(--font-display);font-size:36px;letter-spacing:-1px}
-.total i{font-style:normal;font-size:14px;color:rgba(255,255,255,.65)}
-
-/* Adapt */
-.adapt{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:start}
-.adapt-body{display:flex;flex-direction:column;gap:18px;margin-top:8px}
-.adapt-body p{font-size:17px;line-height:1.7;color:#2B3542;margin:0}
-.compare{display:grid;grid-template-columns:1fr 1fr;border-radius:26px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(6,28,51,.35);border:1px solid #E6EAEF}
-.col{padding:32px 28px}
-.col h3{font-family:var(--font-display);font-size:20px;font-weight:700;margin:0 0 22px;letter-spacing:-.4px}
-.col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
-.col li{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.45}
-.col li svg{width:22px;height:22px;flex-shrink:0;padding:4px;border-radius:50%}
-.col.good{background:var(--navy);color:#fff}.col.good h3{color:#fff}
-.col.good li svg{background:#278556;color:#fff}
-.col.bad{background:#F6F7F9;color:#6B7684}.col.bad h3{color:#8A94A1;text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:rgba(208,62,62,.5)}
-.col.bad li svg{background:rgba(208,62,62,.12);color:#D03E3E}
-
-/* Final */
-.final{position:relative;overflow:hidden;border-radius:32px;background:radial-gradient(600px 400px at 90% 0%,rgba(255,255,255,.22),transparent 60%),linear-gradient(135deg,#0B6FC0,#0E93F2);color:#fff;padding:80px 48px;text-align:center;margin-top:112px}
-.final::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.14) 1.5px,transparent 1.5px);background-size:26px 26px;mask-image:linear-gradient(transparent,#000 50%,transparent);-webkit-mask-image:linear-gradient(transparent,#000 50%,transparent)}
-.final>*{position:relative}
-.final .eyebrow{color:#fff;background:rgba(255,255,255,.14);padding:8px 16px;border-radius:var(--radius-pill)}
-.final h2{font-family:var(--font-display);font-weight:700;font-size:clamp(32px,4.4vw,54px);line-height:1.02;letter-spacing:-2px;max-width:820px;margin:0 auto 32px}
-.final h2 mark{color:var(--gold)}
-.final-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:20px}
-.chip{display:inline-flex;align-items:center;gap:12px;background:rgba(6,28,51,.35);border:1px solid rgba(255,255,255,.25);border-radius:var(--radius-pill);padding:10px 22px 10px 12px}
-.chip b{font-family:var(--font-display);font-size:26px;background:var(--gold);color:var(--ink);border-radius:var(--radius-pill);padding:2px 14px;letter-spacing:-1px}
-.chip span{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.urgency{display:flex;gap:10px;justify-content:center;align-items:flex-start;font-size:14.5px;color:rgba(255,255,255,.85);max-width:520px;margin:32px auto 0;line-height:1.55;text-align:left}
-.urgency svg{width:20px;height:20px;flex-shrink:0;margin-top:1px;color:var(--gold)}
-
-.foot{padding:56px 0 120px;text-align:center;border-top:1px solid #E6EAEF;margin-top:112px}
-.foot strong{display:block;font-family:var(--font-display);font-size:18px;margin-bottom:8px}
-.foot p{margin:0 auto;max-width:560px;font-size:13px;color:#8A94A1;line-height:1.6}
-
-/* Sticky bar */
-.sticky{position:fixed;left:50%;bottom:20px;z-index:70;transform:translate(-50%,140%);transition:transform .35s cubic-bezier(.2,.8,.2,1);display:flex;align-items:center;gap:18px;background:var(--navy);color:#fff;border-radius:var(--radius-pill);padding:8px 8px 8px 24px;box-shadow:0 20px 50px -10px rgba(6,28,51,.55);width:max-content;max-width:calc(100vw - 32px)}
-.sticky.show{transform:translate(-50%,0)}
-.sticky .t{font-size:14px;font-weight:600;color:rgba(255,255,255,.8)}.sticky .t b{color:var(--gold);font-size:18px;font-family:var(--font-display)}
-.sticky .btn{height:50px;font-size:15px;padding:0 10px 0 22px;box-shadow:none}
-.sticky .btn .arr{width:32px;height:32px}
-
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
-.reveal.in{opacity:1;transform:none}
-
-/* Modal */
-.ov{position:fixed;inset:0;background:rgba(6,28,51,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
-.ov.is-open{display:flex}
-.modal{background:#fff;border-radius:24px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:0 40px 80px -20px rgba(0,0,0,.5);position:relative;animation:pop .3s cubic-bezier(.2,.8,.2,1)}
-@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
-.mclose{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;border:0;background:#F0F2F5;color:#6B7684;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
-.mclose:hover{background:#E3E7EC;color:var(--ink)}.mclose svg{width:16px;height:16px}
-.mbody{padding:48px 44px 40px}
-.fc h2{font-family:var(--font-display);font-size:26px;font-weight:700;margin:0 0 6px;text-align:center;letter-spacing:-.6px}
-.fc .sub{font-size:14px;color:#6B7684;margin:0 0 28px;text-align:center}
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}.fg .full{grid-column:1/-1}
-.fl{display:block;font-size:12.5px;font-weight:600;color:#44505E;margin-bottom:6px}
-.fi{width:100%;height:50px;border-radius:12px;border:1.5px solid #DDE2E8;padding:0 14px;font-family:var(--font-body);font-size:15px;color:var(--ink);background:#fff;outline:none;transition:border-color .15s,box-shadow .15s}
-.fi:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(14,147,242,.15)}
-.fi.ro{background:#F4F6F8;color:#6B7684;cursor:not-allowed}
-.fa{margin-top:28px}.fa .btn{width:100%}
-#successCard{display:none;text-align:center}
-#successCard .ok{width:72px;height:72px;border-radius:50%;background:#278556;color:#fff;display:inline-flex;align-items:center;justify-content:center;margin:0 auto 20px}
-#successCard p{font-size:15px;color:#6B7684;max-width:380px;margin:0 auto 28px;line-height:1.55}
-
-@media (max-width:980px){
-.hero .wrap,.res-head,.method,.pesos .wrap,.adapt{grid-template-columns:1fr;gap:48px}
-.vid-wrap{max-width:640px}.ticket{left:12px;bottom:-28px}
-.mural{grid-template-columns:repeat(4,minmax(0,1fr))}
-.sec{padding:88px 0}
+/* ===== Paleta Magoflix: #007BFF (primaria exata) + branco. Dourado SO na barra PISM III. ===== */
+:root{
+  --blue:#007BFF; --blue-deep:#0062CC;
+  --blue-050:#EAF3FF; --blue-100:#CFE4FF;
+  --gold:#E9B949;                 /* usado SOMENTE na barra do PISM III */
+  --surface:#FFFFFF; --surface-2:#F4F7FC;
+  --ink:#101828; --ink-soft:#475467; --ink-faint:#667085;
+  --line:#E4E9F2;
+  --font-mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --font-serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
 }
-@media (max-width:640px){
-.wrap{padding:0 20px}
-.hero{padding-top:112px;padding-bottom:80px}
-.top-r .back{display:none}
-.btn{height:58px;font-size:16px;padding:0 10px 0 24px;white-space:normal;text-align:left}
-.courses{grid-template-columns:1fr 1fr}.course:nth-child(3n){border-right:1px solid #E6EAEF}.course:nth-child(2n){border-right:0}.course:nth-child(n+4){border-bottom:1px solid #E6EAEF}.course:nth-child(n+5){border-bottom:0}
-.compare{grid-template-columns:1fr}
-.chart{height:240px;gap:10px}.bar .pts{font-size:18px}
-.final{padding:56px 22px}
-.stat .n{font-size:48px}
-.mbody{padding:36px 22px 28px}.fg{grid-template-columns:1fr}
-.sticky .t{display:none}.sticky{padding:6px}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-body);color:var(--ink);background:var(--surface);line-height:1.62;font-size:17px;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{text-wrap:pretty;margin:0}
+.wrap{width:100%;max-width:1200px;margin:0 auto;padding:0 28px}
+section{position:relative}
+.disp{font-family:var(--font-display);font-weight:700;letter-spacing:-.02em;line-height:1.02}
+.serif{font-family:var(--font-serif)}
+.eyebrow{display:inline-flex;align-items:center;gap:.55em;font-weight:700;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase}
+.sp{width:1em;height:1em;flex:none;fill:currentColor}
+mark{background:none;color:var(--blue);font-weight:inherit}
+.u{position:relative;white-space:nowrap;color:var(--blue)}
+.u::after{content:"";position:absolute;left:0;right:0;bottom:-.09em;height:.11em;border-radius:4px;background:var(--blue);opacity:.3}
+
+/* ===== Botoes (CTA solido #007BFF, sem gradiente) ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;border:0;cursor:pointer;font-family:var(--font-body);font-weight:700;font-size:16.5px;letter-spacing:-.01em;line-height:1;height:60px;padding:0 30px;border-radius:var(--radius-pill);background:var(--blue);color:#fff;box-shadow:0 12px 26px -12px rgba(0,123,255,.45);transition:background .16s,transform .12s,box-shadow .16s;white-space:nowrap;text-align:center}
+.btn:hover{background:var(--blue-deep);transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn .arw{font-size:1.05em;transform:translateY(.02em)}
+.btn.ghost{background:transparent;color:var(--blue);box-shadow:none;border:1.5px solid rgba(0,123,255,.45);height:52px;padding:0 22px;font-size:15px;font-weight:700}
+.btn.ghost:hover{background:rgba(0,123,255,.06);border-color:var(--blue);transform:translateY(-2px)}
+
+/* ===== Aprovados por curso ===== */
+.courses-head{max-width:900px;margin:56px auto 0;text-align:center}
+.courses-head h3{font-family:var(--font-display);font-weight:700;font-size:23px;letter-spacing:-.01em;color:var(--ink)}
+.courses-head p{font-size:14.5px;color:var(--ink-soft);margin-top:6px}
+.courses{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:14px;max-width:900px;margin:22px auto 0}
+.course{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-xl);padding:22px 16px;text-align:center;box-shadow:0 14px 30px -26px rgba(16,24,40,.22)}
+.course .cn{font-family:var(--font-display);font-weight:700;font-size:42px;line-height:.9;letter-spacing:-.03em;color:var(--blue)}
+.course .cc{display:block;margin-top:8px;font-size:14px;font-weight:600;color:var(--ink-soft)}
+
+/* ===== Topbar (branca) ===== */
+.top{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:70px;gap:16px}
+.top .logo{height:42px;width:auto}
+.top-r{display:flex;align-items:center;gap:20px}
+.top-r .back{font-size:14.5px;font-weight:600;color:var(--ink-soft)}
+.top-r .back:hover{color:var(--ink)}
+.top .btn{height:44px;padding:0 20px;font-size:14.5px;box-shadow:none}
+
+/* ===== Hero (fundo #007BFF solido, conteudo branco) ===== */
+.hero{background:var(--blue);color:#fff;padding:78px 0 88px;border-bottom:0;position:relative;overflow:hidden}
+.hero .wrap{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;gap:26px}
+.hero .spark{display:none}
+.hero-eyebrow{color:#fff;margin:0}
+.hero h1{font-family:var(--font-display);font-weight:700;font-size:clamp(34px,4.9vw,56px);line-height:1.03;letter-spacing:-.025em;margin:0;max-width:840px;color:#fff}
+.hero .u{color:#FCE38A}
+.hero .u::after{background:#FCE38A;opacity:1}
+/* Placeholder de video 16:9 honesto: card branco sobre o azul, play azul */
+.video-ph{position:relative;width:100%;max-width:860px;aspect-ratio:16/9;border-radius:22px;background:#fff;border:2px dashed var(--blue-100);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;overflow:hidden;box-shadow:0 34px 70px -34px rgba(0,40,90,.55)}
+.video-ph .vtag{position:absolute;top:14px;left:14px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);background:rgba(0,123,255,.1);border:1px solid rgba(0,123,255,.35);padding:5px 11px;border-radius:var(--radius-pill)}
+.video-ph .play{width:84px;height:84px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 18px 40px -14px rgba(0,123,255,.55)}
+.video-ph .play svg{width:32px;height:32px;margin-left:5px}
+.video-ph .vlabel{font-weight:700;font-size:17px;color:var(--ink)}
+.video-ph .vsub{font-size:12.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint)}
+.points{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 28px;margin:0;padding:0;list-style:none;max-width:740px}
+.points li{display:flex;gap:12px;align-items:flex-start;font-size:16.5px;color:rgba(255,255,255,.92);line-height:1.5;text-align:left;max-width:330px}
+.points li b{color:#fff}
+.points .ic{width:26px;height:26px;flex:none;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;display:inline-flex;align-items:center;justify-content:center;margin-top:1px}
+.points .ic svg{width:14px;height:14px}
+.hero-cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px}
+.hero-cta .btn{background:#fff;color:var(--blue);box-shadow:0 12px 26px -12px rgba(0,40,90,.45)}
+.hero-cta .btn:hover{background:var(--blue-050);color:var(--blue)}
+.hero-cta .btn.ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.6);box-shadow:none}
+.hero-cta .btn.ghost:hover{background:rgba(255,255,255,.12);border-color:#fff;color:#fff}
+.hero-trust{display:flex;align-items:center;justify-content:center;gap:10px;margin:0;font-size:14.5px;color:rgba(255,255,255,.9);line-height:1.4}
+.hero-trust .sp{color:#fff;width:20px;height:20px}
+.hero-trust b{color:#fff}
+
+/* ===== Secao base ===== */
+.sec{padding:104px 0}
+.sec-head{max-width:720px}
+.sec-head.center{margin:0 auto;text-align:center}
+.sec-head .eyebrow{margin-bottom:16px}
+.h2{font-family:var(--font-display);font-weight:700;font-size:clamp(30px,4.1vw,50px);line-height:1.03;letter-spacing:-.025em;color:var(--ink)}
+.lead{font-size:18.5px;line-height:1.6;color:var(--ink-soft);margin-top:16px}
+
+/* ===== Resultados (branco) ===== */
+.results{background:var(--surface)}
+.results .eyebrow{color:var(--blue)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:720px;margin:44px auto 0}
+.stat{border-radius:var(--radius-2xl);padding:34px 30px;text-align:left;position:relative;overflow:hidden}
+.stat.navy{background:var(--blue);color:#fff}
+.stat.blue{background:var(--surface);border:1.5px solid var(--blue);color:var(--ink)}
+.stat .n{font-family:var(--font-display);font-weight:700;font-size:clamp(52px,8vw,76px);line-height:.9;letter-spacing:-.03em;color:#fff}
+.stat.blue .n{color:var(--blue)}
+.stat .l{display:block;margin-top:12px;font-size:15px;font-weight:600;color:rgba(255,255,255,.92)}
+.stat.blue .l{color:var(--ink-soft)}
+/* slot honesto: fotos reais de aprovados */
+.mural-slot{max-width:900px;margin:56px auto 0;border:2px dashed var(--blue);background:rgba(0,123,255,.04);border-radius:var(--radius-2xl);padding:52px 32px;text-align:center;color:var(--ink-soft)}
+.mural-slot .badge{width:56px;height:56px;border-radius:50%;background:rgba(0,123,255,.12);color:var(--blue);display:inline-flex;align-items:center;justify-content:center;margin-bottom:18px}
+.mural-slot .badge svg{width:26px;height:26px}
+.mural-slot h3{font-family:var(--font-display);font-weight:700;font-size:20px;color:var(--ink);letter-spacing:-.01em}
+.mural-slot p{max-width:560px;margin:10px auto 0;font-size:15px}
+.mural-slot .hint{margin-top:16px;font-size:13.5px;color:var(--ink-faint)}
+
+/* ===== Pesos (banda clara, grafico com barras azuis + PISM III dourada) ===== */
+.pesos{background:var(--surface-2)}
+.pesos .eyebrow{color:var(--blue)}
+.pesos .h2{color:var(--ink)}
+.pesos .lead{color:var(--ink-soft)}
+/* Grafico de barras da escalada dos pesos (ESTATICO, sem contador/animacao) */
+.chart-card{max-width:660px;margin:52px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:38px 36px 30px;box-shadow:0 24px 54px -32px rgba(16,24,40,.28)}
+.chart{display:grid;grid-template-columns:repeat(3,1fr);column-gap:22px}
+.bar-wrap{display:flex;align-items:flex-end;height:clamp(210px,38vw,300px)}
+.bar{width:100%;border-radius:14px 14px 6px 6px;background:var(--blue);display:flex;align-items:flex-start;justify-content:center;padding-top:16px;box-shadow:inset 0 2px 0 rgba(255,255,255,.25)}
+.bar.b1{height:47%}
+.bar.b2{height:68%}
+.bar.b3{height:100%;background:var(--gold);box-shadow:inset 0 2px 0 rgba(255,255,255,.4)}
+.bar .pts{font-family:var(--font-display);font-weight:700;font-size:clamp(24px,3.4vw,32px);line-height:1;letter-spacing:-.02em;color:#fff;text-shadow:0 2px 6px rgba(16,24,40,.32)}
+.bar.b3 .pts{text-shadow:0 2px 8px rgba(120,86,10,.55)}
+.blabel{margin-top:16px}
+.blabel .m{display:block;font-weight:700;font-size:15px;color:var(--ink)}
+.blabel .y{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:2px}
+.blabel .c{display:block;font-family:var(--font-mono);font-size:11.5px;color:var(--ink-faint);margin-top:6px}
+.chart-punch{font-family:var(--font-mono);font-size:12.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin:30px 0 0}
+.chart-total{display:flex;align-items:baseline;gap:12px;margin-top:22px;padding-top:22px;border-top:1px dashed var(--line)}
+.chart-total b{font-family:var(--font-display);font-weight:700;font-size:36px;letter-spacing:-.02em;color:var(--ink)}
+.chart-total span{font-size:14.5px;color:var(--ink-soft)}
+.pesos-tie{margin-top:44px;padding-top:32px;border-top:1px solid var(--line);font-size:19px;line-height:1.6;color:var(--ink-soft);max-width:900px}
+
+/* ===== Adaptado (branco) ===== */
+.adapt{background:var(--surface)}
+.adapt .eyebrow{color:var(--blue)}
+.adapt-body{max-width:720px;margin-top:22px;display:flex;flex-direction:column;gap:16px}
+.adapt-body p{font-size:18px;line-height:1.7;color:#2C3743}
+.contrast{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px;margin:44px 0 0}
+.cbox{border-radius:var(--radius-2xl);padding:30px 28px}
+.cbox.stay{background:rgba(0,123,255,.05);border:1.5px solid var(--blue);color:var(--ink)}
+.cbox.leave{background:var(--surface-2);border:1px solid var(--line);color:var(--ink-soft)}
+.cbox h3{font-family:var(--font-display);font-weight:700;font-size:20px;letter-spacing:-.01em;margin-bottom:20px;display:flex;align-items:center;gap:.5em}
+.cbox.stay h3{color:var(--blue)}
+.cbox.leave h3{color:var(--ink-faint)}
+.cbox ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.cbox li{display:flex;gap:12px;align-items:flex-start;font-size:15.5px;line-height:1.45;color:var(--ink)}
+.cbox.leave li{color:var(--ink-soft)}
+.cbox .dot{width:8px;height:8px;border-radius:50%;flex:none;margin-top:8px}
+.cbox.stay .dot{background:var(--blue)}
+.cbox.leave .dot{background:transparent;border:1.5px solid var(--ink-faint)}
+.pullquote{max-width:820px;margin:56px auto 0;text-align:center}
+.pullquote .sp{color:var(--blue);width:26px;height:26px;margin-bottom:14px}
+.pullquote p{font-family:var(--font-serif);font-style:italic;font-weight:500;font-size:clamp(24px,3.4vw,34px);line-height:1.28;color:var(--ink)}
+
+/* ===== CTA final (bloco #007BFF + card branco) ===== */
+.final{background:var(--blue);padding:96px 0}
+.final .wrap{display:flex;justify-content:center}
+.fcard{background:var(--surface);border-radius:28px;max-width:560px;width:100%;padding:52px 44px 46px;text-align:center;box-shadow:0 50px 90px -40px rgba(0,50,110,.55)}
+.fcard .star{width:62px;height:62px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;margin:0 auto 22px;box-shadow:0 16px 30px -14px rgba(0,123,255,.6)}
+.fcard .star svg{width:30px;height:30px}
+.fcard h2{font-family:var(--font-display);font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1.04;letter-spacing:-.025em;color:var(--ink)}
+.fcard .sub{margin-top:14px;font-size:16.5px;color:var(--ink-soft)}
+.fcard .btn{width:100%;height:62px;margin-top:30px}
+.fcard .brandline{margin-top:20px;display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--ink-soft)}
+.fcard .brandline .sp{color:var(--blue);width:16px;height:16px}
+.final .urg{max-width:560px;margin:28px auto 0;text-align:center;font-size:14.5px;line-height:1.55;color:#fff}
+
+/* ===== Footer (branco) ===== */
+.foot{background:var(--surface);padding:52px 0 64px;text-align:center;border-top:1px solid var(--line)}
+.foot .logo{height:40px;width:auto;margin:0 auto 16px}
+.foot p{max-width:560px;margin:0 auto;font-size:13.5px;color:var(--ink-faint);line-height:1.65}
+.foot .small{margin-top:10px;font-size:12.5px;opacity:.85}
+
+/* ===== Sticky (pill #007BFF + botao branco) ===== */
+.sticky{position:fixed;left:50%;bottom:20px;z-index:70;transform:translate(-50%,160%);transition:transform .35s cubic-bezier(.2,.8,.2,1);display:flex;align-items:center;gap:16px;background:var(--blue);color:#fff;border-radius:var(--radius-pill);padding:9px 9px 9px 22px;box-shadow:0 24px 50px -14px rgba(0,50,110,.5);width:max-content;max-width:calc(100vw - 28px)}
+.sticky.show{transform:translate(-50%,0)}
+.sticky .t{display:flex;align-items:center;gap:9px;font-size:14.5px;font-weight:600;color:#fff}
+.sticky .t .sp{color:#fff;width:16px;height:16px}
+.sticky .btn{height:46px;font-size:14.5px;padding:0 22px;box-shadow:none;background:#fff;color:var(--blue)}
+.sticky .btn:hover{background:var(--blue-050)}
+
+/* ===== Reveal: conteudo sempre visivel (robusto); anima so como enhancement opt-in via .js ===== */
+.reveal{opacity:1;transform:none}
+.js .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.js .reveal.in{opacity:1;transform:none}
+
+/* ===== Modal ===== */
+.ov{position:fixed;inset:0;background:rgba(16,24,40,.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+.ov.open{display:flex}
+.modal{background:var(--surface);border-radius:24px;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;box-shadow:0 50px 90px -24px rgba(16,24,40,.4);position:relative;animation:pop .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.mclose{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(16,24,40,.06);color:var(--ink-soft);display:inline-flex;align-items:center;justify-content:center}
+.mclose:hover{background:rgba(16,24,40,.12)}
+.mclose svg{width:16px;height:16px}
+.mbody{padding:44px 40px 38px}
+.mbody .star{width:54px;height:54px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.mbody .star svg{width:26px;height:26px}
+.fc{text-align:center}
+.fc h2{font-family:var(--font-display);font-weight:700;font-size:25px;letter-spacing:-.02em;color:var(--ink)}
+.fc .sub{font-size:14.5px;color:var(--ink-soft);margin-top:6px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;margin-top:26px;text-align:left}
+.fg .full{grid-column:1/-1}
+.fl{display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
+.fi{width:100%;height:50px;border-radius:12px;border:1.5px solid var(--line);padding:0 14px;font-family:var(--font-body);font-size:15px;color:var(--ink);background:#fff;outline:none;transition:border-color .15s,box-shadow .15s}
+.fi:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(0,123,255,.14)}
+.fa{margin-top:24px}.fa .btn{width:100%}
+#okCard{display:none;text-align:center}
+#okCard .ok{width:66px;height:66px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;margin:0 auto 18px}
+#okCard p{font-size:15px;color:var(--ink-soft);max-width:360px;margin:0 auto 24px;line-height:1.55}
+
+/* ===== Responsivo ===== */
+@media (max-width:980px){
+  .contrast{grid-template-columns:1fr;gap:40px}
+  .hero{padding:56px 0 68px}
+  .hero .wrap{gap:22px}
+  .sec{padding:76px 0}
+}
+@media (max-width:600px){
+  .wrap{padding:0 20px}
+  body{font-size:16px}
+  .top-r .back{display:none}
+  .stats{grid-template-columns:1fr}
+  .chart-card{padding:26px 16px 22px}
+  .chart{column-gap:10px}
+  .blabel .m{font-size:14px}
+  .blabel .c{font-size:10px}
+  .btn{height:56px;font-size:16px;padding:0 24px;white-space:normal}
+  .fcard{padding:40px 24px 34px}
+  .mbody{padding:36px 22px 28px}.fg{grid-template-columns:1fr}
+  .sticky .t{display:none}.sticky{padding:7px 7px 7px 8px}
+  .sticky .btn{height:48px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important}
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none;transition:none}
 }
 </style>
 </head>
 <body>
+
+<!-- ===================== TOPBAR ===================== -->
 <header class="top"><div class="wrap">
-<span class="logo">MAGO DO <span>PISM</span></span>
-<div class="top-r"><a href="inicio.html" class="back">← Início</a><button class="top-cta" data-open-modal>Fazer rematrícula</button></div>
+  <a href="#topo" aria-label="Mago do PISM"><img class="logo" src="../assets/logo-azul.png" alt="Mago do PISM"/></a>
+  <div class="top-r">
+    <a href="inicio.html" class="back">← Início</a>
+    <button class="btn" data-open>Fazer rematrícula</button>
+  </div>
 </div></header>
 
+<main id="topo">
+
+<!-- ===================== HERO ===================== -->
 <section class="hero">
-<div class="wrap">
-<div>
-<span class="hero-tag"><span class="dot"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.9L21.6 9l-5.8 4.4 2.1 7.1L12 16.9 6.1 20.5l2.1-7.1L2.4 9l7.2-.1z"></path></svg></span>Rematrícula 2026 aberta pra quem já é do Mago</span>
-<h1>Seja aprovado no PISM com o curso que <mark>mais aprovou</mark> alunos na história do vestibular.</h1>
-<ul class="points">
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span><b>Renovando agora, você garante a sua vaga</b> antes da gente abrir as inscrições pro Instagram.</span></li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15.5 14"></polyline></svg><span>Quando abre pro Instagram, as vagas <b>fecham rápido</b>.</span></li>
-</ul>
-<div class="hero-cta">
-<button class="btn" data-open-modal>Garantir minha vaga com desconto <span class="arr">→</span></button>
-<div class="trust"><div class="avatars"><span>AS</span><span>SB</span><span>RN</span><span>BS</span></div><span><b>514 aprovados</b> em 2025.<br>O maior pré-PISM do Brasil.</span></div>
-</div>
-</div>
-<div class="vid-wrap">
-<div class="video" data-open-modal><div class="play"><div class="c"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div></div><div class="dur">1:42</div></div>
-<div class="ticket"><b>20%</b><span>de desconto de rematrícula</span></div>
-</div>
-</div>
+  <svg class="spark a" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>
+  <svg class="spark b" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>
+  <svg class="spark c" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>
+  <div class="wrap">
+    <span class="eyebrow hero-eyebrow"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>Rematrícula 2026 · quem já é do Mago</span>
+    <h1>Continue no curso que <span class="u">mais aprova</span> no PISM, bem na hora em que mais pesa.</h1>
+
+    <!-- Placeholder de video 16:9 (honesto, sem gradiente fake). Trocar pelo video real de rematricula. -->
+    <div class="video-ph" role="img" aria-label="Espaço reservado para o vídeo de rematrícula em formato 16 por 9">
+      <span class="vtag">Vídeo 16:9</span>
+      <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+      <span class="vlabel">Seu vídeo de rematrícula aqui</span>
+      <span class="vsub">placeholder · troque pelo vídeo real</span>
+    </div>
+
+    <ul class="points">
+      <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Renovando agora, <b>você garante a sua vaga</b> antes da gente abrir as inscrições pro Instagram.</span></li>
+      <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg></span><span>Quando abre pro Instagram, as vagas <b>fecham rápido</b>.</span></li>
+    </ul>
+
+    <div class="hero-cta">
+      <button class="btn" data-open>Garantir minha vaga <span class="arw" aria-hidden="true">&rarr;</span></button>
+      <button class="btn ghost" data-open>Já sou do Mago</button>
+    </div>
+
+    <p class="hero-trust">
+      <svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>
+      <span><b>514 aprovados</b> em 2025. O maior pré-PISM do Brasil.</span>
+    </p>
+  </div>
 </section>
 
-<section class="sec">
-<div class="wrap">
-<div class="res-head reveal">
-<div>
-<div class="eyebrow"><svg class="star" viewBox="0 0 24 24"><path d="M12 2l2.4 6.9L21.6 9l-5.8 4.4 2.1 7.1L12 16.9 6.1 20.5l2.1-7.1L2.4 9l7.2-.1z"></path></svg>Resultados que a gente prova</div>
-<h2 class="h2">A prova está na lista de aprovados.</h2>
-<p class="lead">Enquanto muita gente ainda está decidindo o curso, quem é do Mago aparece na lista.</p>
-</div>
-<div class="stats">
-<div class="stat"><div class="n" data-count="514">514</div><span class="l">aprovados em 2025</span></div>
-<div class="stat"><div class="n" data-count="20" data-suffix="%">20%</div><span class="l">de todo o PISM</span></div>
-</div>
-</div>
-<div class="mural-bar reveal"><h3>Um pedaço do nosso mural de aprovados</h3><p>Cada quadradinho é um aluno que passou.</p></div>
-<div class="mural reveal">
-<div class="tile"><span class="rib">Aprovado</span><div class="ini">AS</div><div class="cap"><strong>Arthur S.</strong><span>Medicina</span></div></div>
-<div class="tile"><span class="rib">Aprovado</span><div class="ini">SB</div><div class="cap"><strong>Sofia B.</strong><span>Direito</span></div></div>
-<div class="tile"><span class="rib">Aprovado</span><div class="ini">RN</div><div class="cap"><strong>Rafael N.</strong><span>Engenharia</span></div></div>
-<div class="tile"><span class="rib">Aprovado</span><div class="ini">BS</div><div class="cap"><strong>Beatriz S.</strong><span>Odontologia</span></div></div>
-<div class="tile"><span class="rib">Aprovado</span><div class="ini">JP</div><div class="cap"><strong>João P.</strong><span>Medicina</span></div></div>
-<div class="tile"><span class="rib">Aprovado</span><div class="ini">LM</div><div class="cap"><strong>Laura M.</strong><span>Farmácia</span></div></div>
-<div class="tile"><span class="rib">Aprovado</span><div class="ini">GC</div><div class="cap"><strong>Gabriel C.</strong><span>Direito</span></div></div>
-<div class="tile"><span class="rib">Aprovado</span><div class="ini">MF</div><div class="cap"><strong>Maria F.</strong><span>Nutrição</span></div></div>
-</div>
-<div class="method reveal">
-<div>
-<p class="claim">Acha que é sorte? Não é. É método.</p>
-<div class="pill"><svg class="star" viewBox="0 0 24 24"><path d="M12 2l2.4 6.9L21.6 9l-5.8 4.4 2.1 7.1L12 16.9 6.1 20.5l2.1-7.1L2.4 9l7.2-.1z"></path></svg>O maior pré-PISM do Brasil</div>
-</div>
-<div class="courses">
-<div class="course top"><div class="n">68</div><div class="l">Medicina</div></div>
-<div class="course"><div class="n">79</div><div class="l">Direito</div></div>
-<div class="course"><div class="n">52</div><div class="l">Engenharia</div></div>
-<div class="course"><div class="n">51</div><div class="l">Odontologia</div></div>
-<div class="course"><div class="n">29</div><div class="l">Nutrição</div></div>
-<div class="course"><div class="n">32</div><div class="l">Farmácia</div></div>
-</div>
-</div>
-</div>
+<!-- ===================== RESULTADOS ===================== -->
+<section class="sec results">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>Resultados</span>
+      <h2 class="h2">A prova está na lista de aprovados.</h2>
+      <p class="lead">Enquanto muita gente ainda está decidindo o curso, quem é do Mago aparece na lista. Não é sorte, é método.</p>
+    </div>
+
+    <div class="stats reveal">
+      <div class="stat navy"><div class="n">514</div><span class="l">aprovados em 2025</span></div>
+      <div class="stat blue"><div class="n">20%</div><span class="l">de todo o PISM saíram do Mago</span></div>
+    </div>
+
+    <!-- PROVISORIO: Chefe vai ajustar os numeros por curso -->
+    <div class="courses-head reveal">
+      <h3>Aprovados por curso em 2025</h3>
+      <p>A força do Mago aparece curso a curso.</p>
+    </div>
+    <div class="courses reveal">
+      <div class="course"><div class="cn">68</div><span class="cc">Medicina</span></div>
+      <div class="course"><div class="cn">79</div><span class="cc">Direito</span></div>
+      <div class="course"><div class="cn">52</div><span class="cc">Engenharia</span></div>
+      <div class="course"><div class="cn">51</div><span class="cc">Odontologia</span></div>
+      <div class="course"><div class="cn">29</div><span class="cc">Nutrição</span></div>
+      <div class="course"><div class="cn">32</div><span class="cc">Farmácia</span></div>
+    </div>
+
+    <!-- FOTO = placeholder honesto (Chefe confirmou: usar placeholder nas fotos, sem inventar aluno) -->
+    <div class="mural-slot reveal">
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="9" r="1.8"/><path d="M21 15l-5-5L5 21"/></svg></span>
+      <h3>Fotos reais dos aprovados entram aqui</h3>
+      <p>Espaço reservado pras fotos verdadeiras dos aprovados do Mago. Nada de aluno genérico: quando as fotos reais chegarem, elas ocupam este bloco.</p>
+      <p class="hint">Placeholder honesto · aguardando as fotos reais dos aprovados</p>
+    </div>
+  </div>
 </section>
 
+<!-- ===================== PESOS DO PISM ===================== -->
 <section class="sec pesos">
-<div class="wrap">
-<div class="reveal">
-<div class="eyebrow"><svg class="star" viewBox="0 0 24 24"><path d="M12 2l2.4 6.9L21.6 9l-5.8 4.4 2.1 7.1L12 16.9 6.1 20.5l2.1-7.1L2.4 9l7.2-.1z"></path></svg>Como funciona o PISM</div>
-<h2 class="h2">Por que renovar agora é importante</h2>
-<p class="lead">O PISM (Programa de Ingresso Seletivo Misto da UFJF) é um vestibular seriado: você faz durante os três anos do Ensino Médio, em três módulos. E cada módulo tem um peso diferente na sua nota final.</p>
-<p class="tie">O peso quase <mark>triplica</mark> do primeiro pro terceiro ano. Largar o Mago justo agora, quando cada ponto vale mais, é jogar vantagem fora. Continuar aqui é seguir com quem mais aprova, bem na hora que mais pesa.</p>
-</div>
-<div class="chart-card reveal" id="chartCard">
-<div class="chart">
-<div class="bcol"><div class="bar" data-h="34%"><span class="pts">240</span></div><div class="blabel"><span class="m">PISM I</span><span class="y">1º ano</span><span class="c">120 pts × peso 2</span></div></div>
-<div class="bcol"><div class="bar" data-h="51%"><span class="pts">360</span></div><div class="blabel"><span class="m">PISM II</span><span class="y">2º ano</span><span class="c">120 pts × peso 3</span></div></div>
-<div class="bcol"><div class="bar" data-h="100%"><span class="pts">700</span></div><div class="blabel"><span class="m">PISM III</span><span class="y">3º ano</span><span class="c">140 pts × peso 5</span></div></div>
-</div>
-<p class="punch">cada módulo vale mais que o anterior →</p>
-<div class="total"><b>1.300</b><i>pontos no total (o máximo do PISM)</i></div>
-</div>
-</div>
+  <div class="wrap">
+    <div class="sec-head reveal" style="max-width:760px">
+      <span class="eyebrow"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>Como funciona o PISM</span>
+      <h2 class="h2">Por que renovar agora é importante.</h2>
+      <p class="lead">O PISM (Programa de Ingresso Seletivo Misto da UFJF) é um vestibular seriado: você faz ao longo dos três anos do Ensino Médio, em três módulos. E cada módulo pesa diferente na sua nota final.</p>
+    </div>
+
+    <!-- Grafico da escalada dos pesos, estatico e limpo (segue a referencia pesos-ref.jpg) -->
+    <div class="chart-card reveal">
+      <div class="chart">
+        <div class="bar-wrap"><div class="bar b1"><span class="pts">240</span></div></div>
+        <div class="bar-wrap"><div class="bar b2"><span class="pts">360</span></div></div>
+        <div class="bar-wrap"><div class="bar b3"><span class="pts">700</span></div></div>
+        <div class="blabel"><span class="m">PISM I</span><span class="y">1º ano</span><span class="c">120 pts × peso 2</span></div>
+        <div class="blabel"><span class="m">PISM II</span><span class="y">2º ano</span><span class="c">120 pts × peso 3</span></div>
+        <div class="blabel"><span class="m">PISM III</span><span class="y">3º ano</span><span class="c">140 pts × peso 5</span></div>
+      </div>
+      <p class="chart-punch">Cada módulo vale mais que o anterior &rarr;</p>
+      <div class="chart-total"><b>1.300</b><span>pontos no total (o máximo do PISM)</span></div>
+    </div>
+
+    <p class="pesos-tie reveal">O peso quase <mark>triplica</mark> do primeiro pro terceiro ano. Largar o Mago justo agora, quando cada ponto vale mais, é jogar vantagem fora. Continuar aqui é seguir com quem mais aprova, bem na hora que mais pesa.</p>
+  </div>
 </section>
 
-<section class="sec" style="padding-bottom:0">
-<div class="wrap">
-<div class="adapt">
-<div class="reveal">
-<div class="eyebrow"><svg class="star" viewBox="0 0 24 24"><path d="M12 2l2.4 6.9L21.6 9l-5.8 4.4 2.1 7.1L12 16.9 6.1 20.5l2.1-7.1L2.4 9l7.2-.1z"></path></svg>Uma vantagem que você já tem</div>
-<h2 class="h2">Você já está adaptado, e isso conta muito.</h2>
-<div class="adapt-body">
-<p>No vestibular, quem se adapta rápido larga na frente. E essa parte você já venceu: conhece o método do Mago, se vira na <strong>Magoflix</strong> de olhos fechados, sabe como cada professor cobra e já pegou o ritmo.</p>
-<p>Trocar de cursinho no meio do PISM, bem quando o peso sobe, é recomeçar do zero: outro método, outra plataforma, outros professores, outro ritmo. É tempo que você perde se readaptando em vez de estudar. Ficar no Mago segura a vantagem que você já tem.</p>
-</div>
-</div>
-<div class="compare reveal">
-<div class="col good"><h3>Continuar no Mago</h3><ul>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Você já conhece o método que mais aprova</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Já se vira na Magoflix</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Já tem ritmo com os professores</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Foca só em estudar, não em se acostumar</li>
-</ul></div>
-<div class="col bad"><h3>Recomeçar em outro lugar</h3><ul>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>Aprender um método novo do zero</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>Se achar em outra plataforma</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>Conhecer os professores do zero</li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>Perder semanas se readaptando</li>
-</ul></div>
-</div>
-</div>
+<!-- ===================== VOCE JA ESTA ADAPTADO ===================== -->
+<section class="sec adapt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>Uma vantagem que você já tem</span>
+      <h2 class="h2">Você já está adaptado, e isso conta muito.</h2>
+      <div class="adapt-body">
+        <p>No vestibular, quem se adapta rápido larga na frente. E essa parte você já venceu: conhece o método do Mago, se vira na <b>Magoflix</b> de olhos fechados, sabe como cada professor cobra e já pegou o ritmo.</p>
+        <p>Trocar de cursinho no meio do PISM, bem quando o peso sobe, é recomeçar do zero: outro método, outra plataforma, outros professores, outro ritmo. É tempo se readaptando em vez de estudar.</p>
+      </div>
+    </div>
 
-<div class="final reveal" id="finalCta">
-<div class="eyebrow">Sua vaga vem primeiro</div>
-<h2>Renove agora e <mark>garanta a sua vaga</mark> antes de abrir pro Instagram.</h2>
-<div class="final-row">
-<div class="chip"><b>20%</b><span>de desconto na rematrícula</span></div>
-<button class="btn" data-open-modal>Quero continuar no Mago <span class="arr">→</span></button>
-</div>
-<p class="urgency"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><span>As vagas de rematrícula são poucas e a preferência é sua. Depois que abre pro Instagram, elas somem rápido.</span></p>
-</div>
+    <div class="contrast reveal">
+      <div class="cbox stay">
+        <h3>Continuar no Mago</h3>
+        <ul>
+          <li><span class="dot"></span>Você já conhece o método que mais aprova.</li>
+          <li><span class="dot"></span>Já se vira na Magoflix sem pensar.</li>
+          <li><span class="dot"></span>Já tem ritmo com cada professor.</li>
+          <li><span class="dot"></span>Foca só em estudar, não em se acostumar.</li>
+        </ul>
+      </div>
+      <div class="cbox leave">
+        <h3>Recomeçar do zero</h3>
+        <ul>
+          <li><span class="dot"></span>Aprender um método novo do começo.</li>
+          <li><span class="dot"></span>Se achar em outra plataforma.</li>
+          <li><span class="dot"></span>Entender como professores novos cobram.</li>
+          <li><span class="dot"></span>Perder semanas só se readaptando.</li>
+        </ul>
+      </div>
+    </div>
 
-<footer class="foot">
-<strong>Mago do Pism</strong>
-<p>O maior pré-PISM do Brasil. Rematrícula 2026 pra quem já é de casa.<br>Números de aprovação referentes ao PISM 2025.</p>
-</footer>
-</div>
+    <div class="pullquote reveal">
+      <svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>
+      <p>Recomeçar seria abrir mão da vantagem que você levou um ano inteiro pra construir.</p>
+    </div>
+  </div>
 </section>
 
-<div class="sticky" id="sticky"><span class="t"><b>20%</b> de desconto de rematrícula</span><button class="btn" data-open-modal>Garantir minha vaga com desconto <span class="arr">→</span></button></div>
+<!-- ===================== CTA FINAL ===================== -->
+<section class="final" id="rematricula">
+  <div class="wrap">
+    <div class="fcard reveal">
+      <span class="star"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg></span>
+      <h2>Rematrícula aberta pra quem já é do Mago.</h2>
+      <p class="sub">Renove agora e garanta a sua vaga antes de abrir pro Instagram.</p>
+      <button class="btn" data-open>Garantir minha vaga <span class="arw" aria-hidden="true">&rarr;</span></button>
+      <span class="brandline"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>Mago · PISM</span>
+    </div>
+  </div>
+  <p class="urg">As vagas de rematrícula são poucas e a preferência é sua. Depois que abre pro Instagram, elas somem rápido.</p>
+</section>
+</main>
 
-<div class="ov" id="formModal">
-<div class="modal">
-<button class="mclose" id="modalClose" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-<div class="mbody">
-<div class="fc" id="formCard">
-<h2>Confirme seus dados</h2>
-<p class="sub">Já preenchemos com os dados do seu cadastro — pode editar antes de confirmar.</p>
-<div class="fg">
-<div class="full"><label class="fl">Nome completo</label><input class="fi ro" id="rmNome" value="Arthur dos Santos Alves" readonly></div>
-<div><label class="fl">E-mail</label><input class="fi" id="rmEmail" type="email" value="arthur.salves@gmail.com"></div>
-<div><label class="fl">Telefone (WhatsApp)</label><input class="fi" id="rmTelefone" value="(31) 99234-1098"></div>
-<div class="full"><label class="fl">Turma atual</label><input class="fi ro" value="PISM 2 · Intensivo 2026" readonly></div>
+<!-- ===================== FOOTER ===================== -->
+<footer class="foot"><div class="wrap">
+  <img class="logo" src="../assets/logo-azul.png" alt="Mago do PISM"/>
+  <p>O maior pré-PISM do Brasil. Rematrícula 2026 pra quem já é de casa.</p>
+  <p class="small">Números de aprovação referentes ao PISM 2025. [Espaço pra razão social, CNPJ e contato do Mago do PISM.]</p>
+</div></footer>
+
+<!-- ===================== STICKY ===================== -->
+<div class="sticky" id="sticky">
+  <span class="t"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>Rematrícula 2026 · sua vaga vem primeiro</span>
+  <button class="btn" data-open>Garantir minha vaga</button>
 </div>
-<div class="fa"><button class="btn blue" id="btnSubmitForm">Confirmar interesse <span class="arr">→</span></button></div>
-</div>
-<div class="fc" id="successCard">
-<div class="ok"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-<h2>Recebemos seu interesse</h2>
-<p>O time do Mago vai te contatar em breve pelo e-mail ou WhatsApp informado pra seguir com a rematrícula.</p>
-<button class="btn blue" id="btnCloseSuccess">Fechar</button>
-</div>
-</div>
-</div>
+
+<!-- ===================== MODAL ===================== -->
+<div class="ov" id="modal">
+  <div class="modal">
+    <button class="mclose" id="mclose" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="mbody">
+      <div class="fc" id="formCard">
+        <span class="star"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg></span>
+        <h2>Garanta a sua vaga</h2>
+        <p class="sub">Deixe seu contato que o time do Mago fala com você pra fechar a rematrícula.</p>
+        <div class="fg">
+          <div class="full"><label class="fl" for="rmNome">Nome completo</label><input class="fi" id="rmNome" placeholder="Seu nome completo"/></div>
+          <div><label class="fl" for="rmEmail">E-mail</label><input class="fi" id="rmEmail" type="email" placeholder="seu@email.com"/></div>
+          <div><label class="fl" for="rmTel">WhatsApp</label><input class="fi" id="rmTel" placeholder="(00) 00000-0000"/></div>
+          <div class="full"><label class="fl" for="rmTurma">Sua turma atual</label><input class="fi" id="rmTurma" placeholder="Ex.: PISM 2 · Intensivo"/></div>
+        </div>
+        <div class="fa"><button class="btn" id="btnSubmit">Confirmar interesse <span class="arw" aria-hidden="true">&rarr;</span></button></div>
+      </div>
+      <div class="fc" id="okCard">
+        <div class="ok"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h2>Recebemos seu interesse</h2>
+        <p>O time do Mago vai te chamar pelo WhatsApp ou e-mail que você deixou pra seguir com a rematrícula.</p>
+        <button class="btn" id="btnClose">Fechar</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
 (function(){
-var ov=document.getElementById('formModal'),fc=document.getElementById('formCard'),sc=document.getElementById('successCard');
-function open(){fc.style.display='block';sc.style.display='none';ov.classList.add('is-open')}
-function close(){ov.classList.remove('is-open')}
-document.querySelectorAll('[data-open-modal]').forEach(function(b){b.addEventListener('click',open)});
-document.getElementById('modalClose').addEventListener('click',close);
-document.getElementById('btnCloseSuccess').addEventListener('click',close);
-ov.addEventListener('click',function(e){if(e.target===ov)close()});
-document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
-var tel=document.getElementById('rmTelefone');
-tel.addEventListener('input',function(){var v=tel.value.replace(/\D/g,'').slice(0,11);v=v.replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2');tel.value=v});
-document.getElementById('btnSubmitForm').addEventListener('click',function(){fc.style.display='none';sc.style.display='block'});
+  "use strict";
+  var ov=document.getElementById('modal'),fc=document.getElementById('formCard'),ok=document.getElementById('okCard');
+  function open(){fc.style.display='block';ok.style.display='none';ov.classList.add('open');document.body.style.overflow='hidden'}
+  function close(){ov.classList.remove('open');document.body.style.overflow=''}
+  document.querySelectorAll('[data-open]').forEach(function(b){b.addEventListener('click',open)});
+  document.getElementById('mclose').addEventListener('click',close);
+  document.getElementById('btnClose').addEventListener('click',close);
+  ov.addEventListener('click',function(e){if(e.target===ov)close()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
 
-function count(el){var t=+el.dataset.count,s=el.dataset.suffix||'',st=null;function f(ts){if(!st)st=ts;var p=Math.min((ts-st)/1200,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(t*e)+s;if(p<1)requestAnimationFrame(f)}requestAnimationFrame(f)}
-var io=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;var el=en.target;el.classList.add('in');
-if(el.id==='chartCard')el.querySelectorAll('.bar').forEach(function(b,i){setTimeout(function(){b.style.height=b.dataset.h},i*180)});
-el.querySelectorAll('[data-count]').forEach(count);io.unobserve(el)})},{threshold:.2});
-document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+  var tel=document.getElementById('rmTel');
+  tel.addEventListener('input',function(){var v=tel.value.replace(/\D/g,'').slice(0,11);v=v.replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2');tel.value=v});
+  document.getElementById('btnSubmit').addEventListener('click',function(){fc.style.display='none';ok.style.display='block'});
 
-var sticky=document.getElementById('sticky'),hero=document.querySelector('.hero'),fin=document.getElementById('finalCta');
-function onScroll(){var hb=hero.getBoundingClientRect().bottom,fr=fin.getBoundingClientRect(),vh=innerHeight;var inFinal=fr.top<vh&&fr.bottom>0;sticky.classList.toggle('show',hb<0&&!inFinal)}
-addEventListener('scroll',onScroll,{passive:true});onScroll();
+  /* conteudo estatico e sempre visivel (sem contador, sem barra animada, sem reveal fragil) */
+
+  /* sticky: aparece depois do hero, some no CTA final */
+  var sticky=document.getElementById('sticky'),hero=document.querySelector('.hero'),fin=document.getElementById('rematricula');
+  function onScroll(){var hb=hero.getBoundingClientRect().bottom,fr=fin.getBoundingClientRect(),vh=innerHeight;var inFinal=fr.top<vh&&fr.bottom>0;sticky.classList.toggle('show',hb<0&&!inFinal)}
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
 })();
 </script>
 </body>

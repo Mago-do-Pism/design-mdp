@@ -4,386 +4,627 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Editar Rematrícula 2026 · Admin · Mago do Pism</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="../styles/tokens.css"/>
 <style>
-*{box-sizing:border-box}html,body{margin:0;padding:0}
-:root{--navy:#061C33;--navy-2:#0A2A4A;--ink:#0B1622;--blue:var(--brand-blue);--blue-d:#0B6FC0;--gold:#FFC90F}
-body{font-family:var(--font-body);color:var(--ink);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased}
-a{color:var(--blue);text-decoration:none}a:hover{color:var(--blue-d)}
+/* Estilo da landing, identico a alunos/rematricula.html */
+/* ===== Paleta Magoflix: #007BFF (primaria exata) + branco. Dourado SO na barra PISM III. ===== */
+:root{
+  --blue:#007BFF; --blue-deep:#0062CC;
+  --blue-050:#EAF3FF; --blue-100:#CFE4FF;
+  --gold:#E9B949;                 /* usado SOMENTE na barra do PISM III */
+  --surface:#FFFFFF; --surface-2:#F4F7FC;
+  --ink:#101828; --ink-soft:#475467; --ink-faint:#667085;
+  --line:#E4E9F2;
+  --font-mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --font-serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-body);color:var(--ink);background:var(--surface);line-height:1.62;font-size:17px;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{text-wrap:pretty;margin:0}
+.wrap{width:100%;max-width:1200px;margin:0 auto;padding:0 28px}
+section{position:relative}
+.disp{font-family:var(--font-display);font-weight:700;letter-spacing:-.02em;line-height:1.02}
+.serif{font-family:var(--font-serif)}
+.eyebrow{display:inline-flex;align-items:center;gap:.55em;font-weight:700;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase}
+.sp{width:1em;height:1em;flex:none;fill:currentColor}
 mark{background:none;color:var(--blue);font-weight:inherit}
-.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
-.star{width:14px;height:14px;fill:currentColor;flex-shrink:0}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-weight:700;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--blue);margin-bottom:20px}
-.h2{font-family:var(--font-display);font-weight:700;font-size:clamp(34px,4.6vw,56px);line-height:1.02;letter-spacing:-2px;margin:0 0 20px;color:var(--ink)}
-.lead{font-size:19px;line-height:1.6;color:#44505E;margin:0}
+.u{position:relative;white-space:nowrap;color:var(--blue)}
+.u::after{content:"";position:absolute;left:0;right:0;bottom:-.09em;height:.11em;border-radius:4px;background:var(--blue);opacity:.3}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:64px;padding:0 34px;border-radius:var(--radius-pill);border:0;font-family:var(--font-body);font-weight:700;font-size:17px;letter-spacing:-.2px;background:var(--gold);color:var(--ink);box-shadow:0 6px 0 #C99A00;white-space:nowrap;pointer-events:none}
-.btn .arr{display:inline-flex;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--gold);align-items:center;justify-content:center;font-size:15px}
-.btn.blue{background:var(--blue);color:#fff;box-shadow:0 6px 0 var(--blue-d)}
-.btn.blue .arr{background:#fff;color:var(--blue)}
+/* ===== Botoes (CTA solido #007BFF, sem gradiente) ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;border:0;cursor:pointer;font-family:var(--font-body);font-weight:700;font-size:16.5px;letter-spacing:-.01em;line-height:1;height:60px;padding:0 30px;border-radius:var(--radius-pill);background:var(--blue);color:#fff;box-shadow:0 12px 26px -12px rgba(0,123,255,.45);transition:background .16s,transform .12s,box-shadow .16s;white-space:nowrap;text-align:center}
+.btn:hover{background:var(--blue-deep);transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn .arw{font-size:1.05em;transform:translateY(.02em)}
+.btn.ghost{background:transparent;color:var(--blue);box-shadow:none;border:1.5px solid rgba(0,123,255,.45);height:52px;padding:0 22px;font-size:15px;font-weight:700}
+.btn.ghost:hover{background:rgba(0,123,255,.06);border-color:var(--blue);transform:translateY(-2px)}
 
-/* Barra de edição (reaproveita a anatomia do topbar público) */
-.top{position:sticky;top:0;z-index:60;background:rgba(6,28,51,.94);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08)}
-.top .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
-.edit-left{display:flex;align-items:center;gap:12px;font-size:13.5px;font-weight:600;color:#fff}
-.edit-dot{width:8px;height:8px;border-radius:50%;background:#5fd49a;flex-shrink:0}
-.edit-pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;background:rgba(255,201,15,.18);color:var(--gold);display:none;align-items:center;gap:6px}
+/* ===== Aprovados por curso ===== */
+.courses-head{max-width:900px;margin:56px auto 0;text-align:center}
+.courses-head h3{font-family:var(--font-display);font-weight:700;font-size:23px;letter-spacing:-.01em;color:var(--ink)}
+.courses-head p{font-size:14.5px;color:var(--ink-soft);margin-top:6px}
+.courses{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:14px;max-width:900px;margin:22px auto 0}
+.course{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-xl);padding:22px 16px;text-align:center;box-shadow:0 14px 30px -26px rgba(16,24,40,.22)}
+.course .cn{font-family:var(--font-display);font-weight:700;font-size:42px;line-height:.9;letter-spacing:-.03em;color:var(--blue)}
+.course .cc{display:block;margin-top:8px;font-size:14px;font-weight:600;color:var(--ink-soft)}
+
+/* ===== Topbar (branca) ===== */
+.top{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:70px;gap:16px}
+.top .logo{height:42px;width:auto}
+.top-r{display:flex;align-items:center;gap:20px}
+.top-r .back{font-size:14.5px;font-weight:600;color:var(--ink-soft)}
+.top-r .back:hover{color:var(--ink)}
+.top .btn{height:44px;padding:0 20px;font-size:14.5px;box-shadow:none}
+
+/* ===== Hero (fundo #007BFF solido, conteudo branco) ===== */
+.hero{background:var(--blue);color:#fff;padding:78px 0 88px;border-bottom:0;position:relative;overflow:hidden}
+.hero .wrap{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;gap:26px}
+.hero .spark{display:none}
+.hero-eyebrow{color:#fff;margin:0}
+.hero h1{font-family:var(--font-display);font-weight:700;font-size:clamp(34px,4.9vw,56px);line-height:1.03;letter-spacing:-.025em;margin:0;max-width:840px;color:#fff}
+.hero .u{color:#FCE38A}
+.hero .u::after{background:#FCE38A;opacity:1}
+/* Placeholder de video 16:9 honesto: card branco sobre o azul, play azul */
+.video-ph{position:relative;width:100%;max-width:860px;aspect-ratio:16/9;border-radius:22px;background:#fff;border:2px dashed var(--blue-100);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;overflow:hidden;box-shadow:0 34px 70px -34px rgba(0,40,90,.55)}
+.video-ph .vtag{position:absolute;top:14px;left:14px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);background:rgba(0,123,255,.1);border:1px solid rgba(0,123,255,.35);padding:5px 11px;border-radius:var(--radius-pill)}
+.video-ph .play{width:84px;height:84px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 18px 40px -14px rgba(0,123,255,.55)}
+.video-ph .play svg{width:32px;height:32px;margin-left:5px}
+.video-ph .vlabel{font-weight:700;font-size:17px;color:var(--ink)}
+.video-ph .vsub{font-size:12.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint)}
+.points{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 28px;margin:0;padding:0;list-style:none;max-width:740px}
+.points li{display:flex;gap:12px;align-items:flex-start;font-size:16.5px;color:rgba(255,255,255,.92);line-height:1.5;text-align:left;max-width:330px}
+.points li b{color:#fff}
+.points .ic{width:26px;height:26px;flex:none;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;display:inline-flex;align-items:center;justify-content:center;margin-top:1px}
+.points .ic svg{width:14px;height:14px}
+.hero-cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px}
+.hero-cta .btn{background:#fff;color:var(--blue);box-shadow:0 12px 26px -12px rgba(0,40,90,.45)}
+.hero-cta .btn:hover{background:var(--blue-050);color:var(--blue)}
+.hero-cta .btn.ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.6);box-shadow:none}
+.hero-cta .btn.ghost:hover{background:rgba(255,255,255,.12);border-color:#fff;color:#fff}
+.hero-trust{display:flex;align-items:center;justify-content:center;gap:10px;margin:0;font-size:14.5px;color:rgba(255,255,255,.9);line-height:1.4}
+.hero-trust .sp{color:#fff;width:20px;height:20px}
+.hero-trust b{color:#fff}
+
+/* ===== Secao base ===== */
+.sec{padding:104px 0}
+.sec-head{max-width:720px}
+.sec-head.center{margin:0 auto;text-align:center}
+.sec-head .eyebrow{margin-bottom:16px}
+.h2{font-family:var(--font-display);font-weight:700;font-size:clamp(30px,4.1vw,50px);line-height:1.03;letter-spacing:-.025em;color:var(--ink)}
+.lead{font-size:18.5px;line-height:1.6;color:var(--ink-soft);margin-top:16px}
+
+/* ===== Resultados (branco) ===== */
+.results{background:var(--surface)}
+.results .eyebrow{color:var(--blue)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:720px;margin:44px auto 0}
+.stat{border-radius:var(--radius-2xl);padding:34px 30px;text-align:left;position:relative;overflow:hidden}
+.stat.navy{background:var(--blue);color:#fff}
+.stat.blue{background:var(--surface);border:1.5px solid var(--blue);color:var(--ink)}
+.stat .n{font-family:var(--font-display);font-weight:700;font-size:clamp(52px,8vw,76px);line-height:.9;letter-spacing:-.03em;color:#fff}
+.stat.blue .n{color:var(--blue)}
+.stat .l{display:block;margin-top:12px;font-size:15px;font-weight:600;color:rgba(255,255,255,.92)}
+.stat.blue .l{color:var(--ink-soft)}
+/* slot honesto: fotos reais de aprovados */
+.mural-slot{max-width:900px;margin:56px auto 0;border:2px dashed var(--blue);background:rgba(0,123,255,.04);border-radius:var(--radius-2xl);padding:52px 32px;text-align:center;color:var(--ink-soft)}
+.mural-slot .badge{width:56px;height:56px;border-radius:50%;background:rgba(0,123,255,.12);color:var(--blue);display:inline-flex;align-items:center;justify-content:center;margin-bottom:18px}
+.mural-slot .badge svg{width:26px;height:26px}
+.mural-slot h3{font-family:var(--font-display);font-weight:700;font-size:20px;color:var(--ink);letter-spacing:-.01em}
+.mural-slot p{max-width:560px;margin:10px auto 0;font-size:15px}
+.mural-slot .hint{margin-top:16px;font-size:13.5px;color:var(--ink-faint)}
+
+/* ===== Pesos (banda clara, grafico com barras azuis + PISM III dourada) ===== */
+.pesos{background:var(--surface-2)}
+.pesos .eyebrow{color:var(--blue)}
+.pesos .h2{color:var(--ink)}
+.pesos .lead{color:var(--ink-soft)}
+/* Grafico de barras da escalada dos pesos (ESTATICO, sem contador/animacao) */
+.chart-card{max-width:660px;margin:52px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:38px 36px 30px;box-shadow:0 24px 54px -32px rgba(16,24,40,.28)}
+.chart{display:grid;grid-template-columns:repeat(3,1fr);column-gap:22px}
+.bar-wrap{display:flex;align-items:flex-end;height:clamp(210px,38vw,300px)}
+.bar{width:100%;border-radius:14px 14px 6px 6px;background:var(--blue);display:flex;align-items:flex-start;justify-content:center;padding-top:16px;box-shadow:inset 0 2px 0 rgba(255,255,255,.25)}
+.bar.b1{height:47%}
+.bar.b2{height:68%}
+.bar.b3{height:100%;background:var(--gold);box-shadow:inset 0 2px 0 rgba(255,255,255,.4)}
+.bar .pts{font-family:var(--font-display);font-weight:700;font-size:clamp(24px,3.4vw,32px);line-height:1;letter-spacing:-.02em;color:#fff;text-shadow:0 2px 6px rgba(16,24,40,.32)}
+.bar.b3 .pts{text-shadow:0 2px 8px rgba(120,86,10,.55)}
+.blabel{margin-top:16px}
+.blabel .m{display:block;font-weight:700;font-size:15px;color:var(--ink)}
+.blabel .y{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:2px}
+.blabel .c{display:block;font-family:var(--font-mono);font-size:11.5px;color:var(--ink-faint);margin-top:6px}
+.chart-punch{font-family:var(--font-mono);font-size:12.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin:30px 0 0}
+.chart-total{display:flex;align-items:baseline;gap:12px;margin-top:22px;padding-top:22px;border-top:1px dashed var(--line)}
+.chart-total b{font-family:var(--font-display);font-weight:700;font-size:36px;letter-spacing:-.02em;color:var(--ink)}
+.chart-total span{font-size:14.5px;color:var(--ink-soft)}
+.pesos-tie{margin-top:44px;padding-top:32px;border-top:1px solid var(--line);font-size:19px;line-height:1.6;color:var(--ink-soft);max-width:900px}
+
+/* ===== Adaptado (branco) ===== */
+.adapt{background:var(--surface)}
+.adapt .eyebrow{color:var(--blue)}
+.adapt-body{max-width:720px;margin-top:22px;display:flex;flex-direction:column;gap:16px}
+.adapt-body p{font-size:18px;line-height:1.7;color:#2C3743}
+.contrast{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px;margin:44px 0 0}
+.cbox{border-radius:var(--radius-2xl);padding:30px 28px}
+.cbox.stay{background:rgba(0,123,255,.05);border:1.5px solid var(--blue);color:var(--ink)}
+.cbox.leave{background:var(--surface-2);border:1px solid var(--line);color:var(--ink-soft)}
+.cbox h3{font-family:var(--font-display);font-weight:700;font-size:20px;letter-spacing:-.01em;margin-bottom:20px;display:flex;align-items:center;gap:.5em}
+.cbox.stay h3{color:var(--blue)}
+.cbox.leave h3{color:var(--ink-faint)}
+.cbox ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.cbox li{display:flex;gap:12px;align-items:flex-start;font-size:15.5px;line-height:1.45;color:var(--ink)}
+.cbox.leave li{color:var(--ink-soft)}
+.cbox .dot{width:8px;height:8px;border-radius:50%;flex:none;margin-top:8px}
+.cbox.stay .dot{background:var(--blue)}
+.cbox.leave .dot{background:transparent;border:1.5px solid var(--ink-faint)}
+.pullquote{max-width:820px;margin:56px auto 0;text-align:center}
+.pullquote .sp{color:var(--blue);width:26px;height:26px;margin-bottom:14px}
+.pullquote p{font-family:var(--font-serif);font-style:italic;font-weight:500;font-size:clamp(24px,3.4vw,34px);line-height:1.28;color:var(--ink)}
+
+/* ===== CTA final (bloco #007BFF + card branco) ===== */
+.final{background:var(--blue);padding:96px 0}
+.final .wrap{display:flex;justify-content:center}
+.fcard{background:var(--surface);border-radius:28px;max-width:560px;width:100%;padding:52px 44px 46px;text-align:center;box-shadow:0 50px 90px -40px rgba(0,50,110,.55)}
+.fcard .star{width:62px;height:62px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;margin:0 auto 22px;box-shadow:0 16px 30px -14px rgba(0,123,255,.6)}
+.fcard .star svg{width:30px;height:30px}
+.fcard h2{font-family:var(--font-display);font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1.04;letter-spacing:-.025em;color:var(--ink)}
+.fcard .sub{margin-top:14px;font-size:16.5px;color:var(--ink-soft)}
+.fcard .btn{width:100%;height:62px;margin-top:30px}
+.fcard .brandline{margin-top:20px;display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--ink-soft)}
+.fcard .brandline .sp{color:var(--blue);width:16px;height:16px}
+.final .urg{max-width:560px;margin:28px auto 0;text-align:center;font-size:14.5px;line-height:1.55;color:#fff}
+
+/* ===== Footer (branco) ===== */
+.foot{background:var(--surface);padding:52px 0 64px;text-align:center;border-top:1px solid var(--line)}
+.foot .logo{height:40px;width:auto;margin:0 auto 16px}
+.foot p{max-width:560px;margin:0 auto;font-size:13.5px;color:var(--ink-faint);line-height:1.65}
+.foot .small{margin-top:10px;font-size:12.5px;opacity:.85}
+
+/* ===== Sticky (pill #007BFF + botao branco) ===== */
+.sticky{position:fixed;left:50%;bottom:20px;z-index:70;transform:translate(-50%,160%);transition:transform .35s cubic-bezier(.2,.8,.2,1);display:flex;align-items:center;gap:16px;background:var(--blue);color:#fff;border-radius:var(--radius-pill);padding:9px 9px 9px 22px;box-shadow:0 24px 50px -14px rgba(0,50,110,.5);width:max-content;max-width:calc(100vw - 28px)}
+.sticky.show{transform:translate(-50%,0)}
+.sticky .t{display:flex;align-items:center;gap:9px;font-size:14.5px;font-weight:600;color:#fff}
+.sticky .t .sp{color:#fff;width:16px;height:16px}
+.sticky .btn{height:46px;font-size:14.5px;padding:0 22px;box-shadow:none;background:#fff;color:var(--blue)}
+.sticky .btn:hover{background:var(--blue-050)}
+
+/* ===== Reveal: conteudo sempre visivel (robusto); anima so como enhancement opt-in via .js ===== */
+.reveal{opacity:1;transform:none}
+.js .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.js .reveal.in{opacity:1;transform:none}
+
+/* ===== Modal ===== */
+.ov{position:fixed;inset:0;background:rgba(16,24,40,.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+.ov.open{display:flex}
+.modal{background:var(--surface);border-radius:24px;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;box-shadow:0 50px 90px -24px rgba(16,24,40,.4);position:relative;animation:pop .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.mclose{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(16,24,40,.06);color:var(--ink-soft);display:inline-flex;align-items:center;justify-content:center}
+.mclose:hover{background:rgba(16,24,40,.12)}
+.mclose svg{width:16px;height:16px}
+.mbody{padding:44px 40px 38px}
+.mbody .star{width:54px;height:54px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.mbody .star svg{width:26px;height:26px}
+.fc{text-align:center}
+.fc h2{font-family:var(--font-display);font-weight:700;font-size:25px;letter-spacing:-.02em;color:var(--ink)}
+.fc .sub{font-size:14.5px;color:var(--ink-soft);margin-top:6px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;margin-top:26px;text-align:left}
+.fg .full{grid-column:1/-1}
+.fl{display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
+.fi{width:100%;height:50px;border-radius:12px;border:1.5px solid var(--line);padding:0 14px;font-family:var(--font-body);font-size:15px;color:var(--ink);background:#fff;outline:none;transition:border-color .15s,box-shadow .15s}
+.fi:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(0,123,255,.14)}
+.fa{margin-top:24px}.fa .btn{width:100%}
+#okCard{display:none;text-align:center}
+#okCard .ok{width:66px;height:66px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;margin:0 auto 18px}
+#okCard p{font-size:15px;color:var(--ink-soft);max-width:360px;margin:0 auto 24px;line-height:1.55}
+
+/* ===== Responsivo ===== */
+@media (max-width:980px){
+  .contrast{grid-template-columns:1fr;gap:40px}
+  .hero{padding:56px 0 68px}
+  .hero .wrap{gap:22px}
+  .sec{padding:76px 0}
+}
+@media (max-width:600px){
+  .wrap{padding:0 20px}
+  body{font-size:16px}
+  .top-r .back{display:none}
+  .stats{grid-template-columns:1fr}
+  .chart-card{padding:26px 16px 22px}
+  .chart{column-gap:10px}
+  .blabel .m{font-size:14px}
+  .blabel .c{font-size:10px}
+  .btn{height:56px;font-size:16px;padding:0 24px;white-space:normal}
+  .fcard{padding:40px 24px 34px}
+  .mbody{padding:36px 22px 28px}.fg{grid-template-columns:1fr}
+  .sticky .t{display:none}.sticky{padding:7px 7px 7px 8px}
+  .sticky .btn{height:48px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important}
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none;transition:none}
+}
+
+/* ===== Camada de edicao do admin (so neste arquivo) ===== */
+.btn{pointer-events:auto;cursor:text}
+.edit-bar{position:sticky;top:0;z-index:80;background:var(--ink);color:#fff}
+.edit-bar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
+.edit-left{display:flex;align-items:center;gap:12px;font-size:13.5px;font-weight:600}
+.edit-dot{width:8px;height:8px;border-radius:50%;background:#5fd49a;flex:none}
+.edit-pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:var(--radius-pill);background:rgba(233,185,73,.18);color:var(--gold);display:none;align-items:center;gap:6px}
 .edit-pill.show{display:inline-flex}
-.top-r{display:flex;align-items:center;gap:18px}
-.top-r a{font-size:13px;font-weight:600;color:rgba(255,255,255,.7)}
-.top-r a:hover{color:#fff}
-.save-btn{height:38px;padding:0 18px;border-radius:var(--radius-pill);border:0;background:var(--gold);color:var(--ink);font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer}
-.save-btn:disabled{background:#3a4a5e;color:rgba(255,255,255,.5);cursor:default}
+.edit-links{display:flex;align-items:center;gap:18px}
+.edit-links a{font-size:13px;font-weight:600;color:rgba(255,255,255,.7)}
+.edit-links a:hover{color:#fff}
+.save-btn{height:38px;padding:0 18px;border-radius:var(--radius-pill);border:0;background:var(--blue);color:#fff;font-weight:700;font-size:13px}
+.save-btn:disabled{background:#344054;color:rgba(255,255,255,.5);cursor:default}
+.top{top:60px}
 
-/* Afordâncias de edição */
-[contenteditable="true"]{border-radius:6px;outline:1.5px dashed transparent;outline-offset:3px;cursor:text;transition:outline .1s,background .1s}
-[contenteditable="true"]:hover{outline-color:rgba(14,147,242,.5);background:rgba(14,147,242,.06)}
-[contenteditable="true"]:focus{outline-color:var(--blue);background:rgba(14,147,242,.09)}
-.on-dark [contenteditable="true"]:hover{background:rgba(255,255,255,.08)}
-.on-dark [contenteditable="true"]:focus{background:rgba(255,255,255,.12)}
+[contenteditable="true"]{border-radius:6px;outline:1.5px dashed transparent;outline-offset:3px;cursor:text;transition:outline-color .1s,background .1s}
+[contenteditable="true"]:hover{outline-color:rgba(0,123,255,.5);background:rgba(0,123,255,.06)}
+[contenteditable="true"]:focus{outline-color:var(--blue);background:rgba(0,123,255,.09)}
+.on-blue [contenteditable="true"]:hover{outline-color:rgba(255,255,255,.7);background:rgba(255,255,255,.1)}
+.on-blue [contenteditable="true"]:focus{outline-color:#fff;background:rgba(255,255,255,.16)}
 
 .edit-media{position:relative}
-.edit-media-ov{position:absolute;inset:0;background:rgba(0,0,0,.4);opacity:0;transition:opacity .15s;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:inherit}
+.edit-media-ov{position:absolute;inset:0;background:rgba(16,24,40,.45);opacity:0;transition:opacity .15s;display:flex;align-items:center;justify-content:center;border-radius:inherit;z-index:4}
 .edit-media:hover .edit-media-ov{opacity:1}
-.edit-media-ov span{background:#fff;color:var(--ink);font-size:12px;font-weight:700;padding:7px 13px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+.edit-media-ov span{background:#fff;color:var(--ink);font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:var(--radius-pill);display:inline-flex;align-items:center;gap:6px}
+.edit-media-ov svg{width:15px;height:15px}
 .edit-media-ov input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.video-ph video,.video-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.video-ph.has-media{border-style:solid;border-color:transparent}
 
 .edit-removable{position:relative}
-.edit-remove-x{position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;border:2px solid #fff;display:none;align-items:center;justify-content:center;cursor:pointer;z-index:3;padding:0}
-.edit-removable:hover .edit-remove-x{display:flex}
+.edit-remove-x{position:absolute;top:-9px;right:-9px;width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;border:2px solid #fff;display:none;align-items:center;justify-content:center;z-index:5;padding:0}
+.edit-removable:hover>.edit-remove-x,.li-removable:hover>.edit-remove-x{display:flex}
 .edit-remove-x svg{width:11px;height:11px}
-.li-removable{position:relative;padding-right:26px}
-.li-removable .edit-remove-x{top:0;right:0}
+.li-removable{position:relative;padding-right:28px}
+.li-removable>.edit-remove-x{top:0;right:0}
 
-.edit-add-tile{border:2px dashed rgba(255,255,255,.3);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:rgba(255,255,255,.6);font-size:10.5px;font-weight:700;cursor:pointer;background:none;aspect-ratio:3/4}
-.edit-add-tile:hover{border-color:var(--blue);color:#fff}
-.edit-add-tile svg{width:20px;height:20px}
-.edit-add-line{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--blue);background:none;border:0;cursor:pointer;padding:10px 0 0}
-.on-dark .edit-add-line{color:#fff}
+.edit-add{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:2px dashed var(--blue-100);border-radius:var(--radius-xl);background:none;color:var(--blue);font-size:13px;font-weight:700;min-height:96px}
+.edit-add:hover{border-color:var(--blue);background:rgba(0,123,255,.04)}
+.edit-add svg{width:20px;height:20px}
+.edit-add-line{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--blue);background:none;border:0;padding:14px 0 0}
 .edit-add-line svg{width:15px;height:15px}
 
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--navy);color:#fff;padding:12px 20px;border-radius:9px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:9px;box-shadow:0 8px 28px rgba(0,0,0,.3);opacity:0;transition:transform .22s,opacity .22s;pointer-events:none;z-index:999}
+/* Mural: no admin vira grade de fotos editavel. Vazio = mostra o placeholder da landing */
+.mural-edit{max-width:900px;margin:56px auto 0}
+.mural-edit .mural-bar{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px}
+.mural-edit .mural-bar b{font-family:var(--font-display);font-size:18px;color:var(--ink)}
+.mural-edit .mural-bar span{font-size:13px;color:var(--ink-faint)}
+.mural-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+.mural-grid .tile{aspect-ratio:3/4;border-radius:var(--radius-xl);background:var(--blue-050) center/cover no-repeat;border:1px solid var(--line);display:flex;flex-direction:column;justify-content:flex-end;overflow:visible}
+.mural-grid .tile .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--blue);opacity:.5}
+.mural-grid .tile .ph svg{width:30px;height:30px}
+.mural-grid .tile.has-img .ph{display:none}
+.mural-grid .tile .cap{position:relative;z-index:5;margin:8px;padding:6px 8px;border-radius:10px;background:rgba(255,255,255,.92);text-align:center}
+.mural-grid .tile .cap strong{display:block;font-size:12.5px;color:var(--ink);line-height:1.25}
+.mural-grid .tile .cap span{display:block;font-size:11.5px;color:var(--ink-soft)}
+.mural-grid .edit-add{aspect-ratio:3/4;min-height:0}
+.mural-edit .mural-slot{margin-top:0}
+
+/* Previa dos elementos flutuantes (sticky + formulario) */
+.extras{background:var(--surface-2);padding:72px 0 88px;border-top:1px solid var(--line)}
+.extras .sec-head{margin-bottom:32px}
+.extras-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+.extra-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-2xl);padding:26px}
+.extra-card>.eyebrow{color:var(--ink-faint);margin-bottom:16px}
+.sticky.preview{position:static;transform:none;margin:0;max-width:100%}
+.extra-card .fc{text-align:center}
+.extra-card .fi{pointer-events:none}
+.extra-card #okPrev{display:block;margin-top:28px;padding-top:28px;border-top:1px dashed var(--line)}
+
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:var(--radius-lg);font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:9px;box-shadow:0 8px 28px rgba(0,0,0,.3);opacity:0;transition:transform .22s,opacity .22s;pointer-events:none;z-index:999}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast svg{width:15px;height:15px;color:#5fd49a}
-
-/* ─── Estilo real da landing (idêntico a alunos/rematricula.html) ─── */
-.hero{position:relative;overflow:hidden;background:radial-gradient(900px 520px at 85% 10%,rgba(14,147,242,.45),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(14,147,242,.25),transparent 60%),var(--navy);color:#fff;padding:72px 0 96px}
-.hero .wrap{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:64px;align-items:center}
-.hero-tag{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);padding:8px 16px 8px 10px;border-radius:var(--radius-pill);font-size:13.5px;font-weight:600;color:#fff;margin-bottom:28px}
-.hero-tag .dot{width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--ink);display:inline-flex;align-items:center;justify-content:center}
-.hero-tag .dot svg{width:12px;height:12px}
-.hero h1{font-family:var(--font-display);font-weight:700;font-size:clamp(38px,5.2vw,60px);line-height:1;letter-spacing:-2.4px;margin:0 0 32px}
-.hero h1 mark{color:var(--gold)}
-.points{display:flex;flex-direction:column;gap:14px;margin:0 0 36px;padding:0;list-style:none}
-.points li{display:flex;gap:12px;align-items:flex-start;font-size:16.5px;color:rgba(255,255,255,.8);line-height:1.5}
-.points li b{color:#fff}
-.points svg{width:22px;height:22px;flex-shrink:0;padding:4px;border-radius:50%;background:rgba(14,147,242,.25);color:#7CC6FF;margin-top:1px}
-.hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:22px}
-.trust{display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.72);line-height:1.35}
-.trust b{color:#fff}
-.avatars{display:flex}.avatars span{width:34px;height:34px;border-radius:50%;border:2px solid var(--navy);margin-left:-10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background:var(--blue)}
-.avatars span:first-child{margin-left:0}.avatars span:nth-child(2){background:#0B6FC0}.avatars span:nth-child(3){background:#278556}.avatars span:nth-child(4){background:#1F4D7A}
-
-.vid-wrap{position:relative}
-.video{position:relative;aspect-ratio:16/10;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.18),transparent 55%),linear-gradient(150deg,#0E93F2,#0A4F8F 70%);box-shadow:0 40px 80px -24px rgba(0,0,0,.6)}
-.play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-.play .c{width:92px;height:92px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(0,0,0,.3)}
-.play svg{width:32px;height:32px;color:var(--blue);margin-left:4px}
-.dur{position:absolute;bottom:16px;right:16px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:700;padding:5px 11px;border-radius:7px;font-family:var(--font-mono)}
-.ticket{position:absolute;left:-28px;bottom:-34px;display:flex;align-items:center;gap:14px;background:var(--gold);color:var(--ink);border-radius:18px;padding:16px 22px 16px 18px;box-shadow:0 24px 40px -14px rgba(0,0,0,.5);transform:rotate(-3deg)}
-.ticket b{font-family:var(--font-display);font-size:46px;line-height:.9;letter-spacing:-2px}
-.ticket span{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;line-height:1.3;max-width:120px}
-
-.sec{padding:100px 0}
-.res-head{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:56px;align-items:end;margin-bottom:72px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.stat{border-radius:22px;padding:28px 26px;background:var(--navy);color:#fff}
-.stat:nth-child(2){background:var(--blue)}
-.stat .n{font-family:var(--font-display);font-weight:700;font-size:56px;line-height:.9;letter-spacing:-3px}
-.stat .l{display:block;margin-top:10px;font-size:14px;font-weight:600;opacity:.75}
-.mural-bar{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:22px;padding-top:28px;border-top:1px solid #E6EAEF}
-.mural-bar h3{font-family:var(--font-display);font-weight:700;font-size:24px;margin:0;letter-spacing:-.5px}
-.mural-bar p{margin:0;font-size:14px;color:#6B7684}
-.mural{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:12px;margin-bottom:96px}
-.tile{position:relative;aspect-ratio:3/4;border-radius:16px;overflow:hidden;background:linear-gradient(170deg,#0E93F2,#0A4F8F)}
-.tile:nth-child(even){background:linear-gradient(170deg,#0A2A4A,#0E6FBF)}
-.tile .rib{position:absolute;top:10px;left:10px;background:#278556;color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:6px}
-.tile .ini{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:30px;color:rgba(255,255,255,.92);letter-spacing:-1px;background-size:cover;background-position:center}
-.tile .cap{position:absolute;left:0;right:0;bottom:0;padding:26px 10px 12px;background:linear-gradient(transparent,rgba(0,0,0,.6));text-align:center}
-.tile .cap strong{display:block;font-size:12px;color:#fff;line-height:1.2}
-.tile .cap span{display:block;font-size:10.5px;color:rgba(255,255,255,.75)}
-
-.method{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);gap:48px;align-items:center}
-.claim{font-family:var(--font-display);font-weight:700;font-size:clamp(28px,3.2vw,38px);line-height:1.05;letter-spacing:-1.2px;margin:0 0 20px}
-.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(14,147,242,.1);color:var(--blue);font-weight:700;font-size:14px;padding:10px 18px;border-radius:var(--radius-pill)}
-.courses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid #E6EAEF;border-radius:22px;overflow:hidden}
-.course{position:relative;padding:26px 24px;border-right:1px solid #E6EAEF;border-bottom:1px solid #E6EAEF;background:#fff}
-.course:nth-child(3n){border-right:0}.course:nth-child(n+4){border-bottom:0}
-.course .n{font-family:var(--font-display);font-weight:700;font-size:44px;line-height:1;letter-spacing:-2px;color:var(--ink)}
-.course .l{font-size:14px;font-weight:600;color:#6B7684;margin-top:6px}
-.course.top{background:var(--navy)}.course.top .n{color:var(--gold)}.course.top .l{color:rgba(255,255,255,.75)}
-.course.top::after{content:"recorde histórico";position:absolute;top:18px;right:18px;background:var(--gold);color:var(--ink);font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:4px 9px;border-radius:6px}
-
-.pesos{background:var(--navy);color:#fff}
-.pesos .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:72px;align-items:center}
-.pesos .h2{color:#fff}.pesos .lead{color:rgba(255,255,255,.72)}.pesos .eyebrow{color:#7CC6FF}
-.punch{font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin:24px 0 0}
-.tie{font-size:16px;line-height:1.65;color:rgba(255,255,255,.78);margin:24px 0 0;padding-top:24px;border-top:1px solid rgba(255,255,255,.12)}
-.tie mark{color:var(--gold)}
-.chart-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:28px;padding:32px 28px 24px}
-.chart{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:end;height:220px}
-.bcol{display:flex;flex-direction:column;justify-content:flex-end;height:100%}
-.bar{border-radius:14px 14px 4px 4px;background:linear-gradient(180deg,#3AAEFF,#0B6FC0);display:flex;justify-content:center;padding-top:14px}
-.bcol:nth-child(3) .bar{background:linear-gradient(180deg,#FFD84A,#E0A800)}
-.bcol:nth-child(3) .bar .pts{color:var(--ink)}
-.bar .pts{font-family:var(--font-display);font-weight:700;font-size:22px;color:#fff;letter-spacing:-.5px}
-.blabel{margin-top:14px}
-.blabel .m{display:block;font-weight:700;font-size:14px}
-.blabel .y{display:block;font-size:12px;color:rgba(255,255,255,.55)}
-.blabel .c{display:block;font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,.4);margin-top:4px}
-.total{display:flex;align-items:baseline;gap:12px;margin-top:24px;padding-top:20px;border-top:1px dashed rgba(255,255,255,.18)}
-.total b{font-family:var(--font-display);font-size:32px;letter-spacing:-1px}
-.total i{font-style:normal;font-size:14px;color:rgba(255,255,255,.65)}
-
-.adapt{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:start}
-.adapt-body{display:flex;flex-direction:column;gap:18px;margin-top:8px}
-.adapt-body p{font-size:16.5px;line-height:1.7;color:#2B3542;margin:0}
-.compare{display:grid;grid-template-columns:1fr 1fr;border-radius:26px;overflow:hidden;border:1px solid #E6EAEF}
-.col{padding:28px 24px}
-.col h3{font-family:var(--font-display);font-size:19px;font-weight:700;margin:0 0 20px;letter-spacing:-.4px}
-.col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
-.col li{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;line-height:1.45}
-.col li svg{width:22px;height:22px;flex-shrink:0;padding:4px;border-radius:50%}
-.col.good{background:var(--navy);color:#fff}.col.good h3{color:#fff}
-.col.good li svg{background:#278556;color:#fff}
-.col.bad{background:#F6F7F9;color:#6B7684}.col.bad h3{color:#8A94A1}
-.col.bad li svg{background:rgba(208,62,62,.12);color:#D03E3E}
-
-.final{position:relative;overflow:hidden;border-radius:32px;background:linear-gradient(135deg,#0B6FC0,#0E93F2);color:#fff;padding:64px 40px;text-align:center;margin-top:64px}
-.final .eyebrow{color:#fff;background:rgba(255,255,255,.14);padding:8px 16px;border-radius:var(--radius-pill)}
-.final h2{font-family:var(--font-display);font-weight:700;font-size:clamp(30px,4.4vw,46px);line-height:1.05;letter-spacing:-2px;max-width:820px;margin:0 auto 28px}
-.final h2 mark{color:var(--gold)}
-.final-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:20px}
-.chip{display:inline-flex;align-items:center;gap:12px;background:rgba(6,28,51,.35);border:1px solid rgba(255,255,255,.25);border-radius:var(--radius-pill);padding:10px 22px 10px 12px}
-.chip b{font-family:var(--font-display);font-size:24px;background:var(--gold);color:var(--ink);border-radius:var(--radius-pill);padding:2px 14px;letter-spacing:-1px}
-.chip span{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.urgency{display:flex;gap:10px;justify-content:center;align-items:flex-start;font-size:14px;color:rgba(255,255,255,.85);max-width:520px;margin:26px auto 0;line-height:1.55;text-align:left}
-.urgency svg{width:20px;height:20px;flex-shrink:0;margin-top:1px;color:var(--gold)}
-
-.foot{padding:48px 0 64px;text-align:center;border-top:1px solid #E6EAEF;margin-top:64px}
-.foot strong{display:block;font-family:var(--font-display);font-size:17px;margin-bottom:8px}
-.foot p{margin:0 auto;max-width:560px;font-size:12.5px;color:#8A94A1;line-height:1.6}
-
-@media (max-width:980px){
-.hero .wrap,.res-head,.method,.pesos .wrap,.adapt{grid-template-columns:1fr;gap:40px}
-.vid-wrap{max-width:640px}.ticket{left:12px;bottom:-28px}
-.mural{grid-template-columns:repeat(4,minmax(0,1fr))}
-}
+@media (max-width:980px){.extras-grid{grid-template-columns:1fr}.edit-left .hide-sm{display:none}}
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap">
+
+<!-- ===================== BARRA DE EDICAO ===================== -->
+<div class="edit-bar"><div class="wrap">
   <div class="edit-left">
     <span class="edit-dot"></span>
-    Editando ao vivo — clique em qualquer texto, imagem ou vídeo pra alterar
-    <span class="edit-pill" id="unsavedPill">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.6" fill="currentColor"/></svg>
-      Alterações não salvas
-    </span>
+    <span class="hide-sm">Editando ao vivo. Clique em qualquer texto, vídeo ou foto pra alterar</span>
+    <span class="edit-pill" id="unsavedPill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.6" fill="currentColor"/></svg>Alterações não salvas</span>
   </div>
-  <div class="top-r">
+  <div class="edit-links">
     <a href="rematricula-popup.html">Pop-up</a>
     <a href="rematricula-interessados.html">Interessados</a>
     <a href="../alunos/rematricula.html" target="_blank">Ver como aluno ↗</a>
     <button class="save-btn" id="saveBtn" disabled>Salvar alterações</button>
   </div>
+</div></div>
+
+<!-- ===================== TOPBAR ===================== -->
+<header class="top"><div class="wrap">
+  <img class="logo" src="../assets/logo-azul.png" alt="Mago do PISM"/>
+  <div class="top-r">
+    <span class="back">← Início</span>
+    <span class="btn" contenteditable="true">Fazer rematrícula</span>
+  </div>
 </div></header>
 
-<section class="hero">
-<div class="wrap">
-<div>
-<span class="hero-tag"><span class="dot"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.9L21.6 9l-5.8 4.4 2.1 7.1L12 16.9 6.1 20.5l2.1-7.1L2.4 9l7.2-.1z"></path></svg></span><span contenteditable="true">Rematrícula 2026 aberta pra quem já é do Mago</span></span>
-<h1 contenteditable="true">Seja aprovado no PISM com o curso que <mark>mais aprovou</mark> alunos na história do vestibular.</h1>
-<ul class="points">
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span contenteditable="true"><b>Renovando agora, você garante a sua vaga</b> antes da gente abrir as inscrições pro Instagram.</span></li>
-<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15.5 14"></polyline></svg><span contenteditable="true">Quando abre pro Instagram, as vagas <b>fecham rápido</b>.</span></li>
-</ul>
-<div class="hero-cta">
-<button class="btn" contenteditable="true">Garantir minha vaga com desconto <span class="arr">→</span></button>
-<div class="trust"><div class="avatars"><span>AS</span><span>SB</span><span>RN</span><span>BS</span></div><span contenteditable="true"><b>514 aprovados</b> em 2025.<br>O maior pré-PISM do Brasil.</span></div>
-</div>
-</div>
-<div class="vid-wrap">
-<div class="video edit-media"><div class="play"><div class="c"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div></div><div class="dur">1:42</div>
-  <div class="edit-media-ov"><input type="file" accept="video/*,image/*"/><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Trocar vídeo</span></div>
-</div>
-<div class="ticket"><b contenteditable="true">20%</b><span contenteditable="true">de desconto de rematrícula</span></div>
-</div>
-</div>
+<main>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero on-blue">
+  <div class="wrap">
+    <span class="eyebrow hero-eyebrow"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg><span contenteditable="true">Rematrícula 2026 · quem já é do Mago</span></span>
+    <h1 contenteditable="true">Continue no curso que <span class="u">mais aprova</span> no PISM, bem na hora em que mais pesa.</h1>
+
+    <div class="video-ph edit-media" id="heroVideo">
+      <span class="vtag">Vídeo 16:9</span>
+      <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+      <span class="vlabel">Seu vídeo de rematrícula aqui</span>
+      <span class="vsub">passe o mouse pra enviar o vídeo real</span>
+      <div class="edit-media-ov"><input type="file" accept="video/*,image/*" data-media="video"/><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Trocar vídeo</span></div>
+    </div>
+
+    <ul class="points" id="heroPoints">
+      <li class="li-removable"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span contenteditable="true">Renovando agora, <b>você garante a sua vaga</b> antes da gente abrir as inscrições pro Instagram.</span><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li>
+      <li class="li-removable"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg></span><span contenteditable="true">Quando abre pro Instagram, as vagas <b>fecham rápido</b>.</span><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li>
+    </ul>
+
+    <div class="hero-cta">
+      <span class="btn"><span contenteditable="true">Garantir minha vaga</span> <span class="arw" aria-hidden="true">&rarr;</span></span>
+      <span class="btn ghost" contenteditable="true">Já sou do Mago</span>
+    </div>
+
+    <p class="hero-trust"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg><span contenteditable="true"><b>514 aprovados</b> em 2025. O maior pré-PISM do Brasil.</span></p>
+  </div>
 </section>
 
-<section class="sec">
-<div class="wrap">
-<div class="res-head">
-<div>
-<div class="eyebrow"><svg class="star" viewBox="0 0 24 24"><path d="M12 2l2.4 6.9L21.6 9l-5.8 4.4 2.1 7.1L12 16.9 6.1 20.5l2.1-7.1L2.4 9l7.2-.1z"></path></svg><span contenteditable="true">Resultados que a gente prova</span></div>
-<h2 class="h2" contenteditable="true">A prova está na lista de aprovados.</h2>
-<p class="lead" contenteditable="true">Enquanto muita gente ainda está decidindo o curso, quem é do Mago aparece na lista.</p>
-</div>
-<div class="stats">
-<div class="stat"><div class="n" contenteditable="true">514</div><span class="l" contenteditable="true">aprovados em 2025</span></div>
-<div class="stat"><div class="n" contenteditable="true">20%</div><span class="l" contenteditable="true">de todo o PISM</span></div>
-</div>
-</div>
-<div class="mural-bar"><h3 contenteditable="true">Um pedaço do nosso mural de aprovados</h3><p contenteditable="true">Cada quadradinho é um aluno que passou.</p></div>
-<div class="mural" id="muralGrid">
-<div class="tile edit-removable"><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><span class="rib">Aprovado</span><div class="ini edit-media">AS<div class="edit-media-ov"><input type="file" accept="image/*"/><span>Foto</span></div></div><div class="cap"><strong contenteditable="true">Arthur S.</strong><span contenteditable="true">Medicina</span></div></div>
-<div class="tile edit-removable"><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><span class="rib">Aprovado</span><div class="ini edit-media">SB<div class="edit-media-ov"><input type="file" accept="image/*"/><span>Foto</span></div></div><div class="cap"><strong contenteditable="true">Sofia B.</strong><span contenteditable="true">Direito</span></div></div>
-<div class="tile edit-removable"><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><span class="rib">Aprovado</span><div class="ini edit-media">RN<div class="edit-media-ov"><input type="file" accept="image/*"/><span>Foto</span></div></div><div class="cap"><strong contenteditable="true">Rafael N.</strong><span contenteditable="true">Engenharia</span></div></div>
-<div class="tile edit-removable"><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><span class="rib">Aprovado</span><div class="ini edit-media">BS<div class="edit-media-ov"><input type="file" accept="image/*"/><span>Foto</span></div></div><div class="cap"><strong contenteditable="true">Beatriz S.</strong><span contenteditable="true">Odontologia</span></div></div>
-<div class="tile edit-removable"><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><span class="rib">Aprovado</span><div class="ini edit-media">JP<div class="edit-media-ov"><input type="file" accept="image/*"/><span>Foto</span></div></div><div class="cap"><strong contenteditable="true">João P.</strong><span contenteditable="true">Medicina</span></div></div>
-<div class="tile edit-removable"><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><span class="rib">Aprovado</span><div class="ini edit-media">LM<div class="edit-media-ov"><input type="file" accept="image/*"/><span>Foto</span></div></div><div class="cap"><strong contenteditable="true">Laura M.</strong><span contenteditable="true">Farmácia</span></div></div>
-<div class="tile edit-removable"><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><span class="rib">Aprovado</span><div class="ini edit-media">GC<div class="edit-media-ov"><input type="file" accept="image/*"/><span>Foto</span></div></div><div class="cap"><strong contenteditable="true">Gabriel C.</strong><span contenteditable="true">Direito</span></div></div>
-<div class="tile edit-removable"><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><span class="rib">Aprovado</span><div class="ini edit-media">MF<div class="edit-media-ov"><input type="file" accept="image/*"/><span>Foto</span></div></div><div class="cap"><strong contenteditable="true">Maria F.</strong><span contenteditable="true">Nutrição</span></div></div>
-<button class="edit-add-tile" id="addMural" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar</button>
-</div>
-<div class="method">
-<div>
-<p class="claim" contenteditable="true">Acha que é sorte? Não é. É método.</p>
-<div class="pill"><svg class="star" viewBox="0 0 24 24"><path d="M12 2l2.4 6.9L21.6 9l-5.8 4.4 2.1 7.1L12 16.9 6.1 20.5l2.1-7.1L2.4 9l7.2-.1z"></path></svg><span contenteditable="true">O maior pré-PISM do Brasil</span></div>
-</div>
-<div class="courses">
-<div class="course top"><div class="n" contenteditable="true">68</div><div class="l" contenteditable="true">Medicina</div></div>
-<div class="course"><div class="n" contenteditable="true">79</div><div class="l" contenteditable="true">Direito</div></div>
-<div class="course"><div class="n" contenteditable="true">52</div><div class="l" contenteditable="true">Engenharia</div></div>
-<div class="course"><div class="n" contenteditable="true">51</div><div class="l" contenteditable="true">Odontologia</div></div>
-<div class="course"><div class="n" contenteditable="true">29</div><div class="l" contenteditable="true">Nutrição</div></div>
-<div class="course"><div class="n" contenteditable="true">32</div><div class="l" contenteditable="true">Farmácia</div></div>
-</div>
-</div>
-</div>
+<!-- ===================== RESULTADOS ===================== -->
+<section class="sec results">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg><span contenteditable="true">Resultados</span></span>
+      <h2 class="h2" contenteditable="true">A prova está na lista de aprovados.</h2>
+      <p class="lead" contenteditable="true">Enquanto muita gente ainda está decidindo o curso, quem é do Mago aparece na lista. Não é sorte, é método.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat navy on-blue"><div class="n" contenteditable="true">514</div><span class="l" contenteditable="true">aprovados em 2025</span></div>
+      <div class="stat blue"><div class="n" contenteditable="true">20%</div><span class="l" contenteditable="true">de todo o PISM saíram do Mago</span></div>
+    </div>
+
+    <div class="courses-head">
+      <h3 contenteditable="true">Aprovados por curso em 2025</h3>
+      <p contenteditable="true">A força do Mago aparece curso a curso.</p>
+    </div>
+    <div class="courses" id="coursesGrid">
+      <div class="course edit-removable"><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="cn" contenteditable="true">68</div><span class="cc" contenteditable="true">Medicina</span></div><div class="course edit-removable"><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="cn" contenteditable="true">79</div><span class="cc" contenteditable="true">Direito</span></div><div class="course edit-removable"><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="cn" contenteditable="true">52</div><span class="cc" contenteditable="true">Engenharia</span></div><div class="course edit-removable"><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="cn" contenteditable="true">51</div><span class="cc" contenteditable="true">Odontologia</span></div><div class="course edit-removable"><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="cn" contenteditable="true">29</div><span class="cc" contenteditable="true">Nutrição</span></div><div class="course edit-removable"><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="cn" contenteditable="true">32</div><span class="cc" contenteditable="true">Farmácia</span></div>
+      <button class="edit-add" id="addCourse" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar curso</button>
+    </div>
+
+    <div class="mural-edit">
+      <div class="mural-bar"><b>Mural de aprovados</b><span id="muralCount">Sem fotos ainda, a landing mostra o espaço reservado abaixo</span></div>
+      <div class="mural-grid" id="muralGrid">
+        <button class="edit-add" id="addMural" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar foto</button>
+      </div>
+      <div class="mural-slot" id="muralSlot" style="margin-top:16px">
+        <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="9" r="1.8"/><path d="M21 15l-5-5L5 21"/></svg></span>
+        <h3 contenteditable="true">Fotos reais dos aprovados entram aqui</h3>
+        <p contenteditable="true">Espaço reservado pras fotos verdadeiras dos aprovados do Mago. Nada de aluno genérico: quando as fotos reais chegarem, elas ocupam este bloco.</p>
+        <p class="hint">Some sozinho quando você adicionar a primeira foto</p>
+      </div>
+    </div>
+  </div>
 </section>
 
+<!-- ===================== PESOS DO PISM ===================== -->
 <section class="sec pesos">
-<div class="wrap">
-<div>
-<div class="eyebrow"><svg class="star" viewBox="0 0 24 24"><path d="M12 2l2.4 6.9L21.6 9l-5.8 4.4 2.1 7.1L12 16.9 6.1 20.5l2.1-7.1L2.4 9l7.2-.1z"></path></svg><span contenteditable="true">Como funciona o PISM</span></div>
-<h2 class="h2" contenteditable="true">Por que renovar agora é importante</h2>
-<p class="lead" contenteditable="true">O PISM (Programa de Ingresso Seletivo Misto da UFJF) é um vestibular seriado: você faz durante os três anos do Ensino Médio, em três módulos. E cada módulo tem um peso diferente na sua nota final.</p>
-<p class="tie" contenteditable="true">O peso quase <mark>triplica</mark> do primeiro pro terceiro ano. Largar o Mago justo agora, quando cada ponto vale mais, é jogar vantagem fora. Continuar aqui é seguir com quem mais aprova, bem na hora que mais pesa.</p>
-</div>
-<div class="chart-card">
-<div class="chart">
-<div class="bcol"><div class="bar" style="height:34%"><span class="pts" contenteditable="true">240</span></div><div class="blabel"><span class="m" contenteditable="true">PISM I</span><span class="y" contenteditable="true">1º ano</span><span class="c" contenteditable="true">120 pts × peso 2</span></div></div>
-<div class="bcol"><div class="bar" style="height:51%"><span class="pts" contenteditable="true">360</span></div><div class="blabel"><span class="m" contenteditable="true">PISM II</span><span class="y" contenteditable="true">2º ano</span><span class="c" contenteditable="true">120 pts × peso 3</span></div></div>
-<div class="bcol"><div class="bar" style="height:100%"><span class="pts" contenteditable="true">700</span></div><div class="blabel"><span class="m" contenteditable="true">PISM III</span><span class="y" contenteditable="true">3º ano</span><span class="c" contenteditable="true">140 pts × peso 5</span></div></div>
-</div>
-<p class="punch" contenteditable="true">cada módulo vale mais que o anterior →</p>
-<div class="total"><b contenteditable="true">1.300</b><i contenteditable="true">pontos no total (o máximo do PISM)</i></div>
-</div>
-</div>
+  <div class="wrap">
+    <div class="sec-head" style="max-width:760px">
+      <span class="eyebrow"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg><span contenteditable="true">Como funciona o PISM</span></span>
+      <h2 class="h2" contenteditable="true">Por que renovar agora é importante.</h2>
+      <p class="lead" contenteditable="true">O PISM (Programa de Ingresso Seletivo Misto da UFJF) é um vestibular seriado: você faz ao longo dos três anos do Ensino Médio, em três módulos. E cada módulo pesa diferente na sua nota final.</p>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart" id="chart">
+        <div class="bar-wrap"><div class="bar b1"><span class="pts" contenteditable="true">240</span></div></div>
+        <div class="bar-wrap"><div class="bar b2"><span class="pts" contenteditable="true">360</span></div></div>
+        <div class="bar-wrap"><div class="bar b3"><span class="pts" contenteditable="true">700</span></div></div>
+        <div class="blabel"><span class="m" contenteditable="true">PISM I</span><span class="y" contenteditable="true">1º ano</span><span class="c" contenteditable="true">120 pts × peso 2</span></div>
+        <div class="blabel"><span class="m" contenteditable="true">PISM II</span><span class="y" contenteditable="true">2º ano</span><span class="c" contenteditable="true">120 pts × peso 3</span></div>
+        <div class="blabel"><span class="m" contenteditable="true">PISM III</span><span class="y" contenteditable="true">3º ano</span><span class="c" contenteditable="true">140 pts × peso 5</span></div>
+      </div>
+      <p class="chart-punch" contenteditable="true">Cada módulo vale mais que o anterior &rarr;</p>
+      <div class="chart-total"><b contenteditable="true">1.300</b><span contenteditable="true">pontos no total (o máximo do PISM)</span></div>
+    </div>
+
+    <p class="pesos-tie" contenteditable="true">O peso quase <mark>triplica</mark> do primeiro pro terceiro ano. Largar o Mago justo agora, quando cada ponto vale mais, é jogar vantagem fora. Continuar aqui é seguir com quem mais aprova, bem na hora que mais pesa.</p>
+  </div>
 </section>
 
-<section class="sec" style="padding-bottom:0">
-<div class="wrap">
-<div class="adapt">
-<div>
-<div class="eyebrow"><svg class="star" viewBox="0 0 24 24"><path d="M12 2l2.4 6.9L21.6 9l-5.8 4.4 2.1 7.1L12 16.9 6.1 20.5l2.1-7.1L2.4 9l7.2-.1z"></path></svg><span contenteditable="true">Uma vantagem que você já tem</span></div>
-<h2 class="h2" contenteditable="true">Você já está adaptado, e isso conta muito.</h2>
-<div class="adapt-body">
-<p contenteditable="true">No vestibular, quem se adapta rápido larga na frente. E essa parte você já venceu: conhece o método do Mago, se vira na <strong>Magoflix</strong> de olhos fechados, sabe como cada professor cobra e já pegou o ritmo.</p>
-<p contenteditable="true">Trocar de cursinho no meio do PISM, bem quando o peso sobe, é recomeçar do zero: outro método, outra plataforma, outros professores, outro ritmo. É tempo que você perde se readaptando em vez de estudar. Ficar no Mago segura a vantagem que você já tem.</p>
-</div>
-</div>
-<div class="compare">
-<div class="col good"><h3 contenteditable="true">Continuar no Mago</h3><ul id="listGood">
-<li class="li-removable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span contenteditable="true">Você já conhece o método que mais aprova</span><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li>
-<li class="li-removable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span contenteditable="true">Já se vira na Magoflix</span><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li>
-<li class="li-removable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span contenteditable="true">Já tem ritmo com os professores</span><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li>
-<li class="li-removable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span contenteditable="true">Foca só em estudar, não em se acostumar</span><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li>
-</ul><button class="edit-add-line" data-add="listGood" data-icon="good" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar item</button></div>
-<div class="col bad"><h3 contenteditable="true">Recomeçar em outro lugar</h3><ul id="listBad">
-<li class="li-removable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span contenteditable="true">Aprender um método novo do zero</span><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li>
-<li class="li-removable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span contenteditable="true">Se achar em outra plataforma</span><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li>
-<li class="li-removable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span contenteditable="true">Conhecer os professores do zero</span><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li>
-<li class="li-removable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span contenteditable="true">Perder semanas se readaptando</span><button class="edit-remove-x" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li>
-</ul><button class="edit-add-line" data-add="listBad" data-icon="bad" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar item</button></div>
-</div>
-</div>
+<!-- ===================== VOCE JA ESTA ADAPTADO ===================== -->
+<section class="sec adapt">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg><span contenteditable="true">Uma vantagem que você já tem</span></span>
+      <h2 class="h2" contenteditable="true">Você já está adaptado, e isso conta muito.</h2>
+      <div class="adapt-body">
+        <p contenteditable="true">No vestibular, quem se adapta rápido larga na frente. E essa parte você já venceu: conhece o método do Mago, se vira na <b>Magoflix</b> de olhos fechados, sabe como cada professor cobra e já pegou o ritmo.</p>
+        <p contenteditable="true">Trocar de cursinho no meio do PISM, bem quando o peso sobe, é recomeçar do zero: outro método, outra plataforma, outros professores, outro ritmo. É tempo se readaptando em vez de estudar.</p>
+      </div>
+    </div>
 
-<div class="final">
-<div class="eyebrow" style="color:#fff;"><span contenteditable="true">Sua vaga vem primeiro</span></div>
-<h2 contenteditable="true">Renove agora e <mark>garanta a sua vaga</mark> antes de abrir pro Instagram.</h2>
-<div class="final-row">
-<div class="chip"><b contenteditable="true">20%</b><span contenteditable="true">de desconto na rematrícula</span></div>
-<button class="btn" contenteditable="true">Quero continuar no Mago <span class="arr">→</span></button>
-</div>
-<p class="urgency"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><span contenteditable="true">As vagas de rematrícula são poucas e a preferência é sua. Depois que abre pro Instagram, elas somem rápido.</span></p>
-</div>
+    <div class="contrast">
+      <div class="cbox stay">
+        <h3 contenteditable="true">Continuar no Mago</h3>
+        <ul id="listStay"><li class="li-removable"><span class="dot"></span><span contenteditable="true">Você já conhece o método que mais aprova.</span><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li><li class="li-removable"><span class="dot"></span><span contenteditable="true">Já se vira na Magoflix sem pensar.</span><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li><li class="li-removable"><span class="dot"></span><span contenteditable="true">Já tem ritmo com cada professor.</span><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li><li class="li-removable"><span class="dot"></span><span contenteditable="true">Foca só em estudar, não em se acostumar.</span><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li></ul>
+        <button class="edit-add-line" data-add="listStay" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar item</button>
+      </div>
+      <div class="cbox leave">
+        <h3 contenteditable="true">Recomeçar do zero</h3>
+        <ul id="listLeave"><li class="li-removable"><span class="dot"></span><span contenteditable="true">Aprender um método novo do começo.</span><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li><li class="li-removable"><span class="dot"></span><span contenteditable="true">Se achar em outra plataforma.</span><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li><li class="li-removable"><span class="dot"></span><span contenteditable="true">Entender como professores novos cobram.</span><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li><li class="li-removable"><span class="dot"></span><span contenteditable="true">Perder semanas só se readaptando.</span><button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></li></ul>
+        <button class="edit-add-line" data-add="listLeave" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar item</button>
+      </div>
+    </div>
 
-<footer class="foot">
-<strong contenteditable="true">Mago do Pism</strong>
-<p contenteditable="true">O maior pré-PISM do Brasil. Rematrícula 2026 pra quem já é de casa.<br>Números de aprovação referentes ao PISM 2025.</p>
-</footer>
-</div>
+    <div class="pullquote">
+      <svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>
+      <p contenteditable="true">Recomeçar seria abrir mão da vantagem que você levou um ano inteiro pra construir.</p>
+    </div>
+  </div>
 </section>
 
-<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>Alterações salvas com sucesso.</div>
+<!-- ===================== CTA FINAL ===================== -->
+<section class="final">
+  <div class="wrap">
+    <div class="fcard">
+      <span class="star"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg></span>
+      <h2 contenteditable="true">Rematrícula aberta pra quem já é do Mago.</h2>
+      <p class="sub" contenteditable="true">Renove agora e garanta a sua vaga antes de abrir pro Instagram.</p>
+      <span class="btn"><span contenteditable="true">Garantir minha vaga</span> <span class="arw" aria-hidden="true">&rarr;</span></span>
+      <span class="brandline"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg><span contenteditable="true">Mago · PISM</span></span>
+    </div>
+  </div>
+  <p class="urg on-blue"><span contenteditable="true">As vagas de rematrícula são poucas e a preferência é sua. Depois que abre pro Instagram, elas somem rápido.</span></p>
+</section>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="foot"><div class="wrap">
+  <img class="logo" src="../assets/logo-azul.png" alt="Mago do PISM"/>
+  <p contenteditable="true">O maior pré-PISM do Brasil. Rematrícula 2026 pra quem já é de casa.</p>
+  <p class="small" contenteditable="true">Números de aprovação referentes ao PISM 2025. [Espaço pra razão social, CNPJ e contato do Mago do PISM.]</p>
+</div></footer>
+
+<!-- ===================== ELEMENTOS FLUTUANTES (previa editavel) ===================== -->
+<section class="extras">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow" style="color:var(--blue)"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>Elementos flutuantes</span>
+      <h2 class="h2" style="font-size:30px">Barra fixa e formulário de interesse</h2>
+      <p class="lead" style="font-size:16px">Na landing eles aparecem por cima da página. Aqui dá pra editar os textos.</p>
+    </div>
+    <div class="extras-grid">
+      <div class="extra-card">
+        <span class="eyebrow">Barra fixa (aparece ao rolar)</span>
+        <div class="sticky preview on-blue">
+          <span class="t"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg><span contenteditable="true">Rematrícula 2026 · sua vaga vem primeiro</span></span>
+          <span class="btn" contenteditable="true">Garantir minha vaga</span>
+        </div>
+      </div>
+      <div class="extra-card">
+        <span class="eyebrow">Formulário (abre nos botões)</span>
+        <div class="fc">
+          <h2 contenteditable="true">Garanta a sua vaga</h2>
+          <p class="sub" contenteditable="true">Deixe seu contato que o time do Mago fala com você pra fechar a rematrícula.</p>
+          <div class="fg">
+            <div class="full"><span class="fl">Nome completo</span><input class="fi" placeholder="Seu nome completo" tabindex="-1"/></div>
+            <div><span class="fl">E-mail</span><input class="fi" placeholder="seu@email.com" tabindex="-1"/></div>
+            <div><span class="fl">WhatsApp</span><input class="fi" placeholder="(00) 00000-0000" tabindex="-1"/></div>
+            <div class="full"><span class="fl">Sua turma atual</span><input class="fi" placeholder="Ex.: PISM 2 · Intensivo" tabindex="-1"/></div>
+          </div>
+          <div class="fa"><span class="btn"><span contenteditable="true">Confirmar interesse</span> <span class="arw" aria-hidden="true">&rarr;</span></span></div>
+        </div>
+        <div class="fc" id="okPrev">
+          <h2 contenteditable="true">Recebemos seu interesse</h2>
+          <p class="sub" contenteditable="true">O time do Mago vai te chamar pelo WhatsApp ou e-mail que você deixou pra seguir com a rematrícula.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Alterações salvas com sucesso.</div>
 
 <script>
 (function(){
-  var dirty=false, pill=document.getElementById('unsavedPill'), saveBtn=document.getElementById('saveBtn');
-  function markDirty(){ if(dirty) return; dirty=true; pill.classList.add('show'); saveBtn.disabled=false; }
-  var removeSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+  "use strict";
+  var dirty=false,pill=document.getElementById('unsavedPill'),saveBtn=document.getElementById('saveBtn');
+  function markDirty(){if(dirty)return;dirty=true;pill.classList.add('show');saveBtn.disabled=false}
+  var X='<button class="edit-remove-x" type="button" aria-label="Remover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
+  var CAM='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>';
 
-  function wireMedia(input){
-    input.addEventListener('change', function(e){
-      var file=e.target.files[0]; if(!file) return;
-      var reader=new FileReader();
-      reader.onload=function(ev){ input.closest('.edit-media').style.backgroundImage='url('+ev.target.result+')'; input.closest('.edit-media').style.backgroundSize='cover'; input.closest('.edit-media').style.backgroundPosition='center'; };
-      reader.readAsDataURL(file);
-      markDirty();
+  /* Midia: video do hero e fotos do mural */
+  function readFile(input,cb){var f=input.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){cb(ev.target.result,f)};r.readAsDataURL(f);markDirty()}
+  function wireVideo(input){
+    input.addEventListener('change',function(){
+      readFile(input,function(url,f){
+        var box=document.getElementById('heroVideo');
+        var old=box.querySelector('video,img');if(old)old.remove();
+        var el=document.createElement(f.type.indexOf('video')===0?'video':'img');
+        el.src=url;if(el.tagName==='VIDEO'){el.controls=true;el.muted=true}
+        box.insertBefore(el,box.querySelector('.edit-media-ov'));box.classList.add('has-media');
+      });
     });
   }
-  document.querySelectorAll('.edit-media-ov input[type=file]').forEach(wireMedia);
+  function wirePhoto(input){
+    input.addEventListener('change',function(){
+      readFile(input,function(url){var t=input.closest('.tile');t.style.backgroundImage='url('+url+')';t.classList.add('has-img')});
+    });
+  }
+  document.querySelectorAll('input[data-media=video]').forEach(wireVideo);
+  /* Foco em item novo ja seleciona o texto provisorio */
+  function focusSel(el){el.focus();var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r)}
 
-  document.addEventListener('input', function(e){ if(e.target.closest('[contenteditable="true"]')) markDirty(); });
-
-  document.addEventListener('click', function(e){
-    var rm=e.target.closest('.edit-remove-x');
-    if(rm){ rm.closest('.edit-removable') && rm.closest('.edit-removable').remove(); rm.closest('li') && rm.closest('li').remove(); markDirty(); }
+  document.addEventListener('input',function(e){if(e.target.closest('[contenteditable="true"]'))markDirty()});
+  /* Enter nao quebra linha em titulo/numero: so em paragrafos */
+  document.addEventListener('keydown',function(e){
+    var ce=e.target.closest&&e.target.closest('[contenteditable="true"]');
+    if(ce&&e.key==='Enter'&&ce.tagName!=='P'){e.preventDefault();ce.blur()}
+  });
+  /* Colar como texto puro pra nao trazer estilo de fora */
+  document.addEventListener('paste',function(e){
+    if(!e.target.closest||!e.target.closest('[contenteditable="true"]'))return;
+    e.preventDefault();document.execCommand('insertText',false,(e.clipboardData||window.clipboardData).getData('text'));
   });
 
-  document.getElementById('addMural').addEventListener('click', function(){
-    var card=document.createElement('div');
-    card.className='tile edit-removable';
-    card.innerHTML='<button class="edit-remove-x" type="button">'+removeSvg+'</button><span class="rib">Aprovado</span><div class="ini edit-media">+<div class="edit-media-ov"><input type="file" accept="image/*"/><span>Foto</span></div></div><div class="cap"><strong contenteditable="true">Nome do aluno</strong><span contenteditable="true">Curso</span></div>';
-    document.getElementById('muralGrid').insertBefore(card, document.getElementById('addMural'));
-    wireMedia(card.querySelector('.edit-media-ov input'));
-    markDirty();
+  /* Remover item (curso, foto, item de lista, ponto do hero) */
+  document.addEventListener('click',function(e){
+    var rm=e.target.closest('.edit-remove-x');if(!rm)return;
+    var it=rm.closest('.li-removable,.edit-removable');if(it){it.remove();syncMural();markDirty()}
   });
 
-  document.querySelectorAll('[data-add]').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var ul=document.getElementById(btn.getAttribute('data-add'));
-      var good=btn.getAttribute('data-icon')==='good';
-      var icon=good
-        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
-        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
-      var li=document.createElement('li');
-      li.className='li-removable';
-      li.innerHTML=icon+'<span contenteditable="true">Novo item</span><button class="edit-remove-x" type="button">'+removeSvg+'</button>';
-      ul.appendChild(li);
-      markDirty();
+  /* Cursos */
+  document.getElementById('addCourse').addEventListener('click',function(){
+    var d=document.createElement('div');d.className='course edit-removable';
+    d.innerHTML=X+'<div class="cn" contenteditable="true">0</div><span class="cc" contenteditable="true">Curso</span>';
+    this.parentNode.insertBefore(d,this);focusSel(d.querySelector('.cc'));markDirty();
+  });
+
+  /* Mural de fotos */
+  var muralGrid=document.getElementById('muralGrid'),addMural=document.getElementById('addMural');
+  function syncMural(){
+    var n=muralGrid.querySelectorAll('.tile').length;
+    document.getElementById('muralSlot').style.display=n?'none':'';
+    document.getElementById('muralCount').textContent=n?(n+(n===1?' foto':' fotos')+' no mural'):'Sem fotos ainda, a landing mostra o espaço reservado abaixo';
+  }
+  addMural.addEventListener('click',function(){
+    var t=document.createElement('div');t.className='tile edit-removable edit-media';
+    t.innerHTML=X+'<span class="ph">'+CAM+'</span><div class="edit-media-ov"><input type="file" accept="image/*"/><span>'+CAM+'Foto</span></div><div class="cap"><strong contenteditable="true">Nome do aluno</strong><span contenteditable="true">Curso aprovado</span></div>';
+    muralGrid.insertBefore(t,addMural);wirePhoto(t.querySelector('input'));syncMural();markDirty();
+    t.querySelector('input').click();
+  });
+
+  /* Listas do comparativo */
+  document.querySelectorAll('[data-add]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var li=document.createElement('li');li.className='li-removable';
+      li.innerHTML='<span class="dot"></span><span contenteditable="true">Novo item</span>'+X;
+      document.getElementById(b.getAttribute('data-add')).appendChild(li);focusSel(li.querySelector('[contenteditable]'));markDirty();
     });
   });
 
-  saveBtn.addEventListener('click', function(){
-    dirty=false; pill.classList.remove('show'); saveBtn.disabled=true;
-    var t=document.getElementById('toast'); t.classList.add('show');
-    setTimeout(function(){ t.classList.remove('show'); }, 2600);
+  /* Grafico: altura das barras acompanha os pontos digitados */
+  var pts=[].slice.call(document.querySelectorAll('#chart .pts'));
+  function num(el){return parseFloat(el.textContent.replace(/\./g,'').replace(',','.'))||0}
+  function syncChart(){var max=Math.max.apply(null,pts.map(num))||1;pts.forEach(function(p){p.parentNode.style.height=Math.max(12,Math.round(num(p)/max*100))+'%'})}
+  pts.forEach(function(p){p.addEventListener('input',syncChart)});syncChart();
+
+  saveBtn.addEventListener('click',function(){
+    dirty=false;pill.classList.remove('show');saveBtn.disabled=true;
+    var t=document.getElementById('toast');t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2600);
   });
+  addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue=''}});
 })();
 </script>
 </body>
