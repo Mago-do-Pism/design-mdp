@@ -305,7 +305,7 @@ mark{background:none;color:var(--blue);font-weight:inherit}
 .mural-grid .edit-add{aspect-ratio:3/4;min-height:0}
 .mural-edit .mural-slot{margin-top:0}
 
-/* Previa dos elementos flutuantes (sticky + formulario) */
+/* Previa dos elementos flutuantes (sticky + WhatsApp) */
 .extras{background:var(--surface-2);padding:72px 0 88px;border-top:1px solid var(--line)}
 .extras .sec-head{margin-bottom:32px}
 .extras-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
@@ -314,7 +314,10 @@ mark{background:none;color:var(--blue);font-weight:inherit}
 .sticky.preview{position:static;transform:none;margin:0;max-width:100%}
 .extra-card .fc{text-align:center}
 .extra-card .fi{pointer-events:none}
-.extra-card #okPrev{display:block;margin-top:28px;padding-top:28px;border-top:1px dashed var(--line)}
+.extra-card .fi.editable{pointer-events:auto}
+.extra-card textarea.fi{height:auto;min-height:96px;padding:12px 14px;resize:vertical;line-height:1.5}
+.wa-hint{font-size:13px;color:var(--ink-soft);margin-top:14px;line-height:1.5}
+.wa-hint code{font-family:var(--font-mono);font-size:12px;background:var(--surface-2);padding:2px 6px;border-radius:6px;word-break:break-all}
 
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:var(--radius-lg);font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:9px;box-shadow:0 8px 28px rgba(0,0,0,.3);opacity:0;transition:transform .22s,opacity .22s;pointer-events:none;z-index:999}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -333,7 +336,6 @@ mark{background:none;color:var(--blue);font-weight:inherit}
   </div>
   <div class="edit-links">
     <a href="rematricula-popup.html">Pop-up</a>
-    <a href="rematricula-interessados.html">Interessados</a>
     <a href="../alunos/rematricula.html" target="_blank">Ver como aluno ↗</a>
     <button class="save-btn" id="saveBtn" disabled>Salvar alterações</button>
   </div>
@@ -501,8 +503,8 @@ mark{background:none;color:var(--blue);font-weight:inherit}
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow" style="color:var(--blue)"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>Elementos flutuantes</span>
-      <h2 class="h2" style="font-size:30px">Barra fixa e formulário de interesse</h2>
-      <p class="lead" style="font-size:16px">Na landing eles aparecem por cima da página. Aqui dá pra editar os textos.</p>
+      <h2 class="h2" style="font-size:30px">Barra fixa e WhatsApp da rematrícula</h2>
+      <p class="lead" style="font-size:16px">Todos os botões da landing abrem o WhatsApp do Mago com a mensagem abaixo já escrita. Aqui dá pra trocar o número e o texto.</p>
     </div>
     <div class="extras-grid">
       <div class="extra-card">
@@ -513,22 +515,12 @@ mark{background:none;color:var(--blue);font-weight:inherit}
         </div>
       </div>
       <div class="extra-card">
-        <span class="eyebrow">Formulário (abre nos botões)</span>
-        <div class="fc">
-          <h2 contenteditable="true">Garanta a sua vaga</h2>
-          <p class="sub" contenteditable="true">Deixe seu contato que o time do Mago fala com você pra fechar a rematrícula.</p>
-          <div class="fg">
-            <div class="full"><span class="fl">Nome completo</span><input class="fi" placeholder="Seu nome completo" tabindex="-1"/></div>
-            <div><span class="fl">E-mail</span><input class="fi" placeholder="seu@email.com" tabindex="-1"/></div>
-            <div><span class="fl">WhatsApp</span><input class="fi" placeholder="(00) 00000-0000" tabindex="-1"/></div>
-            <div class="full"><span class="fl">Sua turma atual</span><input class="fi" placeholder="Ex.: PISM 2 · Intensivo" tabindex="-1"/></div>
-          </div>
-          <div class="fa"><span class="btn"><span contenteditable="true">Confirmar interesse</span> <span class="arw" aria-hidden="true">&rarr;</span></span></div>
+        <span class="eyebrow">WhatsApp (abre nos botões)</span>
+        <div class="fg" style="margin-top:0">
+          <div class="full"><label class="fl" for="waNum">Número do WhatsApp</label><input class="fi editable" id="waNum" value="(31) 9582-3494"/></div>
+          <div class="full"><label class="fl" for="waMsg">Mensagem que já vem escrita</label><textarea class="fi editable" id="waMsg">Oi! Sou aluno do Mago e quero fazer minha rematrícula 2026.</textarea></div>
         </div>
-        <div class="fc" id="okPrev">
-          <h2 contenteditable="true">Recebemos seu interesse</h2>
-          <p class="sub" contenteditable="true">O time do Mago vai te chamar pelo WhatsApp ou e-mail que você deixou pra seguir com a rematrícula.</p>
-        </div>
+        <p class="wa-hint">Link gerado: <code id="waLink">wa.me/553195823494</code></p>
       </div>
     </div>
   </div>
@@ -567,6 +559,11 @@ mark{background:none;color:var(--blue);font-weight:inherit}
   function focusSel(el){el.focus();var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r)}
 
   document.addEventListener('input',function(e){if(e.target.closest('[contenteditable="true"]'))markDirty()});
+
+  /* WhatsApp: numero + mensagem viram o link wa.me dos botoes */
+  var waNum=document.getElementById('waNum'),waMsg=document.getElementById('waMsg'),waLink=document.getElementById('waLink');
+  function syncWa(){var d=waNum.value.replace(/\D/g,'');if(d.length<=11)d='55'+d;waLink.textContent='wa.me/'+d+(waMsg.value.trim()?'?text='+encodeURIComponent(waMsg.value.trim()):'')}
+  [waNum,waMsg].forEach(function(el){el.addEventListener('input',function(){syncWa();markDirty()})});syncWa();
   /* Enter nao quebra linha em titulo/numero: so em paragrafos */
   document.addEventListener('keydown',function(e){
     var ce=e.target.closest&&e.target.closest('[contenteditable="true"]');

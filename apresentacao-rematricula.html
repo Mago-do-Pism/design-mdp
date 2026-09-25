@@ -113,13 +113,13 @@
     <div>
       <div class="cover-eyebrow">Mago do Pism · Curso do Mago</div>
       <h1 class="cover-title">Rematrícula <em>2026</em> —<br/>captação e <em>conversão</em></h1>
-      <p class="cover-sub">Apresentação das 5 telas da funcionalidade de Rematrícula: pop-up de entrada, landing de conversão e o painel de admin pra manter tudo atualizado sozinho, sem depender de desenvolvimento pra cada mudança de conteúdo.</p>
+      <p class="cover-sub">Apresentação das 4 telas da funcionalidade de Rematrícula: pop-up de entrada, landing de conversão e o painel de admin pra manter tudo atualizado sozinho, sem depender de desenvolvimento pra cada mudança de conteúdo.</p>
 
       <div class="cover-phases">
         <div class="cover-phase">
           <div class="num">ALUNO</div>
           <h3>Pop-up + Landing</h3>
-          <p>2 telas — do primeiro contato até a confirmação de interesse.</p>
+          <p>2 telas — do primeiro contato até a conversa no WhatsApp do Mago.</p>
           <ul>
             <li>Pop-up de rematrícula — aparece ao entrar na plataforma</li>
             <li>Landing de conversão — hero, mural, PISM, comparativo</li>
@@ -127,12 +127,11 @@
         </div>
         <div class="cover-phase">
           <div class="num">ADMIN</div>
-          <h3>Configuração e captação</h3>
-          <p>3 telas — edição de conteúdo e acompanhamento de interessados.</p>
+          <h3>Configuração</h3>
+          <p>2 telas — edição do pop-up e de todo o conteúdo da landing.</p>
           <ul>
             <li>Config do pop-up — imagem, texto e link</li>
             <li>Edição da landing — direto na própria página</li>
-            <li>Interessados — lista, filtros e exportação</li>
           </ul>
         </div>
       </div>
@@ -147,7 +146,7 @@
   <section class="divider">
     <div class="num">ALUNO</div>
     <h2>Pop-up<br/>e Landing</h2>
-    <p>O aluno vê o pop-up promocional ao entrar na plataforma e, ao clicar, chega numa landing de conversão que termina no formulário de interesse — já pré-preenchido com os dados do cadastro.</p>
+    <p>O aluno vê o pop-up promocional ao entrar na plataforma e, ao clicar, chega numa landing de conversão. Todos os botões levam direto pro WhatsApp do Mago, com a mensagem de rematrícula já escrita.</p>
     <div class="meta">
       <span>2 telas</span>
       <span>Mago do Pism</span>
@@ -171,7 +170,7 @@
       <div class="left">
         <span class="num">02</span>
         <span class="title">Landing de Rematrícula 2026</span>
-        <span class="sub">Hero + vídeo · desconto · mural de aprovados · mecânica do PISM · comparativo · captação de interesse</span>
+        <span class="sub">Hero + vídeo · desconto · mural de aprovados · mecânica do PISM · comparativo · CTA pro WhatsApp</span>
       </div>
       <span class="idx">alunos/rematricula.html</span>
     </header>
@@ -181,10 +180,10 @@
   <!-- DIVIDER · ADMIN -->
   <section class="divider">
     <div class="num">ADMIN</div>
-    <h2>Configuração<br/>e captação</h2>
-    <p>O time do Mago edita o pop-up e o conteúdo inteiro da landing sem depender de desenvolvimento, e acompanha quem demonstrou interesse — direto no painel de admin, não na secretaria.</p>
+    <h2>Configuração</h2>
+    <p>O time do Mago edita o pop-up e o conteúdo inteiro da landing sem depender de desenvolvimento, inclusive o número e a mensagem do WhatsApp.</p>
     <div class="meta">
-      <span>3 telas</span>
+      <span>2 telas</span>
       <span>Mago do Pism</span>
     </div>
   </section>
@@ -206,24 +205,13 @@
       <div class="left">
         <span class="num">04</span>
         <span class="title">Config · Landing (edição inline)</span>
-        <span class="sub">Edição direto na própria página — textos, vídeo, mural de aprovados e listas</span>
+        <span class="sub">Edição direto na própria página — textos, vídeo, mural de aprovados, listas e WhatsApp</span>
       </div>
       <span class="idx">admin/rematricula-landing-editor.html</span>
     </header>
     <div class="stage"><iframe src="admin/rematricula-landing-editor.html" loading="eager" data-screen></iframe></div>
   </article>
 
-  <article class="page">
-    <header class="page-head">
-      <div class="left">
-        <span class="num">05</span>
-        <span class="title">Interessados em Rematrícula</span>
-        <span class="sub">Lista, filtros por turma/período e exportação em XLSX/CSV</span>
-      </div>
-      <span class="idx">admin/rematricula-interessados.html</span>
-    </header>
-    <div class="stage"><iframe src="admin/rematricula-interessados.html" loading="eager" data-screen></iframe></div>
-  </article>
 
   <!-- NOTAS DE DESIGN -->
   <section class="notes">
@@ -257,14 +245,14 @@
 
       <article class="note-card">
         <div class="num">05</div>
-        <h3>Interessados fica com o Admin</h3>
-        <p>Decisão explícita: quem acompanha e contata os interessados é o time do Mago pelo painel de admin — não é uma fila de trabalho da secretaria.</p>
+        <h3>Conversa no WhatsApp, não formulário</h3>
+        <p>A landing não coleta dados. Todo CTA abre o WhatsApp do Mago com a mensagem pronta, e o time fecha a rematrícula por lá, no canal que já usa.</p>
       </article>
 
       <article class="note-card">
         <div class="num">06</div>
-        <h3>Formulário pré-preenchido</h3>
-        <p>O formulário de interesse (nome, e-mail, telefone) já vem preenchido com os dados do cadastro do aluno logado — reduz fricção pra confirmar o interesse.</p>
+        <h3>Número e mensagem editáveis</h3>
+        <p>O número do WhatsApp e o texto que já vem escrito ficam no editor da landing. Trocou de atendente, troca ali, sem dev.</p>
       </article>
     </div>
 

@@ -206,29 +206,8 @@ mark{background:none;color:var(--blue);font-weight:inherit}
 .js .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
 .js .reveal.in{opacity:1;transform:none}
 
-/* ===== Modal ===== */
-.ov{position:fixed;inset:0;background:rgba(16,24,40,.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
-.ov.open{display:flex}
-.modal{background:var(--surface);border-radius:24px;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;box-shadow:0 50px 90px -24px rgba(16,24,40,.4);position:relative;animation:pop .3s cubic-bezier(.2,.8,.2,1)}
-@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
-.mclose{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(16,24,40,.06);color:var(--ink-soft);display:inline-flex;align-items:center;justify-content:center}
-.mclose:hover{background:rgba(16,24,40,.12)}
-.mclose svg{width:16px;height:16px}
-.mbody{padding:44px 40px 38px}
-.mbody .star{width:54px;height:54px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;margin:0 auto 16px}
-.mbody .star svg{width:26px;height:26px}
-.fc{text-align:center}
-.fc h2{font-family:var(--font-display);font-weight:700;font-size:25px;letter-spacing:-.02em;color:var(--ink)}
-.fc .sub{font-size:14.5px;color:var(--ink-soft);margin-top:6px}
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;margin-top:26px;text-align:left}
-.fg .full{grid-column:1/-1}
-.fl{display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
-.fi{width:100%;height:50px;border-radius:12px;border:1.5px solid var(--line);padding:0 14px;font-family:var(--font-body);font-size:15px;color:var(--ink);background:#fff;outline:none;transition:border-color .15s,box-shadow .15s}
-.fi:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(0,123,255,.14)}
-.fa{margin-top:24px}.fa .btn{width:100%}
-#okCard{display:none;text-align:center}
-#okCard .ok{width:66px;height:66px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;margin:0 auto 18px}
-#okCard p{font-size:15px;color:var(--ink-soft);max-width:360px;margin:0 auto 24px;line-height:1.55}
+/* ===== CTAs sao links pro WhatsApp do Mago ===== */
+a.btn{text-decoration:none}
 
 /* ===== Responsivo ===== */
 @media (max-width:980px){
@@ -266,7 +245,7 @@ mark{background:none;color:var(--blue);font-weight:inherit}
   <a href="#topo" aria-label="Mago do PISM"><img class="logo" src="../assets/logo-mago-do-pism.svg" alt="Mago do PISM"/></a>
   <div class="top-r">
     <a href="inicio.html" class="back">Início</a>
-    <button class="btn" data-open>Fazer rematrícula</button>
+    <a class="btn" href="https://wa.me/553195823494?text=Oi!%20Sou%20aluno%20do%20Mago%20e%20quero%20fazer%20minha%20rematr%C3%ADcula%202026." target="_blank" rel="noopener" data-wa>Fazer rematrícula</a>
   </div>
 </div></header>
 
@@ -295,8 +274,8 @@ mark{background:none;color:var(--blue);font-weight:inherit}
     </ul>
 
     <div class="hero-cta">
-      <button class="btn" data-open>Garantir minha vaga <span class="arw" aria-hidden="true">&rarr;</span></button>
-      <button class="btn ghost" data-open>Já sou do Mago</button>
+      <a class="btn" href="https://wa.me/553195823494?text=Oi!%20Sou%20aluno%20do%20Mago%20e%20quero%20fazer%20minha%20rematr%C3%ADcula%202026." target="_blank" rel="noopener" data-wa>Garantir minha vaga <span class="arw" aria-hidden="true">&rarr;</span></a>
+      <a class="btn ghost" href="https://wa.me/553195823494?text=Oi!%20Sou%20aluno%20do%20Mago%20e%20quero%20fazer%20minha%20rematr%C3%ADcula%202026." target="_blank" rel="noopener" data-wa>Já sou do Mago</a>
     </div>
 
     <p class="hero-trust">
@@ -418,7 +397,7 @@ mark{background:none;color:var(--blue);font-weight:inherit}
       <span class="star"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg></span>
       <h2>Rematrícula aberta pra quem já é do Mago.</h2>
       <p class="sub">Renove agora e garanta a sua vaga antes de abrir pro Instagram.</p>
-      <button class="btn" data-open>Garantir minha vaga <span class="arw" aria-hidden="true">&rarr;</span></button>
+      <a class="btn" href="https://wa.me/553195823494?text=Oi!%20Sou%20aluno%20do%20Mago%20e%20quero%20fazer%20minha%20rematr%C3%ADcula%202026." target="_blank" rel="noopener" data-wa>Garantir minha vaga <span class="arw" aria-hidden="true">&rarr;</span></a>
       <span class="brandline"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>Mago · PISM</span>
     </div>
   </div>
@@ -436,52 +415,12 @@ mark{background:none;color:var(--blue);font-weight:inherit}
 <!-- ===================== STICKY ===================== -->
 <div class="sticky" id="sticky">
   <span class="t"><svg class="sp" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg>Rematrícula 2026 · sua vaga vem primeiro</span>
-  <button class="btn" data-open>Garantir minha vaga</button>
-</div>
-
-<!-- ===================== MODAL ===================== -->
-<div class="ov" id="modal">
-  <div class="modal">
-    <button class="mclose" id="mclose" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-    <div class="mbody">
-      <div class="fc" id="formCard">
-        <span class="star"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.6c.7 5.2 4.5 9 9.7 9.7-5.2.7-9 4.5-9.7 9.7-.7-5.2-4.5-9-9.7-9.7 5.2-.7 9-4.5 9.7-9.7z"/></svg></span>
-        <h2>Garanta a sua vaga</h2>
-        <p class="sub">Deixe seu contato que o time do Mago fala com você pra fechar a rematrícula.</p>
-        <div class="fg">
-          <div class="full"><label class="fl" for="rmNome">Nome completo</label><input class="fi" id="rmNome" placeholder="Seu nome completo"/></div>
-          <div><label class="fl" for="rmEmail">E-mail</label><input class="fi" id="rmEmail" type="email" placeholder="seu@email.com"/></div>
-          <div><label class="fl" for="rmTel">WhatsApp</label><input class="fi" id="rmTel" placeholder="(00) 00000-0000"/></div>
-          <div class="full"><label class="fl" for="rmTurma">Sua turma atual</label><input class="fi" id="rmTurma" placeholder="Ex.: PISM 2 · Intensivo"/></div>
-        </div>
-        <div class="fa"><button class="btn" id="btnSubmit">Confirmar interesse <span class="arw" aria-hidden="true">&rarr;</span></button></div>
-      </div>
-      <div class="fc" id="okCard">
-        <div class="ok"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <h2>Recebemos seu interesse</h2>
-        <p>O time do Mago vai te chamar pelo WhatsApp ou e-mail que você deixou pra seguir com a rematrícula.</p>
-        <button class="btn" id="btnClose">Fechar</button>
-      </div>
-    </div>
-  </div>
+  <a class="btn" href="https://wa.me/553195823494?text=Oi!%20Sou%20aluno%20do%20Mago%20e%20quero%20fazer%20minha%20rematr%C3%ADcula%202026." target="_blank" rel="noopener" data-wa>Garantir minha vaga</a>
 </div>
 
 <script>
 (function(){
   "use strict";
-  var ov=document.getElementById('modal'),fc=document.getElementById('formCard'),ok=document.getElementById('okCard');
-  function open(){fc.style.display='block';ok.style.display='none';ov.classList.add('open');document.body.style.overflow='hidden'}
-  function close(){ov.classList.remove('open');document.body.style.overflow=''}
-  document.querySelectorAll('[data-open]').forEach(function(b){b.addEventListener('click',open)});
-  document.getElementById('mclose').addEventListener('click',close);
-  document.getElementById('btnClose').addEventListener('click',close);
-  ov.addEventListener('click',function(e){if(e.target===ov)close()});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
-
-  var tel=document.getElementById('rmTel');
-  tel.addEventListener('input',function(){var v=tel.value.replace(/\D/g,'').slice(0,11);v=v.replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2');tel.value=v});
-  document.getElementById('btnSubmit').addEventListener('click',function(){fc.style.display='none';ok.style.display='block'});
-
   /* conteudo estatico e sempre visivel (sem contador, sem barra animada, sem reveal fragil) */
 
   /* sticky: aparece depois do hero, some no CTA final */
