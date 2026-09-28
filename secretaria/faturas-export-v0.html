@@ -234,7 +234,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
     <h3>Exportar planilha</h3>
-    <p class="modal-sub">Escolha o mês e a turma para gerar a planilha de pagamentos.</p>
+    <p class="modal-sub">Escolha o mês e o período. A planilha sai com uma aba por turma.</p>
 
     <div class="sec-field">
       <label>Mês do pagamento</label>
@@ -243,26 +243,13 @@
         <option>Janeiro/2026</option><option>Fevereiro/2026</option><option>Março/2026</option><option>Abril/2026</option><option>Maio/2026</option><option>Junho/2026</option><option>Julho/2026</option><option>Agosto/2026</option><option>Setembro/2026</option><option>Outubro/2026</option><option>Novembro/2026</option><option>Dezembro/2026</option>
       </select>
     </div>
-    <div class="sec-field-row">
-      <div class="sec-field">
-        <label>Período</label>
-        <select id="expPeriodo" onchange="updateExportState()">
-          <option value="">Selecione</option>
-          <option>Intensivo</option>
-          <option>Extensivo</option>
-        </select>
-      </div>
-      <div class="sec-field">
-        <label>Curso</label>
-        <select id="expCurso" onchange="updateExportState()">
-          <option value="">Selecione</option>
-          <option>Pism I</option>
-          <option>Pism II</option>
-          <option>Pism III</option>
-          <option>Enem</option>
-          <option>Pism III/Enem</option>
-        </select>
-      </div>
+    <div class="sec-field">
+      <label>Período</label>
+      <select id="expPeriodo" onchange="updateExportState()">
+        <option value="">Selecione</option>
+        <option>Intensivo</option>
+        <option>Extensivo</option>
+      </select>
     </div>
 
     <button class="modal-confirm-btn" id="expConfirmBtn" disabled onclick="exportFile()">
@@ -289,7 +276,7 @@
     if (e.target === document.getElementById('modalBackdrop')) closeModal();
   }
   function updateExportState() {
-    const filled = document.getElementById('expMonth').value && document.getElementById('expPeriodo').value && document.getElementById('expCurso').value;
+    const filled = document.getElementById('expMonth').value && document.getElementById('expPeriodo').value;
     document.getElementById('expConfirmBtn').disabled = !filled;
   }
   const toast = document.getElementById('toast');
@@ -301,9 +288,9 @@
   }
   function exportFile() {
     const month = document.getElementById('expMonth').value;
-    const turma = document.getElementById('expPeriodo').value + ' · ' + document.getElementById('expCurso').value;
+    const periodo = document.getElementById('expPeriodo').value;
     closeModal();
-    showToast('Planilha gerada: ' + month + ' — ' + turma);
+    showToast('Planilha gerada: ' + month + ' · ' + periodo);
   }
 </script>
 </body></html>
