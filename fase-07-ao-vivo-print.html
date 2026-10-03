@@ -115,7 +115,7 @@
       <h1 class="cover-title">Aulas <em>ao vivo</em> —<br/>sala do aluno e do <em>professor</em></h1>
       <p class="cover-sub">Documento da Fase <strong>07</strong>. Infraestrutura de aulas ao vivo: listagem e calendário para o aluno, tela preparatória estilo Meet, sala de vídeo com chat e participantes, e painel do professor com controles de apresentação e gravação.</p>
 
-      <div class="cover-phases" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="cover-phases" style="grid-template-columns:repeat(4,1fr);gap:16px;">
         <div class="cover-phase">
           <div class="num">FASE 07A</div>
           <h3>Aluno · Ao vivo</h3>
@@ -145,6 +145,15 @@
           <p>1 tela — acesso restrito, sem sala ao vivo.</p>
           <ul>
             <li>Banco de gravações — publicar aula no curso, por turma</li>
+          </ul>
+        </div>
+        <div class="cover-phase">
+          <div class="num">FASE 07D</div>
+          <h3>Admin · Agenda</h3>
+          <p>2 telas — agenda recorrente no curso.</p>
+          <ul>
+            <li>Curso — aba Calendário estilo Google Agenda</li>
+            <li>Nova agenda recorrente — professor, dias, horário</li>
           </ul>
         </div>
       </div>
@@ -308,6 +317,41 @@
       <span class="idx">admin/gravacoes.html</span>
     </header>
     <div class="stage"><iframe src="admin/gravacoes.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <!-- 07D DIVIDER -->
+  <section class="divider">
+    <div class="num">FASE 07D</div>
+    <h2>Admin<br/>Agenda</h2>
+    <p>Dentro do curso, a aba Calendário mostra as aulas ao vivo numa grade estilo Google Agenda. O admin cria agendas recorrentes semanais, marca o professor e remarca ou cancela aulas avulsas. Turma é o próprio curso (T1, T2).</p>
+    <div class="meta">
+      <span>2 telas</span>
+      <span>Mago do Pism</span>
+    </div>
+  </section>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07D · 01</span>
+        <span class="title">Curso — Calendário</span>
+        <span class="sub">Grade semanal e mensal · blocos por professor · remarcar e cancelar aula</span>
+      </div>
+      <span class="idx">admin/curso-detalhe.html</span>
+    </header>
+    <div class="stage"><iframe src="admin/curso-detalhe.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07D · 02</span>
+        <span class="title">Nova agenda recorrente</span>
+        <span class="sub">Professor · dias da semana · horário · duração · período · aviso de conflito</span>
+      </div>
+      <span class="idx">admin/curso-detalhe.html#nova</span>
+    </header>
+    <div class="stage"><iframe src="admin/curso-detalhe.html#nova" loading="eager" data-screen></iframe></div>
   </article>
 
   <!-- NOTAS DE DESIGN -->
