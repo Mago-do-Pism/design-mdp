@@ -167,6 +167,25 @@
         .btn-save { padding:0 24px; height:40px; border-radius:8px; border:none; background:var(--brand-blue); font-family:var(--font-body); font-weight:700; font-size:14px; color:#fff; cursor:pointer; }
         .btn-save:hover { background:var(--brand-blue-dark); }
         @media (max-width:1000px) { .gc { grid-template-columns:1fr; } .gc-side { flex-direction:row; flex-wrap:wrap; } .gc-block { flex:1 1 220px; } .modal-row { grid-template-columns:1fr; } }
+        @media (max-width:900px) {
+          .sidebar { min-height:0; padding:10px 0; flex-direction:row; align-items:center; overflow-x:auto; box-shadow:0 2px 12px rgba(14,147,242,.15); }
+          .sidebar-logo { width:56px; height:40px; margin:0 8px 0 12px; flex-shrink:0; }
+          .sidebar-nav { flex-direction:row; flex:none; gap:2px; }
+          .sidebar-item { white-space:nowrap; padding:8px 12px; font-size:0; gap:0; }
+          .sidebar-foot { margin:0 8px 0 0; padding:0; border:0; flex-shrink:0; }
+          .admin-content { padding:16px 14px 32px; }
+          .cd-tabs { overflow-x:auto; margin:14px 0 18px; }
+          .cd-tab { white-space:nowrap; }
+          .gc-bar { padding:10px 12px; gap:6px; }
+          .gc-title { font-size:17px; }
+          .gc-new { align-self:stretch; justify-content:center; }
+          .gc-main { order:-1; }
+          .gc-block.mini { display:none; }
+          .gc-side { flex-direction:column; }
+          .wk-scroll, .wk-head-wrap { overflow-x:auto; }
+          .gc-main { overflow-x:auto; }
+          .wk-head, .wk-body { min-width:640px; }
+        }
       </style>
 
       <a href="cursos.html" class="cd-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Cursos</a>
@@ -186,10 +205,6 @@
         <aside class="gc-side">
           <button class="gc-new" onclick="openModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Nova agenda</button>
           <div class="gc-block mini" id="mini"></div>
-          <div class="gc-block">
-            <h4>Turma</h4>
-            <select id="fTurma"><option value="">Todas as turmas</option><option>T1</option><option>T2</option></select>
-          </div>
           <div class="gc-block">
             <h4>Agendas recorrentes</h4>
             <div id="agList"></div>
@@ -224,10 +239,7 @@
       <h3 class="modal-title" id="mTitle">Nova agenda recorrente</h3>
       <p class="modal-sub">Curso EPIT 1 · as aulas são criadas automaticamente dentro do período.</p>
       <div class="modal-form">
-        <div class="modal-row">
-          <div class="modal-field"><label>Turma</label><select><option>EPIT 1 · T1</option><option>EPIT 1 · T2</option><option>T1 e T2 (juntas)</option></select></div>
-          <div class="modal-field"><label>Professor</label><select><option>Prof. Carlos Menezes</option><option>Prof. Ana Lima</option><option>Prof. Ricardo Dias</option><option>Prof. Fernanda Rocha</option></select></div>
-        </div>
+        <div class="modal-field"><label>Professor</label><select><option>Prof. Carlos Menezes</option><option>Prof. Ana Lima</option><option>Prof. Ricardo Dias</option><option>Prof. Fernanda Rocha</option></select></div>
         <div class="modal-field"><label>Título das aulas</label><input type="text" value="Matemática" /></div>
         <div class="modal-field">
           <label>Repete toda</label>
@@ -249,7 +261,7 @@
         </div>
         <div class="conflict">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>
-          <span>Conflito: Prof. Carlos Menezes já tem aula na quarta, 19:00, na turma EPIT 2 · T3. Troque o professor ou o horário pra salvar.</span>
+          <span>Conflito: Prof. Carlos Menezes já tem aula na quarta, 19:00, em outro curso. Troque o professor ou o horário pra salvar.</span>
         </div>
         <div class="modal-actions">
           <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
@@ -278,9 +290,9 @@
     const H0=7, H1=22, HH=56;
     const TODAY=new Date(2026,7,12);
     const RULES=[
-      {id:1,title:'Matemática',prof:'Prof. Carlos Menezes',c:'#0e93f2',turma:'T1',days:[1,3],start:'19:00',dur:120,from:'2026-08-10',to:'2026-12-18',on:true,paused:false},
-      {id:2,title:'Redação',prof:'Prof. Ana Lima',c:'#7c3aed',turma:'T1 e T2',days:[2],start:'19:00',dur:90,from:'2026-08-11',to:'2026-12-15',on:true,paused:false},
-      {id:3,title:'Física',prof:'Prof. Ricardo Dias',c:'#d97706',turma:'T2',days:[6],start:'09:00',dur:120,from:'2026-08-15',to:'2026-12-12',on:true,paused:true}
+      {id:1,title:'Matemática',prof:'Prof. Carlos Menezes',c:'#0e93f2',days:[1,3],start:'19:00',dur:120,from:'2026-08-10',to:'2026-12-18',on:true,paused:false},
+      {id:2,title:'Redação',prof:'Prof. Ana Lima',c:'#7c3aed',days:[2],start:'19:00',dur:90,from:'2026-08-11',to:'2026-12-15',on:true,paused:false},
+      {id:3,title:'Física',prof:'Prof. Ricardo Dias',c:'#d97706',days:[6],start:'09:00',dur:120,from:'2026-08-15',to:'2026-12-12',on:true,paused:true}
     ];
     const EXC={ '1|2026-08-12':{type:'moved',to:'2026-08-13',start:'19:00'}, '1|2026-08-17':{type:'cancel',why:'feriado'} };
     let view='week', cur=new Date(2026,7,10);
@@ -295,10 +307,9 @@
     const cap=s=>s[0].toUpperCase()+s.slice(1);
 
     function eventsOn(d){
-      const key=iso(d), out=[], fT=document.getElementById('fTurma').value;
+      const key=iso(d), out=[];
       RULES.forEach(r=>{
         if(!r.on) return;
-        if(fT && !r.turma.includes(fT)) return;
         const ex=EXC[r.id+'|'+key];
         if(r.days.includes(d.getDay()) && key>=r.from && key<=r.to){
           if(ex&&ex.type==='moved') out.push({r,date:d,kind:'ghost',start:mins(r.start),ex});
@@ -314,7 +325,7 @@
 
     function evHtml(e){
       const top=(e.start/60-H0)*HH, ht=e.r.dur/60*HH-2, cls=(e.kind==='ok'||e.kind==='moved')?'':' '+e.kind;
-      const l3=e.kind==='cancelled'?'Cancelada ('+e.ex.why+')':e.kind==='ghost'?'Remarcada':e.kind==='paused'?'Agenda pausada':e.r.prof+' · '+e.r.turma;
+      const l3=e.kind==='cancelled'?'Cancelada ('+e.ex.why+')':e.kind==='ghost'?'Remarcada':e.kind==='paused'?'Agenda pausada':e.r.prof;
       return '<button class="ev'+cls+'" style="--c:'+e.r.c+';top:'+top+'px;height:'+ht+'px" '+dataAttr(e)+'><strong>'+e.r.title+'</strong><span>'+hm(e.start)+' – '+hm(e.start+e.r.dur)+'</span><span>'+l3+'</span></button>';
     }
 
@@ -360,7 +371,6 @@
       p.innerHTML='<div class="pop-tools"><button title="Editar agenda" onclick="closePop();openModal()">'+IC.edit+'</button><button class="danger" title="Encerrar agenda" onclick="closePop()">'+IC.trash+'</button><button title="Fechar" onclick="closePop()">'+IC.x+'</button></div>'
        +'<div class="pop-row"><span class="pop-dot"></span><div><h5>'+r.title+'</h5><div class="pop-sub">'+fmtDate(e.date)+' · '+hm(e.start)+' – '+hm(e.start+r.dur)+' ('+durTxt(r.dur)+')</div></div></div>'
        +'<div class="pop-row">'+IC.user+'<span>'+r.prof+'</span></div>'
-       +'<div class="pop-row">'+IC.users+'<span>Turma '+r.turma+'</span></div>'
        +'<div class="pop-row">'+IC.repeat+'<span>Toda '+r.days.map(d=>DNL[d]).join(' e ')+', até '+pd(r.to).toLocaleDateString('pt-BR')+'</span></div>'
        +'<div class="pop-row">'+IC.clock+st+'</div><div class="pop-actions">'+acts+'</div>';
       p.classList.add('open');
@@ -381,7 +391,7 @@
       el.querySelectorAll('[data-d]').forEach(s=>s.addEventListener('click',()=>{cur=pd(s.dataset.d);render();}));
     }
     function renderAg(){
-      document.getElementById('agList').innerHTML=RULES.map(r=>'<div class="ag-item'+(r.on?'':' off')+'" style="--c:'+r.c+'"><span class="ag-box" onclick="toggleRule('+r.id+')">'+IC.check+'</span><div class="ag-txt">'+r.title+'<small>'+r.prof+' · '+r.turma+' · '+r.days.map(d=>DN[d]).join('/')+' '+r.start+'</small></div>'
+      document.getElementById('agList').innerHTML=RULES.map(r=>'<div class="ag-item'+(r.on?'':' off')+'" style="--c:'+r.c+'"><span class="ag-box" onclick="toggleRule('+r.id+')">'+IC.check+'</span><div class="ag-txt">'+r.title+'<small>'+r.prof+' · '+r.days.map(d=>DN[d]).join('/')+' '+r.start+'</small></div>'
         +(r.paused?'<span class="badge badge-off">Pausada</span>':'')
         +'<span class="ag-actions"><button title="Editar" onclick="openModal()">'+IC.edit+'</button><button title="'+(r.paused?'Retomar':'Pausar')+'">'+(r.paused?IC.play:IC.pause)+'</button><button title="Encerrar agenda">'+IC.trash+'</button></span></div>').join('');
     }
@@ -389,7 +399,6 @@
     function step(n){ cur=view==='week'?addD(cur,7*n):new Date(cur.getFullYear(),cur.getMonth()+n,1); closePop(); render(); }
     function goToday(){cur=new Date(TODAY);closePop();render();}
     function setView(v){view=v;document.getElementById('vWeek').classList.toggle('on',v==='week');document.getElementById('vMonth').classList.toggle('on',v==='month');closePop();render();}
-    document.getElementById('fTurma').addEventListener('change',render);
 
     function openModal(){ document.getElementById('modalOverlay').classList.add('open'); }
     function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
