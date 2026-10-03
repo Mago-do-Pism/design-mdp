@@ -41,48 +41,107 @@
         .cd-tab.is-active::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:3px; background:var(--brand-blue); border-radius:4px 4px 0 0; }
         .cd-tab .novo { margin-left:6px; padding:1px 6px; border-radius:4px; background:rgba(14,147,242,.12); color:var(--brand-blue); font-size:10px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; }
 
-        .cal-wrap { max-width:1086px; }
-        .cal-head-row { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:6px; flex-wrap:wrap; }
-        .cal-head-row h3 { margin:0; font-size:18px; font-weight:700; color:var(--text-primary); }
-        .cal-sub { margin:0 0 20px; font-size:13px; color:var(--text-muted); }
-        .cal-filters { display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
-        .cal-filters select { height:38px; padding:0 12px; border-radius:8px; border:1px solid var(--border-default); background:var(--bg-card); font-family:var(--font-body); font-size:13px; color:var(--text-primary); outline:none; }
-        .cal-filters select:focus { border-color:var(--brand-blue); }
 
-        .rule-list { display:flex; flex-direction:column; gap:12px; }
-        .rule { background:var(--bg-card); border:1px solid var(--border-default); border-radius:var(--radius-xl); box-shadow:var(--shadow-soft); padding:18px 22px; display:grid; grid-template-columns:auto 1fr auto; gap:18px; align-items:center; }
-        .rule.is-paused { opacity:.6; }
-        .avatar { width:44px; height:44px; border-radius:50%; background:var(--brand-blue); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; }
-        .rule-main { min-width:0; }
-        .rule-title { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
-        .rule-title strong { font-size:15px; color:var(--text-primary); }
-        .badge { padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; }
-        .badge-ok { background:rgba(39,133,86,.12); color:var(--color-success); }
+        .gc { display:grid; grid-template-columns:230px 1fr; gap:20px; max-width:1180px; align-items:start; }
+        .gc-side { display:flex; flex-direction:column; gap:18px; }
+        .gc-new { height:46px; border-radius:var(--radius-pill, 999px); border:1px solid var(--border-default); background:var(--bg-card); box-shadow:var(--shadow-soft); font-family:var(--font-body); font-weight:700; font-size:14px; color:var(--text-primary); display:inline-flex; align-items:center; gap:10px; padding:0 22px 0 16px; cursor:pointer; align-self:flex-start; }
+        .gc-new:hover { box-shadow:var(--shadow-card); }
+        .gc-new svg { width:20px; height:20px; color:var(--brand-blue); }
+        .gc-block h4 { margin:0 0 8px; font-size:12px; font-weight:700; color:var(--text-muted); letter-spacing:.3px; text-transform:uppercase; }
+        .gc-block select { width:100%; height:38px; padding:0 10px; border-radius:8px; border:1px solid var(--border-default); background:var(--bg-card); font-family:var(--font-body); font-size:13px; color:var(--text-primary); outline:none; }
+        .mini-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; font-weight:700; color:var(--text-primary); font-size:13px; }
+        .mini-grid { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; gap:2px 0; }
+        .mini-grid span { height:26px; line-height:26px; font-size:11px; color:var(--text-secondary); cursor:pointer; }
+        .mini-grid .dw { color:var(--text-faint); font-weight:700; cursor:default; }
+        .mini-grid .out { color:var(--text-faint); }
+        .mini-grid .wk { background:rgba(14,147,242,.1); }
+        .mini-grid .today { background:var(--brand-blue); color:#fff; font-weight:700; border-radius:50%; }
+        .ag-item { display:flex; align-items:center; gap:10px; padding:7px 6px; border-radius:8px; font-size:13px; color:var(--text-primary); }
+        .ag-item:hover { background:var(--bg-surface); }
+        .ag-box { width:16px; height:16px; border-radius:4px; border:2px solid var(--c); background:var(--c); flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+        .ag-box svg { width:11px; height:11px; color:#fff; }
+        .ag-item.off .ag-box { background:transparent; }
+        .ag-item.off .ag-box svg { display:none; }
+        .ag-txt { flex:1; min-width:0; line-height:1.25; }
+        .ag-txt small { display:block; color:var(--text-muted); font-size:11px; }
+        .ag-actions { display:none; gap:2px; }
+        .ag-item:hover .ag-actions { display:flex; }
+        .ag-actions button { width:24px; height:24px; border:none; background:transparent; border-radius:6px; color:var(--text-muted); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; }
+        .ag-actions button:hover { background:var(--border-default); color:var(--brand-blue); }
+        .ag-actions svg { width:14px; height:14px; }
+        .badge { padding:2px 8px; border-radius:999px; font-size:10px; font-weight:700; }
         .badge-off { background:var(--neutral-100, #eee); color:var(--text-muted); }
-        .rule-meta { display:flex; gap:18px; flex-wrap:wrap; font-size:13px; color:var(--text-secondary); }
-        .rule-meta span { display:inline-flex; align-items:center; gap:6px; }
-        .rule-meta svg { width:15px; height:15px; color:var(--text-muted); }
-        .days { display:flex; gap:4px; margin-top:10px; }
-        .day { width:30px; height:26px; border-radius:6px; border:1px solid var(--border-default); font-size:11px; font-weight:700; color:var(--text-faint); display:flex; align-items:center; justify-content:center; }
-        .day.on { background:rgba(14,147,242,.12); border-color:var(--brand-blue); color:var(--brand-blue); }
-        .rule-actions { display:flex; gap:8px; }
-        .icon-btn { width:34px; height:34px; border-radius:8px; border:1px solid var(--border-default); background:var(--bg-card); color:var(--text-secondary); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
-        .icon-btn:hover { border-color:var(--brand-blue); color:var(--brand-blue); }
-        .icon-btn.danger:hover { border-color:var(--color-danger); color:var(--color-danger); }
-        .icon-btn svg { width:16px; height:16px; }
 
-        .occ-title { margin:36px 0 12px; font-size:16px; font-weight:700; color:var(--text-primary); }
-        .occ-table { background:var(--bg-card); border:1px solid var(--border-default); border-radius:var(--radius-xl); overflow:hidden; }
-        .occ-row { display:grid; grid-template-columns:110px 120px 1fr 1fr 110px 90px; gap:12px; align-items:center; padding:13px 22px; border-bottom:1px solid var(--border-default); font-size:13px; color:var(--text-primary); }
-        .occ-row:last-child { border-bottom:0; }
-        .occ-row.head { background:var(--bg-surface); font-size:12px; font-weight:700; color:var(--text-muted); }
-        .occ-row.cancelled { color:var(--text-faint); }
-        .occ-row.cancelled .when { text-decoration:line-through; }
-        .tag-moved { color:var(--color-warn); font-weight:600; font-size:12px; }
-        .tag-cancel { color:var(--color-danger); font-weight:600; font-size:12px; }
-        .row-actions { display:flex; gap:6px; justify-content:flex-end; }
-        .row-actions .icon-btn { width:28px; height:28px; }
-        .row-actions .icon-btn svg { width:14px; height:14px; }
+        .gc-main { background:var(--bg-card); border:1px solid var(--border-default); border-radius:var(--radius-xl); box-shadow:var(--shadow-soft); overflow:hidden; position:relative; }
+        .gc-bar { display:flex; align-items:center; gap:10px; padding:14px 18px; border-bottom:1px solid var(--border-default); flex-wrap:wrap; }
+        .gc-today { height:36px; padding:0 16px; border-radius:8px; border:1px solid var(--border-default); background:var(--bg-card); font-family:var(--font-body); font-weight:600; font-size:13px; color:var(--text-primary); cursor:pointer; }
+        .gc-today:hover { background:var(--bg-surface); }
+        .gc-nav { width:34px; height:34px; border-radius:50%; border:none; background:transparent; color:var(--text-secondary); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; }
+        .gc-nav:hover { background:var(--bg-surface); }
+        .gc-nav svg { width:18px; height:18px; }
+        .gc-title { margin:0 auto 0 6px; font-size:20px; font-weight:600; color:var(--text-primary); font-family:var(--font-display); }
+        .gc-seg { display:inline-flex; border:1px solid var(--border-default); border-radius:8px; overflow:hidden; }
+        .gc-seg button { height:36px; padding:0 16px; border:none; background:var(--bg-card); font-family:var(--font-body); font-weight:600; font-size:13px; color:var(--text-secondary); cursor:pointer; }
+        .gc-seg button + button { border-left:1px solid var(--border-default); }
+        .gc-seg button.on { background:rgba(14,147,242,.12); color:var(--brand-blue); }
+
+        .wk-head { display:grid; grid-template-columns:56px repeat(7,1fr); border-bottom:1px solid var(--border-default); padding-right:var(--sbw,0px); }
+        .wk-head > div { text-align:center; padding:10px 0 8px; font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.4px; border-left:1px solid var(--border-default); }
+        .wk-head > div:first-child { border-left:0; }
+        .wk-head b { display:flex; width:40px; height:40px; margin:4px auto 0; border-radius:50%; align-items:center; justify-content:center; font-size:20px; font-weight:500; color:var(--text-primary); letter-spacing:0; }
+        .wk-head .is-today { color:var(--brand-blue); }
+        .wk-head .is-today b { background:var(--brand-blue); color:#fff; }
+        .wk-scroll { max-height:600px; overflow-y:auto; position:relative; }
+        .wk-body { display:grid; grid-template-columns:56px repeat(7,1fr); position:relative; }
+        .wk-hours { position:relative; }
+        .wk-hours span { position:absolute; right:8px; transform:translateY(-50%); font-size:11px; color:var(--text-muted); }
+        .wk-col { position:relative; border-left:1px solid var(--border-default); background-image:linear-gradient(var(--border-default) 1px, transparent 1px); background-size:100% 56px; cursor:pointer; }
+        .wk-col.is-today { background-color:rgba(14,147,242,.04); }
+        .ev { position:absolute; left:3px; right:5px; border-radius:6px; padding:4px 8px; font-size:12px; line-height:1.3; color:#fff; background:var(--c); border:none; text-align:left; font-family:var(--font-body); cursor:pointer; overflow:hidden; box-shadow:0 1px 2px rgba(0,0,0,.15); }
+        .ev:hover { filter:brightness(.94); z-index:3; }
+        .ev strong { display:block; font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .ev span { display:block; font-size:11px; opacity:.92; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .ev.cancelled { background:var(--bg-card); color:var(--text-faint); border:1px dashed var(--color-danger); box-shadow:none; }
+        .ev.cancelled strong { text-decoration:line-through; }
+        .ev.ghost, .ev.paused { background:repeating-linear-gradient(45deg, var(--bg-card), var(--bg-card) 6px, var(--bg-surface) 6px, var(--bg-surface) 12px); color:var(--text-muted); border:1px dashed var(--text-faint); box-shadow:none; }
+        .now-line { position:absolute; left:0; right:0; height:2px; background:var(--color-danger); z-index:2; pointer-events:none; }
+        .now-line::before { content:""; position:absolute; left:-5px; top:-4px; width:10px; height:10px; border-radius:50%; background:var(--color-danger); }
+
+        .mo-head { display:grid; grid-template-columns:repeat(7,1fr); border-bottom:1px solid var(--border-default); }
+        .mo-head div { padding:10px 0; text-align:center; font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.4px; }
+        .mo-grid { display:grid; grid-template-columns:repeat(7,1fr); }
+        .mo-cell { min-height:104px; min-width:0; border-right:1px solid var(--border-default); border-bottom:1px solid var(--border-default); padding:4px 4px 6px; display:flex; flex-direction:column; gap:2px; cursor:pointer; }
+        .mo-cell:nth-child(7n) { border-right:0; }
+        .mo-cell.out { background:var(--bg-surface); }
+        .mo-cell.out .mo-n { color:var(--text-faint); }
+        .mo-n { align-self:center; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:500; color:var(--text-primary); }
+        .mo-cell.is-today .mo-n { background:var(--brand-blue); color:#fff; font-weight:700; }
+        .chip { border:none; text-align:left; font-family:var(--font-body); font-size:11px; padding:2px 6px; border-radius:4px; color:#fff; background:var(--c); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; }
+        .chip.cancelled { background:transparent; color:var(--text-faint); text-decoration:line-through; border:1px dashed var(--color-danger); }
+        .chip.ghost, .chip.paused { background:var(--bg-surface); color:var(--text-muted); border:1px dashed var(--text-faint); }
+
+        .pop { position:fixed; z-index:90; width:330px; background:var(--bg-card); border-radius:12px; box-shadow:var(--shadow-deep); border:1px solid var(--border-default); padding:14px 18px 18px; display:none; }
+        .pop.open { display:block; }
+        .pop-tools { display:flex; justify-content:flex-end; gap:2px; margin-bottom:6px; }
+        .pop-tools button { width:32px; height:32px; border:none; background:transparent; border-radius:50%; color:var(--text-secondary); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; }
+        .pop-tools button:hover { background:var(--bg-surface); color:var(--brand-blue); }
+        .pop-tools button.danger:hover { color:var(--color-danger); }
+        .pop-tools svg { width:17px; height:17px; }
+        .pop-row { display:flex; gap:14px; align-items:flex-start; margin-bottom:10px; font-size:13px; color:var(--text-secondary); }
+        .pop-row svg { width:16px; height:16px; margin-top:1px; color:var(--text-muted); flex-shrink:0; }
+        .pop-dot { width:14px; height:14px; border-radius:4px; background:var(--c); margin-top:5px; flex-shrink:0; }
+        .pop h5 { margin:0 0 2px; font-size:18px; font-weight:600; color:var(--text-primary); font-family:var(--font-display); }
+        .pop-sub { font-size:13px; color:var(--text-secondary); }
+        .pop-status { font-weight:600; }
+        .pop-status.warn { color:var(--color-warn); }
+        .pop-status.danger { color:var(--color-danger); }
+        .pop-actions { display:flex; gap:8px; margin-top:14px; padding-top:12px; border-top:1px solid var(--border-default); }
+        .pop-actions button { flex:1; height:36px; border-radius:8px; font-family:var(--font-body); font-weight:600; font-size:13px; cursor:pointer; border:1px solid var(--border-default); background:var(--bg-card); color:var(--text-secondary); }
+        .pop-actions button:hover { border-color:var(--brand-blue); color:var(--brand-blue); }
+        .pop-actions button.danger:hover { border-color:var(--color-danger); color:var(--color-danger); }
+        .legend { display:flex; gap:16px; padding:10px 18px; border-top:1px solid var(--border-default); font-size:12px; color:var(--text-muted); flex-wrap:wrap; }
+        .legend i { display:inline-block; width:12px; height:12px; border-radius:3px; vertical-align:-2px; margin-right:6px; }
+
 
         .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:100; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .2s; }
         .modal-overlay.open { opacity:1; pointer-events:all; }
@@ -107,10 +166,10 @@
         .btn-cancel { padding:0 20px; height:40px; border-radius:8px; border:1px solid var(--border-default); background:var(--bg-card); font-family:var(--font-body); font-weight:600; font-size:14px; color:var(--text-secondary); cursor:pointer; }
         .btn-save { padding:0 24px; height:40px; border-radius:8px; border:none; background:var(--brand-blue); font-family:var(--font-body); font-weight:700; font-size:14px; color:#fff; cursor:pointer; }
         .btn-save:hover { background:var(--brand-blue-dark); }
-        @media (max-width:900px) { .rule { grid-template-columns:auto 1fr; } .rule-actions { grid-column:1 / -1; } .occ-row { grid-template-columns:1fr 1fr; } .occ-row.head { display:none; } }
+        @media (max-width:1000px) { .gc { grid-template-columns:1fr; } .gc-side { flex-direction:row; flex-wrap:wrap; } .gc-block { flex:1 1 220px; } .modal-row { grid-template-columns:1fr; } }
       </style>
 
-      <a href="cursos.html" class="cd-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Cursos</a>
+      <a href="cursos.html" class="cd-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Cursos</a>
       <h2 class="section-title" style="margin:0">EPIT 1</h2>
 
       <div class="cd-tabs" role="tablist">
@@ -123,91 +182,42 @@
         <button class="cd-tab is-active" role="tab" aria-selected="true">Calendário<span class="novo">novo</span></button>
       </div>
 
-      <section class="cal-wrap">
-        <div class="cal-head-row">
-          <h3>Agendas recorrentes</h3>
-          <button class="btn-primary compact" onclick="openModal()">Nova agenda recorrente</button>
-        </div>
-        <p class="cal-sub">Cada agenda gera as aulas ao vivo da turma toda semana, no dia e horário escolhidos, com o professor marcado.</p>
+      <section class="gc">
+        <aside class="gc-side">
+          <button class="gc-new" onclick="openModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Nova agenda</button>
+          <div class="gc-block mini" id="mini"></div>
+          <div class="gc-block">
+            <h4>Turma</h4>
+            <select id="fTurma"><option value="">Todas as turmas</option><option>T1</option><option>T2</option></select>
+          </div>
+          <div class="gc-block">
+            <h4>Agendas recorrentes</h4>
+            <div id="agList"></div>
+          </div>
+        </aside>
 
-        <div class="cal-filters">
-          <select><option>Todas as turmas</option><option>EPIT 1 · T1</option><option>EPIT 1 · T2</option></select>
-          <select><option>Todos os professores</option><option>Prof. Carlos Menezes</option><option>Prof. Ana Lima</option><option>Prof. Ricardo Dias</option></select>
-          <select><option>Ativas</option><option>Pausadas</option><option>Encerradas</option></select>
-        </div>
-
-        <div class="rule-list">
-          <article class="rule">
-            <div class="avatar">CM</div>
-            <div class="rule-main">
-              <div class="rule-title"><strong>Matemática · Prof. Carlos Menezes</strong><span class="badge badge-ok">Ativa</span></div>
-              <div class="rule-meta">
-                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>Turma T1</span>
-                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>19:00 às 21:00 (2h)</span>
-                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>10/08/2026 a 18/12/2026 · 36 aulas</span>
-              </div>
-              <div class="days"><span class="day">DOM</span><span class="day on">SEG</span><span class="day">TER</span><span class="day on">QUA</span><span class="day">QUI</span><span class="day">SEX</span><span class="day">SÁB</span></div>
-            </div>
-            <div class="rule-actions">
-              <button class="icon-btn" title="Editar" aria-label="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
-              <button class="icon-btn" title="Pausar" aria-label="Pausar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></button>
-              <button class="icon-btn danger" title="Encerrar agenda" aria-label="Encerrar agenda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>
-            </div>
-          </article>
-
-          <article class="rule">
-            <div class="avatar" style="background:#7c3aed">AL</div>
-            <div class="rule-main">
-              <div class="rule-title"><strong>Redação · Prof. Ana Lima</strong><span class="badge badge-ok">Ativa</span></div>
-              <div class="rule-meta">
-                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>Turmas T1 e T2</span>
-                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>19:00 às 20:30 (1h30)</span>
-                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>11/08/2026 a 15/12/2026 · 18 aulas</span>
-              </div>
-              <div class="days"><span class="day">DOM</span><span class="day">SEG</span><span class="day on">TER</span><span class="day">QUA</span><span class="day">QUI</span><span class="day">SEX</span><span class="day">SÁB</span></div>
-            </div>
-            <div class="rule-actions">
-              <button class="icon-btn" title="Editar" aria-label="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
-              <button class="icon-btn" title="Pausar" aria-label="Pausar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></button>
-              <button class="icon-btn danger" title="Encerrar agenda" aria-label="Encerrar agenda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>
-            </div>
-          </article>
-
-          <article class="rule is-paused">
-            <div class="avatar" style="background:#d97706">RD</div>
-            <div class="rule-main">
-              <div class="rule-title"><strong>Física · Prof. Ricardo Dias</strong><span class="badge badge-off">Pausada</span></div>
-              <div class="rule-meta">
-                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>Turma T2</span>
-                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>09:00 às 11:00 (2h)</span>
-                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>15/08/2026 a 12/12/2026 · 17 aulas</span>
-              </div>
-              <div class="days"><span class="day">DOM</span><span class="day">SEG</span><span class="day">TER</span><span class="day">QUA</span><span class="day">QUI</span><span class="day">SEX</span><span class="day on">SÁB</span></div>
-            </div>
-            <div class="rule-actions">
-              <button class="icon-btn" title="Editar" aria-label="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
-              <button class="icon-btn" title="Retomar" aria-label="Retomar"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M7 4l13 8-13 8z"/></svg></button>
-              <button class="icon-btn danger" title="Encerrar agenda" aria-label="Encerrar agenda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>
-            </div>
-          </article>
-        </div>
-
-        <h3 class="occ-title">Próximas aulas geradas</h3>
-        <div class="occ-table">
-          <div class="occ-row head"><span>Data</span><span>Horário</span><span>Professor</span><span>Turma</span><span>Situação</span><span></span></div>
-          <div class="occ-row"><span class="when">Seg, 10/08</span><span>19:00 – 21:00</span><span>Prof. Carlos Menezes</span><span>T1</span><span>Agendada</span>
-            <span class="row-actions"><button class="icon-btn" title="Remarcar" aria-label="Remarcar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button><button class="icon-btn danger" title="Cancelar só esta aula" aria-label="Cancelar só esta aula"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></span></div>
-          <div class="occ-row"><span class="when">Ter, 11/08</span><span>19:00 – 20:30</span><span>Prof. Ana Lima</span><span>T1 e T2</span><span>Agendada</span>
-            <span class="row-actions"><button class="icon-btn" title="Remarcar" aria-label="Remarcar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button><button class="icon-btn danger" title="Cancelar só esta aula" aria-label="Cancelar só esta aula"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></span></div>
-          <div class="occ-row"><span class="when">Qua, 12/08</span><span>19:00 – 21:00</span><span>Prof. Carlos Menezes</span><span>T1</span><span class="tag-moved">Remarcada p/ qui, 13/08</span>
-            <span class="row-actions"><button class="icon-btn" title="Remarcar" aria-label="Remarcar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button><button class="icon-btn danger" title="Cancelar só esta aula" aria-label="Cancelar só esta aula"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></span></div>
-          <div class="occ-row cancelled"><span class="when">Seg, 17/08</span><span>19:00 – 21:00</span><span>Prof. Carlos Menezes</span><span>T1</span><span class="tag-cancel">Cancelada (feriado)</span><span></span></div>
-          <div class="occ-row"><span class="when">Ter, 18/08</span><span>19:00 – 20:30</span><span>Prof. Ana Lima</span><span>T1 e T2</span><span>Agendada</span>
-            <span class="row-actions"><button class="icon-btn" title="Remarcar" aria-label="Remarcar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button><button class="icon-btn danger" title="Cancelar só esta aula" aria-label="Cancelar só esta aula"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></span></div>
+        <div class="gc-main">
+          <div class="gc-bar">
+            <button class="gc-today" onclick="goToday()">Hoje</button>
+            <button class="gc-nav" onclick="step(-1)" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button class="gc-nav" onclick="step(1)" aria-label="Próximo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+            <h3 class="gc-title" id="gcTitle"></h3>
+            <div class="gc-seg"><button id="vWeek" class="on" onclick="setView('week')">Semana</button><button id="vMonth" onclick="setView('month')">Mês</button></div>
+          </div>
+          <div id="view"></div>
+          <div class="legend">
+            <span><i style="background:var(--brand-blue)"></i>Aula agendada</span>
+            <span><i style="border:1px dashed var(--text-faint);background:var(--bg-surface)"></i>Agenda pausada ou horário original de aula remarcada</span>
+            <span><i style="border:1px dashed var(--color-danger)"></i>Aula cancelada</span>
+            <span>Clique num horário vazio pra criar uma agenda e numa aula pra remarcar ou cancelar só ela.</span>
+          </div>
         </div>
       </section>
+
+      <div class="pop" id="pop"></div>
     </main>
   </div>
+
 
   <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
     <div class="modal" role="dialog" aria-labelledby="mTitle">
@@ -250,9 +260,141 @@
   </div>
 
   <script>
+    const S='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+    const IC = {
+      edit:S+'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
+      x:S+'<path d="M18 6L6 18M6 6l12 12"/></svg>',
+      trash:S+'<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>',
+      pause:S+'<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>',
+      play:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M7 4l13 8-13 8z"/></svg>',
+      clock:S+'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+      users:S+'<circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>',
+      user:S+'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>',
+      repeat:S+'<path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></svg>',
+      check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>'
+    };
+    const DN=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'], DNL=['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+    const MN=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    const H0=7, H1=22, HH=56;
+    const TODAY=new Date(2026,7,12);
+    const RULES=[
+      {id:1,title:'Matemática',prof:'Prof. Carlos Menezes',c:'#0e93f2',turma:'T1',days:[1,3],start:'19:00',dur:120,from:'2026-08-10',to:'2026-12-18',on:true,paused:false},
+      {id:2,title:'Redação',prof:'Prof. Ana Lima',c:'#7c3aed',turma:'T1 e T2',days:[2],start:'19:00',dur:90,from:'2026-08-11',to:'2026-12-15',on:true,paused:false},
+      {id:3,title:'Física',prof:'Prof. Ricardo Dias',c:'#d97706',turma:'T2',days:[6],start:'09:00',dur:120,from:'2026-08-15',to:'2026-12-12',on:true,paused:true}
+    ];
+    const EXC={ '1|2026-08-12':{type:'moved',to:'2026-08-13',start:'19:00'}, '1|2026-08-17':{type:'cancel',why:'feriado'} };
+    let view='week', cur=new Date(2026,7,10);
+    const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    const pd=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+    const addD=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+    const mins=t=>{const [h,m]=t.split(':').map(Number);return h*60+m};
+    const hm=m=>String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
+    const durTxt=m=>m%60?Math.floor(m/60)+'h'+m%60:m/60+'h';
+    const sameDay=(a,b)=>iso(a)===iso(b);
+    const weekStart=d=>addD(d,-d.getDay());
+    const cap=s=>s[0].toUpperCase()+s.slice(1);
+
+    function eventsOn(d){
+      const key=iso(d), out=[], fT=document.getElementById('fTurma').value;
+      RULES.forEach(r=>{
+        if(!r.on) return;
+        if(fT && !r.turma.includes(fT)) return;
+        const ex=EXC[r.id+'|'+key];
+        if(r.days.includes(d.getDay()) && key>=r.from && key<=r.to){
+          if(ex&&ex.type==='moved') out.push({r,date:d,kind:'ghost',start:mins(r.start),ex});
+          else if(ex&&ex.type==='cancel') out.push({r,date:d,kind:'cancelled',start:mins(r.start),ex});
+          else out.push({r,date:d,kind:r.paused?'paused':'ok',start:mins(r.start)});
+        }
+        Object.keys(EXC).forEach(k=>{const [rid,fd]=k.split('|'); const e=EXC[k]; if(+rid===r.id&&e.type==='moved'&&e.to===key) out.push({r,date:d,kind:'moved',start:mins(e.start),ex:e,from:fd});});
+      });
+      return out;
+    }
+    function mk(e){return {rid:e.r.id,date:iso(e.date),kind:e.kind,start:e.start,from:e.from||null,to:(e.ex&&e.ex.to)||null,why:(e.ex&&e.ex.why)||null};}
+    const dataAttr=e=>"data-ev='"+JSON.stringify(mk(e))+"'";
+
+    function evHtml(e){
+      const top=(e.start/60-H0)*HH, ht=e.r.dur/60*HH-2, cls=(e.kind==='ok'||e.kind==='moved')?'':' '+e.kind;
+      const l3=e.kind==='cancelled'?'Cancelada ('+e.ex.why+')':e.kind==='ghost'?'Remarcada':e.kind==='paused'?'Agenda pausada':e.r.prof+' · '+e.r.turma;
+      return '<button class="ev'+cls+'" style="--c:'+e.r.c+';top:'+top+'px;height:'+ht+'px" '+dataAttr(e)+'><strong>'+e.r.title+'</strong><span>'+hm(e.start)+' – '+hm(e.start+e.r.dur)+'</span><span>'+l3+'</span></button>';
+    }
+
+    function render(){
+      const v=document.getElementById('view'), t=document.getElementById('gcTitle');
+      if(view==='week'){
+        const ws=weekStart(cur), we=addD(ws,6);
+        t.textContent=ws.getMonth()===we.getMonth()? cap(MN[ws.getMonth()])+' de '+ws.getFullYear() : MN[ws.getMonth()].slice(0,3)+' – '+MN[we.getMonth()].slice(0,3)+' de '+we.getFullYear();
+        let head='<div class="wk-head" id="wkHead"><div></div>', cols='', hours='';
+        for(let i=0;i<7;i++){const d=addD(ws,i), td=sameDay(d,TODAY);
+          head+='<div class="'+(td?'is-today':'')+'">'+DN[i]+'<b>'+d.getDate()+'</b></div>';
+          cols+='<div class="wk-col'+(td?' is-today':'')+'">'+eventsOn(d).map(evHtml).join('')+(td?'<div class="now-line" style="top:'+((15.5-H0)*HH)+'px"></div>':'')+'</div>';}
+        head+='</div>';
+        for(let h=H0+1;h<=H1;h++) hours+='<span style="top:'+((h-H0)*HH)+'px">'+String(h).padStart(2,'0')+':00</span>';
+        v.innerHTML=head+'<div class="wk-scroll" id="wkScroll"><div class="wk-body" style="height:'+((H1-H0)*HH)+'px"><div class="wk-hours">'+hours+'</div>'+cols+'</div></div>';
+        const sc=document.getElementById('wkScroll'); sc.scrollTop=(11-H0)*HH;
+        document.getElementById('wkHead').style.setProperty('--sbw',(sc.offsetWidth-sc.clientWidth)+'px');
+        v.querySelectorAll('.wk-col').forEach(c=>c.addEventListener('click',e=>{ if(e.target.closest('.ev')) return; closePop(); openModal(); }));
+        v.querySelectorAll('.ev').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();showPop(b,JSON.parse(b.dataset.ev));}));
+      } else {
+        t.textContent=cap(MN[cur.getMonth()])+' de '+cur.getFullYear();
+        const gs=weekStart(new Date(cur.getFullYear(),cur.getMonth(),1));
+        let h='<div class="mo-head">'+DN.map(x=>'<div>'+x+'</div>').join('')+'</div><div class="mo-grid">';
+        for(let i=0;i<42;i++){const d=addD(gs,i); if(i>=35&&d.getMonth()!==cur.getMonth()) break;
+          const evs=eventsOn(d).sort((a,b)=>a.start-b.start);
+          h+='<div class="mo-cell'+(d.getMonth()!==cur.getMonth()?' out':'')+(sameDay(d,TODAY)?' is-today':'')+'"><span class="mo-n">'+d.getDate()+'</span>'+evs.map(e=>'<button class="chip '+((e.kind==='ok'||e.kind==='moved')?'':e.kind)+'" style="--c:'+e.r.c+'" '+dataAttr(e)+'>'+hm(e.start)+' '+e.r.title+'</button>').join('')+'</div>';}
+        v.innerHTML=h+'</div>';
+        v.querySelectorAll('.mo-cell').forEach(c=>c.addEventListener('click',e=>{ if(e.target.closest('.chip')) return; closePop(); openModal(); }));
+        v.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();showPop(b,JSON.parse(b.dataset.ev));}));
+      }
+      renderMini(); renderAg();
+    }
+
+    function fmtDate(s){const d=pd(s);return cap(DNL[d.getDay()])+', '+d.getDate()+' de '+MN[d.getMonth()];}
+    function showPop(el,e){
+      const r=RULES.find(x=>x.id===e.rid), p=document.getElementById('pop');
+      let st='<span class="pop-status">Agendada</span>', acts='<button onclick="closePop()">Remarcar</button><button class="danger" onclick="closePop()">Cancelar só esta aula</button>';
+      if(e.kind==='moved') st='<span class="pop-status warn">Remarcada de '+fmtDate(e.from)+'</span>';
+      if(e.kind==='ghost'){st='<span class="pop-status warn">Remarcada para '+fmtDate(e.to)+'</span>'; acts='<button onclick="closePop()">Desfazer remarcação</button>';}
+      if(e.kind==='cancelled'){st='<span class="pop-status danger">Cancelada ('+e.why+')</span>'; acts='<button onclick="closePop()">Restaurar aula</button>';}
+      if(e.kind==='paused'){st='<span class="pop-status">Agenda pausada, a aula não será criada</span>'; acts='<button onclick="closePop()">Retomar agenda</button>';}
+      p.style.setProperty('--c',r.c);
+      p.innerHTML='<div class="pop-tools"><button title="Editar agenda" onclick="closePop();openModal()">'+IC.edit+'</button><button class="danger" title="Encerrar agenda" onclick="closePop()">'+IC.trash+'</button><button title="Fechar" onclick="closePop()">'+IC.x+'</button></div>'
+       +'<div class="pop-row"><span class="pop-dot"></span><div><h5>'+r.title+'</h5><div class="pop-sub">'+fmtDate(e.date)+' · '+hm(e.start)+' – '+hm(e.start+r.dur)+' ('+durTxt(r.dur)+')</div></div></div>'
+       +'<div class="pop-row">'+IC.user+'<span>'+r.prof+'</span></div>'
+       +'<div class="pop-row">'+IC.users+'<span>Turma '+r.turma+'</span></div>'
+       +'<div class="pop-row">'+IC.repeat+'<span>Toda '+r.days.map(d=>DNL[d]).join(' e ')+', até '+pd(r.to).toLocaleDateString('pt-BR')+'</span></div>'
+       +'<div class="pop-row">'+IC.clock+st+'</div><div class="pop-actions">'+acts+'</div>';
+      p.classList.add('open');
+      const b=el.getBoundingClientRect(), w=330, hgt=p.offsetHeight;
+      let x=b.right+10; if(x+w>innerWidth-12) x=b.left-w-10; if(x<12) x=Math.max(12,innerWidth-w-12);
+      p.style.left=x+'px'; p.style.top=Math.min(Math.max(12,b.top),Math.max(12,innerHeight-hgt-12))+'px';
+    }
+    function closePop(){document.getElementById('pop').classList.remove('open');}
+    document.addEventListener('click',e=>{ if(!e.target.closest('#pop')) closePop(); });
+
+    function renderMini(){
+      const ref=new Date(cur.getFullYear(),cur.getMonth(),1), gs=weekStart(ref), ws=weekStart(cur), we=addD(ws,6);
+      let h='<div class="mini-head"><span>'+cap(MN[ref.getMonth()])+' '+ref.getFullYear()+'</span></div><div class="mini-grid">'+['D','S','T','Q','Q','S','S'].map(x=>'<span class="dw">'+x+'</span>').join('');
+      for(let i=0;i<42;i++){const d=addD(gs,i); if(i>=35&&d.getMonth()!==ref.getMonth()) break;
+        const inW=view==='week'&&d>=ws&&d<=we;
+        h+='<span class="'+(d.getMonth()!==ref.getMonth()?'out ':'')+(inW?'wk ':'')+(sameDay(d,TODAY)?'today':'')+'" data-d="'+iso(d)+'">'+d.getDate()+'</span>';}
+      const el=document.getElementById('mini'); el.innerHTML=h+'</div>';
+      el.querySelectorAll('[data-d]').forEach(s=>s.addEventListener('click',()=>{cur=pd(s.dataset.d);render();}));
+    }
+    function renderAg(){
+      document.getElementById('agList').innerHTML=RULES.map(r=>'<div class="ag-item'+(r.on?'':' off')+'" style="--c:'+r.c+'"><span class="ag-box" onclick="toggleRule('+r.id+')">'+IC.check+'</span><div class="ag-txt">'+r.title+'<small>'+r.prof+' · '+r.turma+' · '+r.days.map(d=>DN[d]).join('/')+' '+r.start+'</small></div>'
+        +(r.paused?'<span class="badge badge-off">Pausada</span>':'')
+        +'<span class="ag-actions"><button title="Editar" onclick="openModal()">'+IC.edit+'</button><button title="'+(r.paused?'Retomar':'Pausar')+'">'+(r.paused?IC.play:IC.pause)+'</button><button title="Encerrar agenda">'+IC.trash+'</button></span></div>').join('');
+    }
+    function toggleRule(id){const r=RULES.find(x=>x.id===id); r.on=!r.on; render();}
+    function step(n){ cur=view==='week'?addD(cur,7*n):new Date(cur.getFullYear(),cur.getMonth()+n,1); closePop(); render(); }
+    function goToday(){cur=new Date(TODAY);closePop();render();}
+    function setView(v){view=v;document.getElementById('vWeek').classList.toggle('on',v==='week');document.getElementById('vMonth').classList.toggle('on',v==='month');closePop();render();}
+    document.getElementById('fTurma').addEventListener('change',render);
+
     function openModal(){ document.getElementById('modalOverlay').classList.add('open'); }
     function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
     document.querySelectorAll('#dayPick button').forEach(b => b.addEventListener('click', () => b.classList.toggle('on')));
+    render();
     if (location.hash === '#nova') openModal();
   </script>
 </body>
