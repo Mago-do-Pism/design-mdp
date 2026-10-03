@@ -113,47 +113,54 @@
     <div>
       <div class="cover-eyebrow">Mago do Pism · Curso do Mago</div>
       <h1 class="cover-title">Aulas <em>ao vivo</em> —<br/>sala do aluno e do <em>professor</em></h1>
-      <p class="cover-sub">Documento da Fase <strong>07</strong>. Infraestrutura de aulas ao vivo: listagem e calendário para o aluno, tela preparatória estilo Meet, sala de vídeo com chat e participantes, e painel do professor com controles de apresentação e gravação.</p>
+      <p class="cover-sub">Documento da Fase <strong>07</strong>. Infraestrutura de aulas ao vivo: listagem e calendário para o aluno, tela preparatória estilo Meet, sala de vídeo com chat e participantes, e painel do professor com controles de apresentação e gravação, perguntas anônimas, enquetes, efeitos de câmera e controle de câmeras dos alunos. A presença fica no Admin.</p>
 
       <div class="cover-phases" style="grid-template-columns:repeat(4,1fr);gap:16px;">
         <div class="cover-phase">
           <div class="num">FASE 07A</div>
           <h3>Aluno · Ao vivo</h3>
-          <p>4 telas — do agendamento à sala de aula.</p>
+          <p>8 telas — do agendamento à sala de aula.</p>
           <ul>
-            <li>Ao vivo — lista de aulas (próximas + ao vivo)</li>
-            <li>Ao vivo — aba Calendário semanal</li>
+            <li>Ao vivo — lista de aulas e calendário semanal</li>
             <li>Pré-aula — verificação de câmera e microfone</li>
             <li>Sala do aluno — vídeo, chat, participantes</li>
+            <li>Pergunta anônima no chat (e estado desligado)</li>
+            <li>Enquete — votar e ver resultado ao vivo</li>
           </ul>
         </div>
         <div class="cover-phase">
           <div class="num">FASE 07B</div>
           <h3>Professor · Painel</h3>
-          <p>5 telas — início, aulas e sala de transmissão.</p>
+          <p>9 telas — início, aulas e sala de transmissão.</p>
           <ul>
             <li>Início — próximas aulas + gravações pendentes</li>
             <li>Aulas — lista com upload de gravação</li>
-            <li>Presença — registro de presença por aula</li>
             <li>Sala do professor — controles, gravação, alunos</li>
-            <li>Detalhe do aluno — KPIs, presenças e simulados</li>
+            <li>Fundo e efeitos da câmera</li>
+            <li>Fechar câmeras (todas e por aluno)</li>
+            <li>Chat com perguntas anônimas · enquetes</li>
+            <li>Detalhe do aluno — KPIs e simulados</li>
           </ul>
         </div>
         <div class="cover-phase">
           <div class="num">FASE 07C</div>
           <h3>Gestor de Conteúdo</h3>
-          <p>1 tela — acesso restrito, sem sala ao vivo.</p>
+          <p>6 telas — acesso restrito, sem sala ao vivo.</p>
           <ul>
             <li>Banco de gravações — publicar aula no curso, por turma</li>
+            <li>Publicar conteúdo — com "Ver como aluno" (computador e celular)</li>
+            <li>Presença no Admin — por turma e por aula</li>
           </ul>
         </div>
         <div class="cover-phase">
           <div class="num">FASE 07D</div>
           <h3>Admin · Agenda</h3>
-          <p>2 telas — agenda recorrente no curso.</p>
+          <p>4 telas — agenda recorrente no curso.</p>
           <ul>
             <li>Curso — aba Calendário estilo Google Agenda</li>
-            <li>Nova agenda recorrente — professor, dias, horário</li>
+            <li>Nova agenda recorrente — duração padrão 1h</li>
+            <li>Criar para todas as turmas do curso</li>
+            <li>Compartilhar agenda com outras turmas</li>
           </ul>
         </div>
       </div>
@@ -170,7 +177,7 @@
     <h2>Aluno<br/>Ao vivo</h2>
     <p>O aluno visualiza as aulas agendadas em lista cronológica ou em calendário semanal, prepara seu dispositivo em uma tela dedicada e entra na sala de vídeo com chat e levantar a mão.</p>
     <div class="meta">
-      <span>4 telas</span>
+      <span>8 telas</span>
       <span>Mago do Pism</span>
     </div>
   </section>
@@ -225,13 +232,61 @@
     <div class="stage"><iframe src="alunos/aula-ao-vivo.html" loading="eager" data-screen></iframe></div>
   </article>
 
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07A · 05</span>
+        <span class="title">Sala do aluno · Pergunta anônima</span>
+        <span class="sub">Chat com opção "Enviar como anônimo" ligada · aviso de que o nome não aparece</span>
+      </div>
+      <span class="idx">alunos/aula-ao-vivo.html#anonimo</span>
+    </header>
+    <div class="stage"><iframe src="alunos/aula-ao-vivo.html#anonimo" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07A · 06</span>
+        <span class="title">Sala do aluno · Anônimo desligado</span>
+        <span class="sub">Opção bloqueada quando o professor desliga perguntas anônimas</span>
+      </div>
+      <span class="idx">alunos/aula-ao-vivo.html#anonimo-desligado</span>
+    </header>
+    <div class="stage"><iframe src="alunos/aula-ao-vivo.html#anonimo-desligado" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07A · 07</span>
+        <span class="title">Sala do aluno · Enquete (votando)</span>
+        <span class="sub">Pergunta do professor · opções · enviar resposta (também no celular)</span>
+      </div>
+      <span class="idx">alunos/aula-ao-vivo.html#enquete-selecionada</span>
+    </header>
+    <div class="stage"><iframe src="alunos/aula-ao-vivo.html#enquete-selecionada" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07A · 08</span>
+        <span class="title">Sala do aluno · Enquete (resultado)</span>
+        <span class="sub">Resposta enviada · barras com votos e % ao vivo</span>
+      </div>
+      <span class="idx">alunos/aula-ao-vivo.html#enquete-resultado</span>
+    </header>
+    <div class="stage"><iframe src="alunos/aula-ao-vivo.html#enquete-resultado" loading="eager" data-screen></iframe></div>
+  </article>
+
   <!-- 07B DIVIDER -->
   <section class="divider">
     <div class="num">FASE 07B</div>
     <h2>Professor<br/>Painel</h2>
     <p>O professor acompanha a agenda, publica gravações e gerencia a sala ao vivo com controles de apresentação, gravação, microfone/câmera dos alunos e chat.</p>
     <div class="meta">
-      <span>5 telas</span>
+      <span>9 telas</span>
       <span>Mago do Pism</span>
     </div>
   </section>
@@ -264,18 +319,6 @@
     <header class="page-head">
       <div class="left">
         <span class="num">07B · 03</span>
-        <span class="title">Professor · Presença</span>
-        <span class="sub">Registro de presença por aula · lista de alunos</span>
-      </div>
-      <span class="idx">professor/presenca.html</span>
-    </header>
-    <div class="stage"><iframe src="professor/presenca.html" loading="eager" data-screen></iframe></div>
-  </article>
-
-  <article class="page">
-    <header class="page-head">
-      <div class="left">
-        <span class="num">07B · 04</span>
         <span class="title">Sala do professor</span>
         <span class="sub">Transmissão · gravação · silenciar alunos · chat · tiles de câmera</span>
       </div>
@@ -287,7 +330,67 @@
   <article class="page">
     <header class="page-head">
       <div class="left">
+        <span class="num">07B · 04</span>
+        <span class="title">Sala do professor · Fundo e efeitos</span>
+        <span class="sub">Preview da câmera · desfoque · fundos prontos · filtros e efeitos</span>
+      </div>
+      <span class="idx">professor/aula-ao-vivo.html#efeitos</span>
+    </header>
+    <div class="stage"><iframe src="professor/aula-ao-vivo.html#efeitos" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
         <span class="num">07B · 05</span>
+        <span class="title">Sala do professor · Câmeras dos alunos</span>
+        <span class="sub">Fechar todas as câmeras · controle por aluno · estado com câmeras fechadas</span>
+      </div>
+      <span class="idx">professor/aula-ao-vivo.html#cameras-fechadas</span>
+    </header>
+    <div class="stage"><iframe src="professor/aula-ao-vivo.html#cameras-fechadas" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07B · 06</span>
+        <span class="title">Sala do professor · Chat anônimo</span>
+        <span class="sub">Configurações do chat · toggle "Permitir perguntas anônimas" · pergunta de Anônimo</span>
+      </div>
+      <span class="idx">professor/aula-ao-vivo.html#chat-config</span>
+    </header>
+    <div class="stage"><iframe src="professor/aula-ao-vivo.html#chat-config" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07B · 07</span>
+        <span class="title">Sala do professor · Criar enquete</span>
+        <span class="sub">Pergunta · opções · lançar para a turma</span>
+      </div>
+      <span class="idx">professor/aula-ao-vivo.html#enquete-criar</span>
+    </header>
+    <div class="stage"><iframe src="professor/aula-ao-vivo.html#enquete-criar" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07B · 08</span>
+        <span class="title">Sala do professor · Resultado da enquete</span>
+        <span class="sub">Barras com contagem e % ao vivo · quem ainda não votou</span>
+      </div>
+      <span class="idx">professor/aula-ao-vivo.html#enquete-resultado</span>
+    </header>
+    <div class="stage"><iframe src="professor/aula-ao-vivo.html#enquete-resultado" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07B · 09</span>
         <span class="title">Detalhe do Aluno · Desempenho</span>
         <span class="sub">KPIs de presença · presenças recentes · desempenho nos simulados</span>
       </div>
@@ -300,9 +403,9 @@
   <section class="divider">
     <div class="num">FASE 07C</div>
     <h2>Gestor de<br/>Conteúdo</h2>
-    <p>Papel administrativo sem acesso à sala ao vivo: recebe as gravações publicadas pelo professor, organizadas por turma, e publica no curso.</p>
+    <p>Papel administrativo sem acesso à sala ao vivo: recebe as gravações publicadas pelo professor, organizadas por turma, confere como o aluno vai enxergar o conteúdo antes de publicar e controla a presença das aulas.</p>
     <div class="meta">
-      <span>1 tela</span>
+      <span>6 telas</span>
       <span>Mago do Pism</span>
     </div>
   </section>
@@ -319,13 +422,73 @@
     <div class="stage"><iframe src="admin/gravacoes.html" loading="eager" data-screen></iframe></div>
   </article>
 
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07C · 02</span>
+        <span class="title">Publicar conteúdo</span>
+        <span class="sub">Formulário de publicação · botão "Ver como aluno"</span>
+      </div>
+      <span class="idx">admin/publicar-conteudo.html</span>
+    </header>
+    <div class="stage"><iframe src="admin/publicar-conteudo.html?titulo=Fun%C3%A7%C3%B5es%20Quadr%C3%A1ticas&turma=PISM%20I%20%E2%80%94%20T1&professor=Carlos%20Menezes&data=09%2F07%2F2026%20%C2%B7%2014%3A00&duracao=01%3A02%3A10" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07C · 03</span>
+        <span class="title">Ver como aluno · Computador</span>
+        <span class="sub">Pré-visualização do que o aluno enxerga antes de publicar</span>
+      </div>
+      <span class="idx">admin/publicar-conteudo.html#ver-como-aluno</span>
+    </header>
+    <div class="stage"><iframe src="admin/publicar-conteudo.html?titulo=Fun%C3%A7%C3%B5es%20Quadr%C3%A1ticas&turma=PISM%20I%20%E2%80%94%20T1&professor=Carlos%20Menezes&data=09%2F07%2F2026%20%C2%B7%2014%3A00&duracao=01%3A02%3A10#ver-como-aluno" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07C · 04</span>
+        <span class="title">Ver como aluno · Celular</span>
+        <span class="sub">Mesma pré-visualização na largura do celular</span>
+      </div>
+      <span class="idx">admin/publicar-conteudo.html#ver-como-aluno-mobile</span>
+    </header>
+    <div class="stage"><iframe src="admin/publicar-conteudo.html?titulo=Fun%C3%A7%C3%B5es%20Quadr%C3%A1ticas&turma=PISM%20I%20%E2%80%94%20T1&professor=Carlos%20Menezes&data=09%2F07%2F2026%20%C2%B7%2014%3A00&duracao=01%3A02%3A10#ver-como-aluno-mobile" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07C · 05</span>
+        <span class="title">Admin · Presença por turma</span>
+        <span class="sub">Matriz aluno × aula · % de presença · filtros por turma e período</span>
+      </div>
+      <span class="idx">admin/presenca.html</span>
+    </header>
+    <div class="stage"><iframe src="admin/presenca.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07C · 06</span>
+        <span class="title">Admin · Presença por aula</span>
+        <span class="sub">Lista por aula · presente, falta, justificada · filtros de status e busca</span>
+      </div>
+      <span class="idx">admin/presenca.html#por-aula</span>
+    </header>
+    <div class="stage"><iframe src="admin/presenca.html#por-aula" loading="eager" data-screen></iframe></div>
+  </article>
+
   <!-- 07D DIVIDER -->
   <section class="divider">
     <div class="num">FASE 07D</div>
     <h2>Admin<br/>Agenda</h2>
     <p>Dentro do curso, a aba Calendário mostra as aulas ao vivo numa grade estilo Google Agenda. O admin cria agendas recorrentes semanais, marca o professor e remarca ou cancela aulas avulsas. Turma é o próprio curso (T1, T2).</p>
     <div class="meta">
-      <span>2 telas</span>
+      <span>4 telas</span>
       <span>Mago do Pism</span>
     </div>
   </section>
@@ -347,11 +510,35 @@
       <div class="left">
         <span class="num">07D · 02</span>
         <span class="title">Nova agenda recorrente</span>
-        <span class="sub">Professor · dias da semana · horário · duração · período · aviso de conflito</span>
+        <span class="sub">Professor · dias da semana · horário · duração padrão 1h · período · aviso de conflito</span>
       </div>
       <span class="idx">admin/curso-detalhe.html#nova</span>
     </header>
     <div class="stage"><iframe src="admin/curso-detalhe.html#nova" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07D · 03</span>
+        <span class="title">Nova agenda · Todas as turmas</span>
+        <span class="sub">Criar para todas as turmas do curso (EPIT 1 T1, T2, T3) · duração padrão 1h</span>
+      </div>
+      <span class="idx">admin/curso-detalhe.html#nova-todas</span>
+    </header>
+    <div class="stage"><iframe src="admin/curso-detalhe.html#nova-todas" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07D · 04</span>
+        <span class="title">Nova agenda · Compartilhar</span>
+        <span class="sub">Compartilhar agenda com outras turmas · aviso do que é compartilhado</span>
+      </div>
+      <span class="idx">admin/curso-detalhe.html#nova-compartilhar</span>
+    </header>
+    <div class="stage"><iframe src="admin/curso-detalhe.html#nova-compartilhar" loading="eager" data-screen></iframe></div>
   </article>
 
   <!-- NOTAS DE DESIGN -->
@@ -400,6 +587,18 @@
         <div class="num">07</div>
         <h3>Gestor de conteúdo</h3>
         <p>Papel sem acesso à sala ao vivo. No menu, a aba <strong>Gravações</strong> abre o banco de gravações: primeiro escolhe a turma nas abas superiores, depois vê as aulas gravadas daquela turma por data para publicar no curso.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">08</div>
+        <h3>Presença só no Admin</h3>
+        <p>A tela de presença saiu do painel do professor. No Admin, <strong>Presença</strong> tem duas visões: matriz por turma e lista por aula, com presente, falta e falta justificada. O professor acompanha a turma pela sala, sem editar presença.</p>
+      </article>
+
+      <article class="note-card">
+        <div class="num">09</div>
+        <h3>Interação na sala</h3>
+        <p>Pergunta anônima (professor liga ou desliga no chat), enquetes com resultado em barras ao vivo, fundo e efeitos da câmera, e fechar câmeras dos alunos, todas ou uma a uma. Aulas passam a ter <strong>1h</strong> como duração padrão.</p>
       </article>
     </div>
 

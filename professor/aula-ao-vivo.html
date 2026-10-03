@@ -124,6 +124,132 @@
     .ctrl-btn.end-class .ctrl-icon { background: #dc2626; color: white; }
     .ctrl-btn.end-class .ctrl-icon:hover { background: #b91c1c; }
     .ctrl-btn.end-class .ctrl-label { color: #f87171; }
+
+    /* ── Novidades: efeitos, chat anônimo, enquetes, câmeras ── */
+    .room-sidebar { width: 320px; position: relative; }
+    .sidebar-tab { font-size: 12px; padding: 13px 0; }
+    .chat-head { display:flex; align-items:center; gap:8px; padding:10px 14px; border-bottom:1px solid rgba(255,255,255,0.06); }
+    .chat-head-title { flex:1; font-size:12px; font-weight:700; color:rgba(255,255,255,0.55); letter-spacing:.4px; text-transform:uppercase; }
+    .anon-state { font-size:10px; font-weight:700; padding:2px 8px; border-radius:var(--radius-pill); background:rgba(39,133,86,0.2); color:#4ade80; }
+    .anon-state.off { background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.45); }
+    .icon-btn { width:30px; height:30px; border-radius:var(--radius-md); border:none; background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.7); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+    .icon-btn:hover, .icon-btn.active { background:rgba(14,147,242,0.25); color:#60b4f8; }
+    .icon-btn svg { width:15px; height:15px; }
+
+    .chat-settings { position:absolute; top:94px; left:12px; right:12px; z-index:20; background:#161d2b; border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-lg); box-shadow:var(--shadow-deep); padding:14px; display:none; }
+    .chat-settings.open { display:block; }
+    .chat-settings h4 { margin:0 0 10px; font-size:13px; color:rgba(255,255,255,0.9); }
+    .set-row { display:flex; gap:12px; align-items:flex-start; padding:10px 0; border-top:1px solid rgba(255,255,255,0.07); }
+    .set-row:first-of-type { border-top:0; }
+    .set-row-txt { flex:1; font-size:13px; color:rgba(255,255,255,0.88); font-weight:600; }
+    .set-row-txt small { display:block; margin-top:3px; font-size:11px; font-weight:400; color:rgba(255,255,255,0.45); line-height:1.4; }
+    .toggle { position:relative; width:40px; height:22px; border-radius:var(--radius-pill); border:none; background:rgba(255,255,255,0.18); cursor:pointer; flex-shrink:0; transition:background .15s; }
+    .toggle::after { content:""; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:50%; background:#fff; transition:left .15s; }
+    .toggle.on { background:var(--brand-blue); }
+    .toggle.on::after { left:21px; }
+
+    .anon-avatar { background:rgba(255,255,255,0.14) !important; color:rgba(255,255,255,0.8) !important; }
+    .anon-tag { display:inline-block; margin-left:6px; padding:1px 7px; border-radius:var(--radius-pill); background:rgba(151,71,255,0.2); color:#c4a1ff; font-size:9px; font-weight:700; letter-spacing:.3px; text-transform:uppercase; vertical-align:1px; }
+    .chat-notice { font-size:11px; color:rgba(255,255,255,0.5); background:rgba(255,255,255,0.05); border-radius:var(--radius-md); padding:8px 10px; text-align:center; }
+
+    .part-toolbar { display:flex; flex-direction:column; gap:8px; padding-bottom:6px; }
+    .part-toolbar-top { font-size:11px; color:rgba(255,255,255,0.35); font-weight:700; letter-spacing:.5px; }
+    .part-toolbar-btns { display:flex; gap:8px; }
+    .host-btn { flex:1; height:34px; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.85); font-family:var(--font-body); font-size:12px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer; }
+    .host-btn:hover { background:rgba(255,255,255,0.12); }
+    .host-btn svg { width:14px; height:14px; }
+    .host-btn.warn { border-color:rgba(239,68,68,0.4); background:rgba(239,68,68,0.14); color:#f87171; }
+    .cams-banner { display:flex; gap:8px; align-items:flex-start; padding:9px 10px; border-radius:var(--radius-md); background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; font-size:11px; line-height:1.4; }
+    .cams-banner svg { width:14px; height:14px; flex-shrink:0; margin-top:1px; }
+    .cam-btn { width:24px; height:24px; border-radius:var(--radius-xs); border:none; background:rgba(255,255,255,0.10); color:rgba(255,255,255,0.8); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+    .cam-btn svg { width:13px; height:13px; }
+    .cam-btn.off { background:rgba(239,68,68,0.2); color:#f87171; }
+    .cam-btn:hover { background:rgba(255,255,255,0.2); }
+    .cam-btn.off:hover { background:rgba(239,68,68,0.3); }
+    .part-item .mic-i { width:14px; height:14px; color:rgba(255,255,255,0.7); }
+    .part-item .mic-i.off { color:rgba(255,255,255,0.3); }
+    .student-tile .cam-off-badge { position:absolute; top:6px; right:6px; width:20px; height:20px; border-radius:var(--radius-xs); background:rgba(239,68,68,0.25); color:#f87171; display:none; align-items:center; justify-content:center; }
+    .student-tile .cam-off-badge svg { width:12px; height:12px; }
+    .student-tile.cam-closed .cam-off-badge { display:flex; }
+    .tile-action.is-off { background:rgba(239,68,68,0.3); color:#f87171; }
+    .strip-note { position:absolute; left:16px; bottom:142px; z-index:5; display:none; align-items:center; gap:8px; padding:8px 14px; border-radius:var(--radius-pill); background:rgba(239,68,68,0.18); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; font-size:12px; font-weight:600; }
+    .strip-note.show { display:flex; }
+    .strip-note svg { width:14px; height:14px; }
+
+    /* Enquetes */
+    .poll-pane { flex:1; overflow-y:auto; padding:14px; display:none; flex-direction:column; gap:14px; }
+    .poll-pane.on { display:flex; }
+    .poll-seg { display:flex; border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-md); overflow:hidden; }
+    .poll-seg button { flex:1; height:32px; border:none; background:transparent; color:rgba(255,255,255,0.55); font-family:var(--font-body); font-size:12px; font-weight:600; cursor:pointer; }
+    .poll-seg button.on { background:rgba(14,147,242,0.22); color:#60b4f8; }
+    .p-label { font-size:11px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:6px; }
+    .p-input { width:100%; height:38px; padding:0 12px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.14); border-radius:var(--radius-md); color:#fff; font-family:var(--font-body); font-size:13px; outline:none; }
+    .p-input:focus { border-color:var(--brand-blue); }
+    .p-input::placeholder { color:rgba(255,255,255,0.3); }
+    .p-opt { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+    .p-opt-n { width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.7); font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .p-opt .icon-btn { width:26px; height:26px; }
+    .p-add { background:transparent; border:1px dashed rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); height:34px; border-radius:var(--radius-md); width:100%; font-family:var(--font-body); font-size:12px; font-weight:600; cursor:pointer; }
+    .p-add:hover { border-color:var(--brand-blue); color:#60b4f8; }
+    .p-check { display:flex; align-items:center; gap:8px; font-size:12px; color:rgba(255,255,255,0.75); }
+    .p-check i { width:16px; height:16px; border-radius:var(--radius-xs); border:2px solid rgba(255,255,255,0.3); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+    .p-check i.on { background:var(--brand-blue); border-color:var(--brand-blue); }
+    .p-check i.on::after { content:"✓"; color:#fff; font-size:10px; font-weight:800; }
+    .p-actions { display:flex; gap:8px; margin-top:auto; }
+    .p-btn { flex:1; height:38px; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,0.14); background:transparent; color:rgba(255,255,255,0.8); font-family:var(--font-body); font-size:13px; font-weight:600; cursor:pointer; }
+    .p-btn.primary { background:var(--brand-blue); border-color:var(--brand-blue); color:#fff; font-weight:700; }
+    .p-btn.danger { border-color:rgba(239,68,68,0.4); color:#f87171; }
+    .poll-live-head { display:flex; align-items:center; gap:8px; }
+    .poll-live-badge { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; color:#f87171; }
+    .poll-live-badge::before { content:""; width:7px; height:7px; border-radius:50%; background:#ef4444; animation:blink 1.4s infinite; }
+    .poll-q { font-size:15px; font-weight:700; color:rgba(255,255,255,0.92); line-height:1.35; margin:0; }
+    .poll-meta { font-size:12px; color:rgba(255,255,255,0.5); margin:0; }
+    .res-row { margin-bottom:12px; }
+    .res-top { display:flex; justify-content:space-between; gap:8px; font-size:13px; color:rgba(255,255,255,0.88); margin-bottom:5px; font-weight:600; }
+    .res-top span:last-child { color:rgba(255,255,255,0.6); font-weight:500; font-variant-numeric:tabular-nums; }
+    .res-track { height:12px; border-radius:var(--radius-pill); background:rgba(255,255,255,0.08); overflow:hidden; }
+    .res-fill { height:100%; border-radius:var(--radius-pill); background:var(--brand-blue); transition:width .4s; }
+    .res-row.top .res-fill { background:var(--color-success-stroke); }
+    .poll-who { font-size:11px; color:rgba(255,255,255,0.45); padding:10px 12px; border-radius:var(--radius-md); background:rgba(255,255,255,0.05); line-height:1.5; }
+
+    /* Painel de filtros, fundos e efeitos */
+    .fx-overlay { position:absolute; inset:0; z-index:40; background:rgba(0,0,0,0.6); display:none; align-items:center; justify-content:center; padding:24px; }
+    .fx-overlay.open { display:flex; }
+    .fx-panel { width:880px; max-width:100%; max-height:100%; background:#161d2b; border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-xl); box-shadow:var(--shadow-deep); display:flex; flex-direction:column; overflow:hidden; }
+    .fx-head { display:flex; align-items:center; padding:16px 22px; border-bottom:1px solid rgba(255,255,255,0.08); }
+    .fx-head h3 { margin:0; flex:1; font-size:16px; color:rgba(255,255,255,0.92); }
+    .fx-head small { display:block; font-weight:400; font-size:12px; color:rgba(255,255,255,0.45); margin-top:2px; }
+    .fx-body { display:grid; grid-template-columns:340px 1fr; gap:22px; padding:20px 22px; overflow:auto; }
+    .fx-preview { position:relative; aspect-ratio:4/3; border-radius:var(--radius-lg); overflow:hidden; background:#243044; border:2px solid rgba(14,147,242,0.55); }
+    .fx-bg { position:absolute; inset:-12px; transition:filter .2s; }
+    .fx-person { position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:70%; height:78%; }
+    .fx-person .head { position:absolute; top:0; left:50%; transform:translateX(-50%); width:38%; aspect-ratio:1; border-radius:50%; background:linear-gradient(160deg,#e9b98f,#c98d62); }
+    .fx-person .body { position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:100%; height:52%; border-radius:50% 50% 0 0 / 70% 70% 0 0; background:linear-gradient(180deg,var(--brand-blue-dark),#1e3a8a); }
+    .fx-preview-tag { position:absolute; left:10px; bottom:10px; background:rgba(0,0,0,0.55); color:#fff; font-size:11px; font-weight:600; padding:3px 9px; border-radius:var(--radius-xs); }
+    .fx-preview-live { position:absolute; right:10px; top:10px; background:rgba(239,68,68,0.9); color:#fff; font-size:10px; font-weight:700; padding:2px 8px; border-radius:var(--radius-xs); }
+    .fx-note { margin-top:10px; font-size:11px; color:rgba(255,255,255,0.45); line-height:1.5; }
+    .fx-sec { margin-bottom:20px; }
+    .fx-sec h4 { margin:0 0 4px; font-size:13px; color:rgba(255,255,255,0.9); }
+    .fx-sec p { margin:0 0 10px; font-size:12px; color:rgba(255,255,255,0.45); }
+    .fx-seg { display:inline-flex; border:1px solid rgba(255,255,255,0.14); border-radius:var(--radius-md); overflow:hidden; }
+    .fx-seg button { height:34px; padding:0 18px; border:none; background:transparent; color:rgba(255,255,255,0.65); font-family:var(--font-body); font-size:13px; font-weight:600; cursor:pointer; }
+    .fx-seg button + button { border-left:1px solid rgba(255,255,255,0.14); }
+    .fx-seg button.on { background:rgba(14,147,242,0.25); color:#60b4f8; }
+    .fx-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+    .fx-thumb { aspect-ratio:16/10; border-radius:var(--radius-md); border:2px solid transparent; cursor:pointer; position:relative; overflow:hidden; display:flex; align-items:flex-end; padding:5px 7px; font-size:10px; font-weight:700; color:#fff; text-shadow:0 1px 3px rgba(0,0,0,.6); background-size:cover; }
+    .fx-thumb.on { border-color:var(--brand-blue); box-shadow:0 0 0 2px rgba(14,147,242,.35); }
+    .fx-thumb.on::after { content:"✓"; position:absolute; top:4px; right:4px; width:16px; height:16px; border-radius:50%; background:var(--brand-blue); color:#fff; font-size:10px; display:flex; align-items:center; justify-content:center; text-shadow:none; }
+    .fx-thumb.plus { background:rgba(255,255,255,0.06); border:1px dashed rgba(255,255,255,0.25); align-items:center; justify-content:center; color:rgba(255,255,255,0.7); text-shadow:none; flex-direction:column; text-align:center; gap:2px; }
+    .fx-chips { display:flex; flex-wrap:wrap; gap:8px; }
+    .fx-chip { height:32px; padding:0 14px; border-radius:var(--radius-pill); border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.8); font-family:var(--font-body); font-size:12px; font-weight:600; cursor:pointer; }
+    .fx-chip.on { background:rgba(14,147,242,0.25); border-color:var(--brand-blue); color:#60b4f8; }
+    .fx-slider { display:flex; align-items:center; gap:12px; margin-top:12px; font-size:12px; color:rgba(255,255,255,0.65); }
+    .fx-slider span:first-child { width:90px; }
+    .fx-slider input[type=range] { flex:1; accent-color:var(--brand-blue); }
+    .fx-foot { display:flex; align-items:center; gap:10px; padding:14px 22px; border-top:1px solid rgba(255,255,255,0.08); }
+    .fx-foot .grow { flex:1; font-size:12px; color:rgba(255,255,255,0.45); }
+    .fx-foot .p-btn { flex:0 0 auto; padding:0 22px; }
+    .ctrl-icon.fx-on { background:rgba(14,147,242,0.20); color:#60b4f8; }
   </style>
 </head>
 <body>
@@ -135,12 +261,76 @@
       <div class="room-title">PISM I — Turma T1 <span>· Prof. Carlos Menezes</span></div>
       <div class="host-badge">Prof. Carlos Menezes</div>
       <div class="live-badge">AO VIVO</div>
-      <div class="room-timer" id="timer">01:24:38</div>
+      <div class="room-timer" id="timer">00:24:38</div>
     </div>
 
     <div class="room-body">
       <!-- Stage -->
       <div class="room-stage">
+        <!-- Painel de filtros, fundos e efeitos -->
+        <div class="fx-overlay" id="fxOverlay" onclick="if(event.target===this)closeFx()">
+          <div class="fx-panel" role="dialog" aria-labelledby="fxTitle">
+            <div class="fx-head">
+              <h3 id="fxTitle">Fundo e efeitos da câmera<small>Só você vê o preview. A turma vê o resultado depois de aplicar.</small></h3>
+              <button class="icon-btn" aria-label="Fechar" onclick="closeFx()">✕</button>
+            </div>
+            <div class="fx-body">
+              <div>
+                <div class="fx-preview" id="fxPreview">
+                  <div class="fx-bg" id="fxBg"></div>
+                  <div class="fx-person"><div class="head"></div><div class="body"></div></div>
+                  <span class="fx-preview-live">PREVIEW</span>
+                  <span class="fx-preview-tag" id="fxTag">Desfoque leve</span>
+                </div>
+                <p class="fx-note">Dica: use fundo desfocado quando estiver em casa. Efeitos pesados podem deixar a transmissão mais lenta em computadores simples.</p>
+              </div>
+              <div>
+                <div class="fx-sec">
+                  <h4>Desfoque de fundo</h4>
+                  <p>Mantém você nítido e esconde o ambiente atrás.</p>
+                  <div class="fx-seg" id="fxBlur">
+                    <button data-v="0">Desligado</button><button data-v="1" class="on">Leve</button><button data-v="2">Forte</button>
+                  </div>
+                </div>
+                <div class="fx-sec">
+                  <h4>Fundos prontos</h4>
+                  <p>Substitui o ambiente por uma imagem.</p>
+                  <div class="fx-grid" id="fxGrid">
+                    <div class="fx-thumb" data-bg="none" style="background:#243044;">Nenhum</div>
+                    <div class="fx-thumb" data-bg="sala" style="background:linear-gradient(135deg,#7c5b3a,#d9b98a);">Sala de aula</div>
+                    <div class="fx-thumb" data-bg="biblioteca" style="background:linear-gradient(135deg,#3b2a1a,#8a5a2b 60%,#c28a4a);">Biblioteca</div>
+                    <div class="fx-thumb" data-bg="quadro" style="background:linear-gradient(135deg,#e5e7eb,#f8fafc);color:#334155;text-shadow:none;">Quadro branco</div>
+                    <div class="fx-thumb" data-bg="mago" style="background:linear-gradient(135deg,#0b3a63,var(--brand-blue));">Mago do Pism</div>
+                    <div class="fx-thumb" data-bg="escritorio" style="background:linear-gradient(135deg,#334155,#64748b);">Escritório</div>
+                    <div class="fx-thumb" data-bg="jardim" style="background:linear-gradient(135deg,#14532d,#86efac);">Jardim</div>
+                    <div class="fx-thumb plus"><span style="font-size:16px;line-height:1;">+</span><span>Enviar imagem</span></div>
+                  </div>
+                </div>
+                <div class="fx-sec" style="margin-bottom:0;">
+                  <h4>Filtros e efeitos</h4>
+                  <p>Ajustes de cor e luz aplicados em você e no fundo.</p>
+                  <div class="fx-chips" id="fxChips">
+                    <button class="fx-chip on" data-f="none">Nenhum</button>
+                    <button class="fx-chip" data-f="soft">Brilho suave</button>
+                    <button class="fx-chip" data-f="warm">Quente</button>
+                    <button class="fx-chip" data-f="cool">Frio</button>
+                    <button class="fx-chip" data-f="bw">Preto e branco</button>
+                    <button class="fx-chip" data-f="skin">Suavizar pele</button>
+                  </div>
+                  <div class="fx-slider"><span>Intensidade</span><input type="range" id="fxInt" min="0" max="100" value="60" /><span id="fxIntV" style="width:36px;text-align:right;">60%</span></div>
+                  <div class="fx-slider"><span>Iluminação</span><input type="range" id="fxLum" min="0" max="100" value="50" /><span id="fxLumV" style="width:36px;text-align:right;">50%</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="fx-foot">
+              <span class="grow">As configurações ficam salvas para as próximas aulas.</span>
+              <button class="p-btn" onclick="resetFx()">Restaurar</button>
+              <button class="p-btn" onclick="closeFx()">Cancelar</button>
+              <button class="p-btn primary" onclick="applyFx()">Aplicar</button>
+            </div>
+          </div>
+        </div>
+
         <div class="room-main-video">
           <div class="screen-share-sim">
             <div class="screen-share-bar">
@@ -180,77 +370,43 @@
           </div>
 
           <!-- Professor self PiP -->
-          <div class="prof-pip">
+          <div class="prof-pip" id="profPip">
             <div class="prof-pip-badge">Você</div>
             <div class="prof-pip-avatar">CM</div>
             <div class="prof-pip-name">Prof. Carlos Menezes</div>
           </div>
         </div>
 
-        <!-- Student grid strip -->
-        <div class="room-strip">
-          <div class="student-tile cam-on">
-            <div class="tile-cam-bg" style="background:linear-gradient(160deg,#1a3a2a 0%,#278556 100%);"></div>
-            <div class="student-tile-avatar" style="background:#278556;">KM</div>
-            <div class="student-tile-name">Karla Moreira</div>
-            <div class="host-actions-tile">
-              <button class="tile-action" title="Silenciar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button>
-              <button class="tile-action" title="Remover">✕</button>
-            </div>
-          </div>
-          <div class="student-tile">
-            <div class="student-tile-avatar" style="background:#0e93f2;">MC</div>
-            <div class="student-tile-name">Matheus Carvalho</div>
-            <div class="host-actions-tile">
-              <button class="tile-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button>
-              <button class="tile-action">✕</button>
-            </div>
-          </div>
-          <div class="student-tile cam-on">
-            <div class="tile-cam-bg" style="background:linear-gradient(160deg,#3a2010 0%,#d97706 100%);"></div>
-            <div class="student-tile-avatar" style="background:#d97706;">BF</div>
-            <div class="student-tile-name">Beatriz Fontes</div>
-            <div class="host-actions-tile">
-              <button class="tile-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button>
-              <button class="tile-action">✕</button>
-            </div>
-          </div>
-          <div class="student-tile cam-on">
-            <div class="tile-cam-bg" style="background:linear-gradient(160deg,#3a0a1a 0%,#db2777 100%);"></div>
-            <div class="student-tile-avatar" style="background:#db2777;">LS</div>
-            <div class="student-tile-name">Lucas Souza</div>
-            <div class="host-actions-tile">
-              <button class="tile-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button>
-              <button class="tile-action">✕</button>
-            </div>
-          </div>
-          <div class="student-tile">
-            <div class="student-tile-avatar" style="background:#6366f1;">PR</div>
-            <div class="student-tile-name">Paula Rezende</div>
-            <div class="host-actions-tile">
-              <button class="tile-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button>
-              <button class="tile-action">✕</button>
-            </div>
-          </div>
-          <div class="student-tile">
-            <div class="student-tile-avatar" style="background:#0891b2;">AN</div>
-            <div class="student-tile-name">André Nascimento</div>
-            <div class="host-actions-tile">
-              <button class="tile-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button>
-              <button class="tile-action">✕</button>
-            </div>
-          </div>
-          <div class="student-tile" style="border-style:dashed; border-color:rgba(255,255,255,0.12);">
-            <div style="font-size:10px;color:rgba(255,255,255,0.3);">+1 aguardando</div>
-          </div>
-        </div>
+        <div class="strip-note" id="stripNote"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M21 21H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3m3-3h6l2 3h4a2 2 0 0 1 2 2v9.34"/></svg>Câmeras dos alunos fechadas por você</div>
+        <!-- Student grid strip (montado por JS) -->
+        <div class="room-strip" id="strip"></div>
       </div>
 
       <!-- Sidebar -->
-      <div class="room-sidebar">
+      <div class="room-sidebar" id="sidebar">
         <div class="sidebar-tabs">
           <div class="sidebar-tab active" id="tab-btn-chat" onclick="showTab('chat')">Chat</div>
           <div class="sidebar-tab" id="tab-btn-part" onclick="showTab('part')">Participantes <span style="background:rgba(14,147,242,0.15);color:var(--brand-blue);border-radius:10px;padding:1px 6px;font-size:11px;margin-left:3px;">7</span></div>
+          <div class="sidebar-tab" id="tab-btn-poll" onclick="showTab('poll')">Enquetes</div>
+        </div>
+
+        <!-- Chat -->
+        <div class="chat-head" id="chatHead">
+          <span class="chat-head-title">Chat da turma</span>
+          <span class="anon-state" id="anonState">Anônimo ligado</span>
+          <button class="icon-btn" id="chatCfgBtn" title="Configurações do chat" aria-label="Configurações do chat" onclick="toggleChatCfg()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+        </div>
+
+        <div class="chat-settings" id="chatCfg">
+          <h4>Configurações do chat</h4>
+          <div class="set-row">
+            <div class="set-row-txt">Permitir perguntas anônimas<small>Quando ligado, os alunos veem a opção &ldquo;Enviar como anônimo&rdquo;. A pergunta aparece como &ldquo;Anônimo&rdquo; para você e para a turma.</small></div>
+            <button class="toggle on" id="anonToggle" role="switch" aria-checked="true" aria-label="Permitir perguntas anônimas" onclick="setAnon(!anonOn)"></button>
+          </div>
+          <div class="set-row">
+            <div class="set-row-txt">Chat liberado para os alunos<small>Desligue para deixar só você escrevendo.</small></div>
+            <button class="toggle on" role="switch" aria-checked="true" aria-label="Chat liberado para os alunos" onclick="this.classList.toggle('on')"></button>
+          </div>
         </div>
 
         <div id="tab-chat" class="chat-area">
@@ -268,6 +424,13 @@
               <div class="chat-msg-text">Exato, Karla! Quando Δ &lt; 0, a parábola não cruza o eixo x.</div>
             </div>
           </div>
+          <div class="chat-msg" id="anonMsg">
+            <div class="chat-msg-avatar anon-avatar">?</div>
+            <div class="chat-msg-body">
+              <div class="chat-msg-name">Anônimo <span class="anon-tag">Pergunta anônima</span> <span class="chat-msg-time">14:06</span></div>
+              <div class="chat-msg-text">Professor, pode repetir a diferença entre o vértice e as raízes? Me perdi nessa parte.</div>
+            </div>
+          </div>
           <div class="chat-msg">
             <div class="chat-msg-avatar" style="background:#0e93f2;">MC</div>
             <div class="chat-msg-body">
@@ -282,19 +445,58 @@
               <div class="chat-msg-text">Tem como disponibilizar essa lista depois?</div>
             </div>
           </div>
+          <div class="chat-notice" id="anonOffNotice" style="display:none;">Perguntas anônimas desligadas. Os alunos só enviam mensagens com o próprio nome.</div>
         </div>
 
-        <div id="tab-part" class="part-list" style="display:none;">
-          <div style="font-size:11px;color:rgba(255,255,255,0.3);padding:2px 4px 6px;font-weight:600;letter-spacing:0.5px;">ALUNOS (6) — Silenciar todos</div>
-          <div class="part-item"><div class="part-avatar" style="background:#278556;">KM</div><div class="part-name">Karla Moreira <small>Aluno · entrou 14:03</small></div><div class="part-icons"><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div><button class="mute-btn" title="Silenciar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button></div>
-          <div class="part-item"><div class="part-avatar" style="background:#0e93f2;">MC</div><div class="part-name">Matheus Carvalho <small>Aluno · entrou 14:05</small></div><div class="part-icons"><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div><button class="mute-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button></div>
-          <div class="part-item"><div class="part-avatar" style="background:#d97706;">BF</div><div class="part-name">Beatriz Fontes <small>Aluno · entrou 14:00</small></div><div class="part-icons"></div><button class="mute-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button></div>
-          <div class="part-item"><div class="part-avatar" style="background:#db2777;">LS</div><div class="part-name">Lucas Souza <small>Aluno · entrou 14:09</small></div><div class="part-icons"><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div><button class="mute-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button></div>
-          <div class="part-item"><div class="part-avatar" style="background:#6366f1;">PR</div><div class="part-name">Paula Rezende <small>Aluno · entrou 14:01</small></div><div class="part-icons"><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div><button class="mute-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button></div>
-          <div class="part-item"><div class="part-avatar" style="background:#0891b2;">AN</div><div class="part-name">André Nascimento <small>Aluno · entrou 14:01</small></div><div class="part-icons"><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div><button class="mute-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/></svg></button></div>
+        <!-- Participantes (montado por JS) -->
+        <div id="tab-part" class="part-list" style="display:none;"></div>
+
+        <!-- Enquetes -->
+        <div id="tab-poll" class="poll-pane">
+          <div class="poll-seg">
+            <button id="pollSegNew" class="on" onclick="setPollView('criar')">Nova enquete</button>
+            <button id="pollSegRes" onclick="setPollView('resultado')">Ao vivo <span style="opacity:.6">(1)</span></button>
+          </div>
+
+          <div id="pollCreate" style="display:flex;flex-direction:column;gap:14px;flex:1;">
+            <div>
+              <div class="p-label">Pergunta</div>
+              <input class="p-input" type="text" value="Quantas raízes reais tem x² − 2x − 3 = 0?" />
+            </div>
+            <div>
+              <div class="p-label">Opções</div>
+              <div class="p-opt"><span class="p-opt-n">A</span><input class="p-input" type="text" value="Nenhuma" /><button class="icon-btn" title="Remover opção">✕</button></div>
+              <div class="p-opt"><span class="p-opt-n">B</span><input class="p-input" type="text" value="Uma" /><button class="icon-btn" title="Remover opção">✕</button></div>
+              <div class="p-opt"><span class="p-opt-n">C</span><input class="p-input" type="text" value="Duas" /><button class="icon-btn" title="Remover opção">✕</button></div>
+              <button class="p-add">+ Adicionar opção</button>
+            </div>
+            <label class="p-check"><i></i>Permitir mais de uma resposta</label>
+            <label class="p-check"><i class="on"></i>Alunos veem o resultado ao votar</label>
+            <label class="p-check"><i></i>Respostas anônimas (você não vê quem votou)</label>
+            <div class="p-actions">
+              <button class="p-btn">Salvar rascunho</button>
+              <button class="p-btn primary" onclick="setPollView('resultado')">Lançar enquete</button>
+            </div>
+          </div>
+
+          <div id="pollResult" style="display:none;flex-direction:column;gap:14px;flex:1;">
+            <div class="poll-live-head"><span class="poll-live-badge">AO VIVO</span><span class="poll-meta" style="margin-left:auto;">lançada às 14:15</span></div>
+            <p class="poll-q">Quantas raízes reais tem x² − 2x − 3 = 0?</p>
+            <p class="poll-meta"><strong style="color:#fff;">5 de 6</strong> alunos responderam · 1 aguardando</p>
+            <div>
+              <div class="res-row"><div class="res-top"><span>A · Nenhuma</span><span>0 votos · 0%</span></div><div class="res-track"><div class="res-fill" style="width:0%"></div></div></div>
+              <div class="res-row"><div class="res-top"><span>B · Uma</span><span>1 voto · 20%</span></div><div class="res-track"><div class="res-fill" style="width:20%"></div></div></div>
+              <div class="res-row top"><div class="res-top"><span>C · Duas</span><span>4 votos · 80%</span></div><div class="res-track"><div class="res-fill" style="width:80%"></div></div></div>
+            </div>
+            <div class="poll-who"><strong style="color:rgba(255,255,255,.75);">Ainda não votaram:</strong> Paula Rezende</div>
+            <div class="p-actions">
+              <button class="p-btn">Mostrar para a turma</button>
+              <button class="p-btn danger" onclick="setPollView('criar')">Encerrar</button>
+            </div>
+          </div>
         </div>
 
-        <div class="chat-input-bar">
+        <div class="chat-input-bar" id="chatInputBar">
           <input class="chat-input" type="text" placeholder="Mensagem para a turma…" />
           <button class="chat-send-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
         </div>
@@ -317,6 +519,10 @@
         </div>
         <span class="ctrl-label">Câmera</span>
       </button>
+      <button class="ctrl-btn" onclick="openFx()">
+        <div class="ctrl-icon on" id="fxIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z"/></svg></div>
+        <span class="ctrl-label">Efeitos</span>
+      </button>
       <button class="ctrl-btn">
         <div class="ctrl-icon on" style="background:rgba(14,147,242,0.20);color:#60b4f8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg></div>
         <span class="ctrl-label" style="color:#60b4f8;">Compartilhando</span>
@@ -326,7 +532,15 @@
         <div class="ctrl-icon host"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         <span class="ctrl-label">Silenciar todos</span>
       </button>
-      <button class="ctrl-btn">
+      <button class="ctrl-btn" id="closeCamsBtn" onclick="toggleCams()">
+        <div class="ctrl-icon host" id="closeCamsIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M21 21H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3m3-3h6l2 3h4a2 2 0 0 1 2 2v9.34"/><path d="M15 13a3 3 0 1 1-4.24-4.24"/></svg></div>
+        <span class="ctrl-label" id="closeCamsLabel">Fechar câmeras</span>
+      </button>
+      <button class="ctrl-btn" onclick="showTab('poll')">
+        <div class="ctrl-icon on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <span class="ctrl-label">Enquete</span>
+      </button>
+      <button class="ctrl-btn" onclick="showTab('chat')">
         <div class="ctrl-icon on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
         <span class="ctrl-label">Chat</span>
       </button>
@@ -343,7 +557,7 @@
   </div>
 
   <script>
-    let secs = 5078;
+    let secs = 1478;
     function pad(n){ return String(n).padStart(2,'0'); }
     function tick(){ secs++; const h=Math.floor(secs/3600),m=Math.floor((secs%3600)/60),s=secs%60; document.getElementById('timer').textContent=`${pad(h)}:${pad(m)}:${pad(s)}`; }
     setInterval(tick, 1000);
@@ -377,12 +591,173 @@
       icon.querySelector('.icon-off').style.display = !isOn ? 'none' : '';
     }
 
+    /* ── Abas da lateral: chat, participantes, enquetes ── */
     function showTab(name) {
-      document.getElementById('tab-btn-chat').classList.toggle('active', name==='chat');
-      document.getElementById('tab-btn-part').classList.toggle('active', name==='part');
-      document.getElementById('tab-chat').style.display = name==='chat' ? 'flex' : 'none';
-      document.getElementById('tab-part').style.display = name==='part' ? 'flex' : 'none';
+      ['chat','part','poll'].forEach(function (t) {
+        document.getElementById('tab-btn-' + t).classList.toggle('active', name === t);
+      });
+      document.getElementById('tab-chat').style.display = name === 'chat' ? 'flex' : 'none';
+      document.getElementById('chatHead').style.display = name === 'chat' ? 'flex' : 'none';
+      document.getElementById('tab-part').style.display = name === 'part' ? 'flex' : 'none';
+      document.getElementById('tab-poll').classList.toggle('on', name === 'poll');
+      document.getElementById('chatInputBar').style.display = name === 'chat' ? 'flex' : 'none';
+      if (name !== 'chat') document.getElementById('chatCfg').classList.remove('open');
     }
+
+    /* ── Alunos: câmera por aluno e fechar todas ── */
+    var ICON = {
+      cam: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.723v6.554a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
+      camOff: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M21 21H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3m3-3h6l2 3h4a2 2 0 0 1 2 2v9.34"/><path d="M15 13a3 3 0 1 1-4.24-4.24"/></svg>',
+      mic: '<svg class="mic-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
+      micOff: '<svg class="mic-i off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>'
+    };
+    var STUDENTS = [
+      {id:'km', ini:'KM', nome:'Karla Moreira',     cor:'#278556', bg:'linear-gradient(160deg,#1a3a2a 0%,#278556 100%)', mic:true,  cam:true,  entrou:'14:03'},
+      {id:'mc', ini:'MC', nome:'Matheus Carvalho',  cor:'#0e93f2', bg:'', mic:true,  cam:false, entrou:'14:05'},
+      {id:'bf', ini:'BF', nome:'Beatriz Fontes',    cor:'#d97706', bg:'linear-gradient(160deg,#3a2010 0%,#d97706 100%)', mic:false, cam:true,  entrou:'14:00'},
+      {id:'ls', ini:'LS', nome:'Lucas Souza',       cor:'#db2777', bg:'linear-gradient(160deg,#3a0a1a 0%,#db2777 100%)', mic:true,  cam:true,  entrou:'14:09'},
+      {id:'pr', ini:'PR', nome:'Paula Rezende',     cor:'#6366f1', bg:'', mic:true,  cam:false, entrou:'14:01'},
+      {id:'an', ini:'AN', nome:'André Nascimento',  cor:'#0891b2', bg:'', mic:true,  cam:false, entrou:'14:01'}
+    ];
+    var camsClosed = false;
+
+    function renderStudents() {
+      var strip = '', part = '';
+      STUDENTS.forEach(function (st) {
+        var on = st.cam && !camsClosed;
+        strip += '<div class="student-tile' + (on ? ' cam-on' : '') + (!on && camsClosed ? ' cam-closed' : '') + '" data-id="' + st.id + '">'
+          + (on ? '<div class="tile-cam-bg" style="background:' + st.bg + ';"></div>' : '')
+          + '<div class="student-tile-avatar" style="background:' + st.cor + ';">' + st.ini + '</div>'
+          + '<div class="student-tile-name">' + st.nome + '</div>'
+          + '<span class="cam-off-badge" title="Câmera fechada">' + ICON.camOff + '</span>'
+          + '<div class="host-actions-tile">'
+          + '<button class="tile-action' + (on ? '' : ' is-off') + '" title="' + (on ? 'Fechar câmera' : 'Câmera fechada') + '" onclick="toggleCam(\'' + st.id + '\')">' + (on ? ICON.cam : ICON.camOff) + '</button>'
+          + '<button class="tile-action" title="Silenciar">' + ICON.micOff + '</button>'
+          + '<button class="tile-action" title="Remover">✕</button></div></div>';
+        part += '<div class="part-item"><div class="part-avatar" style="background:' + st.cor + ';">' + st.ini + '</div>'
+          + '<div class="part-name">' + st.nome + '<small>Aluno · entrou ' + st.entrou + '</small></div>'
+          + (st.mic ? ICON.mic : ICON.micOff)
+          + '<button class="cam-btn' + (on ? '' : ' off') + '" title="' + (on ? 'Fechar câmera de ' + st.nome : 'Câmera fechada, clique para liberar') + '" aria-label="Câmera de ' + st.nome + '" onclick="toggleCam(\'' + st.id + '\')">' + (on ? ICON.cam : ICON.camOff) + '</button>'
+          + '<button class="mute-btn" title="Silenciar">' + ICON.micOff + '</button></div>';
+      });
+      strip += '<div class="student-tile" style="border-style:dashed;border-color:rgba(255,255,255,0.12);"><div style="font-size:10px;color:rgba(255,255,255,0.3);">+1 aguardando</div></div>';
+      document.getElementById('strip').innerHTML = strip;
+      var openCount = STUDENTS.filter(function (x) { return x.cam && !camsClosed; }).length;
+      var toolbar = '<div class="part-toolbar"><div class="part-toolbar-top">ALUNOS (6) · ' + openCount + ' com câmera aberta</div>'
+        + '<div class="part-toolbar-btns"><button class="host-btn">' + ICON.micOff + 'Silenciar todos</button>'
+        + '<button class="host-btn' + (camsClosed ? '' : ' warn') + '" id="partCamsBtn" onclick="toggleCams()">' + (camsClosed ? ICON.cam + 'Liberar câmeras' : ICON.camOff + 'Fechar todas as câmeras') + '</button></div>'
+        + (camsClosed ? '<div class="cams-banner">' + ICON.camOff + '<span>Câmeras fechadas. Os alunos não conseguem abrir a câmera até você liberar.</span></div>' : '')
+        + '</div>';
+      document.getElementById('tab-part').innerHTML = toolbar + part;
+      document.getElementById('stripNote').classList.toggle('show', camsClosed);
+      var ic = document.getElementById('closeCamsIcon'), lb = document.getElementById('closeCamsLabel');
+      ic.className = 'ctrl-icon ' + (camsClosed ? 'off' : 'host');
+      ic.innerHTML = camsClosed ? ICON.cam : ICON.camOff;
+      lb.textContent = camsClosed ? 'Liberar câmeras' : 'Fechar câmeras';
+      lb.style.color = camsClosed ? '#f87171' : '';
+    }
+    function toggleCam(id) {
+      var st = STUDENTS.filter(function (x) { return x.id === id; })[0];
+      if (camsClosed) { camsClosed = false; STUDENTS.forEach(function (x) { x.cam = x.id === id; }); }
+      else st.cam = !st.cam;
+      renderStudents();
+    }
+    function toggleCams() { camsClosed = !camsClosed; if (!camsClosed) STUDENTS.forEach(function (x) { x.cam = ['km','bf','ls'].indexOf(x.id) > -1; }); renderStudents(); }
+
+    /* ── Chat: perguntas anônimas ── */
+    var anonOn = true;
+    function setAnon(v) {
+      anonOn = v;
+      var t = document.getElementById('anonToggle');
+      t.classList.toggle('on', v); t.setAttribute('aria-checked', v);
+      var st = document.getElementById('anonState');
+      st.textContent = v ? 'Anônimo ligado' : 'Anônimo desligado';
+      st.classList.toggle('off', !v);
+      document.getElementById('anonOffNotice').style.display = v ? 'none' : 'block';
+    }
+    function toggleChatCfg(force) {
+      var c = document.getElementById('chatCfg');
+      var open = typeof force === 'boolean' ? force : !c.classList.contains('open');
+      c.classList.toggle('open', open);
+      document.getElementById('chatCfgBtn').classList.toggle('active', open);
+    }
+
+    /* ── Enquetes ── */
+    function setPollView(v) {
+      document.getElementById('pollCreate').style.display = v === 'criar' ? 'flex' : 'none';
+      document.getElementById('pollResult').style.display = v === 'resultado' ? 'flex' : 'none';
+      document.getElementById('pollSegNew').classList.toggle('on', v === 'criar');
+      document.getElementById('pollSegRes').classList.toggle('on', v === 'resultado');
+    }
+
+    /* ── Fundo e efeitos ── */
+    var FX = {blur:1, bg:'none', f:'none', int:60, lum:50};
+    var BGS = {
+      none:'linear-gradient(135deg,#3b4a63,#1f2a3d 55%,#5b6b85)',
+      sala:'linear-gradient(135deg,#7c5b3a,#d9b98a)',
+      biblioteca:'linear-gradient(135deg,#3b2a1a,#8a5a2b 60%,#c28a4a)',
+      quadro:'linear-gradient(135deg,#e5e7eb,#f8fafc)',
+      mago:'linear-gradient(135deg,#0b3a63,rgb(14,147,242))',
+      escritorio:'linear-gradient(135deg,#334155,#64748b)',
+      jardim:'linear-gradient(135deg,#14532d,#86efac)'
+    };
+    var NOMES = {none:'Fundo original', sala:'Sala de aula', biblioteca:'Biblioteca', quadro:'Quadro branco', mago:'Mago do Pism', escritorio:'Escritório', jardim:'Jardim'};
+    var FNOMES = {none:'', soft:'Brilho suave', warm:'Quente', cool:'Frio', bw:'Preto e branco', skin:'Suavizar pele'};
+    function fxFilter() {
+      var k = FX.int / 100, lum = 0.8 + FX.lum / 250, f = 'brightness(' + lum.toFixed(2) + ') ';
+      if (FX.f === 'soft') f += 'brightness(' + (1 + 0.15 * k) + ') contrast(' + (1 - 0.1 * k) + ')';
+      if (FX.f === 'warm') f += 'sepia(' + (0.5 * k) + ') saturate(' + (1 + 0.3 * k) + ')';
+      if (FX.f === 'cool') f += 'hue-rotate(' + (-20 * k) + 'deg) saturate(' + (1 + 0.1 * k) + ')';
+      if (FX.f === 'bw') f += 'grayscale(' + k + ')';
+      if (FX.f === 'skin') f += 'contrast(' + (1 - 0.12 * k) + ') saturate(' + (1 - 0.1 * k) + ')';
+      return f;
+    }
+    function paintFx() {
+      var bg = document.getElementById('fxBg');
+      bg.style.background = BGS[FX.bg];
+      bg.style.filter = FX.bg === 'none' ? 'blur(' + [0, 4, 10][FX.blur] + 'px)' : 'none';
+      document.getElementById('fxPreview').style.filter = fxFilter();
+      document.querySelectorAll('#fxBlur button').forEach(function (b) { b.classList.toggle('on', +b.dataset.v === FX.blur); });
+      document.querySelectorAll('#fxGrid .fx-thumb[data-bg]').forEach(function (t) { t.classList.toggle('on', t.dataset.bg === FX.bg); });
+      document.querySelectorAll('#fxChips .fx-chip').forEach(function (c) { c.classList.toggle('on', c.dataset.f === FX.f); });
+      document.getElementById('fxInt').value = FX.int; document.getElementById('fxIntV').textContent = FX.int + '%';
+      document.getElementById('fxLum').value = FX.lum; document.getElementById('fxLumV').textContent = FX.lum + '%';
+      var tag = FX.bg === 'none' ? ['Sem desfoque', 'Desfoque leve', 'Desfoque forte'][FX.blur] : 'Fundo: ' + NOMES[FX.bg];
+      if (FX.f !== 'none') tag += ' · ' + FNOMES[FX.f];
+      document.getElementById('fxTag').textContent = tag;
+    }
+    function openFx() { document.getElementById('fxOverlay').classList.add('open'); paintFx(); }
+    function closeFx() { document.getElementById('fxOverlay').classList.remove('open'); }
+    function resetFx() { FX = {blur:1, bg:'none', f:'none', int:60, lum:50}; paintFx(); }
+    function applyFx() {
+      var pip = document.getElementById('profPip');
+      pip.style.background = BGS[FX.bg];
+      pip.style.filter = fxFilter();
+      document.getElementById('fxIcon').classList.add('fx-on');
+      closeFx();
+    }
+    document.querySelectorAll('#fxBlur button').forEach(function (b) { b.addEventListener('click', function () { FX.blur = +b.dataset.v; FX.bg = 'none'; paintFx(); }); });
+    document.querySelectorAll('#fxGrid .fx-thumb[data-bg]').forEach(function (t) { t.addEventListener('click', function () { FX.bg = t.dataset.bg; paintFx(); }); });
+    document.querySelectorAll('#fxChips .fx-chip').forEach(function (c) { c.addEventListener('click', function () { FX.f = c.dataset.f; paintFx(); }); });
+    document.getElementById('fxInt').addEventListener('input', function (e) { FX.int = +e.target.value; paintFx(); });
+    document.getElementById('fxLum').addEventListener('input', function (e) { FX.lum = +e.target.value; paintFx(); });
+
+    /* ── Estados por hash, para abrir direto num estado ──
+       #efeitos  #efeitos-fundo  #cameras-fechadas  #chat-config  #chat-config-off
+       #enquete-criar  #enquete-resultado  #participantes */
+    function applyHash() {
+      var h = location.hash.replace('#', '');
+      if (h === 'efeitos') { openFx(); }
+      if (h === 'efeitos-fundo') { FX = {blur:1, bg:'biblioteca', f:'soft', int:60, lum:55}; openFx(); }
+      if (h === 'cameras-fechadas') { camsClosed = true; renderStudents(); showTab('part'); }
+      if (h === 'participantes') { showTab('part'); }
+      if (h === 'chat-config') { toggleChatCfg(true); }
+      if (h === 'chat-config-off') { setAnon(false); toggleChatCfg(true); }
+      if (h === 'enquete-criar') { showTab('poll'); setPollView('criar'); }
+      if (h === 'enquete-resultado') { showTab('poll'); setPollView('resultado'); }
+    }
+    renderStudents();
+    applyHash();
   </script>
 </body>
 </html>

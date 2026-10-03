@@ -18,6 +18,7 @@
         <a href="alunos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
         <a href="modulos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
         <a href="gravacoes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M7 21h10"/><path d="M9 17v4"/><path d="M15 17v4"/><polygon points="10 8 15 11 10 14 10 8" fill="currentColor" stroke="none"/></svg><span>Gravações</span></a>
+        <a href="presenca.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Presença</span></a>
         <a href="equipe.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Equipe</span></a>
         <a href="avisos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Avisos</span></a>
         <a href="simulados.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg><span>Simulados</span></a>
@@ -162,6 +163,34 @@
         .preview svg { width:18px; height:18px; flex-shrink:0; color:var(--brand-blue); margin-top:1px; }
         .conflict { border-radius:10px; background:rgba(208,62,62,.07); border:1px solid rgba(208,62,62,.3); padding:12px 14px; font-size:13px; color:var(--color-danger); display:flex; gap:10px; align-items:flex-start; }
         .conflict svg { width:18px; height:18px; flex-shrink:0; margin-top:1px; }
+
+        .opt-box { border:1px solid var(--border-default); border-radius:10px; background:var(--bg-card); }
+        .opt-head { display:flex; align-items:flex-start; gap:12px; padding:12px 14px; cursor:pointer; }
+        .opt-head input[type=checkbox] { width:18px; height:18px; margin:2px 0 0; accent-color:var(--brand-blue); flex-shrink:0; height:18px; }
+        .opt-head b { display:block; font-size:14px; color:var(--text-primary); font-weight:600; }
+        .opt-head small { display:block; margin-top:2px; font-size:12px; color:var(--text-muted); line-height:1.4; font-weight:400; }
+        .opt-list { display:none; border-top:1px solid var(--border-default); padding:6px 14px 10px; }
+        .opt-box.open .opt-list { display:block; }
+        .opt-item { display:flex; align-items:center; gap:12px; padding:9px 0; border-top:1px solid var(--border-default); font-size:13px; color:var(--text-primary); cursor:pointer; }
+        .opt-item:first-child { border-top:0; }
+        .opt-item input { width:17px; height:17px; accent-color:var(--brand-blue); }
+        .opt-item span.t { flex:1; font-weight:600; }
+        .opt-item small { color:var(--text-muted); font-size:11px; }
+        .opt-item.fixed { cursor:default; }
+        .opt-tag { padding:2px 8px; border-radius:var(--radius-pill); background:rgba(14,147,242,.12); color:var(--brand-blue); font-size:10px; font-weight:700; }
+        .opt-count { display:flex; align-items:center; justify-content:space-between; padding-top:8px; border-top:1px solid var(--border-default); font-size:12px; color:var(--text-muted); }
+        .share-btn { display:flex; align-items:center; gap:10px; width:100%; height:44px; padding:0 14px; border-radius:10px; border:1px dashed var(--brand-blue); background:rgba(14,147,242,.05); font-family:var(--font-body); font-weight:700; font-size:14px; color:var(--brand-blue); cursor:pointer; text-align:left; }
+        .share-btn:hover { background:rgba(14,147,242,.1); }
+        .share-btn svg { width:18px; height:18px; }
+        .share-btn .chev { margin-left:auto; transition:transform .15s; }
+        .share-box.open .share-btn .chev { transform:rotate(180deg); }
+        .share-panel { display:none; margin-top:10px; border:1px solid var(--border-default); border-radius:10px; padding:14px; background:var(--bg-card); }
+        .share-box.open .share-panel { display:block; }
+        .share-panel h5 { margin:0 0 8px; font-size:13px; color:var(--text-primary); }
+        .share-info { display:flex; gap:10px; margin:12px 0 4px; padding:11px 13px; border-radius:10px; background:rgba(151,71,255,.07); border:1px solid rgba(151,71,255,.28); font-size:12px; line-height:1.5; color:var(--text-primary); }
+        .share-info svg { width:17px; height:17px; flex-shrink:0; color:var(--color-warn); margin-top:1px; }
+        .share-info ul { margin:4px 0 0; padding-left:16px; color:var(--text-secondary); }
+        @media (max-width:1000px) { .modal { padding:22px 18px; } }
         .modal-actions { display:flex; gap:12px; justify-content:flex-end; margin-top:8px; }
         .btn-cancel { padding:0 20px; height:40px; border-radius:8px; border:1px solid var(--border-default); background:var(--bg-card); font-family:var(--font-body); font-weight:600; font-size:14px; color:var(--text-secondary); cursor:pointer; }
         .btn-save { padding:0 24px; height:40px; border-radius:8px; border:none; background:var(--brand-blue); font-family:var(--font-body); font-weight:700; font-size:14px; color:#fff; cursor:pointer; }
@@ -256,15 +285,50 @@
         </div>
         <div class="modal-row">
           <div class="modal-field"><label>Horário de início</label><input type="time" value="19:00" /></div>
-          <div class="modal-field"><label>Duração</label><select><option>1h</option><option>1h30</option><option selected>2h</option><option>2h30</option><option>3h</option></select></div>
+          <div class="modal-field"><label>Duração</label><select><option selected>1h</option><option>1h30</option><option>2h</option><option>2h30</option><option>3h</option></select></div>
         </div>
         <div class="modal-row">
           <div class="modal-field"><label>Começa em</label><input type="date" value="2026-08-10" /></div>
           <div class="modal-field"><label>Termina em</label><input type="date" value="2026-12-18" /></div>
         </div>
+        <div class="opt-box" id="allBox">
+          <label class="opt-head">
+            <input type="checkbox" id="allChk" onchange="toggleAll(this.checked)" />
+            <span><b>Criar para todas as turmas deste curso</b><small>Gera uma agenda separada em cada turma marcada, com o mesmo professor, dias e horário. Depois cada turma pode ser editada sozinha.</small></span>
+          </label>
+          <div class="opt-list">
+            <label class="opt-item fixed"><input type="checkbox" checked disabled /><span class="t">EPIT 1 T1</span><span class="opt-tag">Esta turma</span></label>
+            <label class="opt-item"><input type="checkbox" class="turma-chk" checked onchange="countTurmas()" /><span class="t">EPIT 1 T2</span><small>31 alunos</small></label>
+            <label class="opt-item"><input type="checkbox" class="turma-chk" checked onchange="countTurmas()" /><span class="t">EPIT 1 T3</span><small>27 alunos</small></label>
+            <div class="opt-count"><span id="allCount">3 turmas selecionadas</span><span>Desmarque as que não devem receber a agenda.</span></div>
+          </div>
+        </div>
+        <div class="share-box" id="shareBox">
+          <button type="button" class="share-btn" onclick="toggleShare()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+            Compartilhar agenda com outras turmas
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="share-panel">
+            <h5>Escolha as turmas ou cursos que vão ver esta agenda</h5>
+            <div class="opt-list" style="display:block;padding:0;border:0;">
+              <label class="opt-item"><input type="checkbox" class="share-chk" checked onchange="countShare()" /><span class="t">EPIT 2 T1</span><small>Curso · 24 alunos</small></label>
+              <label class="opt-item"><input type="checkbox" class="share-chk" checked onchange="countShare()" /><span class="t">PISM I T1</span><small>Curso · 22 alunos</small></label>
+              <label class="opt-item"><input type="checkbox" class="share-chk" onchange="countShare()" /><span class="t">PISM I T2</span><small>Curso · 19 alunos</small></label>
+              <label class="opt-item"><input type="checkbox" class="share-chk" onchange="countShare()" /><span class="t">PISM/ENEM T1</span><small>Curso · 28 alunos</small></label>
+            </div>
+            <div class="share-info">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+              <div><strong id="shareCount">2 turmas vão receber esta agenda.</strong> O que é compartilhado:
+                <ul><li>A mesma agenda e a mesma sala ao vivo, uma só aula para todos</li><li>Horários, remarcações e cancelamentos, que valem para todas as turmas</li><li>A gravação, que fica disponível em todas elas</li></ul>
+                Alunos das outras turmas passam a ver a aula no calendário deles.
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="preview">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
-          <span>Vai gerar 36 aulas, às segundas e quartas, de 10/08/2026 a 18/12/2026. Depois dá pra cancelar ou remarcar uma aula sem mexer na agenda.</span>
+          <span id="prevTxt">Vai gerar 36 aulas de 1h, às segundas e quartas, de 10/08/2026 a 18/12/2026. Depois dá pra cancelar ou remarcar uma aula sem mexer na agenda.</span>
         </div>
         <div class="conflict">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>
@@ -297,9 +361,9 @@
     const H0=7, H1=22, HH=56;
     const TODAY=new Date(2026,7,12);
     const RULES=[
-      {id:1,title:'Matemática',prof:'Prof. Carlos Menezes',c:'#0e93f2',days:[1,3],start:'19:00',dur:120,from:'2026-08-10',to:'2026-12-18',on:true,paused:false},
+      {id:1,title:'Matemática',prof:'Prof. Carlos Menezes',c:'#0e93f2',days:[1,3],start:'19:00',dur:60,from:'2026-08-10',to:'2026-12-18',on:true,paused:false},
       {id:2,title:'Redação',prof:'Prof. Ana Lima',c:'#7c3aed',days:[2],start:'19:00',dur:90,from:'2026-08-11',to:'2026-12-15',on:true,paused:false},
-      {id:3,title:'Física',prof:'Prof. Ricardo Dias',c:'#d97706',days:[6],start:'09:00',dur:120,from:'2026-08-15',to:'2026-12-12',on:true,paused:true}
+      {id:3,title:'Física',prof:'Prof. Ricardo Dias',c:'#d97706',days:[6],start:'09:00',dur:60,from:'2026-08-15',to:'2026-12-12',on:true,paused:true}
     ];
     const EXC={ '1|2026-08-12':{type:'moved',to:'2026-08-13',start:'19:00'}, '1|2026-08-17':{type:'cancel',why:'feriado'} };
     let view='week', cur=new Date(2026,7,10);
@@ -412,6 +476,24 @@
     document.querySelectorAll('#dayPick button').forEach(b => b.addEventListener('click', () => b.classList.toggle('on')));
     render();
     if (location.hash === '#nova') openModal();
+
+    // ── Todas as turmas e compartilhar ──
+    function countTurmas() {
+      var n = 1 + document.querySelectorAll('.turma-chk:checked').length;
+      document.getElementById('allCount').textContent = n + (n === 1 ? ' turma selecionada' : ' turmas selecionadas');
+      var allOn = document.getElementById('allChk').checked;
+      var aulas = 36 * (allOn ? n : 1);
+      document.getElementById('prevTxt').textContent = 'Vai gerar ' + aulas + ' aulas de 1h' + (allOn && n > 1 ? ' (' + n + ' turmas, 36 em cada)' : '') + ', às segundas e quartas, de 10/08/2026 a 18/12/2026. Depois dá pra cancelar ou remarcar uma aula sem mexer na agenda.';
+    }
+    function toggleAll(on) { document.getElementById('allBox').classList.toggle('open', on); document.getElementById('allChk').checked = on; countTurmas(); }
+    function countShare() {
+      var n = document.querySelectorAll('.share-chk:checked').length;
+      document.getElementById('shareCount').textContent = n === 0 ? 'Nenhuma turma selecionada.' : n + (n === 1 ? ' turma vai receber esta agenda.' : ' turmas vão receber esta agenda.');
+    }
+    function toggleShare(force) { var b = document.getElementById('shareBox'); b.classList.toggle('open', typeof force === 'boolean' ? force : !b.classList.contains('open')); }
+    if (location.hash === '#nova-todas') { openModal(); toggleAll(true); }
+    if (location.hash === '#nova-compartilhar') { openModal(); toggleShare(true); }
+    if (location.hash === '#nova-todas-compartilhar') { openModal(); toggleAll(true); toggleShare(true); }
   </script>
 </body>
 </html>

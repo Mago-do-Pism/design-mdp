@@ -258,6 +258,82 @@
     }
     .ctrl-btn.leave .ctrl-icon:hover { background: #b91c1c; }
     .ctrl-btn.leave .ctrl-label { color: #f87171; }
+
+    /* ── Novidades: pergunta anônima, enquete, mobile ── */
+    .chat-compose { border-top: 1px solid rgba(255,255,255,0.08); }
+    .chat-compose .chat-input-bar { border-top: 0; padding-top: 8px; }
+    .anon-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px 0; }
+    .anon-check { display: flex; align-items: center; gap: 8px; background: transparent; border: 0; padding: 0; color: rgba(255,255,255,0.75); font-family: var(--font-body); font-size: 12px; font-weight: 600; cursor: pointer; text-align: left; }
+    .anon-check i { width: 18px; height: 18px; border-radius: var(--radius-xs); border: 2px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .anon-check.on { color: #c4a1ff; }
+    .anon-check.on i { background: var(--color-warn); border-color: var(--color-warn); }
+    .anon-check.on i::after { content: "✓"; color: #fff; font-size: 11px; font-weight: 800; }
+    .anon-check[disabled] { cursor: not-allowed; color: rgba(255,255,255,0.35); }
+    .anon-check[disabled] i { border-color: rgba(255,255,255,0.15); }
+    .anon-hint { margin: 0; padding: 6px 14px 0; font-size: 11px; line-height: 1.4; color: rgba(255,255,255,0.45); }
+    .anon-hint.locked { color: rgba(255,255,255,0.5); }
+    .anon-hint strong { color: #c4a1ff; font-weight: 600; }
+    .anon-avatar { background: rgba(255,255,255,0.14) !important; color: rgba(255,255,255,0.8) !important; }
+    .anon-tag { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: var(--radius-pill); background: rgba(151,71,255,0.2); color: #c4a1ff; font-size: 9px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; vertical-align: 1px; }
+    .chat-msg.is-mine-anon .chat-msg-text { background: rgba(151,71,255,0.12); border: 1px solid rgba(151,71,255,0.3); border-radius: var(--radius-md); padding: 7px 10px; }
+    .chat-msg-note { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+    .poll-card { position: absolute; left: 16px; bottom: 16px; width: 344px; z-index: 12; background: #161d2b; border: 1px solid rgba(255,255,255,0.14); border-radius: var(--radius-xl); box-shadow: var(--shadow-deep); padding: 16px 18px 18px; display: none; }
+    .poll-card.show { display: block; }
+    .poll-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .poll-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: .5px; color: #60b4f8; text-transform: uppercase; }
+    .poll-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--brand-blue); animation: blink 1.4s infinite; }
+    .poll-card-head span.who { margin-left: auto; font-size: 11px; color: rgba(255,255,255,0.45); }
+    .poll-q { margin: 0 0 12px; font-size: 15px; font-weight: 700; line-height: 1.35; color: rgba(255,255,255,0.94); }
+    .poll-opt { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; margin-bottom: 8px; padding: 0 12px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.16); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.88); font-family: var(--font-body); font-size: 13px; font-weight: 600; text-align: left; cursor: pointer; }
+    .poll-opt:hover { border-color: rgba(14,147,242,0.6); }
+    .poll-opt i { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.35); flex-shrink: 0; }
+    .poll-opt.sel { border-color: var(--brand-blue); background: rgba(14,147,242,0.14); }
+    .poll-opt.sel i { border-color: var(--brand-blue); background: radial-gradient(circle, var(--brand-blue) 0 45%, transparent 50%); }
+    .poll-send { width: 100%; height: 44px; margin-top: 4px; border: 0; border-radius: var(--radius-md); background: var(--brand-blue); color: #fff; font-family: var(--font-body); font-size: 14px; font-weight: 700; cursor: pointer; }
+    .poll-send[disabled] { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.35); cursor: not-allowed; }
+    .poll-foot { margin: 8px 0 0; font-size: 11px; color: rgba(255,255,255,0.45); }
+    .poll-res-row { margin-bottom: 11px; }
+    .poll-res-top { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.88); margin-bottom: 5px; }
+    .poll-res-top span:last-child { color: rgba(255,255,255,0.6); font-weight: 500; font-variant-numeric: tabular-nums; }
+    .poll-res-top em { font-style: normal; margin-left: 6px; padding: 1px 7px; border-radius: var(--radius-pill); background: rgba(14,147,242,0.22); color: #60b4f8; font-size: 10px; font-weight: 700; }
+    .poll-res-track { height: 12px; border-radius: var(--radius-pill); background: rgba(255,255,255,0.08); overflow: hidden; }
+    .poll-res-fill { height: 100%; border-radius: var(--radius-pill); background: var(--brand-blue); }
+    .poll-done { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font-size: 12px; font-weight: 600; color: #4ade80; }
+    .tab-badge { background: var(--color-warn); color: #fff; border-radius: 10px; padding: 1px 6px; font-size: 10px; margin-left: 4px; }
+
+    /* ── Mobile (aluno assiste pelo celular) ── */
+    @media (max-width: 820px) {
+      .room-topbar { padding: 0 12px; gap: 10px; height: 48px; }
+      .room-topbar-logo, .room-divider { display: none; }
+      .room-title { font-size: 13px; }
+      .room-timer { font-size: 12px; }
+      .room-body { flex-direction: column; }
+      .room-stage { flex: 0 0 auto; }
+      .room-main-video { flex: 0 0 auto; height: 200px; }
+      .screen-share-sim { width: 94%; }
+      .screen-share-bar { height: 18px; }
+      .screen-share-content { padding: 10px 14px; min-height: 0; }
+      .slide-h1 { font-size: 14px; margin-bottom: 6px; }
+      .slide-h2 { font-size: 11px; margin-bottom: 8px; }
+      .slide-formula { font-size: 14px; padding: 8px; margin-bottom: 6px; }
+      .slide-list { display: none; }
+      .slide-col:last-child { display: none; }
+      .prof-pip { width: 84px; height: 56px; right: 8px; bottom: 8px; border-radius: 8px; gap: 2px; }
+      .prof-pip-avatar { width: 24px; height: 24px; font-size: 10px; }
+      .prof-pip-name, .prof-pip-badge { display: none; }
+      .room-strip { height: 70px; padding: 0 10px; gap: 8px; }
+      .student-tile { width: 92px; height: 56px; border-radius: 8px; }
+      .student-tile-avatar { width: 24px; height: 24px; font-size: 10px; }
+      .student-tile-name { font-size: 9px; max-width: 84px; }
+      .room-sidebar { width: 100%; flex: 1; min-height: 0; border-left: 0; border-top: 1px solid rgba(255,255,255,0.08); }
+      .room-controls { height: 68px; padding: 0 8px; gap: 0; justify-content: flex-start; overflow-x: auto; scrollbar-width: none; }
+      .ctrl-btn { padding: 0 4px; flex-shrink: 0; }
+      .ctrl-icon { width: 42px; height: 42px; }
+      .ctrl-label { font-size: 9px; }
+      .ctrl-sep { display: none; }
+      .poll-card { position: fixed; left: 8px; right: 8px; bottom: 76px; width: auto; max-height: 62vh; overflow-y: auto; }
+    }
   </style>
 </head>
 <body>
@@ -269,7 +345,7 @@
       <div class="room-divider"></div>
       <div class="room-title">PISM I — Turma T1 <span>· Prof. Carlos Menezes</span></div>
       <div class="live-badge">AO VIVO</div>
-      <div class="room-timer" id="timer">01:24:38</div>
+      <div class="room-timer" id="timer">00:24:38</div>
     </div>
 
     <!-- Main body -->
@@ -314,6 +390,27 @@
                   <p style="font-size:12px; color:#777; margin-top:8px;">Gráfico ilustrativo · a=1, b=−2, c=−3</p>
                 </div>
               </div>
+            </div>
+          </div>
+
+
+          <!-- Enquete do professor -->
+          <div class="poll-card" id="pollCard" role="dialog" aria-label="Enquete">
+            <div class="poll-card-head"><span class="poll-badge">Enquete</span><span class="who">Prof. Carlos Menezes</span></div>
+            <p class="poll-q">Quantas raízes reais tem x² − 2x − 3 = 0?</p>
+            <div id="pollVote">
+              <button class="poll-opt" onclick="pickOpt(this)"><i></i>A · Nenhuma</button>
+              <button class="poll-opt" onclick="pickOpt(this)"><i></i>B · Uma</button>
+              <button class="poll-opt" onclick="pickOpt(this)"><i></i>C · Duas</button>
+              <button class="poll-send" id="pollSend" disabled onclick="sendVote()">Enviar resposta</button>
+              <p class="poll-foot">Só uma resposta. Depois de enviar, não dá para mudar.</p>
+            </div>
+            <div id="pollDone" style="display:none;">
+              <p class="poll-done">✓ Resposta enviada</p>
+              <div class="poll-res-row"><div class="poll-res-top"><span>A · Nenhuma</span><span>0 votos · 0%</span></div><div class="poll-res-track"><div class="poll-res-fill" style="width:0%"></div></div></div>
+              <div class="poll-res-row"><div class="poll-res-top"><span>B · Uma<em>Sua resposta</em></span><span>2 votos · 33%</span></div><div class="poll-res-track"><div class="poll-res-fill" style="width:33%"></div></div></div>
+              <div class="poll-res-row"><div class="poll-res-top"><span>C · Duas</span><span>4 votos · 67%</span></div><div class="poll-res-track"><div class="poll-res-fill" style="width:67%"></div></div></div>
+              <p class="poll-foot">6 de 6 alunos responderam · resultado ao vivo</p>
             </div>
           </div>
 
@@ -389,6 +486,13 @@
             </div>
           </div>
           <div class="chat-msg">
+            <div class="chat-msg-avatar anon-avatar">?</div>
+            <div class="chat-msg-body">
+              <div class="chat-msg-name">Anônimo <span class="anon-tag">Pergunta anônima</span> <span class="chat-msg-time">14:06</span></div>
+              <div class="chat-msg-text">Professor, pode repetir a diferença entre o vértice e as raízes? Me perdi nessa parte.</div>
+            </div>
+          </div>
+          <div class="chat-msg">
             <div class="chat-msg-avatar" style="background:#0e93f2;">MC</div>
             <div class="chat-msg-body">
               <div class="chat-msg-name">Matheus Carvalho <span class="chat-msg-time">14:07</span></div>
@@ -407,6 +511,14 @@
             <div class="chat-msg-body">
               <div class="chat-msg-name">Beatriz Fontes <span class="chat-msg-time">14:12</span></div>
               <div class="chat-msg-text">Tem como disponibilizar essa lista de exercícios depois da aula?</div>
+            </div>
+          </div>
+          <div class="chat-msg is-mine-anon" id="mineAnon" style="display:none;">
+            <div class="chat-msg-avatar anon-avatar">?</div>
+            <div class="chat-msg-body">
+              <div class="chat-msg-name">Anônimo <span class="anon-tag">Pergunta anônima</span> <span class="chat-msg-time">14:14</span></div>
+              <div class="chat-msg-text">Dá pra explicar de novo como achar o vértice quando o Δ é negativo?</div>
+              <div class="chat-msg-note">Só você sabe que enviou esta pergunta.</div>
             </div>
           </div>
         </div>
@@ -436,11 +548,17 @@
           <div class="part-item"><div class="part-avatar" style="background:#6366f1;">PR</div><div class="part-name">Paula Rezende <small>Aluno</small></div><div class="part-icons"><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div></div>
         </div>
 
-        <div class="chat-input-bar">
-          <input class="chat-input" type="text" placeholder="Mensagem para a turma…" />
-          <button class="chat-send-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          </button>
+        <div class="chat-compose" id="chatCompose">
+          <div class="anon-row">
+            <button class="anon-check" id="anonCheck" type="button" role="checkbox" aria-checked="false" onclick="toggleAnon()"><i></i><span id="anonLabel">Enviar como anônimo</span></button>
+          </div>
+          <p class="anon-hint" id="anonHint">Seu nome não aparece para o professor nem para a turma.</p>
+          <div class="chat-input-bar">
+            <input class="chat-input" id="chatInput" type="text" placeholder="Mensagem para a turma…" />
+            <button class="chat-send-btn" aria-label="Enviar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -493,7 +611,7 @@
 
   <script>
     // Timer
-    let secs = 5078;
+    let secs = 1478;
     function pad(n){ return String(n).padStart(2,'0'); }
     function tick(){ secs++; const h=Math.floor(secs/3600), m=Math.floor((secs%3600)/60), s=secs%60; document.getElementById('timer').textContent=`${pad(h)}:${pad(m)}:${pad(s)}`; }
     setInterval(tick, 1000);
@@ -502,6 +620,8 @@
     function toggleCtrl(btn, id) {
       const icon = document.getElementById(id);
       icon.classList.toggle('on');
+      icon.classList.toggle('off');
+    }
 
     let handRaised = false;
     function toggleHand() {
@@ -520,8 +640,6 @@
         label.style.color = '';
       }
     }
-      icon.classList.toggle('off');
-    }
 
     // Tab switching
     function showTab(name, clickedTab) {
@@ -529,13 +647,62 @@
       if(clickedTab && clickedTab.classList) clickedTab.classList.add('active');
       document.getElementById('tab-chat').style.display = name==='chat' ? 'flex' : 'none';
       document.getElementById('tab-part').style.display = name==='part' ? 'flex' : 'none';
-      document.querySelector('.chat-input-bar').style.display = name==='chat' ? 'flex' : 'none';
+      document.getElementById('chatCompose').style.display = name==='chat' ? 'block' : 'none';
     }
 
     // Sidebar tabs click wiring
     document.querySelectorAll('.sidebar-tab').forEach((tab, i) => {
       tab.addEventListener('click', () => showTab(i===0?'chat':'part', tab));
     });
+
+    // ── Pergunta anônima ──
+    var anonOn = false, anonAllowed = true;
+    function toggleAnon(force) {
+      if (!anonAllowed) return;
+      anonOn = typeof force === 'boolean' ? force : !anonOn;
+      var b = document.getElementById('anonCheck');
+      b.classList.toggle('on', anonOn); b.setAttribute('aria-checked', anonOn);
+      document.getElementById('chatInput').placeholder = anonOn ? 'Sua pergunta anônima para o professor…' : 'Mensagem para a turma…';
+      document.getElementById('anonHint').innerHTML = anonOn ? '<strong>Modo anônimo ligado.</strong> Vai aparecer como &ldquo;Anônimo&rdquo; para o professor e para a turma.' : 'Seu nome não aparece para o professor nem para a turma.';
+    }
+    function setAnonAllowed(v) {
+      anonAllowed = v;
+      var b = document.getElementById('anonCheck');
+      b.disabled = !v;
+      if (!v) { toggleAnon(false); }
+      document.getElementById('anonLabel').textContent = v ? 'Enviar como anônimo' : 'Perguntas anônimas desligadas';
+      var h = document.getElementById('anonHint');
+      h.classList.toggle('locked', !v);
+      if (!v) h.textContent = 'O professor desligou as perguntas anônimas nesta aula. Sua mensagem sai com o seu nome.';
+    }
+
+    // ── Enquete ──
+    function showPoll(state) {
+      var c = document.getElementById('pollCard');
+      c.classList.add('show');
+      document.getElementById('pollVote').style.display = state === 'votar' ? 'block' : 'none';
+      document.getElementById('pollDone').style.display = state === 'resultado' ? 'block' : 'none';
+    }
+    function pickOpt(btn) {
+      document.querySelectorAll('#pollVote .poll-opt').forEach(function (o) { o.classList.remove('sel'); });
+      btn.classList.add('sel');
+      document.getElementById('pollSend').disabled = false;
+    }
+    function sendVote() { showPoll('resultado'); }
+
+    // Estados por hash: #anonimo  #anonimo-desligado  #enquete  #enquete-selecionada  #enquete-resultado  #participantes
+    (function () {
+      var h = location.hash.replace('#', '');
+      if (h === 'anonimo') {
+        toggleAnon(true);
+        document.getElementById('chatInput').value = 'Dá pra explicar de novo como achar o vértice quando o Δ é negativo?';
+      }
+      if (h === 'anonimo-enviado') { toggleAnon(true); document.getElementById('mineAnon').style.display = 'flex'; var c = document.getElementById('tab-chat'); c.scrollTop = c.scrollHeight; }
+      if (h === 'anonimo-desligado') setAnonAllowed(false);
+      if (h === 'enquete') showPoll('votar');
+      if (h === 'enquete-selecionada') { showPoll('votar'); pickOpt(document.querySelectorAll('#pollVote .poll-opt')[1]); }
+      if (h === 'enquete-resultado') showPoll('resultado');
+    })();
   </script>
 </body>
 </html>
