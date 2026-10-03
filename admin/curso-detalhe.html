@@ -182,9 +182,16 @@
           .gc-main { order:-1; }
           .gc-block.mini { display:none; }
           .gc-side { flex-direction:column; }
-          .wk-scroll, .wk-head-wrap { overflow-x:auto; }
-          .gc-main { overflow-x:auto; }
-          .wk-head, .wk-body { min-width:640px; }
+          .wk-head, .wk-body { grid-template-columns:34px repeat(7,minmax(0,1fr)); }
+          .wk-head > div { font-size:9px; padding:6px 0 4px; letter-spacing:0; }
+          .wk-head b { width:28px; height:28px; font-size:14px; margin-top:2px; }
+          .wk-hours span { right:4px; font-size:9px; }
+          .ev { left:1px; right:1px; padding:2px 3px; border-radius:4px; font-size:9px; line-height:1.15; }
+          .ev strong { font-size:9px; white-space:normal; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; }
+          .ev span { display:none; }
+          .now-line::before { left:-3px; top:-3px; width:8px; height:8px; }
+          .mo-cell { min-height:64px; }
+          .chip { font-size:9px; padding:1px 3px; }
         }
       </style>
 
@@ -341,7 +348,7 @@
         head+='</div>';
         for(let h=H0+1;h<=H1;h++) hours+='<span style="top:'+((h-H0)*HH)+'px">'+String(h).padStart(2,'0')+':00</span>';
         v.innerHTML=head+'<div class="wk-scroll" id="wkScroll"><div class="wk-body" style="height:'+((H1-H0)*HH)+'px"><div class="wk-hours">'+hours+'</div>'+cols+'</div></div>';
-        const sc=document.getElementById('wkScroll'); sc.scrollTop=(11-H0)*HH;
+        const sc=document.getElementById('wkScroll'); sc.scrollTop=((window.innerWidth<=900?18:11)-H0)*HH;
         document.getElementById('wkHead').style.setProperty('--sbw',(sc.offsetWidth-sc.clientWidth)+'px');
         v.querySelectorAll('.wk-col').forEach(c=>c.addEventListener('click',e=>{ if(e.target.closest('.ev')) return; closePop(); openModal(); }));
         v.querySelectorAll('.ev').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();showPop(b,JSON.parse(b.dataset.ev));}));
