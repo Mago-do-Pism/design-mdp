@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EPIT 1 · Calendário · Admin · Mago do Pism</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+</head>
+<body>
+  <div class="app-shell"><aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+            <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos</span></a>
+        <a href="alunos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
+        <a href="modulos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
+        <a href="gravacoes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M7 21h10"/><path d="M9 17v4"/><path d="M15 17v4"/><polygon points="10 8 15 11 10 14 10 8" fill="currentColor" stroke="none"/></svg><span>Gravações</span></a>
+        <a href="equipe.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Equipe</span></a>
+        <a href="avisos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Avisos</span></a>
+        <a href="simulados.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg><span>Simulados</span></a>
+        <a href="nivelamentos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Nivelamentos</span></a>
+        <a href="listas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Listas</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+    <main class="content admin-content">
+      <style>
+        a { color: inherit; text-decoration: none; }
+        .cd-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:12px; }
+        .cd-back:hover { color:var(--brand-blue); }
+        .cd-back svg { width:16px; height:16px; }
+        .cd-tabs { display:flex; gap:4px; border-bottom:1px solid var(--border-default); margin:20px 0 28px; max-width:1086px; }
+        .cd-tab { background:transparent; border:none; padding:12px 16px; font-family:var(--font-body); font-weight:500; font-size:14px; color:#a0a0a0; cursor:pointer; position:relative; margin-bottom:-1px; }
+        .cd-tab:hover { color:#666; }
+        .cd-tab.is-active { color:var(--brand-blue); }
+        .cd-tab.is-active::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:3px; background:var(--brand-blue); border-radius:4px 4px 0 0; }
+        .cd-tab .novo { margin-left:6px; padding:1px 6px; border-radius:4px; background:rgba(14,147,242,.12); color:var(--brand-blue); font-size:10px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; }
+
+        .cal-wrap { max-width:1086px; }
+        .cal-head-row { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:6px; flex-wrap:wrap; }
+        .cal-head-row h3 { margin:0; font-size:18px; font-weight:700; color:var(--text-primary); }
+        .cal-sub { margin:0 0 20px; font-size:13px; color:var(--text-muted); }
+        .cal-filters { display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+        .cal-filters select { height:38px; padding:0 12px; border-radius:8px; border:1px solid var(--border-default); background:var(--bg-card); font-family:var(--font-body); font-size:13px; color:var(--text-primary); outline:none; }
+        .cal-filters select:focus { border-color:var(--brand-blue); }
+
+        .rule-list { display:flex; flex-direction:column; gap:12px; }
+        .rule { background:var(--bg-card); border:1px solid var(--border-default); border-radius:var(--radius-xl); box-shadow:var(--shadow-soft); padding:18px 22px; display:grid; grid-template-columns:auto 1fr auto; gap:18px; align-items:center; }
+        .rule.is-paused { opacity:.6; }
+        .avatar { width:44px; height:44px; border-radius:50%; background:var(--brand-blue); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; }
+        .rule-main { min-width:0; }
+        .rule-title { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
+        .rule-title strong { font-size:15px; color:var(--text-primary); }
+        .badge { padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; }
+        .badge-ok { background:rgba(39,133,86,.12); color:var(--color-success); }
+        .badge-off { background:var(--neutral-100, #eee); color:var(--text-muted); }
+        .rule-meta { display:flex; gap:18px; flex-wrap:wrap; font-size:13px; color:var(--text-secondary); }
+        .rule-meta span { display:inline-flex; align-items:center; gap:6px; }
+        .rule-meta svg { width:15px; height:15px; color:var(--text-muted); }
+        .days { display:flex; gap:4px; margin-top:10px; }
+        .day { width:30px; height:26px; border-radius:6px; border:1px solid var(--border-default); font-size:11px; font-weight:700; color:var(--text-faint); display:flex; align-items:center; justify-content:center; }
+        .day.on { background:rgba(14,147,242,.12); border-color:var(--brand-blue); color:var(--brand-blue); }
+        .rule-actions { display:flex; gap:8px; }
+        .icon-btn { width:34px; height:34px; border-radius:8px; border:1px solid var(--border-default); background:var(--bg-card); color:var(--text-secondary); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+        .icon-btn:hover { border-color:var(--brand-blue); color:var(--brand-blue); }
+        .icon-btn.danger:hover { border-color:var(--color-danger); color:var(--color-danger); }
+        .icon-btn svg { width:16px; height:16px; }
+
+        .occ-title { margin:36px 0 12px; font-size:16px; font-weight:700; color:var(--text-primary); }
+        .occ-table { background:var(--bg-card); border:1px solid var(--border-default); border-radius:var(--radius-xl); overflow:hidden; }
+        .occ-row { display:grid; grid-template-columns:110px 120px 1fr 1fr 110px 90px; gap:12px; align-items:center; padding:13px 22px; border-bottom:1px solid var(--border-default); font-size:13px; color:var(--text-primary); }
+        .occ-row:last-child { border-bottom:0; }
+        .occ-row.head { background:var(--bg-surface); font-size:12px; font-weight:700; color:var(--text-muted); }
+        .occ-row.cancelled { color:var(--text-faint); }
+        .occ-row.cancelled .when { text-decoration:line-through; }
+        .tag-moved { color:var(--color-warn); font-weight:600; font-size:12px; }
+        .tag-cancel { color:var(--color-danger); font-weight:600; font-size:12px; }
+        .row-actions { display:flex; gap:6px; justify-content:flex-end; }
+        .row-actions .icon-btn { width:28px; height:28px; }
+        .row-actions .icon-btn svg { width:14px; height:14px; }
+
+        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:100; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .2s; }
+        .modal-overlay.open { opacity:1; pointer-events:all; }
+        .modal { background:var(--bg-card); border-radius:var(--radius-xl); padding:30px 32px; width:600px; max-width:95vw; max-height:94vh; overflow:auto; box-shadow:var(--shadow-deep); }
+        .modal-title { margin:0 0 4px; font-weight:700; font-size:18px; color:var(--text-primary); }
+        .modal-sub { margin:0 0 22px; font-size:13px; color:var(--text-muted); }
+        .modal-form { display:flex; flex-direction:column; gap:16px; }
+        .modal-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+        .modal-field { display:flex; flex-direction:column; gap:6px; }
+        .modal-field > label { font-size:13px; font-weight:600; color:var(--text-muted); }
+        .modal-field input, .modal-field select { height:42px; padding:0 12px; border-radius:8px; border:1px solid var(--border-default); font-family:var(--font-body); font-size:14px; color:var(--text-primary); background:var(--neutral-50, #fafafa); outline:none; }
+        .modal-field input:focus, .modal-field select:focus { border-color:var(--brand-blue); }
+        .hint { font-size:12px; color:var(--text-muted); }
+        .day-pick { display:flex; gap:6px; flex-wrap:wrap; }
+        .day-pick button { height:38px; min-width:52px; padding:0 12px; border-radius:8px; border:1px solid var(--border-default); background:var(--bg-card); font-family:var(--font-body); font-weight:600; font-size:13px; color:var(--text-secondary); cursor:pointer; }
+        .day-pick button.on { background:var(--brand-blue); border-color:var(--brand-blue); color:#fff; }
+        .preview { border-radius:10px; background:rgba(14,147,242,.07); border:1px solid rgba(14,147,242,.25); padding:12px 14px; font-size:13px; color:var(--text-primary); display:flex; gap:10px; align-items:flex-start; }
+        .preview svg { width:18px; height:18px; flex-shrink:0; color:var(--brand-blue); margin-top:1px; }
+        .conflict { border-radius:10px; background:rgba(208,62,62,.07); border:1px solid rgba(208,62,62,.3); padding:12px 14px; font-size:13px; color:var(--color-danger); display:flex; gap:10px; align-items:flex-start; }
+        .conflict svg { width:18px; height:18px; flex-shrink:0; margin-top:1px; }
+        .modal-actions { display:flex; gap:12px; justify-content:flex-end; margin-top:8px; }
+        .btn-cancel { padding:0 20px; height:40px; border-radius:8px; border:1px solid var(--border-default); background:var(--bg-card); font-family:var(--font-body); font-weight:600; font-size:14px; color:var(--text-secondary); cursor:pointer; }
+        .btn-save { padding:0 24px; height:40px; border-radius:8px; border:none; background:var(--brand-blue); font-family:var(--font-body); font-weight:700; font-size:14px; color:#fff; cursor:pointer; }
+        .btn-save:hover { background:var(--brand-blue-dark); }
+        @media (max-width:900px) { .rule { grid-template-columns:auto 1fr; } .rule-actions { grid-column:1 / -1; } .occ-row { grid-template-columns:1fr 1fr; } .occ-row.head { display:none; } }
+      </style>
+
+      <a href="cursos.html" class="cd-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Cursos</a>
+      <h2 class="section-title" style="margin:0">EPIT 1</h2>
+
+      <div class="cd-tabs" role="tablist">
+        <button class="cd-tab" role="tab">Conteúdo</button>
+        <button class="cd-tab" role="tab">Estatísticas</button>
+        <button class="cd-tab" role="tab">Editar dados</button>
+        <button class="cd-tab" role="tab">Alunos</button>
+        <button class="cd-tab" role="tab">Links</button>
+        <button class="cd-tab" role="tab">Avisos</button>
+        <button class="cd-tab is-active" role="tab" aria-selected="true">Calendário<span class="novo">novo</span></button>
+      </div>
+
+      <section class="cal-wrap">
+        <div class="cal-head-row">
+          <h3>Agendas recorrentes</h3>
+          <button class="btn-primary compact" onclick="openModal()">Nova agenda recorrente</button>
+        </div>
+        <p class="cal-sub">Cada agenda gera as aulas ao vivo da turma toda semana, no dia e horário escolhidos, com o professor marcado.</p>
+
+        <div class="cal-filters">
+          <select><option>Todas as turmas</option><option>EPIT 1 · T1</option><option>EPIT 1 · T2</option></select>
+          <select><option>Todos os professores</option><option>Prof. Carlos Menezes</option><option>Prof. Ana Lima</option><option>Prof. Ricardo Dias</option></select>
+          <select><option>Ativas</option><option>Pausadas</option><option>Encerradas</option></select>
+        </div>
+
+        <div class="rule-list">
+          <article class="rule">
+            <div class="avatar">CM</div>
+            <div class="rule-main">
+              <div class="rule-title"><strong>Matemática · Prof. Carlos Menezes</strong><span class="badge badge-ok">Ativa</span></div>
+              <div class="rule-meta">
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>Turma T1</span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>19:00 às 21:00 (2h)</span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>10/08/2026 a 18/12/2026 · 36 aulas</span>
+              </div>
+              <div class="days"><span class="day">DOM</span><span class="day on">SEG</span><span class="day">TER</span><span class="day on">QUA</span><span class="day">QUI</span><span class="day">SEX</span><span class="day">SÁB</span></div>
+            </div>
+            <div class="rule-actions">
+              <button class="icon-btn" title="Editar" aria-label="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
+              <button class="icon-btn" title="Pausar" aria-label="Pausar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></button>
+              <button class="icon-btn danger" title="Encerrar agenda" aria-label="Encerrar agenda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>
+            </div>
+          </article>
+
+          <article class="rule">
+            <div class="avatar" style="background:#7c3aed">AL</div>
+            <div class="rule-main">
+              <div class="rule-title"><strong>Redação · Prof. Ana Lima</strong><span class="badge badge-ok">Ativa</span></div>
+              <div class="rule-meta">
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>Turmas T1 e T2</span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>19:00 às 20:30 (1h30)</span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>11/08/2026 a 15/12/2026 · 18 aulas</span>
+              </div>
+              <div class="days"><span class="day">DOM</span><span class="day">SEG</span><span class="day on">TER</span><span class="day">QUA</span><span class="day">QUI</span><span class="day">SEX</span><span class="day">SÁB</span></div>
+            </div>
+            <div class="rule-actions">
+              <button class="icon-btn" title="Editar" aria-label="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
+              <button class="icon-btn" title="Pausar" aria-label="Pausar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></button>
+              <button class="icon-btn danger" title="Encerrar agenda" aria-label="Encerrar agenda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>
+            </div>
+          </article>
+
+          <article class="rule is-paused">
+            <div class="avatar" style="background:#d97706">RD</div>
+            <div class="rule-main">
+              <div class="rule-title"><strong>Física · Prof. Ricardo Dias</strong><span class="badge badge-off">Pausada</span></div>
+              <div class="rule-meta">
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>Turma T2</span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>09:00 às 11:00 (2h)</span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>15/08/2026 a 12/12/2026 · 17 aulas</span>
+              </div>
+              <div class="days"><span class="day">DOM</span><span class="day">SEG</span><span class="day">TER</span><span class="day">QUA</span><span class="day">QUI</span><span class="day">SEX</span><span class="day on">SÁB</span></div>
+            </div>
+            <div class="rule-actions">
+              <button class="icon-btn" title="Editar" aria-label="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
+              <button class="icon-btn" title="Retomar" aria-label="Retomar"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M7 4l13 8-13 8z"/></svg></button>
+              <button class="icon-btn danger" title="Encerrar agenda" aria-label="Encerrar agenda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>
+            </div>
+          </article>
+        </div>
+
+        <h3 class="occ-title">Próximas aulas geradas</h3>
+        <div class="occ-table">
+          <div class="occ-row head"><span>Data</span><span>Horário</span><span>Professor</span><span>Turma</span><span>Situação</span><span></span></div>
+          <div class="occ-row"><span class="when">Seg, 10/08</span><span>19:00 – 21:00</span><span>Prof. Carlos Menezes</span><span>T1</span><span>Agendada</span>
+            <span class="row-actions"><button class="icon-btn" title="Remarcar" aria-label="Remarcar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button><button class="icon-btn danger" title="Cancelar só esta aula" aria-label="Cancelar só esta aula"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></span></div>
+          <div class="occ-row"><span class="when">Ter, 11/08</span><span>19:00 – 20:30</span><span>Prof. Ana Lima</span><span>T1 e T2</span><span>Agendada</span>
+            <span class="row-actions"><button class="icon-btn" title="Remarcar" aria-label="Remarcar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button><button class="icon-btn danger" title="Cancelar só esta aula" aria-label="Cancelar só esta aula"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></span></div>
+          <div class="occ-row"><span class="when">Qua, 12/08</span><span>19:00 – 21:00</span><span>Prof. Carlos Menezes</span><span>T1</span><span class="tag-moved">Remarcada p/ qui, 13/08</span>
+            <span class="row-actions"><button class="icon-btn" title="Remarcar" aria-label="Remarcar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button><button class="icon-btn danger" title="Cancelar só esta aula" aria-label="Cancelar só esta aula"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></span></div>
+          <div class="occ-row cancelled"><span class="when">Seg, 17/08</span><span>19:00 – 21:00</span><span>Prof. Carlos Menezes</span><span>T1</span><span class="tag-cancel">Cancelada (feriado)</span><span></span></div>
+          <div class="occ-row"><span class="when">Ter, 18/08</span><span>19:00 – 20:30</span><span>Prof. Ana Lima</span><span>T1 e T2</span><span>Agendada</span>
+            <span class="row-actions"><button class="icon-btn" title="Remarcar" aria-label="Remarcar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button><button class="icon-btn danger" title="Cancelar só esta aula" aria-label="Cancelar só esta aula"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></span></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal" role="dialog" aria-labelledby="mTitle">
+      <h3 class="modal-title" id="mTitle">Nova agenda recorrente</h3>
+      <p class="modal-sub">Curso EPIT 1 · as aulas são criadas automaticamente dentro do período.</p>
+      <div class="modal-form">
+        <div class="modal-row">
+          <div class="modal-field"><label>Turma</label><select><option>EPIT 1 · T1</option><option>EPIT 1 · T2</option><option>T1 e T2 (juntas)</option></select></div>
+          <div class="modal-field"><label>Professor</label><select><option>Prof. Carlos Menezes</option><option>Prof. Ana Lima</option><option>Prof. Ricardo Dias</option><option>Prof. Fernanda Rocha</option></select></div>
+        </div>
+        <div class="modal-field"><label>Título das aulas</label><input type="text" value="Matemática" /></div>
+        <div class="modal-field">
+          <label>Repete toda</label>
+          <div class="day-pick" id="dayPick">
+            <button type="button">Dom</button><button type="button" class="on">Seg</button><button type="button">Ter</button><button type="button" class="on">Qua</button><button type="button">Qui</button><button type="button">Sex</button><button type="button">Sáb</button>
+          </div>
+        </div>
+        <div class="modal-row">
+          <div class="modal-field"><label>Horário de início</label><input type="time" value="19:00" /></div>
+          <div class="modal-field"><label>Duração</label><select><option>1h</option><option>1h30</option><option selected>2h</option><option>2h30</option><option>3h</option></select></div>
+        </div>
+        <div class="modal-row">
+          <div class="modal-field"><label>Começa em</label><input type="date" value="2026-08-10" /></div>
+          <div class="modal-field"><label>Termina em</label><input type="date" value="2026-12-18" /></div>
+        </div>
+        <div class="preview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+          <span>Vai gerar 36 aulas, às segundas e quartas, de 10/08/2026 a 18/12/2026. Depois dá pra cancelar ou remarcar uma aula sem mexer na agenda.</span>
+        </div>
+        <div class="conflict">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+          <span>Conflito: Prof. Carlos Menezes já tem aula na quarta, 19:00, na turma EPIT 2 · T3. Troque o professor ou o horário pra salvar.</span>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+          <button class="btn-save" onclick="closeModal()">Criar agenda</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(){ document.getElementById('modalOverlay').classList.add('open'); }
+    function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
+    document.querySelectorAll('#dayPick button').forEach(b => b.addEventListener('click', () => b.classList.toggle('on')));
+    if (location.hash === '#nova') openModal();
+  </script>
+</body>
+</html>
