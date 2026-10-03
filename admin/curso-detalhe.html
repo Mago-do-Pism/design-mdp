@@ -298,18 +298,6 @@
           <div class="modal-field"><label>Começa em</label><input type="date" value="2026-08-10" /></div>
           <div class="modal-field"><label>Termina em</label><input type="date" value="2026-12-18" /></div>
         </div>
-        <div class="opt-box" id="allBox">
-          <label class="opt-head">
-            <input type="checkbox" id="allChk" onchange="toggleAll(this.checked)" />
-            <span><b>Criar para todas as turmas deste curso</b><small>Gera uma agenda separada em cada turma marcada, com o mesmo professor, dias e horário. Depois cada turma pode ser editada sozinha.</small></span>
-          </label>
-          <div class="opt-list">
-            <label class="opt-item fixed"><input type="checkbox" checked disabled /><span class="t">EPIT 1 T1</span><span class="opt-tag">Esta turma</span></label>
-            <label class="opt-item"><input type="checkbox" class="turma-chk" checked onchange="countTurmas()" /><span class="t">EPIT 1 T2</span><small>31 alunos</small></label>
-            <label class="opt-item"><input type="checkbox" class="turma-chk" checked onchange="countTurmas()" /><span class="t">EPIT 1 T3</span><small>27 alunos</small></label>
-            <div class="opt-count"><span id="allCount">3 turmas selecionadas</span><span>Desmarque as que não devem receber a agenda.</span></div>
-          </div>
-        </div>
         <div class="share-box" id="shareBox">
           <button type="button" class="share-btn" onclick="toggleShare()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
@@ -500,14 +488,6 @@
     if (location.hash === '#nova') openModal();
 
     // ── Todas as turmas e compartilhar ──
-    function countTurmas() {
-      var n = 1 + document.querySelectorAll('.turma-chk:checked').length;
-      document.getElementById('allCount').textContent = n + (n === 1 ? ' turma selecionada' : ' turmas selecionadas');
-      var allOn = document.getElementById('allChk').checked;
-      var aulas = 36 * (allOn ? n : 1);
-      document.getElementById('prevTxt').textContent = 'Vai gerar ' + aulas + ' aulas de 1h' + (allOn && n > 1 ? ' (' + n + ' turmas, 36 em cada)' : '') + ', às segundas e quartas, de 10/08/2026 a 18/12/2026. Depois dá pra cancelar ou remarcar uma aula sem mexer na agenda.';
-    }
-    function toggleAll(on) { document.getElementById('allBox').classList.toggle('open', on); document.getElementById('allChk').checked = on; countTurmas(); }
     function countShare() {
       var all = document.querySelectorAll('.share-chk');
       var n = document.querySelectorAll('.share-chk:checked').length;
@@ -523,9 +503,7 @@
     function shareAllToggle(on) { document.querySelectorAll('.share-chk').forEach(function (c) { c.checked = on; }); countShare(); }
     countShare();
     function toggleShare(force) { var b = document.getElementById('shareBox'); b.classList.toggle('open', typeof force === 'boolean' ? force : !b.classList.contains('open')); }
-    if (location.hash === '#nova-todas') { openModal(); toggleAll(true); }
     if (location.hash === '#nova-compartilhar') { openModal(); toggleShare(true); }
-    if (location.hash === '#nova-todas-compartilhar') { openModal(); toggleAll(true); toggleShare(true); }
   </script>
 </body>
 </html>
