@@ -187,6 +187,13 @@
         .share-panel { display:none; margin-top:10px; border:1px solid var(--border-default); border-radius:10px; padding:14px; background:var(--bg-card); }
         .share-box.open .share-panel { display:block; }
         .share-panel h5 { margin:0 0 8px; font-size:13px; color:var(--text-primary); }
+        .share-all { padding:10px 12px; border:1px solid var(--border-default); border-radius:10px; background:rgba(14,147,242,.05); margin-bottom:8px; }
+        .share-groups { max-height:230px; overflow:auto; }
+        .share-group { border:1px solid var(--border-default); border-radius:10px; margin-bottom:8px; padding:0 12px; }
+        .share-group .opt-item { border-top:0; }
+        .share-group .group-head { border-bottom:1px solid var(--border-default); }
+        .share-group .group-head span.t { font-weight:700; }
+        .share-group .sub { padding-left:20px; }
         .share-info { display:flex; gap:10px; margin:12px 0 4px; padding:11px 13px; border-radius:10px; background:rgba(151,71,255,.07); border:1px solid rgba(151,71,255,.28); font-size:12px; line-height:1.5; color:var(--text-primary); }
         .share-info svg { width:17px; height:17px; flex-shrink:0; color:var(--color-warn); margin-top:1px; }
         .share-info ul { margin:4px 0 0; padding-left:16px; color:var(--text-secondary); }
@@ -310,12 +317,27 @@
             <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="share-panel">
-            <h5>Escolha as turmas ou cursos que vão ver esta agenda</h5>
-            <div class="opt-list" style="display:block;padding:0;border:0;">
-              <label class="opt-item"><input type="checkbox" class="share-chk" checked onchange="countShare()" /><span class="t">EPIT 2 T1</span><small>Curso · 24 alunos</small></label>
-              <label class="opt-item"><input type="checkbox" class="share-chk" checked onchange="countShare()" /><span class="t">PISM I T1</span><small>Curso · 22 alunos</small></label>
-              <label class="opt-item"><input type="checkbox" class="share-chk" onchange="countShare()" /><span class="t">PISM I T2</span><small>Curso · 19 alunos</small></label>
-              <label class="opt-item"><input type="checkbox" class="share-chk" onchange="countShare()" /><span class="t">PISM/ENEM T1</span><small>Curso · 28 alunos</small></label>
+            <h5>Escolha quem vai ver esta agenda</h5>
+            <label class="opt-item share-all"><input type="checkbox" id="shareAll" onchange="shareAllToggle(this.checked)" /><span class="t">Todos os cursos da plataforma</span><small>6 turmas</small></label>
+            <div class="share-groups">
+              <div class="share-group">
+                <label class="opt-item group-head"><input type="checkbox" class="group-chk" onchange="shareGroupToggle(this)" /><span class="t">EPIT 1</span><small>Tipo de curso · 2 turmas · 58 alunos</small></label>
+                <label class="opt-item sub"><input type="checkbox" class="share-chk" onchange="countShare()" /><span class="t">EPIT 1 T2</span><small>31 alunos</small></label>
+                <label class="opt-item sub"><input type="checkbox" class="share-chk" onchange="countShare()" /><span class="t">EPIT 1 T3</span><small>27 alunos</small></label>
+              </div>
+              <div class="share-group">
+                <label class="opt-item group-head"><input type="checkbox" class="group-chk" onchange="shareGroupToggle(this)" /><span class="t">EPIT 2</span><small>Tipo de curso · 1 turma · 24 alunos</small></label>
+                <label class="opt-item sub"><input type="checkbox" class="share-chk" checked onchange="countShare()" /><span class="t">EPIT 2 T1</span><small>24 alunos</small></label>
+              </div>
+              <div class="share-group">
+                <label class="opt-item group-head"><input type="checkbox" class="group-chk" onchange="shareGroupToggle(this)" /><span class="t">PISM I</span><small>Tipo de curso · 2 turmas · 41 alunos</small></label>
+                <label class="opt-item sub"><input type="checkbox" class="share-chk" checked onchange="countShare()" /><span class="t">PISM I T1</span><small>22 alunos</small></label>
+                <label class="opt-item sub"><input type="checkbox" class="share-chk" onchange="countShare()" /><span class="t">PISM I T2</span><small>19 alunos</small></label>
+              </div>
+              <div class="share-group">
+                <label class="opt-item group-head"><input type="checkbox" class="group-chk" onchange="shareGroupToggle(this)" /><span class="t">PISM/ENEM</span><small>Tipo de curso · 1 turma · 28 alunos</small></label>
+                <label class="opt-item sub"><input type="checkbox" class="share-chk" onchange="countShare()" /><span class="t">PISM/ENEM T1</span><small>28 alunos</small></label>
+              </div>
             </div>
             <div class="share-info">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
@@ -487,9 +509,19 @@
     }
     function toggleAll(on) { document.getElementById('allBox').classList.toggle('open', on); document.getElementById('allChk').checked = on; countTurmas(); }
     function countShare() {
+      var all = document.querySelectorAll('.share-chk');
       var n = document.querySelectorAll('.share-chk:checked').length;
+      document.querySelectorAll('.share-group').forEach(function (g) {
+        var tot = g.querySelectorAll('.share-chk').length, on = g.querySelectorAll('.share-chk:checked').length, h = g.querySelector('.group-chk');
+        h.checked = on === tot; h.indeterminate = on > 0 && on < tot;
+      });
+      var sa = document.getElementById('shareAll');
+      sa.checked = n === all.length; sa.indeterminate = n > 0 && n < all.length;
       document.getElementById('shareCount').textContent = n === 0 ? 'Nenhuma turma selecionada.' : n + (n === 1 ? ' turma vai receber esta agenda.' : ' turmas vão receber esta agenda.');
     }
+    function shareGroupToggle(h) { h.closest('.share-group').querySelectorAll('.share-chk').forEach(function (c) { c.checked = h.checked; }); countShare(); }
+    function shareAllToggle(on) { document.querySelectorAll('.share-chk').forEach(function (c) { c.checked = on; }); countShare(); }
+    countShare();
     function toggleShare(force) { var b = document.getElementById('shareBox'); b.classList.toggle('open', typeof force === 'boolean' ? force : !b.classList.contains('open')); }
     if (location.hash === '#nova-todas') { openModal(); toggleAll(true); }
     if (location.hash === '#nova-compartilhar') { openModal(); toggleShare(true); }
