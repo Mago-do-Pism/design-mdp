@@ -126,33 +126,64 @@
     .sv-stage { background:var(--neutral-200); padding:24px; overflow:auto; display:flex; justify-content:center; align-items:flex-start; flex:1; min-height:0; }
     .sv-frame { background:var(--bg-app); border-radius:var(--radius-lg); box-shadow:var(--shadow-card); overflow:hidden; width:100%; transition:width .2s; }
     .sv-frame.mobile { width:375px; }
-    .sv-top { display:flex; align-items:center; gap:12px; height:52px; padding:0 20px; background:var(--sidebar-bg); color:var(--text-on-blue); }
-    .sv-top b { font-size:13px; letter-spacing:.3px; }
-    .sv-top .sv-logo { width:80px; height:30px; background:url("../assets/logo-azul.png") left center / contain no-repeat; filter:brightness(0) invert(1); opacity:.9; }
-    .sv-top .sv-user { margin-left:auto; width:30px; height:30px; border-radius:50%; background:var(--brand-blue); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff; }
-    .sv-body { display:grid; grid-template-columns:1fr 280px; gap:20px; padding:20px 24px 24px; }
-    .sv-frame.mobile .sv-body { grid-template-columns:1fr; padding:14px; gap:14px; }
-    .sv-crumb { font-size:12px; color:var(--text-muted); margin-bottom:10px; }
-    .sv-player { aspect-ratio:16/9; border-radius:var(--radius-lg); background:repeating-linear-gradient(135deg,#1a2235 0 18px,#1e2d42 18px 36px); position:relative; display:flex; align-items:center; justify-content:center; }
-    .sv-player .rec-thumb-play { width:56px; height:56px; }
-    .sv-card { background:var(--bg-card); border-radius:var(--radius-lg); box-shadow:var(--shadow-soft); padding:16px 18px; }
-    .sv-card + .sv-card { margin-top:14px; }
-    .sv-title { margin:14px 0 4px; font-size:20px; font-weight:700; color:var(--text-primary); }
-    .sv-frame.mobile .sv-title { font-size:17px; }
-    .sv-meta { font-size:12px; color:var(--text-muted); margin-bottom:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-    .sv-desc { margin:0; font-size:13px; line-height:1.55; color:var(--text-secondary); }
-    .sv-card h5 { margin:0 0 10px; font-size:13px; font-weight:700; color:var(--text-primary); }
-    .sv-file { display:flex; align-items:center; gap:10px; padding:9px 0; border-top:1px solid var(--border-default); font-size:13px; color:var(--text-primary); }
-    .sv-file:first-of-type { border-top:0; }
-    .sv-file svg { width:18px; height:18px; color:var(--brand-blue); flex-shrink:0; }
-    .sv-file small { margin-left:auto; color:var(--text-faint); font-size:11px; }
-    .sv-next { display:flex; gap:10px; padding:9px 0; border-top:1px solid var(--border-default); font-size:12px; color:var(--text-secondary); align-items:center; }
-    .sv-next:first-of-type { border-top:0; }
-    .sv-next i { width:56px; height:34px; border-radius:var(--radius-sm); background:#1e2d42; flex-shrink:0; }
-    .sv-next.cur { color:var(--brand-blue); font-weight:700; }
+    /* Réplica da tela /conteudo/[id] do aluno (mdp-next-web) */
+    .sv-frame { display:flex; min-height:560px; background:#fff; }
+    .sv-frame.mobile { flex-direction:column; min-height:640px; }
+    .sv-nav { width:168px; flex-shrink:0; background:var(--sidebar-bg); color:#fff; display:flex; flex-direction:column; padding:14px 0; }
+    .sv-nav .sv-logo { height:30px; margin:0 18px 14px; background:url("../assets/logo-azul.png") left center / contain no-repeat; filter:brightness(0) invert(1); opacity:.9; }
+    .sv-nav a { display:flex; align-items:center; gap:10px; padding:11px 18px; font-size:13px; font-weight:600; color:rgba(255,255,255,.92); border-left:3px solid transparent; }
+    .sv-nav a.on { background:rgba(0,0,0,.10); border-left-color:#fff; color:#fff; }
+    .sv-nav svg { width:18px; height:18px; flex-shrink:0; }
+    .sv-frame.mobile .sv-nav { width:100%; flex-direction:row; align-items:center; padding:0 16px; height:52px; }
+    .sv-frame.mobile .sv-nav .sv-logo { margin:0; width:90px; }
+    .sv-frame.mobile .sv-nav a { display:none; }
+    .sv-page { flex:1; min-width:0; display:flex; flex-direction:column; background:#fff; }
+    .sv-hd { padding:18px 20px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border-default); }
+    .sv-frame.mobile .sv-hd { padding:12px; }
+    .sv-hd-l { display:flex; align-items:center; flex:1; min-width:0; }
+    .sv-hd-l > svg { width:24px; height:24px; margin:0 8px 0 4px; color:var(--text-secondary); flex-shrink:0; }
+    .sv-hd .title { font-size:20px; font-weight:600; line-height:24px; color:var(--brand-blue); margin-right:8px; white-space:nowrap; }
+    .sv-hd .chev { width:16px; height:16px; margin:0 8px; color:var(--text-secondary); flex-shrink:0; }
+    .sv-hd .b1 { font-size:1rem; font-weight:500; color:var(--text-secondary); margin-right:8px; white-space:nowrap; }
+    .sv-hd .cap { font-size:.9rem; font-weight:400; color:var(--text-secondary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .sv-frame.mobile .sv-hd .chev, .sv-frame.mobile .sv-hd .b1, .sv-frame.mobile .sv-hd .cap { display:none; }
+    .sv-listbtn { display:none; border:0; background:transparent; padding:8px; color:var(--text-secondary); }
+    .sv-frame.mobile .sv-listbtn { display:block; }
+    .sv-listbtn svg { width:24px; height:24px; }
+    .sv-cols { display:flex; flex:1; min-height:0; }
+    .sv-main { flex:1; min-width:0; display:flex; flex-direction:column; }
+    .sv-video { background:#000; display:flex; justify-content:center; }
+    .sv-video > div { width:min(100%,1200px); }
+    .sv-player { position:relative; width:100%; padding-top:56.25%; max-height:600px; background:#000; display:flex; align-items:center; justify-content:center; }
+    .sv-player .rec-thumb-play { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:56px; height:56px; }
+    .sv-player .rec-thumb-dur { position:absolute; right:10px; bottom:10px; }
+    .sv-tabs { position:relative; }
+    .sv-tabs ul { display:flex; margin:0; padding:0; list-style:none; position:relative; z-index:1; }
+    .sv-tabs li { width:120px; height:50px; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; font-size:.9rem; color:var(--text-secondary); }
+    .sv-tabs li.on { color:var(--brand-blue); }
+    .sv-tabs .ink { position:absolute; bottom:0; left:0; width:120px; height:2px; border-radius:2px; background:var(--brand-blue); transition:left .2s; z-index:2; }
+    .sv-tabs .line { position:absolute; left:0; right:0; bottom:0; height:2px; background:#ddd; }
+    .sv-pane { padding:24px; }
+    .sv-frame.mobile .sv-pane { padding:16px; }
+    .sv-pane .b2 { font-size:1.1rem; font-weight:600; margin-bottom:12px; color:var(--text-primary); }
+    .sv-pane .b1 { font-size:1rem; font-weight:500; margin-bottom:24px; color:var(--text-secondary); }
+    .sv-stars { display:flex; gap:4px; }
+    .sv-stars svg { width:28px; height:28px; color:#ccc; fill:currentColor; }
+    .sv-stars svg.on { color:#2196f3; }
+    .sv-file { display:flex; align-items:center; gap:12px; padding:12px 14px; border:1px solid var(--border-default); border-radius:8px; max-width:400px; font-size:14px; color:var(--text-primary); }
+    .sv-file + .sv-file { margin-top:12px; }
+    .sv-file .ext { width:36px; height:36px; border-radius:6px; background:#e53935; color:#fff; font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; text-transform:uppercase; }
+    .sv-file small { display:block; font-size:12px; color:var(--text-muted); }
+    .sv-note-area { width:100%; max-width:560px; min-height:120px; border:1px solid var(--border-default); border-radius:8px; padding:12px; font:inherit; font-size:14px; resize:vertical; }
+    .sv-aside { width:320px; flex-shrink:0; background:var(--neutral-150); overflow:auto; }
+    .sv-frame.mobile .sv-aside { display:none; }
+    .sv-aside .mod { font-size:1.1rem; font-weight:600; color:var(--brand-blue); padding:24px 24px 16px; }
+    .sv-aside .it { display:flex; align-items:center; padding:16px 24px; font-size:.9rem; color:var(--text-muted); border-left:3px solid transparent; }
+    .sv-aside .it span { flex:1; }
+    .sv-aside .it.sel { background:#e3e8f5; border-left-color:var(--brand-blue); color:var(--brand-blue); }
+    .sv-aside .it input { width:16px; height:16px; margin-left:8px; accent-color:var(--brand-blue); }
     .sv-note { padding:12px 24px; border-top:1px solid var(--border-default); font-size:12px; color:var(--text-muted); display:flex; gap:8px; align-items:center; }
     .sv-sched { display:none; }
-    @media (max-width: 900px) { .sv-body { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -254,27 +285,58 @@
       </div>
       <div class="sv-stage">
         <div class="sv-frame" id="svFrame">
-          <div class="sv-top"><div class="sv-logo"></div><b>Cursos</b><div class="sv-user">VT</div></div>
-          <div class="sv-body">
-            <div>
-              <div class="sv-crumb" id="svCrumb">PISM I — T1 › Álgebra</div>
-              <div class="sv-player"><div class="rec-thumb-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="rec-thumb-dur" id="svDur">--:--</div></div>
-              <h4 class="sv-title" id="svTit">—</h4>
-              <div class="sv-meta"><span class="rec-tag blue" id="svTag">—</span><span id="svProf">—</span></div>
-              <div class="sv-card"><p class="sv-desc" id="svDesc"></p></div>
-              <div class="sv-card">
-                <h5>Materiais da aula</h5>
-                <div class="sv-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Lista de exercícios · Funções Quadráticas.pdf<small>PDF · 1,2 MB</small></div>
-                <div class="sv-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Slides da aula.pdf<small>PDF · 3,4 MB</small></div>
+          <div class="sv-nav">
+            <div class="sv-logo"></div>
+            <a><svg viewBox="0 0 25 25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.6 21.9v-8.3a1 1 0 0 0-1-1h-4.2a1 1 0 0 0-1 1v8.3M3.1 10.4a2 2 0 0 1 .8-1.6l7.3-6.2a2 2 0 0 1 2.6 0l7.3 6.2a2 2 0 0 1 .8 1.6v9.4a2 2 0 0 1-2 2H5.2a2 2 0 0 1-2-2z"/></svg>Início</a>
+            <a class="on"><svg viewBox="0 0 25 25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.3 21.9h10.4M10.4 8.1l5 2.3-5 2.3zM4.2 3.1h16.6a2 2 0 0 1 2 2v10.4a2 2 0 0 1-2 2H4.2a2 2 0 0 1-2-2V5.2a2 2 0 0 1 2-2z"/></svg>Cursos</a>
+            <a><svg viewBox="0 0 25 25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.6-2.3a1 1 0 0 1 1.4.9v6.6a1 1 0 0 1-1.4.9L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Ao vivo</a>
+          </div>
+          <div class="sv-page">
+            <div class="sv-hd">
+              <div class="sv-hd-l">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                <span class="title" id="svCurso">PISM I — T1</span>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg><span class="b1" id="svMod">Álgebra</span>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg><span class="cap" id="svTit">—</span>
               </div>
+              <button class="sv-listbtn" type="button" aria-label="Abrir lista de conteúdos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="6" height="6" rx="1"/><rect x="3" y="13" width="6" height="6" rx="1"/><path d="M13 6h8M13 12h8M13 18h8"/></svg></button>
             </div>
-            <div>
-              <div class="sv-card">
-                <h5>Neste módulo</h5>
-                <div class="sv-next cur"><i></i><span id="svNextCur">—</span></div>
-                <div class="sv-next"><i></i><span>Função afim: gráficos</span></div>
-                <div class="sv-next"><i></i><span>Equações do 2º grau</span></div>
+            <div class="sv-cols">
+              <div class="sv-main">
+                <div class="sv-video"><div><div class="sv-player"><div class="rec-thumb-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="rec-thumb-dur" id="svDur">--:--</div></div></div></div>
+                <div class="sv-tabs">
+                  <ul role="tablist">
+                    <li class="on" data-t="material" onclick="svTab('material')">Material</li>
+                    <li data-t="detalhes" onclick="svTab('detalhes')">Detalhes</li>
+                    <li data-t="anotacoes" onclick="svTab('anotacoes')">Anotações</li>
+                  </ul>
+                  <div class="ink" id="svInk"></div><div class="line"></div>
+                </div>
+                <div class="sv-pane" id="svPane-material">
+                  <div class="sv-file"><div class="ext">pdf</div><div>Lista de exercícios · Funções Quadráticas<small>1.20 MB</small></div></div>
+                  <div class="sv-file"><div class="ext">pdf</div><div>Slides da aula<small>3.40 MB</small></div></div>
+                </div>
+                <div class="sv-pane" id="svPane-detalhes" hidden>
+                  <div class="b2">Descrição</div>
+                  <div class="b1" id="svDesc"></div>
+                  <div class="b2">Data de publicação</div>
+                  <div class="b1" id="svPub">—</div>
+                  <div class="b2" style="margin-bottom:8px;">Avalie esta aula</div>
+                  <div class="sv-stars"><svg class="on" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg class="on" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg class="on" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
+                </div>
+                <div class="sv-pane" id="svPane-anotacoes" hidden>
+                  <textarea class="sv-note-area" placeholder="Escreva suas anotações sobre esta aula…"></textarea>
+                </div>
               </div>
+              <aside class="sv-aside">
+                <div class="mod" id="svAsideMod">Álgebra</div>
+                <div class="it"><span>Função afim: gráficos</span><input type="checkbox" checked /></div>
+                <div class="it sel"><span id="svNextCur">—</span><input type="checkbox" /></div>
+                <div class="it"><span>Equações do 2º grau</span><input type="checkbox" /></div>
+                <div class="mod">Geometria</div>
+                <div class="it"><span>Geometria plana: áreas</span><input type="checkbox" /></div>
+                <div class="it"><span>Geometria espacial: volumes</span><input type="checkbox" /></div>
+              </aside>
             </div>
           </div>
         </div>
@@ -314,12 +376,22 @@
       var t = document.getElementById('inputTitulo').value || 'Aula sem título';
       document.getElementById('svTit').textContent = t;
       document.getElementById('svNextCur').textContent = t;
-      document.getElementById('svCrumb').textContent = curso + ' › ' + mod;
-      document.getElementById('svTag').textContent = curso;
-      document.getElementById('svProf').textContent = 'Prof. ' + professor + ' · ' + data;
+      document.getElementById('svCurso').textContent = curso;
+      document.getElementById('svMod').textContent = mod;
+      document.getElementById('svAsideMod').textContent = mod;
       document.getElementById('svDur').textContent = duracao;
       document.getElementById('svDesc').textContent = document.getElementById('inputDesc').value || 'Sem descrição.';
+      document.getElementById('svPub').textContent = new Date().toLocaleDateString('pt-BR');
       document.getElementById('svVis').textContent = document.querySelectorAll('.pub-field select')[2].value;
+      svTab('material');
+    }
+    function svTab(k) {
+      var keys = ['material', 'detalhes', 'anotacoes'];
+      keys.forEach(function (n, i) {
+        document.getElementById('svPane-' + n).hidden = n !== k;
+        document.querySelector('.sv-tabs li[data-t="' + n + '"]').classList.toggle('on', n === k);
+        if (n === k) document.getElementById('svInk').style.left = (i * 120) + 'px';
+      });
     }
     function openSv(mode) { fillSv(); setSvMode(mode || 'desk'); document.getElementById('svOverlay').classList.add('open'); }
     function closeSv() { document.getElementById('svOverlay').classList.remove('open'); }
