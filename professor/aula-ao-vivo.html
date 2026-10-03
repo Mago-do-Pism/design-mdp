@@ -212,7 +212,7 @@
     .res-row.top .res-fill { background:var(--color-success-stroke); }
     .poll-who { font-size:11px; color:rgba(255,255,255,0.45); padding:10px 12px; border-radius:var(--radius-md); background:rgba(255,255,255,0.05); line-height:1.5; }
 
-    /* Painel de filtros, fundos e efeitos */
+    /* Painel de desfoque, fundos e efeitos animados */
     .fx-overlay { position:absolute; inset:0; z-index:40; background:rgba(0,0,0,0.6); display:none; align-items:center; justify-content:center; padding:24px; }
     .fx-overlay.open { display:flex; }
     .fx-panel { width:880px; max-width:100%; max-height:100%; background:#161d2b; border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-xl); box-shadow:var(--shadow-deep); display:flex; flex-direction:column; overflow:hidden; }
@@ -246,6 +246,21 @@
     .fx-slider { display:flex; align-items:center; gap:12px; margin-top:12px; font-size:12px; color:rgba(255,255,255,0.65); }
     .fx-slider span:first-child { width:90px; }
     .fx-slider input[type=range] { flex:1; accent-color:var(--brand-blue); }
+    .fx-anim-opt { aspect-ratio:16/10; border-radius:var(--radius-md); border:2px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.8); font-family:var(--font-body); font-size:11px; font-weight:600; cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
+        .fx-anim-opt .ico { width:24px; height:24px; display:block; }
+    .fx-anim-opt .ico svg, .fx-layer i svg { width:100%; height:100%; display:block; }
+    .fx-anim-opt.on { border-color:var(--brand-blue); background:rgba(14,147,242,0.18); color:#60b4f8; }
+    .fx-layer { position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:2; }
+    .fx-layer i { position:absolute; width:var(--s); height:var(--s); will-change:transform,opacity; }
+    .fx-layer.up i { bottom:-15%; animation:fxUp var(--d) ease-out var(--dl) var(--n); }
+    .fx-layer.down i { top:-15%; animation:fxDown var(--d) linear var(--dl) var(--n); }
+    .fx-layer.pop i { top:var(--y); animation:fxPop var(--d) ease-out var(--dl) var(--n); }
+    .fx-layer.fly i { animation:fxFly var(--d) ease-in var(--dl) var(--n); }
+    .fx-layer.fly i svg { transform:rotate(45deg); }
+    @keyframes fxUp { 0%{bottom:-15%;transform:scale(.6);opacity:0} 15%{opacity:1} 100%{bottom:105%;transform:translateX(var(--x)) scale(1.1);opacity:0} }
+    @keyframes fxDown { 0%{top:-15%;transform:rotate(0);opacity:0} 10%{opacity:1} 100%{top:105%;transform:translateX(var(--x)) rotate(360deg);opacity:.3} }
+    @keyframes fxPop { 0%{transform:scale(0);opacity:0} 30%{transform:scale(1.3);opacity:1} 70%{transform:scale(1);opacity:1} 100%{transform:scale(.8);opacity:0} }
+    @keyframes fxFly { 0%{left:-20%;bottom:-20%} 100%{left:110%;bottom:110%} }
     .fx-foot { display:flex; align-items:center; gap:10px; padding:14px 22px; border-top:1px solid rgba(255,255,255,0.08); }
     .fx-foot .grow { flex:1; font-size:12px; color:rgba(255,255,255,0.45); }
     .fx-foot .p-btn { flex:0 0 auto; padding:0 22px; }
@@ -267,7 +282,7 @@
     <div class="room-body">
       <!-- Stage -->
       <div class="room-stage">
-        <!-- Painel de filtros, fundos e efeitos -->
+        <!-- Painel de desfoque, fundos e efeitos animados -->
         <div class="fx-overlay" id="fxOverlay" onclick="if(event.target===this)closeFx()">
           <div class="fx-panel" role="dialog" aria-labelledby="fxTitle">
             <div class="fx-head">
@@ -282,7 +297,7 @@
                   <span class="fx-preview-live">PREVIEW</span>
                   <span class="fx-preview-tag" id="fxTag">Desfoque leve</span>
                 </div>
-                <p class="fx-note">Dica: use fundo desfocado quando estiver em casa. Efeitos pesados podem deixar a transmissão mais lenta em computadores simples.</p>
+                <p class="fx-note">Dica: use fundo desfocado quando estiver em casa. Fundo e animação juntos podem deixar a transmissão mais lenta em computadores simples.</p>
               </div>
               <div>
                 <div class="fx-sec">
@@ -307,18 +322,21 @@
                   </div>
                 </div>
                 <div class="fx-sec" style="margin-bottom:0;">
-                  <h4>Filtros e efeitos</h4>
-                  <p>Ajustes de cor e luz aplicados em você e no fundo.</p>
-                  <div class="fx-chips" id="fxChips">
-                    <button class="fx-chip on" data-f="none">Nenhum</button>
-                    <button class="fx-chip" data-f="soft">Brilho suave</button>
-                    <button class="fx-chip" data-f="warm">Quente</button>
-                    <button class="fx-chip" data-f="cool">Frio</button>
-                    <button class="fx-chip" data-f="bw">Preto e branco</button>
-                    <button class="fx-chip" data-f="skin">Suavizar pele</button>
+                  <h4>Efeitos animados</h4>
+                  <p>Animação por cima da câmera, pra comemorar um acerto ou animar a turma.</p>
+                  <div class="fx-grid" id="fxAnims">
+                    <button class="fx-anim-opt on" data-a="none"><span class="ico"></span>Nenhum</button>
+                    <button class="fx-anim-opt" data-a="confete"><span class="ico"></span>Confete</button>
+                    <button class="fx-anim-opt" data-a="coracoes"><span class="ico"></span>Corações</button>
+                    <button class="fx-anim-opt" data-a="estrelas"><span class="ico"></span>Estrelas</button>
+                    <button class="fx-anim-opt" data-a="baloes"><span class="ico"></span>Balões</button>
+                    <button class="fx-anim-opt" data-a="fogos"><span class="ico"></span>Fogos</button>
+                    <button class="fx-anim-opt" data-a="foguete"><span class="ico"></span>Foguete</button>
+                    <button class="fx-anim-opt" data-a="neve"><span class="ico"></span>Neve</button>
                   </div>
-                  <div class="fx-slider"><span>Intensidade</span><input type="range" id="fxInt" min="0" max="100" value="60" /><span id="fxIntV" style="width:36px;text-align:right;">60%</span></div>
-                  <div class="fx-slider"><span>Iluminação</span><input type="range" id="fxLum" min="0" max="100" value="50" /><span id="fxLumV" style="width:36px;text-align:right;">50%</span></div>
+                  <div class="fx-slider"><span>Repetição</span>
+                    <div class="fx-seg" id="fxLoop"><button data-v="1" class="on">Uma vez</button><button data-v="0">Contínuo</button></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -691,7 +709,7 @@
     }
 
     /* ── Fundo e efeitos ── */
-    var FX = {blur:1, bg:'none', f:'none', int:60, lum:50};
+    var FX = {blur:1, bg:'none', a:'none', once:1};
     var BGS = {
       none:'linear-gradient(135deg,#3b4a63,#1f2a3d 55%,#5b6b85)',
       sala:'linear-gradient(135deg,#7c5b3a,#d9b98a)',
@@ -702,45 +720,77 @@
       jardim:'linear-gradient(135deg,#14532d,#86efac)'
     };
     var NOMES = {none:'Fundo original', sala:'Sala de aula', biblioteca:'Biblioteca', quadro:'Quadro branco', mago:'Mago do Pism', escritorio:'Escritório', jardim:'Jardim'};
-    var FNOMES = {none:'', soft:'Brilho suave', warm:'Quente', cool:'Frio', bw:'Preto e branco', skin:'Suavizar pele'};
-    function fxFilter() {
-      var k = FX.int / 100, lum = 0.8 + FX.lum / 250, f = 'brightness(' + lum.toFixed(2) + ') ';
-      if (FX.f === 'soft') f += 'brightness(' + (1 + 0.15 * k) + ') contrast(' + (1 - 0.1 * k) + ')';
-      if (FX.f === 'warm') f += 'sepia(' + (0.5 * k) + ') saturate(' + (1 + 0.3 * k) + ')';
-      if (FX.f === 'cool') f += 'hue-rotate(' + (-20 * k) + 'deg) saturate(' + (1 + 0.1 * k) + ')';
-      if (FX.f === 'bw') f += 'grayscale(' + k + ')';
-      if (FX.f === 'skin') f += 'contrast(' + (1 - 0.12 * k) + ') saturate(' + (1 - 0.1 * k) + ')';
-      return f;
+    var SVG = {
+      confete:function (c) { return '<svg viewBox="0 0 24 24"><rect x="8" y="3" width="7" height="18" rx="1.5" fill="' + c + '"/></svg>'; },
+      coracao:function (c) { return '<svg viewBox="0 0 24 24"><path fill="' + c + '" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3.2 4.5 7 4.5c2.1 0 3.6 1.2 5 3 1.4-1.8 2.9-3 5-3 3.8 0 6.1 3.9 4.6 7.3C19.5 16.4 12 21 12 21z"/></svg>'; },
+      estrela:function (c) { return '<svg viewBox="0 0 24 24"><path fill="' + c + '" d="M12 2l2.9 6.6 7.1.7-5.4 4.8 1.6 7L12 17.3 5.8 21.1l1.6-7L2 9.3l7.1-.7z"/></svg>'; },
+      balao:function (c) { return '<svg viewBox="0 0 24 32"><ellipse cx="12" cy="11" rx="9" ry="10.5" fill="' + c + '"/><ellipse cx="8.5" cy="7" rx="2.2" ry="3.2" fill="#fff" opacity=".35"/><path d="M10.5 21.3h3l-1.5 2z" fill="' + c + '"/><path d="M12 23.3c-1.5 2.5 1.5 4-0.3 8" stroke="rgba(255,255,255,.7)" stroke-width="1" fill="none"/></svg>'; },
+      fogos:function (c) { return '<svg viewBox="0 0 24 24" stroke="' + c + '" stroke-width="2" stroke-linecap="round"><path d="M12 2v5M12 17v5M2 12h5M17 12h5M4.9 4.9l3.5 3.5M15.6 15.6l3.5 3.5M4.9 19.1l3.5-3.5M15.6 8.4l3.5-3.5"/><circle cx="12" cy="12" r="1.6" fill="' + c + '"/></svg>'; },
+      foguete:function () { return '<svg viewBox="0 0 24 24"><path fill="#e5e7eb" d="M12 2c3.5 2.5 5 6.5 4.5 11.5l-2 3h-5l-2-3C7 8.5 8.5 4.5 12 2z"/><circle cx="12" cy="9" r="2" fill="#0e93f2"/><path fill="#ef4444" d="M7.5 13.5L5 17l3.5.5zM16.5 13.5L19 17l-3.5.5z"/><path fill="#f59e0b" d="M10 17h4l-2 5z"/></svg>'; },
+      neve:function (c) { return '<svg viewBox="0 0 24 24" stroke="' + c + '" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9.5 3.5L12 6l2.5-2.5M9.5 20.5L12 18l2.5 2.5"/></svg>'; }
+    };
+    var ANIMS = {
+      none:{nome:''},
+      confete:{nome:'Confete', k:'down', ic:'confete', cor:['#0e93f2','#f59e0b','#ef4444','#22c55e','#a855f7'], n:20},
+      coracoes:{nome:'Corações', k:'up', ic:'coracao', cor:['#0e93f2','#ef4444','#ec4899'], n:12},
+      estrelas:{nome:'Estrelas', k:'pop', ic:'estrela', cor:['#facc15','#fde68a','#fbbf24'], n:12},
+      baloes:{nome:'Balões', k:'up', ic:'balao', cor:['#0e93f2','#ef4444','#22c55e','#f59e0b'], n:8},
+      fogos:{nome:'Fogos', k:'pop', ic:'fogos', cor:['#f59e0b','#ec4899','#60b4f8','#22c55e'], n:9},
+      foguete:{nome:'Foguete', k:'fly', ic:'foguete', cor:[''], n:1},
+      neve:{nome:'Neve', k:'down', ic:'neve', cor:['#ffffff','#dbeafe'], n:16}
+    };
+    document.querySelectorAll('#fxAnims .fx-anim-opt').forEach(function (o) {
+      var c = ANIMS[o.dataset.a];
+      o.querySelector('.ico').innerHTML = o.dataset.a === 'none'
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg>'
+        : SVG[c.ic](c.cor[0]);
+    });
+    function fxLayer(el, a, once, small) {
+      var old = el.querySelector('.fx-layer'); if (old) old.remove();
+      var cfg = ANIMS[a]; if (!cfg || a === 'none') return;
+      var L = document.createElement('div'); L.className = 'fx-layer ' + cfg.k;
+      for (var i = 0; i < cfg.n; i++) {
+        var e = document.createElement('i');
+        e.innerHTML = SVG[cfg.ic](cfg.cor[i % cfg.cor.length]);
+        e.style.left = (5 + (i * 37) % 90) + '%';
+        e.style.setProperty('--s', ((small ? 10 : 18) + (i * 7) % (small ? 6 : 14) + (cfg.k === 'fly' ? (small ? 10 : 22) : 0)) + 'px');
+        e.style.setProperty('--x', ((i % 2 ? 1 : -1) * (10 + i * 3 % 30)) + 'px');
+        e.style.setProperty('--y', (8 + (i * 29) % 70) + '%');
+        e.style.setProperty('--d', (cfg.k === 'fly' ? 2.6 : 2.2 + (i % 4) * 0.5) + 's');
+        e.style.setProperty('--dl', (cfg.k === 'fly' ? 0 : (i * 0.23) % 1.6) + 's');
+        e.style.setProperty('--n', once ? '1' : 'infinite');
+        e.style.animationFillMode = 'both';
+        L.appendChild(e);
+      }
+      el.appendChild(L);
     }
     function paintFx() {
       var bg = document.getElementById('fxBg');
       bg.style.background = BGS[FX.bg];
       bg.style.filter = FX.bg === 'none' ? 'blur(' + [0, 4, 10][FX.blur] + 'px)' : 'none';
-      document.getElementById('fxPreview').style.filter = fxFilter();
+      fxLayer(document.getElementById('fxPreview'), FX.a, false, false);
       document.querySelectorAll('#fxBlur button').forEach(function (b) { b.classList.toggle('on', +b.dataset.v === FX.blur); });
       document.querySelectorAll('#fxGrid .fx-thumb[data-bg]').forEach(function (t) { t.classList.toggle('on', t.dataset.bg === FX.bg); });
-      document.querySelectorAll('#fxChips .fx-chip').forEach(function (c) { c.classList.toggle('on', c.dataset.f === FX.f); });
-      document.getElementById('fxInt').value = FX.int; document.getElementById('fxIntV').textContent = FX.int + '%';
-      document.getElementById('fxLum').value = FX.lum; document.getElementById('fxLumV').textContent = FX.lum + '%';
+      document.querySelectorAll('#fxAnims .fx-anim-opt').forEach(function (c) { c.classList.toggle('on', c.dataset.a === FX.a); });
+      document.querySelectorAll('#fxLoop button').forEach(function (b) { b.classList.toggle('on', +b.dataset.v === FX.once); });
       var tag = FX.bg === 'none' ? ['Sem desfoque', 'Desfoque leve', 'Desfoque forte'][FX.blur] : 'Fundo: ' + NOMES[FX.bg];
-      if (FX.f !== 'none') tag += ' · ' + FNOMES[FX.f];
+      if (FX.a !== 'none') tag += ' · ' + ANIMS[FX.a].nome;
       document.getElementById('fxTag').textContent = tag;
     }
     function openFx() { document.getElementById('fxOverlay').classList.add('open'); paintFx(); }
     function closeFx() { document.getElementById('fxOverlay').classList.remove('open'); }
-    function resetFx() { FX = {blur:1, bg:'none', f:'none', int:60, lum:50}; paintFx(); }
+    function resetFx() { FX = {blur:1, bg:'none', a:'none', once:1}; paintFx(); }
     function applyFx() {
       var pip = document.getElementById('profPip');
       pip.style.background = BGS[FX.bg];
-      pip.style.filter = fxFilter();
+      fxLayer(pip, FX.a, FX.once, true);
       document.getElementById('fxIcon').classList.add('fx-on');
       closeFx();
     }
     document.querySelectorAll('#fxBlur button').forEach(function (b) { b.addEventListener('click', function () { FX.blur = +b.dataset.v; FX.bg = 'none'; paintFx(); }); });
     document.querySelectorAll('#fxGrid .fx-thumb[data-bg]').forEach(function (t) { t.addEventListener('click', function () { FX.bg = t.dataset.bg; paintFx(); }); });
-    document.querySelectorAll('#fxChips .fx-chip').forEach(function (c) { c.addEventListener('click', function () { FX.f = c.dataset.f; paintFx(); }); });
-    document.getElementById('fxInt').addEventListener('input', function (e) { FX.int = +e.target.value; paintFx(); });
-    document.getElementById('fxLum').addEventListener('input', function (e) { FX.lum = +e.target.value; paintFx(); });
+    document.querySelectorAll('#fxAnims .fx-anim-opt').forEach(function (c) { c.addEventListener('click', function () { FX.a = c.dataset.a; paintFx(); }); });
+    document.querySelectorAll('#fxLoop button').forEach(function (b) { b.addEventListener('click', function () { FX.once = +b.dataset.v; paintFx(); }); });
 
     /* ── Estados por hash, para abrir direto num estado ──
        #efeitos  #efeitos-fundo  #cameras-fechadas  #chat-config  #chat-config-off
@@ -748,7 +798,7 @@
     function applyHash() {
       var h = location.hash.replace('#', '');
       if (h === 'efeitos') { openFx(); }
-      if (h === 'efeitos-fundo') { FX = {blur:1, bg:'biblioteca', f:'soft', int:60, lum:55}; openFx(); }
+      if (h === 'efeitos-fundo') { FX = {blur:1, bg:'biblioteca', a:'confete', once:1}; openFx(); }
       if (h === 'cameras-fechadas') { camsClosed = true; renderStudents(); showTab('part'); }
       if (h === 'participantes') { showTab('part'); }
       if (h === 'chat-config') { toggleChatCfg(true); }
