@@ -49,6 +49,9 @@
     .preview-btn { display: block; width: 100%; padding: 9px; background: var(--brand-blue); color: white; border-radius: 8px; font-size: 12px; font-weight: 700; text-align: center; }
 
 
+    .rm-tabs .profile-tab { width:178px; max-width:100%; height:50px; padding:0 8px 8px; display:flex; align-items:center; justify-content:center; text-align:center; }
+    @media (max-width:900px) { .rm-tabs { overflow-x:auto; } .rm-tabs .profile-tab { flex:0 0 auto; width:160px; } }
+
     .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(70px); background:var(--neutral-900); color:white; padding:12px 20px; border-radius:9px; font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:9px; box-shadow:0 8px 28px rgba(0,0,0,0.2); opacity:0; transition:transform .22s ease, opacity .22s ease; pointer-events:none; z-index:999; }
     .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
     .toast svg { width:15px; height:15px; color:#5fd49a; }
@@ -79,7 +82,7 @@
 
     <main class="content admin-content">
       <h2 class="section-title" style="margin:0;">Rematrícula</h2>
-      <div class="profile-tabs" role="tablist" style="display:flex; gap:4px; border-bottom:1px solid var(--border-default); margin:20px 0 28px;">
+      <div class="profile-tabs rm-tabs" role="tablist" style="display:flex; gap:0; border-bottom:1px solid var(--border-default); margin:20px 0 28px; max-width:1086px;">
         <a href="rematricula-popup.html" class="profile-tab is-active" role="tab" aria-selected="true">Pop-up</a>
         <a href="rematricula-landing-editor.html" class="profile-tab" role="tab">Página de rematrícula</a>
       </div>
