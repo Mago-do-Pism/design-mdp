@@ -55,6 +55,18 @@
   color: white;
 }
 .sidebar-item svg { width: 22px; height: 22px; flex-shrink: 0; }
+.sidebar-new {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: white;
+  color: var(--brand-blue-dark);
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
 
 .sidebar-foot {
   display: flex;
