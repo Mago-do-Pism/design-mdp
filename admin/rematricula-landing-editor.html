@@ -259,7 +259,6 @@ mark{background:none;color:var(--blue);font-weight:inherit}
 .edit-links a:hover{color:#fff}
 .save-btn{height:38px;padding:0 18px;border-radius:var(--radius-pill);border:0;background:var(--blue);color:#fff;font-weight:700;font-size:13px}
 .save-btn:disabled{background:#344054;color:rgba(255,255,255,.5);cursor:default}
-.top{top:60px}
 
 [contenteditable="true"]{border-radius:6px;outline:1.5px dashed transparent;outline-offset:3px;cursor:text;transition:outline-color .1s,background .1s}
 [contenteditable="true"]:hover{outline-color:rgba(0,123,255,.5);background:rgba(0,123,255,.06)}
@@ -323,23 +322,114 @@ mark{background:none;color:var(--blue);font-weight:inherit}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast svg{width:15px;height:15px;color:#5fd49a}
 @media (max-width:980px){.extras-grid{grid-template-columns:1fr}.edit-left .hide-sm{display:none}}
+
+/* ===== Rematricula por Pism: seletor, ativacao, faixa e modal ===== */
+:root{--p1:#0B7F71;--p1-bg:#E3F5F2;--p2:#5B45D6;--p2-bg:#ECE9FC;--ok:#278556;--danger:#B42318;--warn:#8A5B00}
+.edit-bar .wrap{height:auto;min-height:64px;flex-wrap:nowrap}
+.edit-bar .edit-links{margin-left:auto}
+.pm-chip{display:inline-flex;align-items:center;font-weight:700;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:999px;white-space:nowrap;line-height:1.5;color:#fff}
+.pm-chip.p1{background:var(--p1)}.pm-chip.p2{background:var(--p2)}
+.pm-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.pm-dot.on{background:#2fa56d}.pm-dot.off{background:#98A2B3}
+.pm-sel{position:relative;width:330px;flex:none}
+.pm-sel-btn{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:5px 12px 5px 6px;border-radius:12px;border:1.5px solid rgba(255,255,255,.28);background:rgba(255,255,255,.07);color:#fff;font:700 14px/1.2 var(--font-body);text-align:left;cursor:pointer}
+.pm-sel-btn:hover{background:rgba(255,255,255,.12)}
+.pm-sel-btn .lbl{display:block;font-size:11px;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:.03em;line-height:1.1}
+.pm-sel-btn .nm{display:block}
+.pm-sel-btn .car{margin-left:auto;font-size:11px;transition:transform .15s}
+.pm-sel.open .pm-sel-btn{border-color:#fff}.pm-sel.open .car{transform:rotate(180deg)}
+.pm-menu{position:absolute;left:0;top:calc(100% + 8px);min-width:310px;background:#fff;color:var(--ink);border-radius:14px;box-shadow:0 22px 50px -12px rgba(16,24,40,.45);padding:8px;z-index:90;display:none}
+.pm-sel.open .pm-menu{display:block}
+.pm-menu .hd{font-size:11.5px;font-weight:700;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase;padding:8px 10px 6px}
+.pm-opt{display:flex;align-items:center;gap:12px;width:100%;padding:10px;border-radius:10px;border:0;background:none;text-align:left;min-height:56px;color:var(--ink);cursor:pointer;font-family:var(--font-body)}
+.pm-opt:hover{background:var(--surface-2)}
+.pm-opt .t{display:block;font-weight:700;font-size:14.5px;line-height:1.25}
+.pm-opt .s{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-faint);line-height:1.3}
+.pm-opt .ck{margin-left:auto;color:var(--blue);font-weight:800}
+.pm-opt[aria-selected=true]{background:var(--blue-050)}
+.pm-menu .ft{border-top:1px solid var(--line);margin:6px 2px 0;padding:10px 10px 4px;font-size:12px;color:var(--ink-faint)}
+.pm-act{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:#fff;min-height:44px;white-space:nowrap}
+.pm-act .a1{display:block;line-height:1.2}
+.pm-act .a2{display:block;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.62);line-height:1.2}
+.pm-sw{position:relative;display:inline-block;width:44px;height:26px;flex:none}
+.pm-sw input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:2}
+.pm-sw i{position:absolute;inset:0;border-radius:999px;background:rgba(255,255,255,.28);transition:.15s}
+.pm-sw i::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:.15s}
+.pm-sw input:checked+i{background:#2fa56d}.pm-sw input:checked+i::after{left:21px}
+.pm-strip{height:4px}.pm-strip.p1{background:var(--p1)}.pm-strip.p2{background:var(--p2)}
+.pm-ctx{display:flex;align-items:center;gap:12px;padding:11px 28px;font-size:13.5px;font-weight:600}
+.pm-ctx.p1{background:var(--p1-bg);color:#07564C}.pm-ctx.p2{background:var(--p2-bg);color:#3B2A9E}
+.pm-ctx b{font-weight:800}
+.pm-scrim{position:fixed;inset:0;background:rgba(16,24,40,.55);z-index:200;display:none;align-items:center;justify-content:center;padding:16px}
+.pm-scrim.show{display:flex}
+.pm-dlg{background:#fff;border-radius:20px;max-width:480px;width:100%;padding:26px;box-shadow:0 30px 70px -20px rgba(0,0,0,.5)}
+.pm-dlg h3{font-family:var(--font-display);font-size:19px;letter-spacing:-.01em;line-height:1.25}
+.pm-dlg p{color:var(--ink-soft);font-size:14.5px;margin-top:10px}
+.pm-dlg .flow{display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.pm-dlg .acts{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.pm-b{min-height:48px;border-radius:999px;font:700 14.5px var(--font-body);border:0;padding:0 20px;cursor:pointer}
+.pm-b.pri{background:var(--blue);color:#fff}
+.pm-b.dng{background:#fff;color:var(--danger);border:1.5px solid #F1B9B9}
+.pm-b.ghost{background:#fff;color:var(--ink-soft);border:1.5px solid var(--line)}
+.top{top:var(--barh,64px)}
+.pm-show-sm{display:none}
+@media(max-width:700px){
+  .edit-bar .wrap{flex-wrap:wrap;padding:8px 16px;gap:8px 10px}
+  .pm-sel{flex:1 1 0;min-width:0;width:auto;order:1}
+  .edit-bar .save-btn{order:2}
+  .edit-left{order:3;flex:1 0 100%;justify-content:space-between}
+  .edit-left .pm-hide-sm{display:none!important}
+  .edit-links{order:4;margin-left:auto}
+  .pm-menu{min-width:0;width:calc(100vw - 28px)}
+  .pm-ctx{padding:10px 16px;font-size:12.5px}
+  .pm-hide-sm{display:none!important}.pm-show-sm{display:inline}
+  .pm-dlg{padding:22px}
+}
 </style>
 </head>
 <body>
 
 <!-- ===================== BARRA DE EDICAO ===================== -->
-<div class="edit-bar"><div class="wrap">
+<div class="edit-bar" id="bar"><div class="wrap">
+  <div class="pm-sel" id="pmSel">
+    <button class="pm-sel-btn" id="pmSelBtn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Escolher qual landing editar">
+      <span class="pm-chip p1" id="pmChip">Pism 1</span>
+      <span style="min-width:0"><span class="lbl">Editando a landing</span><span class="nm" id="pmNm">Ativa</span></span>
+      <span class="car" aria-hidden="true">▾</span>
+    </button>
+    <div class="pm-menu" role="listbox" aria-label="Landing a editar">
+      <div class="hd">Qual landing editar</div>
+      <button class="pm-opt" type="button" role="option" data-p="p1" aria-selected="true"><span class="pm-chip p1">Pism 1</span><span><span class="t">Landing do Pism 1</span><span class="s" id="pmS1"></span></span><span class="ck">✓</span></button>
+      <button class="pm-opt" type="button" role="option" data-p="p2" aria-selected="false"><span class="pm-chip p2">Pism 2</span><span><span class="t">Landing do Pism 2</span><span class="s" id="pmS2"></span></span><span class="ck"></span></button>
+      <div class="ft">Cada Pism tem landing e ativação próprias. O pop-up é único, está em Pop-up. Alunos de ENEM e Pism 3 não veem a Rematrícula.</div>
+    </div>
+  </div>
   <div class="edit-left">
-    <span class="edit-dot"></span>
-    <span class="hide-sm">Editando ao vivo. Clique em qualquer texto, vídeo ou foto pra alterar</span>
-    <span class="edit-pill" id="unsavedPill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.6" fill="currentColor"/></svg>Alterações não salvas</span>
+    <div class="pm-act" id="pmActWrap"><label class="pm-sw"><input type="checkbox" role="switch" id="pmActSw" aria-labelledby="pmActLbl"><i></i></label><span id="pmActLbl"><span class="a1" id="pmActT">Ativa</span><span class="a2 pm-hide-sm" id="pmActD"></span></span></div>
+    <span class="edit-pill" id="unsavedPill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.6" fill="currentColor"/></svg><span class="pm-hide-sm">Alterações não salvas</span><span class="pm-show-sm">Não salvo</span></span>
   </div>
   <div class="edit-links">
     <a href="rematricula-popup.html">Pop-up</a>
     <a href="../alunos/rematricula.html" target="_blank">Ver como aluno ↗</a>
-    <button class="save-btn" id="saveBtn" disabled>Salvar alterações</button>
   </div>
-</div></div>
+  <button class="save-btn" id="saveBtn" disabled>Salvar<span class="pm-hide-sm"> alterações</span></button>
+</div>
+  <div class="pm-strip p1" id="pmStrip"></div>
+</div>
+<div class="pm-ctx p1" id="pmCtx"></div>
+
+<div class="pm-scrim" id="pmScrim" role="dialog" aria-modal="true" aria-labelledby="pmMTitle">
+  <div class="pm-dlg">
+    <h3 id="pmMTitle">Salvar antes de trocar?</h3>
+    <div class="flow"><span class="pm-chip p1" id="pmMFrom">Pism 1</span><span aria-hidden="true">→</span><span class="pm-chip p2" id="pmMTo">Pism 2</span></div>
+    <p id="pmMBody"></p>
+    <div class="acts">
+      <button class="pm-b pri" id="pmMSave" type="button">Salvar e trocar</button>
+      <button class="pm-b dng" id="pmMDrop" type="button">Descartar alterações e trocar</button>
+      <button class="pm-b ghost" id="pmMKeep" type="button">Continuar editando</button>
+    </div>
+  </div>
+</div>
 
 <!-- ===================== TOPBAR ===================== -->
 <header class="top"><div class="wrap">
@@ -621,6 +711,66 @@ mark{background:none;color:var(--blue);font-weight:inherit}
     dirty=false;pill.classList.remove('show');saveBtn.disabled=true;
     var t=document.getElementById('toast');t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2600);
   });
+
+  /* ===== Rematricula por Pism: seletor, ativacao na hora, faixa e modal de troca ===== */
+  var bar=document.getElementById('bar');
+  function setH(){document.documentElement.style.setProperty('--barh',bar.offsetHeight+'px')}
+  var heroEb=document.querySelector('.hero-eyebrow [contenteditable]'),heroH1=document.querySelector('.hero h1');
+  var PM={
+    p1:{label:'Pism 1',eb:'Rematrícula 2026 · Pism 1',h1:'Você terminou o Pism 1. Agora garanta a sua <span class="u">vaga no Pism 2</span>',ed:'editada há 2 dias'},
+    p2:{label:'Pism 2',eb:'Rematrícula 2026 · Pism 2',h1:'Reta final do Pism 2. Garanta a sua <span class="u">vaga pro próximo ciclo</span>',ed:'editada em 03/10'}
+  };
+  var cur='p1',pending=null,ACT={p1:true,p2:false};
+  var $=function(i){return document.getElementById(i)};
+  function loadLanding(p){heroEb.textContent=PM[p].eb;heroH1.innerHTML=PM[p].h1}
+  function snap(p){PM[p].eb=heroEb.textContent;PM[p].h1=heroH1.innerHTML}
+  function stat(p){return ACT[p]?'Ativa':'Desativada'}
+  function renderPm(){
+    var d=PM[cur];
+    $('pmChip').textContent=d.label;$('pmChip').className='pm-chip '+cur;
+    $('pmNm').textContent=stat(cur);
+    ['p1','p2'].forEach(function(p){$('pmS'+p.slice(1)).innerHTML='<span class="pm-dot '+(ACT[p]?'on':'off')+'"></span>'+stat(p)+' · '+PM[p].ed});
+    $('pmActSw').checked=ACT[cur];
+    $('pmActT').textContent=stat(cur);
+    $('pmActD').textContent=ACT[cur]?'Alunos do '+d.label+' veem a landing':'Alunos do '+d.label+' não veem nada';
+    $('pmStrip').className='pm-strip '+cur;
+    $('pmCtx').className='pm-ctx '+cur;
+    $('pmCtx').innerHTML='<span class="pm-chip '+cur+'">'+d.label+'</span><span><b>Landing do '+d.label+'</b>. Só alunos matriculados no '+d.label+' veem esta página.</span>';
+    document.querySelectorAll('.pm-opt').forEach(function(o){var on=o.dataset.p===cur;o.setAttribute('aria-selected',on);o.querySelector('.ck').textContent=on?'✓':''});
+    setH();
+  }
+  function setOpen(v){$('pmSel').classList.toggle('open',v);$('pmSelBtn').setAttribute('aria-expanded',v)}
+  function showModal(){
+    var from=cur,to=pending;
+    $('pmMTitle').textContent='Salvar antes de ir para o '+PM[to].label+'?';
+    $('pmMFrom').textContent=PM[from].label;$('pmMFrom').className='pm-chip '+from;
+    $('pmMTo').textContent=PM[to].label;$('pmMTo').className='pm-chip '+to;
+    $('pmMBody').textContent='Você mexeu na landing do '+PM[from].label+' e ainda não salvou. Se trocar agora, o que foi editado se perde.';
+    $('pmMSave').textContent='Salvar e ir para o '+PM[to].label;
+    $('pmMKeep').textContent='Continuar editando o '+PM[from].label;
+    $('pmScrim').classList.add('show');$('pmMSave').focus();
+  }
+  function hideModal(){$('pmScrim').classList.remove('show')}
+  function clean(){dirty=false;pill.classList.remove('show');saveBtn.disabled=true}
+  function goTo(p){cur=p;loadLanding(p);renderPm()}
+  $('pmSelBtn').addEventListener('click',function(){setOpen(!$('pmSel').classList.contains('open'))});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){setOpen(false);hideModal()}});
+  document.querySelectorAll('.pm-opt').forEach(function(o){o.addEventListener('click',function(){
+    var t=o.dataset.p;setOpen(false);if(t===cur)return;
+    if(dirty){pending=t;showModal()}else goTo(t);
+  })});
+  $('pmMSave').addEventListener('click',function(){snap(cur);clean();hideModal();goTo(pending)});
+  $('pmMDrop').addEventListener('click',function(){clean();hideModal();goTo(pending)});
+  $('pmMKeep').addEventListener('click',hideModal);
+  $('pmActSw').addEventListener('change',function(){ACT[cur]=this.checked;renderPm()});
+  saveBtn.addEventListener('click',function(){snap(cur)});
+  addEventListener('resize',setH);
+  var hs=location.hash;
+  if(hs.indexOf('p2')>-1){cur='p2'}
+  loadLanding(cur);renderPm();
+  if(hs.indexOf('unsaved')>-1||hs.indexOf('modal')>-1)markDirty();
+  if(hs.indexOf('open')>-1)setOpen(true);
+  if(hs.indexOf('modal')>-1){pending=cur==='p1'?'p2':'p1';showModal()}
   addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue=''}});
 })();
 </script>
