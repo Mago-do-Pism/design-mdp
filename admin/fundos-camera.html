@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fundos da câmera · Admin · Mago do Pism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+    .page-head { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:12px; max-width:1086px; }
+    .page-sub { font-size:14px; color:var(--text-secondary); line-height:1.6; max-width:1086px; margin:0 0 20px; }
+    .info-box { display:flex; gap:12px; align-items:flex-start; max-width:1086px; box-sizing:border-box; background:rgba(14,147,242,0.08); border:1px solid var(--brand-blue); border-radius:var(--radius-md); padding:14px 18px; margin-bottom:24px; font-size:13px; line-height:1.6; color:var(--text-primary); }
+    .info-box svg { width:20px; height:20px; flex-shrink:0; color:var(--brand-blue); margin-top:1px; }
+    .table-wrap { max-width:1086px; }
+
+    .bg-thumb { width:128px; aspect-ratio:16/9; border-radius:var(--radius-sm, 8px); background:var(--neutral-200) center/cover no-repeat; box-shadow:0 0 2px rgba(95,95,95,0.25); flex-shrink:0; }
+    .cell-bg { display:flex; align-items:center; gap:16px; }
+    .cell-bg-name { font-weight:600; font-size:15px; color:var(--text-primary); }
+    .cell-bg-meta { font-size:12px; color:var(--text-muted); margin-top:3px; }
+    tr.is-off .bg-thumb { filter:grayscale(1); opacity:.55; }
+    tr.is-off .cell-bg-name { color:var(--text-muted); }
+
+    .status-label { font-size:13px; font-weight:600; margin-left:10px; color:var(--color-success); }
+    tr.is-off .status-label { color:var(--text-muted); }
+    .status-cell { display:flex; align-items:center; }
+
+    .tog { position:relative; display:inline-flex; width:36px; height:20px; flex-shrink:0; }
+    .tog input { position:absolute; opacity:0; width:100%; height:100%; margin:0; cursor:pointer; z-index:1; }
+    .tog-track { width:36px; height:20px; border-radius:10px; background:var(--neutral-400); transition:background .15s; position:relative; }
+    .tog-track::after { content:""; position:absolute; left:2px; top:2px; width:16px; height:16px; border-radius:50%; background:white; transition:transform .15s; }
+    .tog input:checked + .tog-track { background:var(--color-success); }
+    .tog input:checked + .tog-track::after { transform:translateX(16px); }
+    .tog input:focus-visible + .tog-track { outline:3px solid rgba(14,147,242,0.35); outline-offset:2px; }
+
+    .order-cell { display:inline-flex; align-items:center; gap:6px; }
+    .order-num { font-family:var(--font-mono); font-size:14px; min-width:22px; text-align:center; color:var(--text-primary); }
+    .order-btn { width:28px; height:28px; border:0; background:transparent; color:var(--text-muted); cursor:pointer; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; }
+    .order-btn:hover:not(:disabled) { background:var(--neutral-200); color:var(--brand-blue); }
+    .order-btn:disabled { opacity:.3; cursor:default; }
+    .order-btn svg { width:16px; height:16px; }
+    .row-actions button:focus-visible, .order-btn:focus-visible { outline:3px solid rgba(14,147,242,0.35); }
+
+    .empty { max-width:1086px; box-sizing:border-box; text-align:center; padding:64px 24px; background:var(--neutral-150); border:1px dashed var(--neutral-400); border-radius:var(--radius-lg); }
+    .empty svg { width:48px; height:48px; color:var(--text-muted); margin-bottom:12px; }
+    .empty h3 { margin:0 0 8px; font-size:18px; color:var(--text-primary); }
+    .empty p { margin:0 auto 20px; max-width:420px; font-size:14px; color:var(--text-secondary); line-height:1.6; }
+    .proto-note { max-width:1086px; margin-top:24px; font-size:12px; color:var(--text-muted); }
+    .proto-note button { background:none; border:0; padding:0; font:inherit; color:var(--brand-blue); cursor:pointer; text-decoration:underline; }
+
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:200; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .2s; padding:16px; box-sizing:border-box; }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+    .modal { background:var(--neutral-0); border-radius:var(--radius-xl); padding:32px; width:520px; max-width:100%; max-height:calc(100vh - 32px); overflow:auto; box-sizing:border-box; box-shadow:var(--shadow-deep); transform:translateY(10px); transition:transform .2s; }
+    .modal-overlay.open .modal { transform:translateY(0); }
+    .modal-title { font-weight:700; font-size:18px; color:var(--text-primary); margin:0 0 20px; }
+    .modal-body { font-size:14px; color:var(--text-secondary); line-height:1.6; margin-bottom:24px; }
+    .modal-body strong { color:var(--text-primary); }
+    .modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:24px; }
+    .btn-danger { height:40px; padding:0 22px; border:0; border-radius:var(--radius-md); background:var(--color-danger); color:#fff; font-family:var(--font-body); font-weight:600; font-size:14px; cursor:pointer; }
+    .btn-danger:hover { filter:brightness(.92); }
+    .modal .field-label { display:block; margin:0 0 8px; }
+    .field { margin-bottom:20px; }
+    .field-hint { font-size:12px; color:var(--text-muted); margin-top:6px; line-height:1.5; }
+    .field-error { font-size:12px; color:var(--color-danger); margin-top:6px; display:none; }
+    .field.has-error .field-error { display:block; }
+    .field.has-error .input, .field.has-error .drop { border-color:var(--color-danger); }
+
+    .drop { border:2px dashed var(--neutral-400); border-radius:var(--radius-md); background:var(--neutral-150); text-align:center; padding:24px 16px; cursor:pointer; transition:all .15s; }
+    .drop:hover, .drop.drag, .drop:focus-visible { border-color:var(--brand-blue); background:rgba(14,147,242,0.06); outline:none; }
+    .drop svg { width:32px; height:32px; color:var(--brand-blue); }
+    .drop strong { display:block; font-size:14px; color:var(--text-primary); margin-top:6px; }
+    .drop span { font-size:12px; color:var(--text-muted); }
+    .preview { display:none; }
+    .preview.show { display:block; }
+    .preview-img { position:relative; width:100%; aspect-ratio:16/9; border-radius:var(--radius-md); background:var(--neutral-200) center/cover no-repeat; overflow:hidden; }
+    .preview-img .safe { position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:34%; height:72%; border:2px dashed rgba(255,255,255,.85); border-bottom:0; border-radius:50% 50% 0 0; box-shadow:0 0 0 1px rgba(0,0,0,.25); }
+    .preview-bar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:8px; font-size:12px; color:var(--text-muted); }
+    .preview-bar button { background:none; border:0; color:var(--brand-blue); font:inherit; font-weight:600; cursor:pointer; padding:4px; }
+    .field-row { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 0; border-top:1px solid var(--border-default); }
+    .field-row strong { display:block; font-size:14px; color:var(--text-primary); }
+    .field-row span { font-size:12px; color:var(--text-muted); }
+
+    .toast { position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(20px); background:var(--neutral-900, #222); color:#fff; padding:12px 20px; border-radius:var(--radius-md); font-size:14px; opacity:0; pointer-events:none; transition:all .2s; z-index:300; }
+    .toast.show { opacity:1; transform:translateX(-50%); }
+
+    @media (max-width:760px) {
+      .page-head { flex-direction:column; align-items:flex-start; }
+      .bg-thumb { width:96px; }
+      .data-table thead th, .data-table tbody td { padding:12px; }
+      .table-wrap { overflow-x:auto; }
+      .modal { padding:24px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+      <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos</span></a>
+        <a href="alunos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
+        <a href="modulos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
+        <a href="gravacoes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M7 21h10"/><path d="M9 17v4"/><path d="M15 17v4"/><polygon points="10 8 15 11 10 14 10 8" fill="currentColor" stroke="none"/></svg><span>Gravações</span></a>
+        <a href="presenca.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Presença</span></a>
+        <a href="fundos-camera.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Fundos da câmera</span></a>
+        <a href="equipe.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Equipe</span></a>
+        <a href="avisos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Avisos</span></a>
+        <a href="simulados.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg><span>Simulados</span></a>
+        <a href="nivelamentos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Nivelamentos</span></a>
+        <a href="listas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Listas</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <main class="content admin-content">
+      <div class="page-head">
+        <h2 class="section-title" style="margin:0;">Fundos da câmera</h2>
+        <button class="btn-primary btn-primary--minor" onclick="openForm()">Novo fundo</button>
+      </div>
+      <p class="page-sub">Fundos prontos que o professor escolhe no painel de efeitos da câmera, durante a aula ao vivo. A ordem da lista é a ordem que aparece para ele.</p>
+
+      <div class="info-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div>Fundo inativo some da lista do professor, mas não quebra aula em andamento: quem já está com ele selecionado continua com o fundo até trocar ou encerrar a aula. O mesmo vale para fundo excluído.</div>
+      </div>
+
+      <div class="table-wrap" id="tableWrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Fundo</th>
+              <th>Status</th>
+              <th>Ordem</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+
+      <div class="empty" id="empty" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <h3>Nenhum fundo cadastrado</h3>
+        <p>Sem fundos prontos, o professor só consegue usar a câmera sem fundo ou com desfoque. Cadastre o primeiro fundo.</p>
+        <button class="btn-primary btn-primary--minor" onclick="openForm()">Novo fundo</button>
+      </div>
+
+      <p class="proto-note">Protótipo: <button onclick="toggleEmpty()">alternar estado vazio</button></p>
+    </main>
+  </div>
+
+  <!-- Modal: novo / editar -->
+  <div class="modal-overlay" id="formOverlay" onclick="if(event.target===this)closeForm()">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+      <p class="modal-title" id="formTitle">Novo fundo</p>
+
+      <div class="field" id="fName">
+        <label class="field-label" for="inName">Nome</label>
+        <input class="input" id="inName" type="text" maxlength="40" placeholder="Ex.: Sala de aula" />
+        <div class="field-hint">Aparece embaixo da miniatura no painel do professor. Até 40 caracteres.</div>
+        <div class="field-error">Informe o nome do fundo.</div>
+      </div>
+
+      <div class="field" id="fImg">
+        <span class="field-label">Imagem</span>
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="Escolher imagem do fundo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <strong>Arraste a imagem aqui ou escolha um arquivo</strong>
+          <span>JPG, PNG ou WebP, até 5 MB</span>
+        </div>
+        <input type="file" id="file" accept="image/jpeg,image/png,image/webp" hidden />
+        <div class="preview" id="preview">
+          <div class="preview-img" id="previewImg"><div class="safe"></div></div>
+          <div class="preview-bar">
+            <span id="previewInfo"></span>
+            <button type="button" id="swap">Trocar imagem</button>
+          </div>
+        </div>
+        <div class="field-hint">Proporção 16:9 recomendada, de preferência 1920 x 1080 px (mínimo 1280 x 720). Outras proporções são cortadas no centro. A área tracejada no preview é onde o professor costuma aparecer, evite elementos importantes ali.</div>
+        <div class="field-error" id="imgError">Envie uma imagem.</div>
+      </div>
+
+      <div class="field-row">
+        <div><strong>Ativo</strong><span>Quando desligado, o professor não vê este fundo.</span></div>
+        <label class="tog"><input type="checkbox" id="inActive" checked aria-label="Ativo" /><span class="tog-track"></span></label>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="closeForm()">Cancelar</button>
+        <button class="btn-primary btn-primary--minor" onclick="saveForm()">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: confirmar exclusão -->
+  <div class="modal-overlay" id="delOverlay" onclick="if(event.target===this)closeDel()">
+    <div class="modal" style="width:440px" role="alertdialog" aria-modal="true" aria-labelledby="delTitle">
+      <p class="modal-title" id="delTitle" style="margin-bottom:10px">Excluir fundo?</p>
+      <p class="modal-body">O fundo <strong id="delName"></strong> deixa de aparecer para o professor e não pode ser recuperado. Aulas em andamento que já estão usando esse fundo não são afetadas. Se for só para tirar de circulação por um tempo, desative em vez de excluir.</p>
+      <div class="modal-actions" style="margin-top:0">
+        <button class="btn-ghost" onclick="closeDel()">Cancelar</button>
+        <button class="btn-danger" onclick="confirmDel()">Excluir fundo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    var ICON_EDIT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>';
+    var ICON_DEL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>';
+    var ICON_UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';
+    var ICON_DOWN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+
+    var seed = [
+      { id:1, nome:'Sala de aula',  img:'linear-gradient(135deg,#7c5b3a,#d9b98a)', ativo:true,  info:'1920 x 1080 · JPG' },
+      { id:2, nome:'Biblioteca',    img:'linear-gradient(135deg,#3b2a1a,#8a5a2b 60%,#c28a4a)', ativo:true, info:'1920 x 1080 · JPG' },
+      { id:3, nome:'Quadro branco', img:'linear-gradient(135deg,#e5e7eb,#f8fafc)', ativo:true, info:'1920 x 1080 · PNG' },
+      { id:4, nome:'Mago do Pism',  img:'linear-gradient(135deg,#0b3a63,#0E93F2)', ativo:true, info:'1920 x 1080 · PNG' },
+      { id:5, nome:'Escritório',    img:'linear-gradient(135deg,#334155,#64748b)', ativo:true, info:'1920 x 1080 · JPG' },
+      { id:6, nome:'Jardim',        img:'linear-gradient(135deg,#14532d,#86efac)', ativo:false, info:'1920 x 1080 · WebP' }
+    ];
+    var items = seed.slice(), nextId = 7, editId = null, delId = null, pending = null;
+    var MAX = 5 * 1024 * 1024, OK = ['image/jpeg','image/png','image/webp'];
+
+    function esc(s){ return s.replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+    function render() {
+      var rows = document.getElementById('rows');
+      rows.innerHTML = items.map(function(it, i) {
+        return '<tr class="' + (it.ativo ? '' : 'is-off') + '">' +
+          '<td><div class="cell-bg"><div class="bg-thumb" style="background-image:' + it.img + '"></div>' +
+            '<div><div class="cell-bg-name">' + esc(it.nome) + '</div><div class="cell-bg-meta">' + it.info + '</div></div></div></td>' +
+          '<td><div class="status-cell"><label class="tog"><input type="checkbox" ' + (it.ativo ? 'checked' : '') + ' aria-label="Ativo: ' + esc(it.nome) + '" onchange="setAtivo(' + it.id + ', this.checked)" /><span class="tog-track"></span></label>' +
+            '<span class="status-label">' + (it.ativo ? 'Ativo' : 'Inativo') + '</span></div></td>' +
+          '<td><div class="order-cell"><span class="order-num">' + (i + 1) + '</span>' +
+            '<button class="order-btn" aria-label="Subir ' + esc(it.nome) + '" ' + (i === 0 ? 'disabled' : '') + ' onclick="move(' + i + ',-1)">' + ICON_UP + '</button>' +
+            '<button class="order-btn" aria-label="Descer ' + esc(it.nome) + '" ' + (i === items.length - 1 ? 'disabled' : '') + ' onclick="move(' + i + ',1)">' + ICON_DOWN + '</button></div></td>' +
+          '<td><div class="row-actions"><button class="edit" aria-label="Editar ' + esc(it.nome) + '" onclick="openForm(' + it.id + ')">' + ICON_EDIT + '</button>' +
+            '<button class="del" aria-label="Excluir ' + esc(it.nome) + '" onclick="openDel(' + it.id + ')">' + ICON_DEL + '</button></div></td></tr>';
+      }).join('');
+      document.getElementById('tableWrap').hidden = items.length === 0;
+      document.getElementById('empty').hidden = items.length !== 0;
+    }
+    function find(id){ return items.filter(function(x){ return x.id === id; })[0]; }
+    function setAtivo(id, v){ find(id).ativo = v; render(); toast(v ? 'Fundo ativado. O professor já vê na lista.' : 'Fundo desativado. Some da lista do professor.'); }
+    function move(i, d){ var j = i + d, t = items[i]; items[i] = items[j]; items[j] = t; render(); }
+    function toggleEmpty(){ items = items.length ? [] : seed.slice(); render(); }
+
+    var drop = document.getElementById('drop'), file = document.getElementById('file');
+    drop.addEventListener('click', function(){ file.click(); });
+    drop.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); file.click(); } });
+    document.getElementById('swap').addEventListener('click', function(){ file.click(); });
+    ['dragenter','dragover'].forEach(function(n){ drop.addEventListener(n, function(e){ e.preventDefault(); drop.classList.add('drag'); }); });
+    ['dragleave','drop'].forEach(function(n){ drop.addEventListener(n, function(e){ e.preventDefault(); drop.classList.remove('drag'); }); });
+    drop.addEventListener('drop', function(e){ if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+    file.addEventListener('change', function(){ if (file.files[0]) handleFile(file.files[0]); });
+
+    function imgError(msg){ var f = document.getElementById('fImg'); document.getElementById('imgError').textContent = msg; f.classList.toggle('has-error', !!msg); }
+    function handleFile(f) {
+      if (OK.indexOf(f.type) < 0) { imgError('Formato não aceito. Use JPG, PNG ou WebP.'); return; }
+      if (f.size > MAX) { imgError('Arquivo com ' + (f.size / 1048576).toFixed(1).replace('.', ',') + ' MB. O máximo é 5 MB.'); return; }
+      var url = URL.createObjectURL(f), im = new Image();
+      im.onload = function() {
+        var ext = f.type.split('/')[1].replace('jpeg', 'JPG').toUpperCase();
+        pending = { img:'url(' + url + ')', info:im.width + ' x ' + im.height + ' · ' + ext };
+        var ratio = im.width / im.height, warn = Math.abs(ratio - 16/9) > 0.05 ? ' · fora de 16:9, será cortada' : '';
+        showPreview(pending.img, f.name + ' · ' + pending.info + warn);
+        imgError('');
+      };
+      im.src = url;
+    }
+    function showPreview(bg, info) {
+      document.getElementById('previewImg').style.backgroundImage = bg;
+      document.getElementById('previewInfo').textContent = info;
+      document.getElementById('preview').classList.add('show');
+      drop.style.display = 'none';
+    }
+    function openForm(id) {
+      editId = id || null; pending = null; file.value = '';
+      var it = id ? find(id) : null;
+      document.getElementById('formTitle').textContent = it ? 'Editar fundo' : 'Novo fundo';
+      document.getElementById('inName').value = it ? it.nome : '';
+      document.getElementById('inActive').checked = it ? it.ativo : true;
+      document.getElementById('fName').classList.remove('has-error'); imgError('');
+      if (it) { showPreview(it.img, 'Imagem atual · ' + it.info); }
+      else { document.getElementById('preview').classList.remove('show'); drop.style.display = ''; }
+      document.getElementById('formOverlay').classList.add('open');
+      document.getElementById('inName').focus();
+    }
+    function closeForm(){ document.getElementById('formOverlay').classList.remove('open'); }
+    function saveForm() {
+      var nome = document.getElementById('inName').value.trim(), ok = true;
+      document.getElementById('fName').classList.toggle('has-error', !nome); if (!nome) ok = false;
+      var it = editId ? find(editId) : null;
+      if (!it && !pending) { imgError('Envie uma imagem.'); ok = false; }
+      if (!ok) return;
+      var ativo = document.getElementById('inActive').checked;
+      if (it) { it.nome = nome; it.ativo = ativo; if (pending) { it.img = pending.img; it.info = pending.info; } }
+      else { items.push({ id:nextId++, nome:nome, ativo:ativo, img:pending.img, info:pending.info }); }
+      closeForm(); render(); toast(it ? 'Fundo atualizado.' : 'Fundo cadastrado.');
+    }
+    function openDel(id){ delId = id; document.getElementById('delName').textContent = find(id).nome; document.getElementById('delOverlay').classList.add('open'); }
+    function closeDel(){ document.getElementById('delOverlay').classList.remove('open'); }
+    function confirmDel(){ items = items.filter(function(x){ return x.id !== delId; }); closeDel(); render(); toast('Fundo excluído.'); }
+    var tt;
+    function toast(m){ var t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(function(){ t.classList.remove('show'); }, 2600); }
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { closeForm(); closeDel(); } });
+    render();
+  </script>
+</body>
+</html>
