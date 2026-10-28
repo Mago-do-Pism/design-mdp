@@ -158,12 +158,14 @@
       max-width: 1100px;
     }
     .section-date:first-child { margin-top: 0; }
-    .view-tabs { display:inline-flex; border:1px solid var(--border-default); border-radius:var(--radius-md); overflow:hidden; background:var(--neutral-0); }
-    .live-tabs a { display:inline-flex; align-items:center; height:38px; padding:0 20px; font-family:var(--font-body); font-weight:600; font-size:13px; color:var(--text-secondary); text-decoration:none; }
-    .live-tabs a + a { border-left:1px solid var(--border-default); }
-    .live-tabs a.on { background:rgba(14,147,242,.12); color:var(--brand-blue); }
+      /* Abas Aulas ao vivo: mesmo visual do CustomTabs (mdp-next-web) */
+    .live-tabs-wrap { position:relative; width:100%; margin-bottom:20px; overflow-x:auto; }
+    .live-tabs-wrap::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:#ddd; z-index:0; }
+    .live-tabs { position:relative; z-index:1; display:flex; width:max-content; margin:0; padding:0; }
+    .live-tabs a { position:relative; width:120px; height:50px; box-sizing:border-box; padding:0 4px; display:flex; align-items:center; justify-content:center; text-align:center; font-family:var(--font-body); font-weight:500; font-size:16px; line-height:1.2; color:var(--text-secondary); text-decoration:none; user-select:none; transition:color .2s; }
+    .live-tabs a[aria-selected="true"] { color:var(--brand-blue); }
+    .live-tabs a[aria-selected="true"]::after { content:""; position:absolute; left:0; bottom:0; width:120px; height:2px; border-radius:2px; background:var(--brand-blue); z-index:2; }
     .live-tabs a:focus-visible { outline:3px solid rgba(14,147,242,0.35); outline-offset:-3px; }
-    .live-tabs { margin-bottom:20px; }
   </style>
 </head>
 <body>
@@ -201,11 +203,13 @@
         </div>
       </div>
 
-      <nav class="view-tabs live-tabs" aria-label="Aulas ao vivo">
-        <a href="presenca.html">Presença</a>
-        <a href="gravacoes.html" class="on" aria-current="page">Gravações</a>
-        <a href="fundos-camera.html">Fundos da câmera</a>
-      </nav>
+      <div class="live-tabs-wrap">
+        <nav class="live-tabs" aria-label="Aulas ao vivo">
+          <a href="presenca.html" role="tab" aria-selected="false">Presença</a>
+          <a href="gravacoes.html" role="tab" aria-selected="true" aria-current="page">Gravações</a>
+          <a href="fundos-camera.html" role="tab" aria-selected="false">Fundos da câmera</a>
+        </nav>
+      </div>
 
       <!-- Jul 9 -->
       <div class="section-date">Quarta-feira, 9 de julho de 2026</div>
