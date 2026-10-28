@@ -159,9 +159,10 @@
     }
     .section-date:first-child { margin-top: 0; }
       /* Abas Aulas ao vivo: mesmo visual do CustomTabs (mdp-next-web) */
-    .live-tabs-wrap { position:relative; width:100%; margin-bottom:20px; overflow-x:auto; }
+    .live-tabs-wrap { --tabs-gutter:84px; position:relative; margin:0 calc(-1 * var(--tabs-gutter)) 20px; overflow-x:auto; }
+    @media (max-width:900px) { .live-tabs-wrap { --tabs-gutter:24px; } }
     .live-tabs-wrap::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:#ddd; z-index:0; }
-    .live-tabs { position:relative; z-index:1; display:flex; width:max-content; margin:0; padding:0; }
+    .live-tabs { position:relative; z-index:1; display:flex; width:max-content; margin:0; padding:0 var(--tabs-gutter); }
     .live-tabs a { position:relative; width:120px; height:50px; box-sizing:border-box; padding:0 4px; display:flex; align-items:center; justify-content:center; text-align:center; font-family:var(--font-body); font-weight:500; font-size:16px; line-height:1.2; color:var(--text-secondary); text-decoration:none; user-select:none; transition:color .2s; }
     .live-tabs a[aria-selected="true"] { color:var(--brand-blue); }
     .live-tabs a[aria-selected="true"]::after { content:""; position:absolute; left:0; bottom:0; width:120px; height:2px; border-radius:2px; background:var(--brand-blue); z-index:2; }
