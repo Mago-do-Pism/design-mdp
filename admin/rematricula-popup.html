@@ -119,8 +119,12 @@
           </div>
 
           <div class="cfg-field">
-            <label class="field-label">Link do botão</label>
-            <input class="input" id="ctaLink" value="/rematricula" />
+            <label class="field-label">Link do botão <span style="font-weight:400; color:var(--text-muted);">(opcional)</span></label>
+            <div style="position:relative;">
+              <input class="input" id="ctaLink" value="" placeholder="https://wa.me/553195823494 ou /caminho-interno" style="padding-right:40px;" />
+              <button type="button" id="ctaLinkClear" aria-label="Remover link" title="Remover link" style="position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border:0; border-radius:50%; background:transparent; color:var(--text-muted); font-size:18px; line-height:1; cursor:pointer;">×</button>
+            </div>
+            <span id="ctaLinkHint" style="display:block; margin-top:6px; font-size:12px; color:var(--text-muted);">Link externo abre em nova aba. Deixe vazio pra levar o aluno pra landing de rematrícula.</span>
           </div>
 
           <div class="cfg-toggle-row">
@@ -178,15 +182,45 @@
       document.getElementById('ctaText').addEventListener('input', function (e) {
         document.getElementById('previewBtn').textContent = e.target.value || 'Quero me rematricular →';
       });
-      document.getElementById('ctaLink').addEventListener('input', function (e) {
-        document.getElementById('previewBtn').setAttribute('href', e.target.value);
+      var ctaLinkEl = document.getElementById('ctaLink');
+      var ctaLinkClear = document.getElementById('ctaLinkClear');
+      ctaLinkClear.addEventListener('click', function () {
+        ctaLinkEl.value = '';
+        ctaLinkEl.dispatchEvent(new Event('input'));
+        ctaLinkEl.focus();
       });
+      // Aceita https?://, caminho iniciado em / ou domínio sem esquema (ganha https://). Resto é inválido (null).
+      function normalizeCtaLink(v) {
+        if (!v) return '';
+        if (/^https?:\/\/\S+$/i.test(v)) return v;
+        if (/^\/(?!\/)\S*$/.test(v)) return v;
+        if (/^[a-z0-9-]+(\.[a-z0-9-]+)+([\/?#]\S*)?$/i.test(v)) return 'https://' + v;
+        return null;
+      }
+      ctaLinkEl.addEventListener('input', function (e) {
+        var v = normalizeCtaLink(e.target.value.trim());
+        var hint = document.getElementById('ctaLinkHint');
+        ctaLinkClear.style.display = e.target.value.trim() ? '' : 'none';
+        hint.style.color = v === null ? 'var(--color-danger)' : 'var(--text-muted)';
+        document.getElementById('previewBtn').setAttribute('href', v || '/rematricula');
+        hint.textContent = v === null
+          ? 'Link inválido. Use https://…, um domínio (ex.: wa.me/553195823494) ou um caminho começando com /.'
+          : v
+            ? (/^https?:\/\//.test(v) ? 'O botão leva pra esse link, em nova aba.' : 'O botão leva pra esse caminho dentro da plataforma.')
+            : 'Vazio: o botão leva pra landing de rematrícula.';
+      });
+
+      ctaLinkEl.dispatchEvent(new Event('input'));
 
       document.getElementById('activeToggle').addEventListener('click', function () {
         this.classList.toggle('is-on');
       });
 
       document.getElementById('saveBtn').addEventListener('click', function () {
+        var link = normalizeCtaLink(ctaLinkEl.value.trim());
+        if (link === null) { ctaLinkEl.focus(); return; }
+        ctaLinkEl.value = link;
+        ctaLinkEl.dispatchEvent(new Event('input'));
         var toast = document.getElementById('toast');
         toast.classList.add('show');
         setTimeout(function () { toast.classList.remove('show'); }, 2600);
