@@ -120,8 +120,12 @@
           </div>
 
           <div class="cfg-field">
-            <label class="field-label">Link do botão</label>
-            <input class="input" id="ctaLink" value="/rematricula" />
+            <label class="field-label">Link do botão <span style="font-weight:400; color:var(--text-muted);">(opcional)</span></label>
+            <div style="position:relative;">
+              <input class="input" id="ctaLink" value="https://wa.me/5531999999999" placeholder="https://… ou /caminho-interno" style="padding-right:40px;" />
+              <button type="button" id="ctaLinkClear" aria-label="Remover link" title="Remover link" style="position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border:0; border-radius:50%; background:transparent; color:var(--text-muted); font-size:18px; line-height:1; cursor:pointer;">×</button>
+            </div>
+            <span id="ctaLinkHint" style="display:block; margin-top:6px; font-size:12px; color:var(--text-muted);">Link externo abre em nova aba. Deixe vazio pra levar o aluno pra landing de rematrícula.</span>
           </div>
 
           <div class="cfg-toggle-row">
@@ -179,9 +183,23 @@
       document.getElementById('ctaText').addEventListener('input', function (e) {
         document.getElementById('previewBtn').textContent = e.target.value || 'Quero me rematricular →';
       });
-      document.getElementById('ctaLink').addEventListener('input', function (e) {
-        document.getElementById('previewBtn').setAttribute('href', e.target.value);
+      var ctaLinkEl = document.getElementById('ctaLink');
+      var ctaLinkClear = document.getElementById('ctaLinkClear');
+      ctaLinkClear.addEventListener('click', function () {
+        ctaLinkEl.value = '';
+        ctaLinkEl.dispatchEvent(new Event('input'));
+        ctaLinkEl.focus();
       });
+      ctaLinkEl.addEventListener('input', function (e) {
+        var v = e.target.value.trim();
+        ctaLinkClear.style.display = v ? '' : 'none';
+        document.getElementById('previewBtn').setAttribute('href', v || '/rematricula');
+        document.getElementById('ctaLinkHint').textContent = v
+          ? (/^https?:\/\//.test(v) ? 'O botão leva pra esse link, em nova aba.' : 'O botão leva pra esse caminho dentro da plataforma.')
+          : 'Vazio: o botão leva pra landing de rematrícula.';
+      });
+
+      ctaLinkEl.dispatchEvent(new Event('input'));
 
       document.getElementById('activeToggle').addEventListener('click', function () {
         this.classList.toggle('is-on');
