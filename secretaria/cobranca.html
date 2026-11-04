@@ -3,6 +3,56 @@
 <title>Régua de Cobrança · Secretaria · Mago do Pism</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
+<style>
+.rg-grid{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:24px;align-items:start}
+@media(max-width:1100px){.rg-grid{grid-template-columns:1fr}}
+.rg-col{display:flex;flex-direction:column;gap:20px}
+.rg-card-head{padding:18px 24px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border-default)}
+.rg-card-head h3{margin:0}
+.rg-card-head .sub{font-size:12px;color:var(--text-muted)}
+.rg-body{padding:18px 24px}
+.rg-note{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;background:rgba(14,147,242,0.06);border-left:3px solid var(--brand-blue);border-radius:6px;font-size:12px;line-height:1.5;color:var(--text-secondary);margin-bottom:16px}
+.rg-note svg{width:16px;height:16px;flex:none;color:var(--brand-blue);margin-top:1px}
+.rg-steps{list-style:none;margin:0;padding:0}
+.rg-step{display:grid;grid-template-columns:28px 1fr 28px;gap:10px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--neutral-200)}
+.rg-step:last-child{border-bottom:0}
+.rg-step .idx{width:28px;height:28px;border-radius:var(--radius-pill);background:var(--neutral-100);color:var(--text-muted);font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.rg-step.is-before .idx{background:rgba(14,147,242,0.12);color:var(--brand-blue)}
+.rg-step.is-after .idx{background:rgba(220,38,38,0.1);color:var(--color-danger)}
+.rg-row{display:flex;flex-wrap:wrap;gap:10px 10px;align-items:flex-end}
+.rg-row .sec-field{min-width:0}
+.rg-row .sec-field input,.rg-row .sec-field select{height:36px}
+.rg-w-days{width:64px}.rg-w-when{width:172px}.rg-w-time{width:112px}
+.rg-chips{display:flex;gap:6px}
+.rg-chip{position:relative}
+.rg-chip input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.rg-chip span{text-transform:none;letter-spacing:0;display:inline-flex;align-items:center;height:36px;padding:0 12px;border:1px solid var(--border-default);border-radius:6px;font-size:12px;font-weight:600;color:var(--text-muted);background:white}
+.rg-chip input:checked + span{background:rgba(14,147,242,0.08);border-color:var(--brand-blue);color:var(--brand-blue)}
+.rg-chip input:focus-visible + span{box-shadow:0 0 0 3px rgba(14,147,242,0.2)}
+.rg-add{padding:16px 24px;border-top:1px solid var(--border-default)}
+.rg-inline{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);flex-wrap:wrap}
+.rg-inline input{width:72px;height:36px;padding:0 10px;border:1px solid var(--border-default);border-radius:6px;font-size:13px}
+.rg-inline input:focus{outline:none;border-color:var(--brand-blue);box-shadow:0 0 0 3px rgba(14,147,242,0.12)}
+.rg-hint{font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.4}
+.rg-set{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--neutral-200)}
+.rg-set:first-child{padding-top:0}.rg-set:last-child{border-bottom:0;padding-bottom:0}
+.rg-set .txt{flex:1;min-width:0}
+.rg-set .txt strong{display:block;font-size:13px;color:var(--neutral-900)}
+.rg-set .txt span{font-size:11px;color:var(--text-muted);line-height:1.4}
+.rg-unit{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)}
+.rg-unit input{width:76px;height:36px;padding:0 10px;border:1px solid var(--border-default);border-radius:6px;font-size:13px;text-align:right}
+.rg-unit input:focus,.rg-phone:focus{outline:none;border-color:var(--brand-blue);box-shadow:0 0 0 3px rgba(14,147,242,0.12)}
+.rg-phone{width:170px;height:36px;padding:0 10px;border:1px solid var(--border-default);border-radius:6px;font-size:13px}
+.rg-risk{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;align-items:center}
+.rg-sim{background:var(--neutral-100);border-radius:8px;padding:14px 16px;font-size:13px}
+.rg-sim dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:6px 12px}
+.rg-sim dt{color:var(--text-muted)}.rg-sim dd{margin:0;text-align:right;font-weight:600;color:var(--neutral-900)}
+.rg-sim .tot{border-top:1px solid var(--border-default);padding-top:8px;margin-top:4px}
+.rg-sim dd.tot{color:var(--brand-blue);font-size:15px}
+.rg-sim-in{display:flex;gap:10px;margin-bottom:12px}
+.rg-sim-in .sec-field{flex:1}
+.rg-sim-in .sec-field input{height:36px}
+</style>
 </head><body><div class="app-shell"><aside class="sidebar">
     <div class="sidebar-logo" role="img" aria-label="Mago do Pism" style="background:url('../assets/logo-azul.png') center/contain no-repeat; filter:brightness(0) invert(1);"></div>
     <nav class="sidebar-nav">
@@ -13,134 +63,142 @@
 <div class="sec-page-head">
   <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg>Régua de Cobrança</h1>
   <div class="sec-actions">
-    <button class="sec-btn outline">Duplicar régua</button>
+    <button class="sec-btn outline">Descartar</button>
     <button class="sec-btn dark">Salvar alterações</button>
   </div>
 </div>
 
-<div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:24px;">
-  <aside>
-    <section class="sec-card">
-      <h3 class="sec-card-title">Réguas configuradas</h3>
-      <ul class="sec-list-radio">
-        <li class="is-active"><span class="title">Régua padrão Cursinho</span><span class="meta">7 etapas · 248 alunos</span></li>
-        <li><span class="title">Régua Pré-IFNMG</span><span class="meta">5 etapas · 132 alunos</span></li>
-        <li><span class="title">Régua intensiva (60+ dias)</span><span class="meta">4 etapas · 24 alunos</span></li>
-        <li class="muted"><span class="title">Régua manual</span><span class="meta">desativada</span></li>
-      </ul>
-      <button class="sec-btn outline" style="width:100%; margin-top:12px;">+ Nova régua</button>
-    </section>
+<div class="rg-note" style="margin-bottom:20px">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+  <span>O texto do WhatsApp é o modelo já aprovado na Meta e não muda por aqui. Esta tela controla quando a cobrança sai, por qual canal e os valores que entram nela (prazo, multa, juros, telefone). Mudar um número não exige novo modelo.</span>
+</div>
 
-    <section class="sec-card" style="margin-top:20px;">
-      <h3 class="sec-card-title">Variáveis disponíveis</h3>
-      <div style="display:flex; flex-wrap:wrap; gap:6px;">
-        <code class="var-chip">{{aluno}}</code><code class="var-chip">{{responsavel}}</code><code class="var-chip">{{valor}}</code><code class="var-chip">{{vencimento}}</code><code class="var-chip">{{dias_atraso}}</code><code class="var-chip">{{link_pagamento}}</code><code class="var-chip">{{pix_copia_cola}}</code>
-      </div>
-    </section>
-  </aside>
+<div class="rg-grid">
+  <div class="rg-col">
 
-  <div>
     <section class="sec-card" style="padding:0;">
-      <div style="padding:18px 24px; display:flex; align-items:center; border-bottom:1px solid var(--border-default);">
-        <h3 class="sec-card-title" style="margin:0;">Régua padrão Cursinho — 7 etapas</h3>
+      <div class="rg-card-head">
+        <div><h3 class="sec-card-title" style="margin:0;">Etapas da régua</h3><div class="sub">Adicione quantas quiser. O prazo vai no texto como “vence em 3 dias”.</div></div>
         <label class="sec-toggle" style="margin-left:auto;"><input type="checkbox" checked><span class="switch"></span>Ativa</label>
       </div>
 
-      <ol class="sec-steps">
-        <li>
-          <div class="step-rail"><span class="step-pin">D-3</span><span class="step-line"></span></div>
-          <div class="step-card">
-            <div class="step-head"><strong>Lembrete amigável</strong><span class="pill info">E-mail</span></div>
-            <p class="step-msg">Olá {{responsavel}}! Lembramos que a mensalidade do {{aluno}} vence em 3 dias ({{vencimento}}). Valor: {{valor}}. Pague pelo Pix ou link: {{link_pagamento}}.</p>
-            <div class="step-actions">
-              <button class="ico-btn" title="Editar">✎</button>
-              <button class="ico-btn" title="Duplicar">⎘</button>
-              <button class="ico-btn" title="Remover">×</button>
-            </div>
+      <ol class="rg-steps" id="steps">
+        <li class="rg-step is-before">
+          <span class="idx">1</span>
+          <div class="rg-row">
+            <div class="sec-field rg-w-days"><label>Dias</label><input type="number" min="0" value="7"></div>
+            <div class="sec-field rg-w-when"><label>Quando</label><select><option selected>antes do vencimento</option><option>no vencimento</option><option>depois do vencimento</option></select></div>
+            <div class="sec-field"><label>Canal</label><div class="rg-chips"><label class="rg-chip"><input type="checkbox" checked><span>WhatsApp</span></label><label class="rg-chip"><input type="checkbox" checked><span>E-mail</span></label></div></div>
+            <div class="sec-field rg-w-time"><label>Horário</label><input type="time" value="09:00"></div>
           </div>
-        </li><li>
-          <div class="step-rail"><span class="step-pin">D-1</span><span class="step-line"></span></div>
-          <div class="step-card">
-            <div class="step-head"><strong>Aviso véspera</strong><span class="pill info">WhatsApp</span></div>
-            <p class="step-msg">Oi, tudo bem? 💚 A mensalidade do {{aluno}} vence amanhã. Acesse {{link_pagamento}} para pagar com Pix.</p>
-            <div class="step-actions">
-              <button class="ico-btn" title="Editar">✎</button>
-              <button class="ico-btn" title="Duplicar">⎘</button>
-              <button class="ico-btn" title="Remover">×</button>
-            </div>
+          <button class="ico-btn" title="Remover etapa" aria-label="Remover etapa">×</button>
+        </li>
+        <li class="rg-step is-before">
+          <span class="idx">2</span>
+          <div class="rg-row">
+            <div class="sec-field rg-w-days"><label>Dias</label><input type="number" min="0" value="2"></div>
+            <div class="sec-field rg-w-when"><label>Quando</label><select><option selected>antes do vencimento</option><option>no vencimento</option><option>depois do vencimento</option></select></div>
+            <div class="sec-field"><label>Canal</label><div class="rg-chips"><label class="rg-chip"><input type="checkbox" checked><span>WhatsApp</span></label><label class="rg-chip"><input type="checkbox" checked><span>E-mail</span></label></div></div>
+            <div class="sec-field rg-w-time"><label>Horário</label><input type="time" value="09:00"></div>
           </div>
-        </li><li>
-          <div class="step-rail"><span class="step-pin">D+0</span><span class="step-line"></span></div>
-          <div class="step-card">
-            <div class="step-head"><strong>Vence hoje</strong><span class="pill info">WhatsApp + E-mail</span></div>
-            <p class="step-msg">A fatura de {{valor}} do {{aluno}} vence hoje. Caso já tenha pago, desconsidere.</p>
-            <div class="step-actions">
-              <button class="ico-btn" title="Editar">✎</button>
-              <button class="ico-btn" title="Duplicar">⎘</button>
-              <button class="ico-btn" title="Remover">×</button>
-            </div>
+          <button class="ico-btn" title="Remover etapa" aria-label="Remover etapa">×</button>
+        </li>
+        <li class="rg-step">
+          <span class="idx">3</span>
+          <div class="rg-row">
+            <div class="sec-field rg-w-days"><label>Dias</label><input type="number" min="0" value="0" disabled></div>
+            <div class="sec-field rg-w-when"><label>Quando</label><select><option>antes do vencimento</option><option selected>no vencimento</option><option>depois do vencimento</option></select></div>
+            <div class="sec-field"><label>Canal</label><div class="rg-chips"><label class="rg-chip"><input type="checkbox" checked><span>WhatsApp</span></label><label class="rg-chip"><input type="checkbox"><span>E-mail</span></label></div></div>
+            <div class="sec-field rg-w-time"><label>Horário</label><input type="time" value="09:00"></div>
           </div>
-        </li><li>
-          <div class="step-rail"><span class="step-pin">D+3</span><span class="step-line"></span></div>
-          <div class="step-card">
-            <div class="step-head"><strong>Primeira cobrança</strong><span class="pill info">WhatsApp</span></div>
-            <p class="step-msg">Olá {{responsavel}}, identificamos que a fatura do {{aluno}} ({{valor}}) está em atraso há {{dias_atraso}} dias. Posso te ajudar?</p>
-            <div class="step-actions">
-              <button class="ico-btn" title="Editar">✎</button>
-              <button class="ico-btn" title="Duplicar">⎘</button>
-              <button class="ico-btn" title="Remover">×</button>
-            </div>
+          <button class="ico-btn" title="Remover etapa" aria-label="Remover etapa">×</button>
+        </li>
+        <li class="rg-step is-after">
+          <span class="idx">4</span>
+          <div class="rg-row">
+            <div class="sec-field rg-w-days"><label>Dias</label><input type="number" min="0" value="1"></div>
+            <div class="sec-field rg-w-when"><label>Quando</label><select><option>antes do vencimento</option><option>no vencimento</option><option selected>depois do vencimento</option></select></div>
+            <div class="sec-field"><label>Canal</label><div class="rg-chips"><label class="rg-chip"><input type="checkbox" checked><span>WhatsApp</span></label><label class="rg-chip"><input type="checkbox" checked><span>E-mail</span></label></div></div>
+            <div class="sec-field rg-w-time"><label>Horário</label><input type="time" value="09:00"></div>
           </div>
-        </li><li>
-          <div class="step-rail"><span class="step-pin">D+7</span><span class="step-line"></span></div>
-          <div class="step-card">
-            <div class="step-head"><strong>Cobrança formal</strong><span class="pill info">E-mail</span></div>
-            <p class="step-msg">Prezado(a) {{responsavel}}, a fatura de {{valor}} encontra-se em atraso há {{dias_atraso}} dias. Solicitamos a regularização.</p>
-            <div class="step-actions">
-              <button class="ico-btn" title="Editar">✎</button>
-              <button class="ico-btn" title="Duplicar">⎘</button>
-              <button class="ico-btn" title="Remover">×</button>
-            </div>
-          </div>
-        </li><li>
-          <div class="step-rail"><span class="step-pin">D+15</span><span class="step-line"></span></div>
-          <div class="step-card">
-            <div class="step-head"><strong>Negociação</strong><span class="pill info">WhatsApp + Ligação</span></div>
-            <p class="step-msg">Vamos encontrar a melhor forma de regularizar? Temos opções de parcelamento. Responda este WhatsApp.</p>
-            <div class="step-actions">
-              <button class="ico-btn" title="Editar">✎</button>
-              <button class="ico-btn" title="Duplicar">⎘</button>
-              <button class="ico-btn" title="Remover">×</button>
-            </div>
-          </div>
-        </li><li>
-          <div class="step-rail"><span class="step-pin">D+30</span><span class="step-line"></span></div>
-          <div class="step-card">
-            <div class="step-head"><strong>Suspensão de acesso</strong><span class="pill info">E-mail + Sistema</span></div>
-            <p class="step-msg">Comunicamos a suspensão temporária do acesso à plataforma do {{aluno}} a partir de hoje, até regularização da pendência.</p>
-            <div class="step-actions">
-              <button class="ico-btn" title="Editar">✎</button>
-              <button class="ico-btn" title="Duplicar">⎘</button>
-              <button class="ico-btn" title="Remover">×</button>
-            </div>
-          </div>
+          <button class="ico-btn" title="Remover etapa" aria-label="Remover etapa">×</button>
         </li>
       </ol>
 
-      <div style="padding:16px 24px; border-top:1px solid var(--border-default);">
-        <button class="sec-btn outline" style="width:100%;">+ Adicionar etapa</button>
+      <div class="rg-add">
+        <button class="sec-btn outline" style="width:100%;" id="add">+ Adicionar etapa</button>
       </div>
     </section>
 
-    <section class="sec-card" style="margin-top:20px;">
-      <h3 class="sec-card-title">Desempenho últimos 30 dias</h3>
-      <div class="sec-kpis" style="grid-template-columns:repeat(4,1fr);">
-        <div class="kpi"><div class="kpi-value">1.428</div><div class="kpi-label">Mensagens enviadas</div></div>
-        <div class="kpi"><div class="kpi-value success">R$ 8.940,00</div><div class="kpi-label">Recuperado</div></div>
-        <div class="kpi"><div class="kpi-value">62%</div><div class="kpi-label">Taxa de resposta</div></div>
-        <div class="kpi"><div class="kpi-value success">3,2 dias</div><div class="kpi-label">Tempo médio até pagar</div></div>
+    <section class="sec-card" style="padding:0;">
+      <div class="rg-card-head"><div><h3 class="sec-card-title" style="margin:0;">Depois da última etapa</h3><div class="sub">Se a fatura continuar em aberto, a cobrança segue se repetindo.</div></div>
+        <label class="sec-toggle" style="margin-left:auto;"><input type="checkbox" checked><span class="switch"></span>Repetir</label></div>
+      <div class="rg-body">
+        <div class="rg-inline">Repetir a cada <input type="number" min="1" value="2"> dias, e parar após <input type="number" min="1" value="60" id="stop"> dias de atraso.</div>
+        <div class="rg-hint">Hoje a cobrança vai a cada 2 dias e não para nunca. Deixe o limite vazio para manter assim.</div>
+      </div>
+    </section>
+
+    <section class="sec-card" style="padding:0;">
+      <div class="rg-card-head"><div><h3 class="sec-card-title" style="margin:0;">Faixas de risco da Inadimplência</h3><div class="sub">Define a cor do aluno na tela de inadimplentes.</div></div></div>
+      <div class="rg-body">
+        <div class="rg-risk">
+          <span class="pill danger">Alto</span>
+          <div class="rg-inline">mais de <input type="number" min="1" value="30"> dias de atraso, ou <input type="number" min="1" value="2"> ou mais parcelas em aberto</div>
+          <span class="pill warn">Médio</span>
+          <div class="rg-inline">de <input type="number" min="1" value="15"> até <input type="number" min="1" value="30"> dias de atraso</div>
+          <span class="pill success">Baixo</span>
+          <div class="rg-inline" style="color:var(--text-muted)">o restante</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="rg-col">
+
+    <section class="sec-card" style="padding:0;">
+      <div class="rg-card-head"><div><h3 class="sec-card-title" style="margin:0;">Valores da cobrança</h3><div class="sub">Entram no cálculo do valor atualizado.</div></div></div>
+      <div class="rg-body">
+        <div class="rg-set"><div class="txt"><strong>Multa</strong><span>Aplicada uma vez, no primeiro dia de atraso.</span></div><span class="rg-unit"><input type="number" step="0.1" min="0" value="2" id="multa"> %</span></div>
+        <div class="rg-set"><div class="txt"><strong>Juros</strong><span>Ao mês, proporcional aos dias de atraso.</span></div><span class="rg-unit"><input type="number" step="0.1" min="0" value="1" id="juros"> % a.m.</span></div>
+        <div class="rg-set"><div class="txt"><strong>Carência de matrícula tardia</strong><span>Quem se matricula depois do vencimento não paga encargo nesse prazo.</span></div><span class="rg-unit"><input type="number" min="0" value="5"> dias</span></div>
+        <div class="rg-set"><div class="txt"><strong>Vencimento em fim de semana ou feriado</strong><span>Passa para o próximo dia útil.</span></div><label class="sec-toggle"><input type="checkbox" checked><span class="switch"></span></label></div>
+      </div>
+    </section>
+
+    <section class="sec-card" style="padding:0;">
+      <div class="rg-card-head"><div><h3 class="sec-card-title" style="margin:0;">Valor que o aluno recebe</h3></div></div>
+      <div class="rg-body">
+        <div class="rg-set"><div class="txt"><strong>Mandar o valor atualizado</strong><span>Ligado, a mensagem de atraso traz o valor com multa e juros. Desligado, vai o valor original da fatura.</span></div><label class="sec-toggle"><input type="checkbox" checked id="atual"><span class="switch"></span></label></div>
+        <div class="rg-sim-in" style="margin-top:16px">
+          <div class="sec-field"><label>Exemplo: valor</label><input type="number" id="sv" value="500"></div>
+          <div class="sec-field"><label>Dias de atraso</label><input type="number" id="sd" value="10"></div>
+        </div>
+        <div class="rg-sim"><dl>
+          <dt>Valor original</dt><dd id="o">R$ 500,00</dd>
+          <dt>Multa</dt><dd id="m">R$ 10,00</dd>
+          <dt>Juros</dt><dd id="j">R$ 1,67</dd>
+          <dt class="tot">Vai na mensagem</dt><dd class="tot" id="t">R$ 511,67</dd>
+        </dl></div>
+      </div>
+    </section>
+
+    <section class="sec-card" style="padding:0;">
+      <div class="rg-card-head"><div><h3 class="sec-card-title" style="margin:0;">Contato da secretaria</h3></div></div>
+      <div class="rg-body">
+        <div class="rg-set"><div class="txt"><strong>Telefone</strong><span>Usado no lembrete e na resposta automática do WhatsApp. Um número só para os dois.</span></div><input class="rg-phone" value="(31) 99721-2639" inputmode="tel"></div>
       </div>
     </section>
   </div>
 </div>
-</div></main></div></body></html>
+</div>
+<script>
+const $=s=>document.querySelector(s),brl=v=>'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+function sim(){const v=+$('#sv').value||0,d=+$('#sd').value||0,m=d>0?v*(+$('#multa').value||0)/100:0,j=d>0?v*(+$('#juros').value||0)/100*d/30:0;
+$('#o').textContent=brl(v);$('#m').textContent=brl(m);$('#j').textContent=brl(j);$('#t').textContent=brl($('#atual').checked?v+m+j:v);}
+['#sv','#sd','#multa','#juros','#atual'].forEach(s=>$(s).addEventListener('input',sim));sim();
+function renum(){document.querySelectorAll('#steps .idx').forEach((e,i)=>e.textContent=i+1)}
+$('#steps').addEventListener('click',e=>{if(e.target.closest('.ico-btn')){e.target.closest('.rg-step').remove();renum()}});
+$('#add').addEventListener('click',()=>{const l=$('#steps').lastElementChild.cloneNode(true);l.classList.remove('is-before','is-after');$('#steps').append(l);renum()});
+</script>
+</main></div></body></html>
