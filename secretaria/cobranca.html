@@ -4,201 +4,374 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
 <style>
+/* ---------- Layout ---------- */
 .rg-grid{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:24px;align-items:start}
 @media(max-width:1100px){.rg-grid{grid-template-columns:1fr}}
-.rg-col{display:flex;flex-direction:column;gap:20px}
+.rg-col{display:flex;flex-direction:column;gap:20px;min-width:0}
 .rg-card-head{padding:18px 24px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border-default)}
 .rg-card-head h3{margin:0}
-.rg-card-head .sub{font-size:12px;color:var(--text-muted)}
+.rg-card-head .sub{font-size:12px;color:var(--text-secondary);line-height:1.4}
 .rg-body{padding:18px 24px}
-.rg-note{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;background:rgba(14,147,242,0.06);border-left:3px solid var(--brand-blue);border-radius:6px;font-size:12px;line-height:1.5;color:var(--text-secondary);margin-bottom:16px}
-.rg-note svg{width:16px;height:16px;flex:none;color:var(--brand-blue);margin-top:1px}
+.rg-lead{font-size:13px;color:var(--text-secondary);margin:-8px 0 20px;max-width:640px;line-height:1.5}
+.rg-note{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;background:rgba(14,147,242,0.06);border-left:3px solid var(--brand-blue);border-radius:6px;font-size:13px;line-height:1.5;color:var(--text-secondary);margin-bottom:20px}
+.rg-note svg{width:16px;height:16px;flex:none;color:var(--brand-blue);margin-top:2px}
+.rg-note b{color:var(--neutral-900);font-weight:600}
+:root{--rg-h:40px}
+@media(max-width:700px){:root{--rg-h:44px}.rg-card-head,.rg-body{padding-left:16px;padding-right:16px}}
+
+/* ---------- Menu mobile (só nesta tela) ---------- */
+.rg-topbar,.rg-scrim{display:none}
+@media(max-width:900px){
+  .rg-topbar{display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:30;background:var(--brand-blue);color:white;padding:6px 12px;min-height:56px}
+  .rg-topbar button{width:44px;height:44px;border:0;background:transparent;color:white;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+  .rg-topbar button svg{width:24px;height:24px}
+  .rg-topbar strong{font-family:var(--font-display);font-weight:600;font-size:16px}
+  .sidebar{position:fixed;top:0;left:0;bottom:0;width:260px;z-index:50;min-height:0;overflow-y:auto;transform:translateX(-100%);transition:transform .2s ease;visibility:hidden}
+  .sidebar.is-open{transform:none;visibility:visible}
+  .sidebar-logo{height:72px;margin-bottom:16px}
+  .rg-scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:40;display:none}
+  .rg-scrim.is-open{display:block}
+}
+.rg-topbar button:focus-visible,.rg-rm:focus-visible,.sec-btn:focus-visible,.rg-undo:focus-visible{outline:3px solid rgba(14,147,242,.45);outline-offset:2px}
+
+/* ---------- Linha do tempo ---------- */
+.rg-tl{display:flex;overflow-x:auto;padding:18px 24px 14px;background:var(--neutral-50);border-bottom:1px solid var(--border-default);list-style:none;margin:0;scrollbar-width:thin}
+.rg-tl li{flex:1 0 96px;position:relative;text-align:center;padding-top:22px}
+.rg-tl li::before{content:"";position:absolute;top:7px;left:0;right:0;height:2px;background:var(--border-default)}
+.rg-tl li:first-child::before{left:50%}.rg-tl li:last-child::before{right:50%}
+.rg-tl li::after{content:"";position:absolute;top:0;left:50%;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:var(--brand-blue);border:3px solid white;box-shadow:0 0 0 1px var(--brand-blue);box-sizing:border-box}
+.rg-tl li.after::after{background:var(--color-danger);box-shadow:0 0 0 1px var(--color-danger)}
+.rg-tl li.on::after{background:var(--neutral-500);box-shadow:0 0 0 1px var(--neutral-500)}
+.rg-tl li.venc::after{background:var(--neutral-900);box-shadow:0 0 0 1px var(--neutral-900);border-radius:3px;transform:rotate(45deg)}
+.rg-tl li.rep::after{background:white;box-shadow:0 0 0 1px var(--color-danger);border:3px solid white;border-style:dashed}
+.rg-tl b{display:block;font-size:13px;color:var(--neutral-900)}
+.rg-tl span{display:block;font-size:11px;color:var(--text-secondary);line-height:1.35}
+.rg-tl-empty{padding:14px 24px;font-size:13px;color:var(--text-secondary);background:var(--neutral-50);border-bottom:1px solid var(--border-default)}
+@media(max-width:700px){.rg-tl{padding:16px 16px 12px}}
+
+/* ---------- Etapas ---------- */
 .rg-steps{list-style:none;margin:0;padding:0}
-.rg-step{display:grid;grid-template-columns:28px 1fr 28px;gap:10px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--neutral-200)}
+.rg-steps.is-off,.rg-tl.is-off{opacity:.45}
+.rg-off-note{display:none;padding:10px 24px;font-size:12px;background:rgba(208,62,62,.07);color:var(--color-danger);font-weight:600}
+.is-off-card .rg-off-note{display:block}
+.rg-step{display:grid;grid-template-columns:32px minmax(0,1fr) 44px;column-gap:12px;row-gap:10px;align-items:center;padding:14px 24px 16px;border-bottom:1px solid var(--neutral-200)}
+@media(max-width:700px){.rg-step{padding:12px 16px 16px;column-gap:10px}}
 .rg-step:last-child{border-bottom:0}
-.rg-step .idx{width:28px;height:28px;border-radius:var(--radius-pill);background:var(--neutral-100);color:var(--text-muted);font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
-.rg-step.is-before .idx{background:rgba(14,147,242,0.12);color:var(--brand-blue)}
-.rg-step.is-after .idx{background:rgba(220,38,38,0.1);color:var(--color-danger)}
-.rg-row{display:flex;flex-wrap:wrap;gap:10px 10px;align-items:flex-end}
-.rg-row .sec-field{min-width:0}
-.rg-row .sec-field input,.rg-row .sec-field select{height:36px}
-.rg-w-days{width:64px}.rg-w-when{width:172px}.rg-w-time{width:112px}
-.rg-chips{display:flex;gap:6px}
-.rg-chip{position:relative}
-.rg-chip input{position:absolute;opacity:0;inset:0;cursor:pointer}
-.rg-chip span{text-transform:none;letter-spacing:0;display:inline-flex;align-items:center;height:36px;padding:0 12px;border:1px solid var(--border-default);border-radius:6px;font-size:12px;font-weight:600;color:var(--text-muted);background:white}
-.rg-chip input:checked + span{background:rgba(14,147,242,0.08);border-color:var(--brand-blue);color:var(--brand-blue)}
-.rg-chip input:focus-visible + span{box-shadow:0 0 0 3px rgba(14,147,242,0.2)}
+.rg-step .idx{width:32px;height:32px;border-radius:var(--radius-pill);background:var(--neutral-200);color:var(--text-secondary);font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.rg-step.is-before .idx{background:rgba(14,147,242,0.12);color:var(--brand-blue-dark)}
+.rg-step.is-after .idx{background:rgba(208,62,62,0.1);color:var(--color-danger)}
+.rg-sum{font-size:14px;font-weight:600;color:var(--neutral-900);line-height:1.35}
+.rg-sum small{display:block;font-weight:400;font-size:12px;color:var(--text-secondary);margin-top:1px}
+.rg-rm{width:44px;height:44px;border:0;background:transparent;border-radius:8px;color:var(--text-secondary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;margin:-6px 0}
+.rg-rm svg{width:20px;height:20px}
+.rg-rm:hover{background:rgba(208,62,62,.1);color:var(--color-danger)}
+.rg-row{grid-column:2 / -1;display:grid;grid-template-columns:88px minmax(0,1fr);gap:12px}
+.rg-row .span{grid-column:1 / -1}
+@media(min-width:701px){.rg-row{grid-template-columns:84px minmax(0,1fr) 150px;align-items:end}.rg-row .span{grid-column:auto}.rg-row .sec-field.t{order:2}.rg-row .sec-field.c{order:3;grid-column:1 / -1}.rg-row .sec-field.t input{max-width:none!important}}
+.rg-sec .sec-field,.rg-row .sec-field{min-width:0}
+.rg-lbl,.rg-sec .sec-field label,.rg-row .sec-field label{font-size:12px;font-weight:600;color:var(--text-secondary);letter-spacing:.2px;text-transform:uppercase;margin:0;padding:0}
+.rg-row .sec-field input,.rg-row .sec-field select,.rg-sec .sec-field input{height:var(--rg-h);width:100%;box-sizing:border-box;font-size:14px}
+@media(max-width:700px){.rg-row .sec-field input,.rg-row .sec-field select,.rg-sec .sec-field input,.rg-in,.rg-phone{font-size:16px!important}}
+.rg-row input:disabled{background:var(--neutral-200);color:var(--text-secondary)}
+.rg-chips{display:flex;gap:8px;border:0;margin:0;padding:0;min-width:0}
+.rg-chip{position:relative;flex:1}
+.rg-chip input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer;margin:0}
+.rg-chip span{text-transform:none;letter-spacing:0;display:flex;align-items:center;justify-content:center;gap:6px;height:var(--rg-h);padding:0 14px;border:1px solid var(--border-default);border-radius:6px;font-size:13px;font-weight:600;color:var(--text-secondary);background:white}
+.rg-chip span::before{content:"";width:14px;height:14px;border-radius:3px;border:1.5px solid var(--neutral-500);box-sizing:border-box}
+.rg-chip input:checked + span{background:rgba(14,147,242,0.08);border-color:var(--brand-blue);color:var(--brand-blue-dark)}
+.rg-chip input:checked + span::before{background:var(--brand-blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 7.5l2.5 2.5L11 4.5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/cover;border-color:var(--brand-blue)}
+.rg-chip input:focus-visible + span{box-shadow:0 0 0 3px rgba(14,147,242,0.3)}
 .rg-add{padding:16px 24px;border-top:1px solid var(--border-default)}
-.rg-inline{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);flex-wrap:wrap}
-.rg-inline input{width:72px;height:36px;padding:0 10px;border:1px solid var(--border-default);border-radius:6px;font-size:13px}
-.rg-inline input:focus{outline:none;border-color:var(--brand-blue);box-shadow:0 0 0 3px rgba(14,147,242,0.12)}
-.rg-hint{font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.4}
+@media(max-width:700px){.rg-add{padding:12px 16px}}
+.rg-add .sec-btn{width:100%;height:var(--rg-h);justify-content:center}
+.rg-empty{padding:32px 24px;text-align:center;color:var(--text-secondary);font-size:13px;line-height:1.5}
+.rg-empty strong{display:block;color:var(--neutral-900);font-size:15px;margin-bottom:4px}
+.rg-empty[hidden]{display:none}
+
+/* ---------- Mensagens de validação ---------- */
+.rg-msg{grid-column:2 / -1;margin:0;font-size:12px;font-weight:600;color:var(--color-danger);line-height:1.4}
+.rg-msg:empty{display:none}
+.rg-msg.block{grid-column:auto;margin-top:10px}
+[aria-invalid="true"]{border-color:var(--color-danger)!important;box-shadow:0 0 0 3px rgba(208,62,62,.12)!important}
+
+/* ---------- Campos soltos ---------- */
+.rg-hint{font-size:12px;color:var(--text-secondary);margin-top:12px;line-height:1.5}
+.rg-in,.rg-phone{height:var(--rg-h);padding:0 10px;border:1px solid var(--border-default);border-radius:6px;font-size:14px;box-sizing:border-box;width:100%;background:white;color:var(--text-primary)}
+.rg-in:focus,.rg-phone:focus{outline:none;border-color:var(--brand-blue);box-shadow:0 0 0 3px rgba(14,147,242,0.12)}
+.rg-in[readonly]{background:var(--neutral-200);color:var(--text-secondary)}
+.rg-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rg-sec .sec-field label{display:block}
 .rg-set{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--neutral-200)}
 .rg-set:first-child{padding-top:0}.rg-set:last-child{border-bottom:0;padding-bottom:0}
 .rg-set .txt{flex:1;min-width:0}
-.rg-set .txt strong{display:block;font-size:13px;color:var(--neutral-900)}
-.rg-set .txt span{font-size:11px;color:var(--text-muted);line-height:1.4}
-.rg-unit{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)}
-.rg-unit input{width:76px;height:36px;padding:0 10px;border:1px solid var(--border-default);border-radius:6px;font-size:13px;text-align:right}
-.rg-unit input:focus,.rg-phone:focus{outline:none;border-color:var(--brand-blue);box-shadow:0 0 0 3px rgba(14,147,242,0.12)}
-.rg-phone{width:170px;height:36px;padding:0 10px;border:1px solid var(--border-default);border-radius:6px;font-size:13px}
-.rg-risk{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;align-items:center}
-.rg-sim{background:var(--neutral-100);border-radius:8px;padding:14px 16px;font-size:13px}
+.rg-set .txt strong{display:block;font-size:14px;color:var(--neutral-900)}
+.rg-set .txt span{font-size:12px;color:var(--text-secondary);line-height:1.45;display:block;margin-top:2px}
+.rg-unit{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);white-space:nowrap}
+.rg-unit .rg-in{width:84px;text-align:right}
+.rg-phone{width:180px}
+@media(max-width:700px){
+  .rg-set.stack{flex-wrap:wrap;gap:10px}.rg-set.stack .txt{flex-basis:100%}
+  .rg-set.stack .rg-unit{width:100%}.rg-set.stack .rg-unit .rg-in{flex:1;width:auto;text-align:left}
+  .rg-phone{width:100%}
+}
+/* toggles: acessíveis por teclado e com alvo de 44px */
+.sec-toggle{position:relative;min-height:44px;cursor:pointer}
+.sec-toggle input{display:block!important;position:absolute;opacity:0;width:100%;height:100%;inset:0;margin:0;cursor:pointer}
+.sec-toggle input:focus-visible + .switch{box-shadow:0 0 0 3px rgba(14,147,242,.4)}
+.sec-toggle{color:var(--neutral-900);font-weight:600}
+
+/* ---------- Faixas de risco ---------- */
+.rg-risk{display:flex;flex-direction:column;gap:12px}
+.rg-risk-item{border:1px solid var(--neutral-200);border-radius:8px;padding:12px 14px}
+.rg-risk-item .pill{margin-bottom:10px}
+.rg-risk-item .sec-field{gap:4px}
+.rg-risk-item p{margin:0;font-size:13px;color:var(--text-secondary)}
+
+/* ---------- Simulador ---------- */
+.rg-sim{background:var(--neutral-100);border:1px solid var(--neutral-200);border-radius:8px;padding:14px 16px;font-size:13px}
 .rg-sim dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:6px 12px}
-.rg-sim dt{color:var(--text-muted)}.rg-sim dd{margin:0;text-align:right;font-weight:600;color:var(--neutral-900)}
+.rg-sim dt{color:var(--text-secondary)}.rg-sim dd{margin:0;text-align:right;font-weight:600;color:var(--neutral-900)}
 .rg-sim .tot{border-top:1px solid var(--border-default);padding-top:8px;margin-top:4px}
-.rg-sim dd.tot{color:var(--brand-blue);font-size:15px}
-.rg-sim-in{display:flex;gap:10px;margin-bottom:12px}
-.rg-sim-in .sec-field{flex:1}
-.rg-sim-in .sec-field input{height:36px}
+.rg-sim dd.tot{color:var(--brand-blue-dark);font-size:16px}
+.rg-sim-in{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 12px}
+.rg-sim-t{font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.2px;margin:16px 0 8px}
+
+/* ---------- Barra de salvar ---------- */
+.rg-bar{position:sticky;bottom:0;z-index:20;margin:24px -24px -32px;padding:12px 24px;background:white;border-top:1px solid var(--border-default);box-shadow:0 -4px 16px rgba(0,0,0,.06);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+@media(max-width:700px){.rg-bar{margin:20px -18px -64px;padding:10px 16px}.rg-bar .sec-btn{flex:1}}
+.rg-status{flex:1 1 180px;font-size:13px;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:8px}
+.rg-status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--color-success);flex:none}
+.rg-bar.is-dirty .rg-status{color:var(--neutral-900)}
+.rg-bar.is-dirty .rg-status::before{background:var(--brand-blue)}
+.rg-bar.is-error .rg-status{color:var(--color-danger)}
+.rg-bar.is-error .rg-status::before{background:var(--color-danger)}
+.rg-bar .sec-btn{height:var(--rg-h)}
+.sec-btn:disabled{opacity:.45;cursor:not-allowed}
+.rg-toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--neutral-900);color:white;font-size:13px;padding:10px 14px;border-radius:8px;box-shadow:var(--shadow-deep);z-index:60;display:flex;align-items:center;gap:12px;max-width:calc(100vw - 32px)}
+.rg-toast[hidden]{display:none}
+.rg-undo{background:transparent;border:0;color:#7cc4ff;font-weight:700;font-size:13px;cursor:pointer;min-height:44px;padding:0 6px}
+.rg-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
-</head><body><div class="app-shell"><aside class="sidebar">
+</head><body><div class="app-shell">
+<aside class="sidebar" id="sidebar">
     <div class="sidebar-logo" role="img" aria-label="Mago do Pism" style="background:url('../assets/logo-azul.png') center/contain no-repeat; filter:brightness(0) invert(1);"></div>
     <nav class="sidebar-nav">
       <a href="painel.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Painel</span></a><a href="clientes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2.3 1.5-4 3.7-4 1.6 0 2.8.9 3.3 2.2"/></svg><span>Clientes</span></a><a href="formularios.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></svg><span>Formulários</span></a><a href="faturas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg><span>Contas a Receber</span></a><a href="inadimplentes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.8" fill="currentColor"/></svg><span>Inadimplência</span></a><a href="cobranca.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg><span>Régua de Cobrança</span></a>
     </nav>
-  </aside><main class="main"><div class="sec-page">
+  </aside>
+<div class="rg-scrim" id="scrim"></div>
+<main class="main">
+<div class="rg-topbar"><button type="button" id="menu" aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><strong>Régua de Cobrança</strong></div>
+<div class="sec-page rg-sec">
 <nav class="sec-breadcrumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><a href="painel.html">Principal</a><span class="sep">/</span><span>Régua de Cobrança</span></nav>
-<div class="sec-page-head">
+<div class="sec-page-head" style="margin-bottom:12px">
   <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg>Régua de Cobrança</h1>
-  <div class="sec-actions">
-    <button class="sec-btn outline">Descartar</button>
-    <button class="sec-btn dark">Salvar alterações</button>
-  </div>
 </div>
+<p class="rg-lead">Defina quando a cobrança sai, por qual canal e quais valores entram nela. A régua vale para todos os alunos.</p>
 
-<div class="rg-note" style="margin-bottom:20px">
+<div class="rg-note">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
-  <span>O texto do WhatsApp é o modelo já aprovado na Meta e não muda por aqui. Esta tela controla quando a cobrança sai, por qual canal e os valores que entram nela (prazo, multa, juros, telefone). Mudar um número não exige novo modelo.</span>
+  <span><b>O texto do WhatsApp não muda por aqui.</b> É o modelo já aprovado na Meta. Mudar prazo, multa, juros ou telefone não exige novo modelo.</span>
 </div>
 
 <div class="rg-grid">
   <div class="rg-col">
 
-    <section class="sec-card" style="padding:0;">
+    <section class="sec-card" style="padding:0;" id="stepsCard" aria-labelledby="h-etapas">
       <div class="rg-card-head">
-        <div><h3 class="sec-card-title" style="margin:0;">Etapas da régua</h3><div class="sub">Adicione quantas quiser. O prazo vai no texto como “vence em 3 dias”.</div></div>
-        <label class="sec-toggle" style="margin-left:auto;"><input type="checkbox" checked><span class="switch"></span>Ativa</label>
+        <div><h3 class="sec-card-title" id="h-etapas" style="margin:0;">Etapas da régua</h3><div class="sub">Adicione quantas quiser. O prazo vai no texto como “vence em 3 dias”.</div></div>
+        <label class="sec-toggle" style="margin-left:auto;"><input type="checkbox" checked id="ativa" aria-label="Régua ativa"><span class="switch"></span><span id="ativaTxt">Ativa</span></label>
       </div>
-
-      <ol class="rg-steps" id="steps">
-        <li class="rg-step is-before">
-          <span class="idx">1</span>
-          <div class="rg-row">
-            <div class="sec-field rg-w-days"><label>Dias</label><input type="number" min="0" value="7"></div>
-            <div class="sec-field rg-w-when"><label>Quando</label><select><option selected>antes do vencimento</option><option>no vencimento</option><option>depois do vencimento</option></select></div>
-            <div class="sec-field"><label>Canal</label><div class="rg-chips"><label class="rg-chip"><input type="checkbox" checked><span>WhatsApp</span></label><label class="rg-chip"><input type="checkbox" checked><span>E-mail</span></label></div></div>
-            <div class="sec-field rg-w-time"><label>Horário</label><input type="time" value="09:00"></div>
-          </div>
-          <button class="ico-btn" title="Remover etapa" aria-label="Remover etapa">×</button>
-        </li>
-        <li class="rg-step is-before">
-          <span class="idx">2</span>
-          <div class="rg-row">
-            <div class="sec-field rg-w-days"><label>Dias</label><input type="number" min="0" value="2"></div>
-            <div class="sec-field rg-w-when"><label>Quando</label><select><option selected>antes do vencimento</option><option>no vencimento</option><option>depois do vencimento</option></select></div>
-            <div class="sec-field"><label>Canal</label><div class="rg-chips"><label class="rg-chip"><input type="checkbox" checked><span>WhatsApp</span></label><label class="rg-chip"><input type="checkbox" checked><span>E-mail</span></label></div></div>
-            <div class="sec-field rg-w-time"><label>Horário</label><input type="time" value="09:00"></div>
-          </div>
-          <button class="ico-btn" title="Remover etapa" aria-label="Remover etapa">×</button>
-        </li>
-        <li class="rg-step">
-          <span class="idx">3</span>
-          <div class="rg-row">
-            <div class="sec-field rg-w-days"><label>Dias</label><input type="number" min="0" value="0" disabled></div>
-            <div class="sec-field rg-w-when"><label>Quando</label><select><option>antes do vencimento</option><option selected>no vencimento</option><option>depois do vencimento</option></select></div>
-            <div class="sec-field"><label>Canal</label><div class="rg-chips"><label class="rg-chip"><input type="checkbox" checked><span>WhatsApp</span></label><label class="rg-chip"><input type="checkbox"><span>E-mail</span></label></div></div>
-            <div class="sec-field rg-w-time"><label>Horário</label><input type="time" value="09:00"></div>
-          </div>
-          <button class="ico-btn" title="Remover etapa" aria-label="Remover etapa">×</button>
-        </li>
-        <li class="rg-step is-after">
-          <span class="idx">4</span>
-          <div class="rg-row">
-            <div class="sec-field rg-w-days"><label>Dias</label><input type="number" min="0" value="1"></div>
-            <div class="sec-field rg-w-when"><label>Quando</label><select><option>antes do vencimento</option><option>no vencimento</option><option selected>depois do vencimento</option></select></div>
-            <div class="sec-field"><label>Canal</label><div class="rg-chips"><label class="rg-chip"><input type="checkbox" checked><span>WhatsApp</span></label><label class="rg-chip"><input type="checkbox" checked><span>E-mail</span></label></div></div>
-            <div class="sec-field rg-w-time"><label>Horário</label><input type="time" value="09:00"></div>
-          </div>
-          <button class="ico-btn" title="Remover etapa" aria-label="Remover etapa">×</button>
-        </li>
-      </ol>
-
-      <div class="rg-add">
-        <button class="sec-btn outline" style="width:100%;" id="add">+ Adicionar etapa</button>
-      </div>
+      <div class="rg-off-note" role="status">Régua desligada: nenhuma cobrança automática sai enquanto estiver assim.</div>
+      <div id="tlWrap"></div>
+      <ol class="rg-steps" id="steps"></ol>
+      <div class="rg-empty" id="empty" hidden><strong>Nenhuma etapa ainda</strong>Sem etapas, nenhuma cobrança sai. Adicione a primeira, por exemplo 3 dias antes do vencimento.</div>
+      <div class="rg-add"><button type="button" class="sec-btn outline" id="add">+ Adicionar etapa</button></div>
     </section>
 
-    <section class="sec-card" style="padding:0;">
-      <div class="rg-card-head"><div><h3 class="sec-card-title" style="margin:0;">Depois da última etapa</h3><div class="sub">Se a fatura continuar em aberto, a cobrança segue se repetindo.</div></div>
-        <label class="sec-toggle" style="margin-left:auto;"><input type="checkbox" checked><span class="switch"></span>Repetir</label></div>
+    <section class="sec-card" style="padding:0;" aria-labelledby="h-rep">
+      <div class="rg-card-head"><div><h3 class="sec-card-title" id="h-rep" style="margin:0;">Depois da última etapa</h3><div class="sub">Se a fatura continuar em aberto, a cobrança segue se repetindo.</div></div>
+        <label class="sec-toggle" style="margin-left:auto;"><input type="checkbox" checked id="rep" aria-label="Repetir cobrança"><span class="switch"></span><span>Repetir</span></label></div>
       <div class="rg-body">
-        <div class="rg-inline">Repetir a cada <input type="number" min="1" value="2"> dias, e parar após <input type="number" min="1" value="60" id="stop"> dias de atraso.</div>
-        <div class="rg-hint">Hoje a cobrança vai a cada 2 dias e não para nunca. Deixe o limite vazio para manter assim.</div>
-      </div>
-    </section>
-
-    <section class="sec-card" style="padding:0;">
-      <div class="rg-card-head"><div><h3 class="sec-card-title" style="margin:0;">Faixas de risco da Inadimplência</h3><div class="sub">Define a cor do aluno na tela de inadimplentes.</div></div></div>
-      <div class="rg-body">
-        <div class="rg-risk">
-          <span class="pill danger">Alto</span>
-          <div class="rg-inline">mais de <input type="number" min="1" value="30"> dias de atraso, ou <input type="number" min="1" value="2"> ou mais parcelas em aberto</div>
-          <span class="pill warn">Médio</span>
-          <div class="rg-inline">de <input type="number" min="1" value="15"> até <input type="number" min="1" value="30"> dias de atraso</div>
-          <span class="pill success">Baixo</span>
-          <div class="rg-inline" style="color:var(--text-muted)">o restante</div>
+        <div class="rg-two">
+          <div class="sec-field"><label for="repN">Repetir a cada (dias)</label><input type="number" inputmode="numeric" min="1" value="2" id="repN"></div>
+          <div class="sec-field"><label for="stop">Parar após (dias de atraso)</label><input type="number" inputmode="numeric" min="1" value="60" id="stop" placeholder="Sem limite"></div>
         </div>
+        <p class="rg-msg block" id="msgRep"></p>
+        <div class="rg-hint">Hoje a cobrança vai a cada 2 dias e não para nunca. Deixe o limite vazio para manter assim.</div>
       </div>
     </section>
   </div>
 
   <div class="rg-col">
 
-    <section class="sec-card" style="padding:0;">
-      <div class="rg-card-head"><div><h3 class="sec-card-title" style="margin:0;">Valores da cobrança</h3><div class="sub">Entram no cálculo do valor atualizado.</div></div></div>
+    <section class="sec-card" style="padding:0;" aria-labelledby="h-val">
+      <div class="rg-card-head"><div><h3 class="sec-card-title" id="h-val" style="margin:0;">Valores da cobrança</h3><div class="sub">Entram no cálculo do valor atualizado.</div></div></div>
       <div class="rg-body">
-        <div class="rg-set"><div class="txt"><strong>Multa</strong><span>Aplicada uma vez, no primeiro dia de atraso.</span></div><span class="rg-unit"><input type="number" step="0.1" min="0" value="2" id="multa"> %</span></div>
-        <div class="rg-set"><div class="txt"><strong>Juros</strong><span>Ao mês, proporcional aos dias de atraso.</span></div><span class="rg-unit"><input type="number" step="0.1" min="0" value="1" id="juros"> % a.m.</span></div>
-        <div class="rg-set"><div class="txt"><strong>Carência de matrícula tardia</strong><span>Quem se matricula depois do vencimento não paga encargo nesse prazo.</span></div><span class="rg-unit"><input type="number" min="0" value="5"> dias</span></div>
-        <div class="rg-set"><div class="txt"><strong>Vencimento em fim de semana ou feriado</strong><span>Passa para o próximo dia útil.</span></div><label class="sec-toggle"><input type="checkbox" checked><span class="switch"></span></label></div>
+        <div class="rg-set stack"><div class="txt"><strong><label for="multa">Multa</label></strong><span>Aplicada uma vez, no primeiro dia de atraso.</span></div><span class="rg-unit"><input class="rg-in" type="number" inputmode="decimal" step="0.1" min="0" value="2" id="multa"> %</span></div>
+        <div class="rg-set stack"><div class="txt"><strong><label for="juros">Juros</label></strong><span>Ao mês, proporcional aos dias de atraso.</span></div><span class="rg-unit"><input class="rg-in" type="number" inputmode="decimal" step="0.1" min="0" value="1" id="juros"> % a.m.</span></div>
+        <div class="rg-set stack"><div class="txt"><strong><label for="carencia">Carência de matrícula tardia</label></strong><span>Quem se matricula depois do vencimento não paga encargo nesse prazo.</span></div><span class="rg-unit"><input class="rg-in" type="number" inputmode="numeric" min="0" value="5" id="carencia"> dias</span></div>
+        <div class="rg-set"><div class="txt"><strong id="l-util">Vencimento em fim de semana ou feriado</strong><span>Passa para o próximo dia útil.</span></div><label class="sec-toggle"><input type="checkbox" checked aria-labelledby="l-util"><span class="switch"></span></label></div>
+        <p class="rg-msg block" id="msgVal"></p>
       </div>
     </section>
 
-    <section class="sec-card" style="padding:0;">
-      <div class="rg-card-head"><div><h3 class="sec-card-title" style="margin:0;">Valor que o aluno recebe</h3></div></div>
+    <section class="sec-card" style="padding:0;" aria-labelledby="h-aluno">
+      <div class="rg-card-head"><div><h3 class="sec-card-title" id="h-aluno" style="margin:0;">O que o aluno recebe</h3><div class="sub">Confira como ficam os números na mensagem de atraso.</div></div></div>
       <div class="rg-body">
-        <div class="rg-set"><div class="txt"><strong>Mandar o valor atualizado</strong><span>Ligado, a mensagem de atraso traz o valor com multa e juros. Desligado, vai o valor original da fatura.</span></div><label class="sec-toggle"><input type="checkbox" checked id="atual"><span class="switch"></span></label></div>
-        <div class="rg-sim-in" style="margin-top:16px">
-          <div class="sec-field"><label>Exemplo: valor</label><input type="number" id="sv" value="500"></div>
-          <div class="sec-field"><label>Dias de atraso</label><input type="number" id="sd" value="10"></div>
+        <div class="rg-set"><div class="txt"><strong id="l-atual">Mandar o valor atualizado</strong><span>Ligado, a mensagem de atraso traz o valor com multa e juros. Desligado, vai o valor original da fatura.</span></div><label class="sec-toggle"><input type="checkbox" checked id="atual" aria-labelledby="l-atual"><span class="switch"></span></label></div>
+        <div class="rg-sim-t">Exemplo ao vivo</div>
+        <div class="rg-sim-in" style="margin-top:0">
+          <div class="sec-field"><label for="sv">Valor da fatura (R$)</label><input type="number" inputmode="decimal" id="sv" value="500" min="0" data-nodirty></div>
+          <div class="sec-field"><label for="sd">Dias de atraso</label><input type="number" inputmode="numeric" id="sd" value="10" min="0" data-nodirty></div>
         </div>
-        <div class="rg-sim"><dl>
+        <div class="rg-sim" aria-live="polite"><dl>
           <dt>Valor original</dt><dd id="o">R$ 500,00</dd>
           <dt>Multa</dt><dd id="m">R$ 10,00</dd>
           <dt>Juros</dt><dd id="j">R$ 1,67</dd>
           <dt class="tot">Vai na mensagem</dt><dd class="tot" id="t">R$ 511,67</dd>
+          <dt>Fale com a secretaria</dt><dd id="ph">(31) 99721-2639</dd>
         </dl></div>
       </div>
     </section>
 
-    <section class="sec-card" style="padding:0;">
-      <div class="rg-card-head"><div><h3 class="sec-card-title" style="margin:0;">Contato da secretaria</h3></div></div>
+    <section class="sec-card" style="padding:0;" aria-labelledby="h-tel">
+      <div class="rg-card-head"><div><h3 class="sec-card-title" id="h-tel" style="margin:0;">Contato da secretaria</h3></div></div>
       <div class="rg-body">
-        <div class="rg-set"><div class="txt"><strong>Telefone</strong><span>Usado no lembrete e na resposta automática do WhatsApp. Um número só para os dois.</span></div><input class="rg-phone" value="(31) 99721-2639" inputmode="tel"></div>
+        <div class="rg-set stack"><div class="txt"><strong><label for="tel">Telefone</label></strong><span>Usado no lembrete e na resposta automática do WhatsApp. Um número só para os dois.</span></div><input class="rg-phone" id="tel" value="(31) 99721-2639" inputmode="tel" autocomplete="tel"></div>
+        <p class="rg-msg block" id="msgTel"></p>
+      </div>
+    </section>
+
+    <section class="sec-card" style="padding:0;" aria-labelledby="h-risk">
+      <div class="rg-card-head"><div><h3 class="sec-card-title" id="h-risk" style="margin:0;">Faixas de risco da Inadimplência</h3><div class="sub">Define a cor do aluno na tela de inadimplentes. Não muda a cobrança.</div></div></div>
+      <div class="rg-body">
+        <div class="rg-risk">
+          <div class="rg-risk-item"><span class="pill danger">Alto</span>
+            <div class="rg-two">
+              <div class="sec-field"><label for="rkA">Mais de (dias)</label><input class="rg-in" type="number" inputmode="numeric" min="1" value="30" id="rkA"></div>
+              <div class="sec-field"><label for="rkP">Ou parcelas em aberto</label><input class="rg-in" type="number" inputmode="numeric" min="1" value="2" id="rkP"></div>
+            </div></div>
+          <div class="rg-risk-item"><span class="pill warn">Médio</span>
+            <div class="rg-two">
+              <div class="sec-field"><label for="rkM">De (dias)</label><input class="rg-in" type="number" inputmode="numeric" min="1" value="15" id="rkM"></div>
+              <div class="sec-field"><label for="rkM2">Até (dias)</label><input class="rg-in" id="rkM2" value="30" readonly aria-describedby="rkHelp"></div>
+            </div><div class="rg-hint" id="rkHelp" style="margin-top:8px">O limite acompanha o “Mais de” do risco Alto.</div></div>
+          <div class="rg-risk-item"><span class="pill success">Baixo</span><p>Todo o restante.</p></div>
+        </div>
+        <p class="rg-msg block" id="msgRisk"></p>
       </div>
     </section>
   </div>
 </div>
+
+<div class="rg-bar" id="bar" role="region" aria-label="Salvar alterações">
+  <div class="rg-status" id="status" role="status">Tudo salvo</div>
+  <button type="button" class="sec-btn outline" id="discard" disabled>Descartar</button>
+  <button type="button" class="sec-btn dark" id="save" disabled>Salvar alterações</button>
 </div>
+</div>
+<div class="rg-toast" id="toast" role="status" hidden><span id="toastTxt"></span><button type="button" class="rg-undo" id="undo" hidden>Desfazer</button></div>
 <script>
 const $=s=>document.querySelector(s),brl=v=>'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const INITIAL=()=>[{d:7,w:'before',wa:1,em:1,t:'09:00'},{d:2,w:'before',wa:1,em:1,t:'09:00'},{d:0,w:'on',wa:1,em:0,t:'09:00'},{d:1,w:'after',wa:1,em:1,t:'09:00'}];
+let steps=INITIAL(),dirty=false,lastRemoved=null,toastT;
+const plural=(n,a,b)=>n===1?a:b;
+const chan=s=>s.wa&&s.em?'WhatsApp e e-mail':s.wa?'WhatsApp':s.em?'E-mail':'sem canal';
+const when=s=>s.w==='on'?'No dia do vencimento':`${s.d||'?'} ${plural(+s.d,'dia','dias')} ${s.w==='before'?'antes':'depois'} do vencimento`;
+const off=s=>s.w==='before'?-s.d:s.w==='after'?+s.d:0;
+const TRASH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>';
+
+function stepHTML(s,i){
+  const o=(v,t)=>`<option value="${v}"${s.w===v?' selected':''}>${t}</option>`;
+  return `<li class="rg-step ${s.w==='before'?'is-before':s.w==='after'?'is-after':''}" data-i="${i}">
+  <span class="idx" aria-hidden="true">${i+1}</span>
+  <div class="rg-sum" id="sum${i}"></div>
+  <button type="button" class="rg-rm" data-rm="${i}" aria-label="Remover etapa ${i+1}" title="Remover etapa">${TRASH}</button>
+  <div class="rg-row">
+    <div class="sec-field"><label for="d${i}">Dias</label><input id="d${i}" data-k="d" type="number" inputmode="numeric" min="1" max="90" value="${s.w==='on'?'':s.d}" ${s.w==='on'?'disabled placeholder="—"':''}></div>
+    <div class="sec-field"><label for="w${i}">Quando (vencimento)</label><select id="w${i}" data-k="w">${o('before','antes')}${o('on','no dia')}${o('after','depois')}</select></div>
+    <div class="sec-field span c"><span class="rg-lbl" id="c${i}">Canal</span><div class="rg-chips" role="group" aria-labelledby="c${i}"><label class="rg-chip"><input type="checkbox" data-k="wa"${s.wa?' checked':''}><span>WhatsApp</span></label><label class="rg-chip"><input type="checkbox" data-k="em"${s.em?' checked':''}><span>E-mail</span></label></div></div>
+    <div class="sec-field span t"><label for="t${i}">Horário</label><input id="t${i}" data-k="t" type="time" value="${s.t}" style="max-width:180px"></div>
+  </div>
+  <p class="rg-msg" id="msg${i}" aria-live="polite"></p>
+</li>`}
+function render(){
+  $('#steps').innerHTML=steps.map(stepHTML).join('');
+  $('#empty').hidden=steps.length>0;
+  steps.forEach((s,i)=>refreshStep(i));
+  refreshAll();
+}
+function refreshStep(i){const s=steps[i],el=$('#sum'+i);if(!el)return;const li=el.closest('.rg-step');
+  el.innerHTML=`${when(s)}<small>${s.t||'sem horário'} · ${chan(s)}</small>`;
+  li.className='rg-step '+(s.w==='before'?'is-before':s.w==='after'?'is-after':'')}
+function timeline(){
+  const w=$('#tlWrap');
+  if(!steps.length){w.innerHTML='<div class="rg-tl-empty">A linha do tempo aparece quando houver etapas.</div>';return}
+  const items=steps.map((s,i)=>({s,i,o:off(s)})).sort((a,b)=>a.o-b.o||a.i-b.i);
+  const lab=o=>o===0?'D0':o<0?'D'+o:'D+'+o;
+  const node=x=>`<li class="${x.s.w}"><b>${lab(x.o)}</b><span>${x.s.t||'--:--'}<br>${chan(x.s).replace('WhatsApp e e-mail','WhatsApp, e-mail')}</span></li>`;
+  let h='',placed=false;
+  items.forEach(x=>{if(!placed&&x.o>=0){h+='<li class="venc"><b>Vencimento</b><span>dia do boleto</span></li>';placed=true}h+=node(x)});
+  if(!placed)h+='<li class="venc"><b>Vencimento</b><span>dia do boleto</span></li>';
+  if($('#rep').checked){const n=$('#repN').value||'?',st=$('#stop').value;h+=`<li class="after rep"><b>↻ a cada ${n} ${plural(+n,'dia','dias')}</b><span>${st?'até D+'+st:'sem limite'}</span></li>`}
+  w.innerHTML=`<ol class="rg-tl${$('#ativa').checked?'':' is-off'}" aria-label="Linha do tempo da régua">${h}</ol>`;
+}
+function validate(){
+  const errs=[];const put=(id,msg,els=[])=>{const m=$(id);if(m)m.textContent=msg||'';els.forEach(e=>e&&e.setAttribute('aria-invalid',msg?'true':'false'));if(msg)errs.push({m,els})};
+  steps.forEach((s,i)=>{const li=$('#sum'+i).closest('.rg-step'),d=li.querySelector('[data-k=d]'),t=li.querySelector('[data-k=t]');let msg='';
+    if(s.w!=='on'&&!(Number.isInteger(+s.d)&&s.d>=1&&s.d<=90))msg='Informe de 1 a 90 dias.';
+    else if(!s.wa&&!s.em)msg='Escolha pelo menos um canal.';
+    else if(!s.t)msg='Informe o horário.';
+    else{const j=steps.findIndex((o,k)=>k<i&&off(o)===off(s)&&o.t===s.t&&(o.wa&o.wa)&&(o.wa===s.wa&&o.em===s.em));if(j>=0)msg=`Igual à etapa ${j+1}. O aluno receberia a mensagem duas vezes.`}
+    put('#msg'+i,msg,[msg.includes('dias')?d:null,msg.includes('horário')?t:null,...(msg.includes('canal')?li.querySelectorAll('.rg-chip input'):[])])});
+  const n=+$('#repN').value,st=$('#stop').value,lastAfter=Math.max(0,...steps.map(off));let rm='';
+  if($('#rep').checked){if(!(n>=1))rm='Informe de quantos em quantos dias repete (mínimo 1).';else if(st&&+st<=lastAfter)rm=`O limite precisa ser maior que a última etapa (D+${lastAfter}).`;else if(st&&+st<n)rm='O limite não pode ser menor que o intervalo da repetição.'}
+  put('#msgRep',rm,[$('#repN'),$('#stop')]);
+  const a=+$('#rkA').value,mm=+$('#rkM').value;let rk='';
+  if(!(a>=1)||!(mm>=1))rk='Preencha os dias das faixas (mínimo 1).';else if(mm>=a)rk='O início do risco Médio precisa ser menor que o do Alto.';
+  put('#msgRisk',rk,[$('#rkA'),$('#rkM')]);
+  put('#msgVal',(+$('#multa').value<0||+$('#juros').value<0||+$('#carencia').value<0)?'Multa, juros e carência não podem ser negativos.':'',[$('#multa'),$('#juros'),$('#carencia')]);
+  const dg=$('#tel').value.replace(/\D/g,'');put('#msgTel',(dg.length<10||dg.length>11)?'Informe DDD e número, por exemplo (31) 99999-9999.':'',[$('#tel')]);
+  return errs;
+}
 function sim(){const v=+$('#sv').value||0,d=+$('#sd').value||0,m=d>0?v*(+$('#multa').value||0)/100:0,j=d>0?v*(+$('#juros').value||0)/100*d/30:0;
-$('#o').textContent=brl(v);$('#m').textContent=brl(m);$('#j').textContent=brl(j);$('#t').textContent=brl($('#atual').checked?v+m+j:v);}
-['#sv','#sd','#multa','#juros','#atual'].forEach(s=>$(s).addEventListener('input',sim));sim();
-function renum(){document.querySelectorAll('#steps .idx').forEach((e,i)=>e.textContent=i+1)}
-$('#steps').addEventListener('click',e=>{if(e.target.closest('.ico-btn')){e.target.closest('.rg-step').remove();renum()}});
-$('#add').addEventListener('click',()=>{const l=$('#steps').lastElementChild.cloneNode(true);l.classList.remove('is-before','is-after');$('#steps').append(l);renum()});
+  $('#o').textContent=brl(v);$('#m').textContent=brl(m);$('#j').textContent=brl(j);$('#t').textContent=brl($('#atual').checked?v+m+j:v);$('#ph').textContent=$('#tel').value||'—'}
+function refreshAll(){
+  $('#rkM2').value=$('#rkA').value;
+  $('#repN').disabled=$('#stop').disabled=!$('#rep').checked;
+  $('#ativaTxt').textContent=$('#ativa').checked?'Ativa':'Desligada';
+  $('#stepsCard').classList.toggle('is-off-card',!$('#ativa').checked);
+  $('#steps').classList.toggle('is-off',!$('#ativa').checked);
+  timeline();sim();
+  const errs=validate();bar(errs.length);return errs}
+function bar(ne){const b=$('#bar'),s=$('#status');b.classList.toggle('is-dirty',dirty&&!ne);b.classList.toggle('is-error',!!ne);
+  s.textContent=ne?`${ne} ${plural(ne,'campo precisa','campos precisam')} de ajuste`:dirty?'Alterações não salvas':'Tudo salvo';
+  $('#save').disabled=!dirty;$('#discard').disabled=!dirty}
+function markDirty(){dirty=true;bar(document.querySelectorAll('.rg-msg:not(:empty)').length)}
+function toast(msg,undo){const t=$('#toast');$('#toastTxt').textContent=msg;$('#undo').hidden=!undo;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{t.hidden=true;lastRemoved=null},undo?6000:2800)}
+
+$('#steps').addEventListener('input',e=>{const li=e.target.closest('.rg-step');if(!li)return;const i=+li.dataset.i,k=e.target.dataset.k,s=steps[i];
+  if(k==='w')return;if(k==='wa'||k==='em')s[k]=e.target.checked?1:0;else if(k==='d')s.d=e.target.value===''?'':+e.target.value;else s.t=e.target.value;
+  refreshStep(i);refreshAll()});
+$('#steps').addEventListener('change',e=>{if(e.target.dataset.k!=='w')return;const i=+e.target.closest('.rg-step').dataset.i,s=steps[i];s.w=e.target.value;s.d=s.w==='on'?0:(s.d||1);
+  render();$('#w'+i).focus()});
+$('#steps').addEventListener('click',e=>{const b=e.target.closest('[data-rm]');if(!b)return;const i=+b.dataset.rm;lastRemoved={s:steps[i],i};steps.splice(i,1);render();markDirty();toast(`Etapa ${i+1} removida.`,true);$('#add').focus()});
+$('#undo').addEventListener('click',()=>{if(!lastRemoved)return;steps.splice(lastRemoved.i,0,lastRemoved.s);const i=lastRemoved.i;lastRemoved=null;$('#toast').hidden=true;render();markDirty();$('#d'+i&&'#w'+i)&&$('#w'+i).focus()});
+$('#add').addEventListener('click',()=>{const l=steps[steps.length-1],n=l?{...l}:{d:3,w:'before',wa:1,em:1,t:'09:00'};steps.push(n);render();markDirty();const i=steps.length-1,f=$(n.w==='on'?'#w'+i:'#d'+i);f.scrollIntoView({block:'center',behavior:'smooth'});f.focus({preventScroll:true})});
+document.querySelector('.rg-sec').addEventListener('input',e=>{if(e.target.closest('#steps')||e.target.hasAttribute('data-nodirty'))return;markDirty();refreshAll()});
+['#ativa','#rep','#atual'].forEach(s=>$(s).addEventListener('change',()=>{markDirty();refreshAll()}));
+['#sv','#sd'].forEach(s=>$(s).addEventListener('input',sim));
+$('#steps').addEventListener('input',()=>markDirty());$('#steps').addEventListener('change',()=>markDirty());
+$('#save').addEventListener('click',()=>{const errs=refreshAll();if(errs.length){const f=errs[0].els[0]||errs[0].m;(f.focus?f:errs[0].m).scrollIntoView({block:'center',behavior:'smooth'});f.focus&&f.focus({preventScroll:true});toast('Corrija os campos em vermelho para salvar.');return}
+  dirty=false;bar(0);toast('Alterações salvas. A régua nova vale a partir da próxima cobrança.')});
+$('#discard').addEventListener('click',()=>{if(!confirm('Descartar as alterações não salvas?'))return;location.reload()});
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
+/* menu mobile */
+const sb=$('#sidebar'),sc=$('#scrim'),mb=$('#menu');
+function menu(open){sb.classList.toggle('is-open',open);sc.classList.toggle('is-open',open);mb.setAttribute('aria-expanded',open);if(open)sb.querySelector('a').focus();else mb.focus()}
+mb.addEventListener('click',()=>menu(!sb.classList.contains('is-open')));sc.addEventListener('click',()=>menu(false));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sb.classList.contains('is-open'))menu(false)});
+render();
 </script>
 </main></div></body></html>
