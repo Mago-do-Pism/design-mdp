@@ -1,0 +1,99 @@
+/* ─────────── Simulado liberado fora do prazo (Treino) ─────────── */
+
+/* Selos */
+.tag-treino, .tag-encerrado {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 24px; padding: 0 10px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body); font-size: 12px; font-weight: 700; letter-spacing: 0.3px;
+  width: max-content;
+}
+.tag-treino { background: var(--brand-blue); color: white; }
+.tag-encerrado { background: var(--neutral-250); color: var(--text-muted); }
+.tag-treino svg, .tag-encerrado svg { width: 13px; height: 13px; }
+
+/* Card bloqueado (expirado sem liberação): mesmo visual de hoje, apagado, sem hover */
+.card-custom.is-bloqueado { cursor: not-allowed; opacity: 0.65; }
+.card-custom.is-bloqueado:hover { transform: none; }
+/* Card liberado: segue clicável, contorno azul sutil */
+.card-custom.is-treino { box-shadow: inset 0 0 0 2px var(--brand-blue); background: var(--neutral-0); }
+.card-custom .card-hint { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+.card-custom .card-link { font-size: 13px; font-weight: 700; color: var(--brand-blue); }
+.card-custom .btn-ghost-sm {
+  height: 34px; padding: 0 14px; border-radius: var(--radius-md);
+  border: 2px solid var(--border-default); background: transparent;
+  font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--text-secondary);
+  display: inline-flex; align-items: center; width: max-content; cursor: pointer;
+}
+.legend-row { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: var(--text-muted); margin: 0 0 8px; align-items: center; }
+
+/* Aviso (início e final) */
+.aviso-treino {
+  display: grid; grid-template-columns: 36px 1fr; gap: 14px;
+  padding: 16px 18px;
+  background: var(--neutral-150);
+  border-left: 4px solid var(--brand-blue);
+  border-radius: var(--radius-lg);
+}
+.aviso-treino .aviso-ico {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--brand-blue); color: white;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.aviso-treino .aviso-ico svg { width: 20px; height: 20px; }
+.aviso-treino strong { display: block; font-size: 15px; color: var(--text-primary); margin-bottom: 6px; }
+.aviso-treino p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--text-secondary); }
+.aviso-treino ul { margin: 8px 0 0; padding-left: 18px; font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+.aviso-treino ul li strong { display: inline; font-size: inherit; color: var(--text-primary); margin: 0; }
+
+.nota-preservada {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  padding: 14px 18px; border-radius: var(--radius-lg);
+  border: 2px solid var(--color-success); background: var(--neutral-0);
+}
+.nota-preservada .np-label { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
+.nota-preservada .np-label strong { display: block; font-size: 14px; color: var(--color-success); }
+.nota-preservada .np-valor { font-family: var(--font-akagi); font-weight: 700; font-size: 26px; color: var(--color-success); }
+.nota-preservada .np-valor small { display: block; font-family: var(--font-body); font-size: 11px; font-weight: 600; color: var(--text-muted); text-align: right; }
+
+.sim-btn.is-disabled { background: var(--neutral-250); color: var(--text-muted); cursor: not-allowed; pointer-events: none; }
+.sim-ack { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--text-secondary); line-height: 1.5; cursor: pointer; }
+.sim-ack input { width: 20px; height: 20px; margin-top: 1px; accent-color: var(--brand-blue); flex-shrink: 0; }
+
+/* Resultado do treino */
+.treino-resumo { display: flex; gap: 12px; flex-wrap: wrap; margin: 0 0 24px; }
+.treino-resumo .sim-meta-pill strong.muted { color: var(--text-muted); }
+.sugestao-flag {
+  display: inline-block; margin-bottom: 16px; padding: 4px 10px; border-radius: var(--radius-pill);
+  background: var(--neutral-250); color: var(--text-secondary); font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
+}
+.qrow .neutral { color: var(--text-primary); }
+.abertas-nota {
+  margin: 24px 0 0; padding: 14px 18px; border-radius: var(--radius-lg);
+  background: var(--neutral-150); font-size: 14px; color: var(--text-secondary); line-height: 1.5;
+}
+
+/* Admin: toggle + ajuda */
+.cfg-box { max-width: 720px; display: flex; flex-direction: column; gap: 20px; }
+.cfg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 700px) { .cfg-grid { grid-template-columns: 1fr; } }
+.opt-card {
+  border: 2px solid var(--border-default); border-radius: var(--radius-lg);
+  padding: 18px 20px; background: var(--neutral-0);
+}
+.opt-card.is-on { border-color: var(--brand-blue); }
+.opt-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.opt-row strong { display: block; font-size: 15px; color: var(--text-primary); margin-bottom: 4px; }
+.opt-row span.opt-help { font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
+.switch { position: relative; flex-shrink: 0; display: inline-block; width: 46px; height: 26px; cursor: pointer; }
+.switch input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; z-index: 1; }
+.switch .track { position: absolute; inset: 0; border-radius: var(--radius-pill); background: var(--neutral-300); transition: background .15s ease; }
+.switch .track::after { content: ""; position: absolute; left: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: white; transition: transform .15s ease; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+.switch input:checked + .track { background: var(--color-success); }
+.switch input:checked + .track::after { transform: translateX(20px); }
+.switch input:focus-visible + .track { outline: 3px solid rgba(14,147,242,.4); outline-offset: 2px; }
+.opt-detail { margin: 14px 0 0; padding: 12px 14px; border-radius: var(--radius-md); background: var(--neutral-150); font-size: 13px; line-height: 1.55; color: var(--text-secondary); }
+.opt-detail ul { margin: 6px 0 0; padding-left: 18px; }
+.opt-card:not(.is-on) .opt-detail { display: none; }
+.cfg-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; }
+.pill-sug { font-size: 11px; font-weight: 700; color: var(--text-muted); }
