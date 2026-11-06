@@ -1,99 +1,133 @@
-/* ─────────── Simulado liberado fora do prazo (Treino) ─────────── */
+/*
+ * Telas do card "Simulado antigo liberado como treino".
+ * Base: réplica do mdp-next-web (Bootstrap 5.3 + custom.scss + globals.css), não os tokens do design-mdp.
+ * Mesma convenção de admin/simulado-documentos.html: Bootstrap via CDN, AkagiPro, primary #007BFF.
+ * A seção "Novo no treino" no fim é o que a feature acrescenta ao app.
+ */
 
-/* Selos */
-.tag-treino, .tag-encerrado {
-  display: inline-flex; align-items: center; gap: 6px;
-  height: 24px; padding: 0 10px;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-body); font-size: 12px; font-weight: 700; letter-spacing: 0.3px;
-  width: max-content;
-}
-.tag-treino { background: var(--brand-blue); color: white; }
-.tag-encerrado { background: var(--neutral-250); color: var(--text-muted); }
-.tag-treino svg, .tag-encerrado svg { width: 13px; height: 13px; }
+/* ── Fontes (public/fonts) ── */
+@font-face { font-family: 'AkagiPro'; src: url('../assets/fonts/AkagiPro-Light.otf') format('opentype'); font-weight: 300; }
+@font-face { font-family: 'AkagiPro'; src: url('../assets/fonts/AkagiPro-Medium.otf') format('opentype'); font-weight: 500; }
+@font-face { font-family: 'AkagiPro'; src: url('../assets/fonts/AkagiPro-SemiBold.otf') format('opentype'); font-weight: 600; }
+@font-face { font-family: 'AkagiPro'; src: url('../assets/fonts/AkagiPro-Bold.otf') format('opentype'); font-weight: 700; }
 
-/* Card bloqueado (expirado sem liberação): mesmo visual de hoje, apagado, sem hover */
-.card-custom.is-bloqueado { cursor: not-allowed; opacity: 0.65; }
-.card-custom.is-bloqueado:hover { transform: none; }
-/* Card liberado: segue clicável, contorno azul sutil */
-.card-custom.is-treino { box-shadow: inset 0 0 0 2px var(--brand-blue); background: var(--neutral-0); }
-.card-custom .card-hint { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
-.card-custom .card-link { font-size: 13px; font-weight: 700; color: var(--brand-blue); }
-.card-custom .btn-ghost-sm {
-  height: 34px; padding: 0 14px; border-radius: var(--radius-md);
-  border: 2px solid var(--border-default); background: transparent;
-  font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--text-secondary);
-  display: inline-flex; align-items: center; width: max-content; cursor: pointer;
+/* ── Tema Bootstrap (src/app/custom.scss) ── */
+:root {
+  --bs-primary: #007BFF; --bs-primary-rgb: 0, 123, 255;
+  --bs-secondary: #757575; --bs-secondary-rgb: 117, 117, 117;
+  --bs-success: #278556; --bs-success-rgb: 39, 133, 86;
+  --bs-danger: #D03E3E; --bs-danger-rgb: 208, 62, 62;
+  --bs-light: #F5F5F5; --bs-light-rgb: 245, 245, 245;
+  --bs-font-sans-serif: 'AkagiPro', sans-serif;
+  --bs-body-font-family: 'AkagiPro', sans-serif;
+  --bs-link-color: #007BFF;
 }
-.legend-row { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: var(--text-muted); margin: 0 0 8px; align-items: center; }
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'AkagiPro', sans-serif; margin: 0; height: 100vh; overflow: hidden; }
+a { text-decoration: none; color: inherit; }
+h1, h2, h3, h4, h5, h6 { font-family: 'AkagiPro', sans-serif; }
+.text-gray-500 { color: #757575; }
 
-/* Aviso (início e final) */
-.aviso-treino {
-  display: grid; grid-template-columns: 36px 1fr; gap: 14px;
-  padding: 16px 18px;
-  background: var(--neutral-150);
-  border-left: 4px solid var(--brand-blue);
-  border-radius: var(--radius-lg);
-}
-.aviso-treino .aviso-ico {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: var(--brand-blue); color: white;
-  display: inline-flex; align-items: center; justify-content: center;
-}
-.aviso-treino .aviso-ico svg { width: 20px; height: 20px; }
-.aviso-treino strong { display: block; font-size: 15px; color: var(--text-primary); margin-bottom: 6px; }
-.aviso-treino p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--text-secondary); }
-.aviso-treino ul { margin: 8px 0 0; padding-left: 18px; font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
-.aviso-treino ul li strong { display: inline; font-size: inherit; color: var(--text-primary); margin: 0; }
+/* typography.scss */
+.title { font-size: 20px; font-weight: 600; line-height: 24px; }
+.body-1 { font-size: 1rem; font-weight: 500; }
+.body-2 { font-size: 1.1rem; font-weight: 550; }
+.caption { font-size: 0.9rem; font-weight: 400; }
+.micro-caption { font-size: 0.8rem; font-weight: 400; }
 
-.nota-preservada {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
-  padding: 14px 18px; border-radius: var(--radius-lg);
-  border: 2px solid var(--color-success); background: var(--neutral-0);
-}
-.nota-preservada .np-label { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
-.nota-preservada .np-label strong { display: block; font-size: 14px; color: var(--color-success); }
-.nota-preservada .np-valor { font-family: var(--font-akagi); font-weight: 700; font-size: 26px; color: var(--color-success); }
-.nota-preservada .np-valor small { display: block; font-family: var(--font-body); font-size: 11px; font-weight: 600; color: var(--text-muted); text-align: right; }
+/* globals.css / custom.scss */
+.form-control { height: 50px; padding: 12px 16px; border-radius: 10px; font-size: 16px; font-weight: 500; border: 2px solid #dedede; color: #757575; }
+textarea.form-control { height: auto; }
+.form-select { height: 50px; padding: 8px 16px; border-radius: 10px; font-size: 16px; font-weight: 500; border: 2px solid #dedede; color: #757575; }
+.form-control::placeholder { color: #BDBDBD; font-size: 16px; font-weight: 400; line-height: 22px; letter-spacing: 0.44px; }
+label { font-size: 14px; font-weight: 400; line-height: 22px; letter-spacing: 0.4444443881511688px; text-align: left; color: #757575; }
+.nav-link { color: white; transition: background-color 0.3s, color 0.3s; border-radius: 10px; }
+.nav-link:hover { background-color: rgba(255, 255, 255, 0.2); color: white; }
+.nav-link.active { background-color: rgba(255, 255, 255, 0.4); color: white; font-weight: bold; }
+.btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:disabled { color: #fff !important; }
+.btn-outline-primary { background-color: transparent; border-color: #007BFF; color: #007BFF; transition: all 0.2s ease-in-out; }
+.btn-outline-primary:hover { background-color: rgba(0, 123, 255, 0.08); border-color: #007BFF; color: #007BFF; }
+.custom-nav-tabs { border-bottom: 1px solid #ccc; margin-bottom: -1px; }
+.custom-nav-tabs .nav-link { border: none !important; color: #a0a0a0; font-size: 14px; width: 178px; max-width: 100%; background-color: transparent !important; border-radius: 0 !important; padding-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; height: 50px; }
+.custom-nav-tabs .nav-link:hover { color: #666666; }
+.custom-nav-tabs .nav-link.active { color: #0e93f2; position: relative; font-weight: normal; }
+.custom-nav-tabs .nav-link.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background-color: #0e93f2; border-radius: 4px 4px 0 0; }
+.icon-button { background: none; border: none; padding: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.3s ease-in-out; }
+.icon-button:hover { background: rgba(0, 0, 0, 0.05); }
+.custom-radio { display: inline-block; min-width: 20px; width: 20px; height: 20px; border: 2px solid #afafaf; border-radius: 50%; position: relative; margin-top: 1px; }
+.custom-radio::after { content: ""; width: 12px; height: 12px; background-color: var(--radio-color, #0E93F2); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); }
+.custom-radio.on-student::after, .custom-radio.on-correct::after { transform: translate(-50%, -50%) scale(1); }
+.custom-radio.on-correct { --radio-color: #278556; }
+.pagination { --bs-pagination-color: #007BFF; --bs-pagination-active-bg: #007BFF; --bs-pagination-active-border-color: #007BFF; }
+.btn-primary { --bs-btn-bg: #007BFF; --bs-btn-border-color: #007BFF; --bs-btn-hover-bg: #0069d9; --bs-btn-hover-border-color: #0069d9; --bs-btn-active-bg: #0056b3; --bs-btn-active-border-color: #004085; --bs-btn-disabled-bg: #007BFF; --bs-btn-disabled-border-color: #007BFF; }
+.btn-secondary { --bs-btn-bg: #757575; --bs-btn-border-color: #757575; --bs-btn-hover-bg: #5f5f5f; --bs-btn-hover-border-color: #5f5f5f; }
 
-.sim-btn.is-disabled { background: var(--neutral-250); color: var(--text-muted); cursor: not-allowed; pointer-events: none; }
-.sim-ack { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--text-secondary); line-height: 1.5; cursor: pointer; }
-.sim-ack input { width: 20px; height: 20px; margin-top: 1px; accent-color: var(--brand-blue); flex-shrink: 0; }
+/* psas-callout (custom.scss) */
+.psas-callout { display: flex; align-items: flex-start; gap: 8px; padding: 12px 16px; border-radius: 10px; font-size: 14px; line-height: 20px; }
+.psas-callout--info { max-width: 640px; background: #e6f0ff; color: #0056b3; }
+.psas-callout i { flex-shrink: 0; margin-top: 1px; }
 
-/* Resultado do treino */
-.treino-resumo { display: flex; gap: 12px; flex-wrap: wrap; margin: 0 0 24px; }
-.treino-resumo .sim-meta-pill strong.muted { color: var(--text-muted); }
-.sugestao-flag {
-  display: inline-block; margin-bottom: 16px; padding: 4px 10px; border-radius: var(--radius-pill);
-  background: var(--neutral-250); color: var(--text-secondary); font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
-}
-.qrow .neutral { color: var(--text-primary); }
-.abertas-nota {
-  margin: 24px 0 0; padding: 14px 18px; border-radius: var(--radius-lg);
-  background: var(--neutral-150); font-size: 14px; color: var(--text-secondary); line-height: 1.5;
+/* ── Menu (components/ui/Menu.tsx + MenuItem.tsx) ── */
+.mdp-root { display: flex; height: 100vh; }
+.mdp-aside { width: 220px; z-index: 1040; overflow-y: auto; height: 100vh; }
+.mdp-aside .nav-link { height: 65px; cursor: pointer; font-size: 1rem; }
+.mdp-aside .nav-link.active { background-color: rgba(255, 255, 255, 0.25); color: #fff; font-weight: normal; }
+.mdp-logo { width: 150px; filter: brightness(0) invert(1); }
+.mdp-ico { width: 24px; height: 24px; }
+.mdp-ico svg { display: block; }
+.mdp-mobilebar { display: none !important; }
+@media (max-width: 860px) {
+  .mdp-aside { display: none !important; position: fixed; top: 0; left: 0; }
+  .mdp-aside.open { display: flex !important; }
+  .mdp-mobilebar { display: flex !important; }
 }
 
-/* Admin: toggle + ajuda */
-.cfg-box { max-width: 720px; display: flex; flex-direction: column; gap: 20px; }
-.cfg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-@media (max-width: 700px) { .cfg-grid { grid-template-columns: 1fr; } }
-.opt-card {
-  border: 2px solid var(--border-default); border-radius: var(--radius-lg);
-  padding: 18px 20px; background: var(--neutral-0);
+/* ── Botões (components/ui/Button.tsx) ── */
+.mdp-btn { height: 50px; font-size: 18px; border-radius: 10px; padding-inline: 32px; display: flex; align-items: center; justify-content: center; border: 0; width: max-content; }
+.mdp-btn.btn-outline-primary { border: 1px solid #007BFF; }
+.mdp-btn.minor { height: 40px; font-size: 14px; border-radius: 8px; padding-inline: 24px; }
+.mdp-btn.w-100 { width: 100%; }
+
+/* ── CardCustom (components/ui/Card.tsx) ── */
+.mdp-card { cursor: pointer; border-radius: 10px; padding: 32px; display: flex; flex-direction: column; gap: 12px; transition: transform 0.2s ease-in-out; }
+.mdp-card:hover { transform: scale(1.02); }
+
+/* ── TopBar de simulado (components/ui/TopBar.tsx) ── */
+.mdp-topbar { height: 100px; position: sticky; top: 0; z-index: 1040; width: 100%; display: flex; align-items: center; padding: 15px; }
+.mdp-topbar-logo { position: absolute; left: 50%; transform: translateX(-50%); height: 70px; filter: brightness(0) invert(1); }
+body:has(.mdp-topbar) { overflow: auto; height: auto; }
+
+/* Checkbox do app (components/ui/Checkbox.tsx), usado no "Modo bruxo" */
+.mdp-check { display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; font-size: 16px; color: #4E4E4E; }
+.mdp-check input { display: none; }
+.mdp-check .box { width: 20px; height: 20px; border-radius: 4px; border: 2px solid #999; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.mdp-check .box svg { display: none; }
+.mdp-check input:checked + .box { border-color: #0E93F2; background: #0E93F2; }
+.mdp-check input:checked + .box svg { display: block; }
+.mdp-check .lbl { font-size: 16px; color: #4E4E4E; }
+
+/* ThumbSelector (banner) */
+.thumb-sel { width: 100%; height: 238px; border: 1px solid #ccc; border-radius: 8px; background: #A0A0A0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; cursor: pointer; }
+
+/* ButtonCategory */
+.cat-pill { background: #fff; color: #A0A0A0; border: 2px solid #A0A0A0; border-radius: 20px; font-weight: 600; height: 40px; font-size: 14px; padding-inline: 24px; display: flex; align-items: center; justify-content: center; }
+.cat-pill.on { background: #E6F0FF; color: #0E93F2; border-color: #0E93F2; }
+.cat-pill:hover { background: #E6F0FF; color: #0E93F2; border-color: #0E93F2; }
+
+/* QuestionTable */
+.q-row { border-radius: 10px; padding: 16px 24px; margin-bottom: 8px; font-size: 14px; cursor: pointer; }
+
+/* ─────────────────────────────────────────────────────────────
+ * Novo no treino (único CSS que a feature acrescenta ao app)
+ * ───────────────────────────────────────────────────────────── */
+
+/* Selo "Treino": mesmas cores do psas-callout--info (#e6f0ff / #0056b3) */
+.selo-treino {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 22px; padding: 0 10px; border-radius: 999px;
+  background: #e6f0ff; color: #0056b3;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
+  white-space: nowrap;
 }
-.opt-card.is-on { border-color: var(--brand-blue); }
-.opt-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
-.opt-row strong { display: block; font-size: 15px; color: var(--text-primary); margin-bottom: 4px; }
-.opt-row span.opt-help { font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
-.switch { position: relative; flex-shrink: 0; display: inline-block; width: 46px; height: 26px; cursor: pointer; }
-.switch input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; z-index: 1; }
-.switch .track { position: absolute; inset: 0; border-radius: var(--radius-pill); background: var(--neutral-300); transition: background .15s ease; }
-.switch .track::after { content: ""; position: absolute; left: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: white; transition: transform .15s ease; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
-.switch input:checked + .track { background: var(--color-success); }
-.switch input:checked + .track::after { transform: translateX(20px); }
-.switch input:focus-visible + .track { outline: 3px solid rgba(14,147,242,.4); outline-offset: 2px; }
-.opt-detail { margin: 14px 0 0; padding: 12px 14px; border-radius: var(--radius-md); background: var(--neutral-150); font-size: 13px; line-height: 1.55; color: var(--text-secondary); }
-.opt-detail ul { margin: 6px 0 0; padding-left: 18px; }
-.opt-card:not(.is-on) .opt-detail { display: none; }
-.cfg-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; }
-.pill-sug { font-size: 11px; font-weight: 700; color: var(--text-muted); }
+.selo-treino i { font-size: 12px; }
+h3 .selo-treino, h5 .selo-treino { font-size: 11px; }
