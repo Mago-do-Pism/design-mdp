@@ -1,0 +1,235 @@
+/* Gamificação (pontos, níveis e foguinho) — só tokens de tokens.css */
+
+/* ── Marcação de decisão em aberto (tracejado roxo = --color-warn) ── */
+.decisao {
+  position: relative;
+  outline: 2px dashed var(--color-warn);
+  outline-offset: 4px;
+  border-radius: var(--radius-lg);
+}
+.decisao::before {
+  content: attr(data-n);
+  position: absolute; top: -12px; right: -12px; z-index: 5;
+  min-width: 24px; height: 24px; padding: 0 6px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-pill);
+  background: var(--color-warn); color: var(--neutral-0);
+  font-size: 12px; font-weight: 700;
+}
+.gm-note {
+  margin: 0 0 24px; padding: 12px 16px;
+  border: 2px dashed var(--color-warn); border-radius: var(--radius-lg);
+  background: var(--neutral-0);
+  font-size: 13px; line-height: 1.5; color: var(--text-secondary);
+}
+.gm-note b { color: var(--color-warn); }
+.gm-page { padding: 32px 40px 56px; max-width: 1100px; }
+@media (max-width: 900px) { .gm-page { padding: 24px 20px 40px; } }
+.gm-page.on-inicio { padding: 0; max-width: none; }
+.gm-pad { padding: 32px 40px 0; }
+@media (max-width: 900px) { .gm-pad { padding: 24px 20px 0; } }
+.gm-h { margin: 0 0 16px; font-size: 20px; font-weight: 600; line-height: 24px; color: var(--brand-blue); }
+.gm-sub { margin: 0 0 20px; font-size: 14px; color: var(--text-muted); }
+.gm-section { margin-top: 36px; }
+
+/* ── Ícones ── */
+.gm-ico { width: 24px; height: 24px; flex-shrink: 0; }
+.gm-ico * { vector-effect: none; }
+
+/* ── Faixa início: foguinho + pontos ── */
+.gm-strip { display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 16px; max-width: 900px; }
+@media (max-width: 900px) { .gm-strip { grid-template-columns: 1fr 1fr; } .gm-strip .gm-level { grid-column: 1 / -1; } }
+.gm-stat {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--neutral-150); border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl); padding: 16px 18px;
+  color: inherit;
+}
+.gm-stat:hover { background: var(--neutral-200); }
+.gm-stat-ico {
+  width: 48px; height: 48px; border-radius: var(--radius-pill);
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--neutral-0); color: var(--brand-blue); flex-shrink: 0;
+  box-shadow: var(--shadow-soft);
+}
+.gm-stat-ico svg { width: 26px; height: 26px; }
+.gm-stat-num { font-size: 28px; font-weight: 700; line-height: 1; color: var(--text-primary); }
+.gm-stat-lbl { margin-top: 4px; font-size: 13px; font-weight: 500; color: var(--text-muted); }
+.gm-stat.is-risk .gm-stat-ico { color: var(--color-danger); }
+.gm-stat.is-lost .gm-stat-ico { color: var(--neutral-500); }
+.gm-level { flex-direction: column; align-items: stretch; gap: 8px; justify-content: center; }
+.gm-level-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.gm-level-top b { color: var(--text-primary); font-size: 15px; }
+.gm-level small { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+
+/* ── Semana do foguinho ── */
+.gm-week { display: flex; gap: 8px; }
+.gm-day { flex: 1; text-align: center; font-size: 11px; font-weight: 600; color: var(--text-muted); }
+.gm-day i {
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 4px;
+  width: 32px; height: 32px; border-radius: var(--radius-pill);
+  background: var(--neutral-250); color: var(--neutral-500); font-style: normal;
+}
+.gm-day i svg { width: 16px; height: 16px; }
+.gm-day.is-done i { background: var(--brand-blue); color: var(--neutral-0); }
+.gm-day.is-today i { box-shadow: 0 0 0 3px var(--neutral-0), 0 0 0 5px var(--brand-blue); }
+.gm-day.is-risk i { background: var(--neutral-0); color: var(--color-danger); border: 2px dashed var(--color-danger); }
+.gm-day.is-miss i { background: var(--neutral-250); color: var(--color-danger); }
+
+/* ── Cards ── */
+.gm-card { background: var(--neutral-0); border-radius: var(--radius-xl); box-shadow: var(--shadow-soft); padding: 24px; }
+.gm-card + .gm-card { margin-top: 16px; }
+.gm-hero { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.gm-hero-badge {
+  width: 88px; height: 88px; border-radius: var(--radius-pill); flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--brand-blue); color: var(--neutral-0); box-shadow: var(--shadow-card);
+}
+.gm-hero-badge svg { width: 44px; height: 44px; }
+.gm-hero-main { flex: 1; min-width: 240px; }
+.gm-hero-title { margin: 0; font-size: 24px; font-weight: 700; color: var(--text-primary); }
+.gm-hero-pts { margin: 2px 0 14px; font-size: 14px; color: var(--text-muted); }
+.gm-hero-pts b { color: var(--brand-blue); font-size: 18px; }
+.gm-hero-foot { margin-top: 8px; display: flex; justify-content: space-between; gap: 8px; font-size: 12px; font-weight: 500; color: var(--text-muted); }
+.gm-hero-flame { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-radius: var(--radius-xl); background: var(--neutral-150); }
+.gm-hero-flame svg { width: 32px; height: 32px; color: var(--brand-blue); }
+.gm-hero-flame b { display: block; font-size: 22px; line-height: 1; color: var(--text-primary); }
+.gm-hero-flame span { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+
+/* ── Trilha de níveis ── */
+.gm-track { list-style: none; margin: 0; padding: 0; position: relative; }
+.gm-step { position: relative; display: flex; gap: 18px; padding-bottom: 20px; }
+.gm-step:last-child { padding-bottom: 0; }
+.gm-step::before {
+  content: ""; position: absolute; left: 27px; top: 56px; bottom: -4px; width: 4px;
+  background: var(--neutral-300); border-radius: var(--radius-pill);
+}
+.gm-step:last-child::before { display: none; }
+.gm-step.is-done::before { background: var(--brand-blue); }
+.gm-step-ico {
+  width: 56px; height: 56px; border-radius: var(--radius-pill); flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--neutral-300); color: var(--neutral-500);
+}
+.gm-step-ico svg { width: 28px; height: 28px; }
+.gm-step.is-done .gm-step-ico { background: var(--brand-blue); color: var(--neutral-0); }
+.gm-step.is-current .gm-step-ico { background: var(--brand-blue-dark); color: var(--neutral-0); box-shadow: 0 0 0 4px var(--neutral-0), 0 0 0 7px var(--brand-blue); }
+.gm-step-body { flex: 1; background: var(--neutral-150); border-radius: var(--radius-xl); padding: 14px 18px; border: 1px solid var(--border-default); }
+.gm-step.is-current .gm-step-body { background: var(--neutral-0); border-color: var(--brand-blue); box-shadow: var(--shadow-soft); }
+.gm-step-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.gm-step-name { margin: 0; font-size: 17px; font-weight: 700; color: var(--text-primary); }
+.gm-step.is-locked .gm-step-name { color: var(--text-secondary); }
+.gm-step-pts { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+.gm-step-benefit { margin: 6px 0 0; font-size: 14px; line-height: 1.45; color: var(--text-secondary); }
+.gm-tag { display: inline-flex; align-items: center; gap: 4px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; padding: 4px 10px; white-space: nowrap; }
+.gm-tag.done { background: var(--neutral-0); color: var(--color-success); border: 1px solid var(--color-success); }
+.gm-tag.now { background: var(--brand-blue); color: var(--neutral-0); }
+.gm-tag.lock { background: var(--neutral-250); color: var(--text-muted); }
+.gm-tag.risk { background: var(--neutral-0); color: var(--color-danger); border: 1px solid var(--color-danger); }
+.gm-tag svg { width: 12px; height: 12px; }
+.gm-step .progress-bar { margin-top: 12px; }
+
+/* ── Como ganhar pontos / histórico ── */
+.gm-two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 900px) { .gm-two { grid-template-columns: 1fr; } }
+.gm-list { list-style: none; margin: 0; padding: 0; }
+.gm-list li { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--neutral-300); font-size: 14px; color: var(--text-primary); }
+.gm-list li:last-child { border-bottom: none; }
+.gm-list li span:first-of-type { flex: 1; }
+.gm-list small { display: block; font-size: 12px; color: var(--text-muted); font-weight: 400; }
+.gm-plus { font-weight: 700; color: var(--brand-blue); white-space: nowrap; }
+.gm-list svg { width: 20px; height: 20px; color: var(--text-muted); flex-shrink: 0; }
+
+/* ── Selos (perfil) ── */
+.gm-badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 14px; }
+.gm-badge { text-align: center; }
+.gm-badge i {
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;
+  width: 72px; height: 72px; border-radius: var(--radius-pill);
+  background: var(--brand-blue); color: var(--neutral-0); font-style: normal; box-shadow: var(--shadow-soft);
+}
+.gm-badge i svg { width: 34px; height: 34px; }
+.gm-badge b { display: block; font-size: 13px; color: var(--text-primary); }
+.gm-badge small { font-size: 11px; color: var(--text-muted); }
+.gm-badge.is-locked i { background: var(--neutral-300); color: var(--neutral-500); box-shadow: none; }
+.gm-badge.is-locked b { color: var(--text-muted); }
+.gm-profile-level { display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+.gm-profile-level b { font-size: 18px; color: var(--text-primary); }
+.gm-profile-level span { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+/* ── Estados do foguinho ── */
+.gm-states { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+@media (max-width: 900px) { .gm-states { grid-template-columns: 1fr; } }
+.gm-state { background: var(--neutral-0); border-radius: var(--radius-xl); box-shadow: var(--shadow-soft); padding: 22px; }
+.gm-state-label { font-size: 12px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-muted); margin: 0 0 12px; }
+.gm-state-main { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.gm-state-flame { width: 64px; height: 64px; flex-shrink: 0; color: var(--brand-blue); }
+.gm-state.is-risk .gm-state-flame { color: var(--color-danger); }
+.gm-state.is-lost .gm-state-flame { color: var(--neutral-500); }
+.gm-state-big { font-size: 34px; font-weight: 700; line-height: 1; color: var(--text-primary); }
+.gm-state-txt { margin: 4px 0 0; font-size: 14px; line-height: 1.45; color: var(--text-secondary); }
+.gm-state .btn-primary { margin-top: 16px; width: 100%; height: 44px; font-size: 15px; }
+.gm-state-warn { margin-top: 14px; padding: 10px 14px; border-radius: var(--radius-md); font-size: 13px; line-height: 1.4; font-weight: 500; }
+.gm-state-warn.risk { background: var(--neutral-150); color: var(--color-danger); border: 1px solid var(--color-danger); }
+.gm-state-warn.lost { background: var(--neutral-150); color: var(--text-secondary); border: 1px solid var(--border-default); }
+.gm-milestones { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.gm-ms { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; background: var(--neutral-250); color: var(--text-muted); }
+.gm-ms.is-done { background: var(--brand-blue); color: var(--neutral-0); }
+.gm-ms svg { width: 14px; height: 14px; }
+
+/* ── Modal e toast ── */
+.gm-overlay { position: fixed; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center; padding: 20px; background: color-mix(in srgb, var(--sidebar-bg) 72%, transparent); }
+.gm-modal { position: relative; width: 100%; max-width: 440px; background: var(--neutral-0); border-radius: var(--radius-2xl); box-shadow: var(--shadow-deep); padding: 36px 32px 28px; text-align: center; }
+.gm-modal-close { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border: none; border-radius: var(--radius-pill); background: var(--neutral-150); color: var(--text-secondary); display: inline-flex; align-items: center; justify-content: center; }
+.gm-modal-close svg { width: 18px; height: 18px; }
+.gm-modal-badge { width: 112px; height: 112px; margin: 0 auto 18px; border-radius: var(--radius-pill); background: var(--brand-blue); color: var(--neutral-0); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 8px var(--neutral-150), var(--shadow-card); }
+.gm-modal-badge svg { width: 56px; height: 56px; }
+.gm-modal-kicker { margin: 0 0 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--brand-blue); }
+.gm-modal h3 { margin: 0 0 8px; font-size: 26px; font-weight: 700; color: var(--text-primary); }
+.gm-modal p { margin: 0 0 20px; font-size: 15px; line-height: 1.5; color: var(--text-secondary); }
+.gm-modal .benefit { margin: 0 0 22px; padding: 12px 16px; border-radius: var(--radius-lg); background: var(--neutral-150); font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.gm-modal .btn-primary { width: 100%; }
+.gm-modal .btn-link { display: block; margin-top: 12px; font-size: 14px; font-weight: 600; color: var(--brand-blue); background: none; border: none; width: 100%; }
+.gm-toasts { position: fixed; right: 24px; bottom: 24px; z-index: 80; display: flex; flex-direction: column; gap: 12px; width: min(360px, calc(100% - 32px)); }
+.gm-toast { display: flex; align-items: center; gap: 12px; background: var(--neutral-0); border-radius: var(--radius-xl); padding: 14px 16px; box-shadow: var(--shadow-deep); border-left: 6px solid var(--brand-blue); }
+.gm-toast.risk { border-left-color: var(--color-danger); }
+.gm-toast-ico { width: 40px; height: 40px; border-radius: var(--radius-pill); background: var(--neutral-150); color: var(--brand-blue); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.gm-toast.risk .gm-toast-ico { color: var(--color-danger); }
+.gm-toast-ico svg { width: 22px; height: 22px; }
+.gm-toast b { display: block; font-size: 14px; color: var(--text-primary); }
+.gm-toast div > span { font-size: 12px; color: var(--text-muted); }
+.gm-toast .gm-plus { margin-left: auto; font-size: 18px; }
+
+/* ── Vazio ── */
+.gm-empty { text-align: center; padding: 36px 24px; }
+.gm-empty .gm-hero-badge { margin: 0 auto 18px; background: var(--neutral-300); color: var(--neutral-500); box-shadow: none; }
+.gm-empty h3 { margin: 0 0 6px; font-size: 20px; color: var(--text-primary); }
+.gm-empty p { margin: 0 auto 18px; max-width: 420px; font-size: 14px; line-height: 1.5; color: var(--text-secondary); }
+.gm-empty .btn-primary { height: 44px; font-size: 15px; }
+
+/* ── Pro dev ── */
+.gm-dev { margin-top: 40px; padding: 24px; border-radius: var(--radius-xl); background: var(--sidebar-bg); color: var(--text-on-blue); }
+.gm-dev h3 { margin: 0 0 4px; font-size: 18px; color: var(--neutral-0); }
+.gm-dev p, .gm-dev li { font-size: 13px; line-height: 1.55; color: var(--neutral-350); }
+.gm-dev h4 { margin: 18px 0 6px; font-size: 13px; letter-spacing: .6px; text-transform: uppercase; color: var(--neutral-0); }
+.gm-dev ul { margin: 0; padding-left: 18px; }
+.gm-dev code { font-family: var(--font-mono); font-size: 12px; background: var(--sidebar-bg-light); padding: 1px 6px; border-radius: var(--radius-xs); color: var(--neutral-0); }
+
+/* ── Admin ── */
+.gm-form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 900px) { .gm-form-grid { grid-template-columns: 1fr; } }
+.gm-tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+.gm-tbl th { text-align: left; font-size: 12px; font-weight: 600; letter-spacing: .4px; color: var(--text-muted); padding: 0 12px 10px; border-bottom: 1px solid var(--border-default); }
+.gm-tbl td { padding: 12px; border-bottom: 1px solid var(--neutral-300); color: var(--text-primary); vertical-align: middle; }
+.gm-tbl .input { height: 40px; padding: 6px 12px; font-size: 14px; border-width: 1px; }
+.gm-tbl-wrap { overflow-x: auto; }
+.gm-tbl-wrap .gm-tbl { min-width: 640px; }
+.gm-switch { display: inline-flex; align-items: center; width: 44px; height: 24px; border-radius: var(--radius-pill); background: var(--brand-blue); padding: 3px; justify-content: flex-end; }
+.gm-switch i { width: 18px; height: 18px; border-radius: var(--radius-pill); background: var(--neutral-0); display: block; }
+.gm-switch.off { background: var(--neutral-400); justify-content: flex-start; }
+.gm-actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+.gm-actions .btn-primary { height: 44px; font-size: 15px; }
+
+/* barra sem rótulo interno (o número vai em texto ao lado) */
+.gm-page .progress-bar > em, .gm-strip .progress-bar > em { display: none; }
+.gm-strip-wrap { margin: 0; }
