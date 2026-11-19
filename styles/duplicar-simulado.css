@@ -1,0 +1,23 @@
+/*
+ * Card 490 · Duplicar simulados (admin, lista de simulados).
+ * Réplica do mdp-next-web (origin/develop): simulations/page.tsx e ui/Card.tsx (card bg-light, padding 32, radius 10),
+ * carregada depois de treino.css e extracao-pdf.css (menu de 3 pontos e modal já existem lá).
+ * O que é sugestão nova leva .ds-sugestao (só no protótipo).
+ */
+.sim-page { padding: 24px; }
+@media (min-width: 768px) { .sim-page { padding: 24px 48px; } }
+.sim-card { position: relative; background: #F5F5F5; border-radius: 10px; padding: 32px; display: flex; flex-direction: column; gap: 12px; cursor: pointer; }
+.sim-card .t { font-size: 16px; color: #4E4E4E; margin: 0; padding-right: 36px; }
+.sim-card .d { font-size: 14px; color: #6C757D; }
+.sim-card .s { font-size: 12px; font-weight: 600; }
+.s-and { color: #007BFF; } .s-agen { color: #6B7280; } .s-conc { color: #198754; } .s-exp { color: #DC3545; }
+.sim-more { position: absolute; top: 14px; right: 14px; }
+.sim-more .mais-btn { width: 36px; height: 36px; border-color: transparent; background: transparent; }
+.sim-more .mais-btn.is-open { background: #fff; border-color: #0E93F2; }
+.sim-more .mais-menu { top: 42px; min-width: 176px; }
+.mais-menu button { display: flex; align-items: center; gap: 10px; }
+.mais-menu button svg { width: 18px; height: 18px; flex-shrink: 0; }
+.dup-info { display: flex; flex-direction: column; gap: 6px; margin-top: 20px; padding: 14px 16px; border-radius: 8px; background: #F1F5F9; color: #4E4E4E; font-size: 14px; }
+.dup-info b { font-weight: 600; }
+.dup-info .no { color: #757575; }
+.sim-pag { display: flex; justify-content: flex-end; padding-top: 36px; }
