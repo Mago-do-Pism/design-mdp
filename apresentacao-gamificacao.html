@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Mago do Pism — Gamificação (PDF)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/tokens.css" />
+  <style>
+    :root {
+      --page-w: 1085px;
+      --page-h: 756px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: #f3f4f6;
+      font-family: var(--font-body, "Montserrat", system-ui, sans-serif);
+      color: #111;
+    }
+
+    /* Cover */
+    .cover {
+      width: var(--page-w); height: var(--page-h);
+      margin: 24px auto; background: white;
+      padding: 64px 72px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      page-break-after: page; break-after: page;
+    }
+    .cover-eyebrow { font-family: "Roboto Mono", monospace; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: #6b7280; }
+    .cover-title { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 52px; letter-spacing: -1px; line-height: 1.05; color: #0e1116; margin: 16px 0 24px; }
+    .cover-title em { font-style: normal; color: var(--brand-blue, #0e93f2); }
+    .cover-sub { font-size: 16px; color: #4b5563; max-width: 760px; line-height: 1.55; }
+    .cover-phases { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; }
+    .cover-phase { border: 1px solid #e5e7eb; border-radius: 14px; padding: 22px 24px; }
+    .cover-phase .num { font-family: "Roboto Mono", monospace; font-size: 11px; letter-spacing: 0.22em; color: var(--brand-blue, #0e93f2); }
+    .cover-phase h3 { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 22px; margin: 8px 0 6px; color: #0e1116; }
+    .cover-phase p { margin: 0; font-size: 13px; color: #6b7280; }
+    .cover-phase ul { margin: 12px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr; gap: 4px; }
+    .cover-phase li { font-size: 12px; color: #4b5563; }
+    .cover-phase li::before { content: "·"; margin-right: 6px; color: #9ca3af; }
+    .cover-foot { display: flex; justify-content: space-between; align-items: baseline; font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #9ca3af; }
+
+    /* Divider */
+    .divider {
+      width: var(--page-w); height: var(--page-h);
+      margin: 24px auto; background: #0e1116; color: white;
+      padding: 96px 88px;
+      display: flex; flex-direction: column; justify-content: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      page-break-after: page; break-after: page;
+      position: relative;
+    }
+    .divider .num { font-family: "Roboto Mono", monospace; font-size: 12px; letter-spacing: 0.28em; color: var(--brand-blue, #0e93f2); }
+    .divider h2 { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 72px; letter-spacing: -2px; line-height: 1; margin: 18px 0 24px; }
+    .divider p { font-size: 17px; color: #d1d5db; max-width: 720px; margin: 0; line-height: 1.55; }
+    .divider .meta { position: absolute; bottom: 64px; left: 88px; right: 88px; display: flex; justify-content: space-between; font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #6b7280; }
+
+    /* Screen page */
+    .page {
+      width: var(--page-w); height: var(--page-h);
+      margin: 24px auto; background: white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      display: flex; flex-direction: column;
+      page-break-after: page; break-after: page;
+      overflow: hidden;
+    }
+    .page:last-child { page-break-after: auto; break-after: auto; }
+    .page-head {
+      flex: 0 0 auto; display: flex; justify-content: space-between; align-items: baseline;
+      padding: 14px 22px 12px; border-bottom: 1px solid #e5e7eb;
+    }
+    .page-head .left { display: flex; align-items: baseline; gap: 14px; }
+    .page-head .num { font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.22em; color: var(--brand-blue, #0e93f2); }
+    .page-head .title { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 18px; color: #0e1116; }
+    .page-head .sub { font-size: 12px; color: #6b7280; }
+    .page-head .idx { font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.22em; color: #9ca3af; }
+    .stage { flex: 1 1 auto; position: relative; background: #f9fafb; overflow: hidden; }
+    .stage iframe { position: absolute; top: 0; left: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; background: white; }
+
+    /* Notes */
+    .notes {
+      width: var(--page-w); height: var(--page-h);
+      margin: 24px auto; background: white;
+      padding: 56px 72px;
+      display: flex; flex-direction: column;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      page-break-after: page; break-after: page;
+    }
+    .notes h2 { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 36px; letter-spacing: -0.5px; color: #0e1116; margin: 0 0 8px; }
+    .notes h2 em { font-style: normal; color: var(--brand-blue, #0e93f2); }
+    .notes .lead { font-size: 14px; color: #4b5563; max-width: 720px; line-height: 1.55; margin: 0 0 28px; }
+    .notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 32px; flex: 1; }
+    .note-card { border: 1px solid #e5e7eb; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; }
+    .note-card .num { font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.22em; color: var(--brand-blue, #0e93f2); }
+    .note-card h3 { font-family: "Quicksand", system-ui, sans-serif; font-weight: 600; font-size: 17px; color: #0e1116; margin: 0; }
+    .note-card p { margin: 0; font-size: 12.5px; line-height: 1.5; color: #4b5563; }
+    .note-card ul { margin: 4px 0 0; padding: 0 0 0 14px; font-size: 12px; color: #4b5563; line-height: 1.55; }
+    .note-foot { margin-top: 18px; font-family: "Roboto Mono", monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #9ca3af; display: flex; justify-content: space-between; }
+
+
+    .cover-phases.three { grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+    .cover-phases.three .cover-phase { padding: 18px 20px; }
+    @page { size: A4 landscape; margin: 0.5cm; }
+    @media print {
+      html, body { background: white; }
+      .cover, .divider, .page, .notes { margin: 0 auto; box-shadow: none; }
+      .stage iframe { border: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="cover">
+    <div>
+      <div class="cover-eyebrow">Mago do Pism · Curso do Mago</div>
+      <h1 class="cover-title">Gamificação —<br/><em>pontos</em>, níveis e <em>foguinho</em></h1>
+      <p class="cover-sub">Apresentação das telas da gamificação: o aluno ganha pontos ao estudar, mantém o foguinho aceso, sobe de nível, recebe a camisa dourada e a placa de diamante e compete no ranking da turma. O admin configura tudo sem depender de desenvolvimento.</p>
+
+      <div class="cover-phases three">
+        <div class="cover-phase">
+          <div class="num">PROGRESSO</div>
+          <h3>Pontos e níveis</h3>
+          <p>6 telas do que o aluno vê.</p>
+          <ul>
+            <li>Início, Meu progresso com FAQ e perfil</li>
+            <li>Aluno novo, sem pontos</li>
+            <li>Subiu de nível e avisos</li>
+          </ul>
+        </div>
+        <div class="cover-phase">
+          <div class="num">ENGAJAMENTO</div>
+          <h3>Foguinho e ranking</h3>
+          <p>4 telas pra voltar todo dia.</p>
+          <ul>
+            <li>Estados do foguinho</li>
+            <li>Ranking por turma, cheio e vazio</li>
+            <li>E-mail de foguinho em risco</li>
+          </ul>
+        </div>
+        <div class="cover-phase">
+          <div class="num">ADMIN</div>
+          <h3>Configuração</h3>
+          <p>1 tela, 3 recortes.</p>
+          <ul>
+            <li>Níveis, pontos e foguinho</li>
+            <li>Reset anual e avisos</li>
+            <li>Prêmios conquistados e entrega</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="cover-foot">
+      <span>v1 · Novembro 2026</span>
+      <span>Mago do Pism — Gamificação</span>
+    </div>
+  </section>
+
+  <section class="divider">
+    <div class="num">ALUNO</div>
+    <h2>Pontos<br/>e níveis</h2>
+    <p>O aluno ganha pontos por aula, lista, simulado e aula ao vivo. Ao atingir X pontos ganha a camisa dourada, ao atingir Y a placa de diamante, e pode ter outros níveis. Os pontos zeram em 31/12; nível e selos ficam no histórico.</p>
+    <div class="meta">
+      <span>6 telas</span>
+      <span>Mago do Pism</span>
+    </div>
+  </section>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">01</span>
+        <span class="title">Início do aluno</span>
+        <span class="sub">Foguinho, pontos e barra de nível logo na entrada</span>
+      </div>
+      <span class="idx">alunos/inicio.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/inicio.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">02</span>
+        <span class="title">Meu progresso</span>
+        <span class="sub">Trilha de níveis, benefícios, como ganhar pontos e FAQ de 10 perguntas</span>
+      </div>
+      <span class="idx">alunos/conquistas.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/conquistas.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">03</span>
+        <span class="title">Aluno novo</span>
+        <span class="sub">Zero pontos, convite pra começar</span>
+      </div>
+      <span class="idx">alunos/conquistas-vazio.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/conquistas-vazio.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">04</span>
+        <span class="title">Subiu de nível</span>
+        <span class="sub">Modal de comemoração ao atingir um nível</span>
+      </div>
+      <span class="idx">alunos/conquistas-subiu-nivel.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/conquistas-subiu-nivel.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">05</span>
+        <span class="title">Avisos de pontos e foguinho</span>
+        <span class="sub">Toasts e alertas dentro da plataforma</span>
+      </div>
+      <span class="idx">alunos/conquistas-avisos.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/conquistas-avisos.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">06</span>
+        <span class="title">Perfil</span>
+        <span class="sub">Selos conquistados no perfil do aluno</span>
+      </div>
+      <span class="idx">alunos/perfil.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/perfil.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <section class="divider">
+    <div class="num">ENGAJAMENTO</div>
+    <h2>Foguinho<br/>e ranking</h2>
+    <p>O foguinho conta dias seguidos de estudo, como no Snapchat e no Duolingo. O ranking compara os alunos da mesma turma, com nome completo, e o aviso de foguinho em risco sai na plataforma e por e-mail.</p>
+    <div class="meta">
+      <span>3 telas</span>
+      <span>Mago do Pism</span>
+    </div>
+  </section>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">07</span>
+        <span class="title">Foguinho · estados</span>
+        <span class="sub">Ativo, em risco, perdido e marco de 7 dias</span>
+      </div>
+      <span class="idx">alunos/conquistas-foguinho.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/conquistas-foguinho.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">08</span>
+        <span class="title">Ranking da turma</span>
+        <span class="sub">Seletor de turma, top 10 com empate e posição do aluno fixada</span>
+      </div>
+      <span class="idx">alunos/conquistas-ranking.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/conquistas-ranking.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">09</span>
+        <span class="title">Ranking · turma nova</span>
+        <span class="sub">Estado vazio, sem dados ainda</span>
+      </div>
+      <span class="idx">alunos/conquistas-ranking-vazio.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/conquistas-ranking-vazio.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">10</span>
+        <span class="title">E-mail de foguinho em risco</span>
+        <span class="sub">Enviado no horário configurado pelo admin</span>
+      </div>
+      <span class="idx">alunos/conquistas-email-foguinho.html</span>
+    </header>
+    <div class="stage"><iframe src="alunos/conquistas-email-foguinho.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <section class="divider">
+    <div class="num">ADMIN</div>
+    <h2>Configuração</h2>
+    <p>O time do Mago define níveis, pontos por ação, o que conta como dia ativo do foguinho, dias pra zerar, congelamento e marcos. Também acompanha os alunos que ganharam prêmio e marca a entrega.</p>
+    <div class="meta">
+      <span>1 tela</span>
+      <span>Mago do Pism</span>
+    </div>
+  </section>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">11</span>
+        <span class="title">Admin · Níveis e pontos</span>
+        <span class="sub">Níveis com adicionar nível, pontos por ação e foguinho</span>
+      </div>
+      <span class="idx">admin/gamificacao.html</span>
+    </header>
+    <div class="stage"><iframe src="admin/gamificacao.html" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">12</span>
+        <span class="title">Admin · Foguinho, reset e avisos</span>
+        <span class="sub">Dia ativo, dias pra zerar, congelar, marcos, reset anual e avisos</span>
+      </div>
+      <span class="idx">admin/gamificacao.html#foguinho</span>
+    </header>
+    <div class="stage"><iframe src="admin/gamificacao.html#foguinho" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <article class="page">
+    <header class="page-head">
+      <div class="left">
+        <span class="num">13</span>
+        <span class="title">Admin · Prêmios conquistados</span>
+        <span class="sub">Lista de quem ganhou camisa ou placa, com Marcar como entregue</span>
+      </div>
+      <span class="idx">admin/gamificacao.html</span>
+    </header>
+    <div class="stage"><iframe src="admin/gamificacao.html#premios" loading="eager" data-screen></iframe></div>
+  </article>
+
+  <section class="notes">
+    <h2>Notas de <em>design</em> &amp; decisões</h2>
+    <p class="lead">Pontuações e nomes são exemplo de protótipo. Tudo que varia é editável pelo admin, nada fica fixo no design.</p>
+
+    <div class="notes-grid">
+      <article class="note-card"><div class="num">01</div><h3>Tudo configurável</h3><p>Pontos por ação, níveis, dia ativo do foguinho, dias pra zerar, congelar, marcos e horário do aviso ficam na tela de admin.</p></article>
+      <article class="note-card"><div class="num">02</div><h3>Pontos zeram em 31/12</h3><p>Só os pontos do ano zeram. Nível e selos conquistados ficam no histórico do aluno.</p></article>
+      <article class="note-card"><div class="num">03</div><h3>Ranking por turma</h3><p>Todos os alunos da turma aparecem, com nome completo, sem opção de sair. Empate dividido na mesma posição.</p></article>
+      <article class="note-card"><div class="num">04</div><h3>Prêmios físicos</h3><p>Camisa dourada e placa de diamante são enviadas pelo Mago do Pism. O admin vê quem ganhou e marca como entregue.</p></article>
+      <article class="note-card"><div class="num">05</div><h3>Sem cor nova no design system</h3><p>O Mago não tem token dourado, diamante nem laranja de fogo. Níveis se distinguem por ícone e o foguinho é azul. Pra ficar dourado de verdade é preciso criar esses tokens.</p></article>
+      <article class="note-card"><div class="num">06</div><h3>Avisos por plataforma e e-mail</h3><p>Foguinho em risco avisa dentro da plataforma e por e-mail. WhatsApp ficou de fora.</p></article>
+    </div>
+
+    <div class="note-foot">
+      <span>Gamificação</span>
+      <span>v1 · Novembro 2026</span>
+    </div>
+  </section>
+
+  <script>
+    function scaleStages() {
+      document.querySelectorAll('.stage').forEach(stage => {
+        const iframe = stage.querySelector('iframe[data-screen]');
+        if (!iframe) return;
+        const w = stage.clientWidth;
+        const h = stage.clientHeight;
+        const s = Math.min(w / 1440, h / 900);
+        iframe.style.transform = `scale(${s})`;
+        iframe.style.left = ((w - 1440 * s) / 2) + 'px';
+        iframe.style.top  = ((h - 900  * s) / 2) + 'px';
+      });
+    }
+    window.addEventListener('load', scaleStages);
+    window.addEventListener('resize', scaleStages);
+    scaleStages();
+  </script>
+
+</body>
+</html>
