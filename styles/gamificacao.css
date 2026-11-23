@@ -370,3 +370,9 @@
 .gm-td-act { text-align: right; white-space: nowrap; }
 .gm-act { height: 38px; font-size: 13px; padding: 0 14px; }
 @media (max-width: 700px) { .gm-td-act { justify-content: stretch !important; } .gm-td-act .gm-act { width: 100%; } .gm-st-date { display: inline; margin: 0 0 0 8px; } }
+
+/* ── Sem sombra desfocada: no PDF e em alguns visualizadores ela vira quadrado cinza ── */
+:root { --shadow-card: none; --shadow-soft: none; --shadow-deep: none; }
+.sidebar, .avatar-circle { box-shadow: none; }
+.gm-card, .gm-state, .gm-toast, .gm-mail, .gm-anchors a, .gm-strip-wrap .gm-reset { border: 1px solid var(--neutral-300); }
+.gm-modal { border: 1px solid var(--neutral-300); }
