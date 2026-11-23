@@ -117,48 +117,6 @@
           </details>
           </div>
         </div>
-        <section class="gm-dev" aria-label="Pro dev">
-  <h3>Pro dev</h3>
-  <p>Nada disso existe no mdp-api hoje (conferido: sem tabela, módulo ou endpoint de pontos, nível, sequência ou ranking). O que já existe e dá pra reaproveitar: BullMQ (<code>calculate-score</code>), <code>nodemailer</code> e <code>@aws-sdk/client-sesv2</code> pro e-mail, módulo <code>notifications</code>.</p>
-  <h4>Dados novos (Prisma)</h4>
-  <ul>
-    <li><code>GamificationConfig</code> (uma linha só, editada na admin): <code>activeDayActions[]</code> (aula, questão, lista, simulado, aula ao vivo), <code>daysToBreak</code>, <code>freezeEnabled</code>, <code>freezesPerMonth</code>, <code>resetEnabled</code>, <code>resetMonth</code>/<code>resetDay</code> (31/12), <code>riskChannels</code> (plataforma, e-mail), <code>riskSendTime</code> (HH:mm, fuso de Brasília), <code>riskEmailSubject</code>.</li>
-    <li><code>PointRule</code>: action (enum), points, active. <code>StreakMilestone</code>: days, bonusPoints, active.</li>
-    <li><code>GamificationLevel</code>: id, name, minPoints, benefit, iconKey, order, active. A admin cria, edita e remove (botão Adicionar nível).</li>
-    <li><code>PointEvent</code>: id, userId, action, points, refType/refId, season (ano), createdAt. Único por (userId, action, refId) pra não pontuar duas vezes a mesma aula.</li>
-    <li><code>UserGamification</code>: userId, seasonPoints (zera na virada), levelId, currentStreak, longestStreak, lastActiveDate, freezesUsedMonth, sem opt-out do ranking (todos os alunos da turma aparecem).</li>
-    <li><code>UserBadge</code>: userId, levelId, season, reachedAt, <code>deliveryStatus</code> (PENDING | SENT), <code>sentAt</code>. Entrega feita pelo Mago do Pism, a admin só marca o status.</li>
-    <li><code>SeasonSnapshot</code>: guarda o ranking e os pontos finais de cada turma antes do reset (selos e nível conquistados ficam no histórico do aluno; só os pontos do ano zeram).</li>
-  </ul>
-  <h4>Endpoints novos</h4>
-  <ul>
-    <li><code>GET /gamification/me</code>: pontos do ano, nível atual e próximo, foguinho, semana, selos, data do reset.</li>
-    <li><code>GET /gamification/me/events?page=</code>: histórico de pontos.</li>
-    <li><code>GET /gamification/levels</code>: trilha (só níveis ativos).</li>
-    <li><code>GET /gamification/ranking?classId=&amp;limit=10</code>: <code>{ items: [{ position, displayName, avatarUrl, points }], me: { position, points } }</code>. Só nome e avatar, nada de e-mail ou CPF. Empate divide a posição (1, 2, 3, 4, 4, 6). <code>displayName</code> é o nome completo e não há opt-out. Cache curto.</li>
-    <li><code>GET|PUT /admin/gamification/config</code>: dia ativo, dias pra zerar, congelar, reset anual, canais e horário.</li>
-    <li><code>POST|PATCH|DELETE /admin/gamification/levels</code>, <code>PUT /admin/gamification/point-rules</code>, <code>POST|PATCH|DELETE /admin/gamification/milestones</code>.</li>
-    <li><code>GET /admin/gamification/deliveries?status=</code> e <code>PATCH /admin/gamification/deliveries/:id</code> (<code>{ status: "SENT" }</code>): quem atingiu nível e falta enviar o brinde.</li>
-  </ul>
-  <h4>Jobs (BullMQ)</h4>
-  <ul>
-    <li>Fechamento diário (fuso de Brasília): zera foguinho de quem passou de <code>daysToBreak</code> sem congelamento, credita bônus de marco.</li>
-    <li>Aviso de foguinho em risco: roda no <code>riskSendTime</code> configurado (reagendar ao salvar a config). Seleciona quem tem foguinho aceso e ainda não fez ação de dia ativo hoje. Cria notificação na plataforma e/ou envia e-mail, conforme os canais.</li>
-    <li>Reset anual: cron <code>0 0 1 1 *</code> em America/Sao_Paulo (ou a data da config). Grava <code>SeasonSnapshot</code>, zera <code>seasonPoints</code>, recalcula nível. Idempotente (se rodar duas vezes, não zera de novo) e com log.</li>
-  </ul>
-  <h4>E-mail de foguinho em risco</h4>
-  <ul>
-    <li>Template HTML de 600px (tabelas e CSS inline, ícone em PNG, não SVG, porque cliente de e-mail corta SVG). Assunto vem da config. Botão "Estudar agora" abre o app. Rodapé com link de descadastrar (token por usuário) e flag <code>emailGamificationOptOut</code> respeitada no job. Tela de referência: <code>alunos/conquistas-email-foguinho.html</code>.</li>
-    <li>WhatsApp não foi pedido, fica fora.</li>
-  </ul>
-  <h4>Atenção</h4>
-  <ul>
-    <li>FAQ da aba Conquistas: os números do texto (pontos por ação, limites dos níveis, marcos, dias pra zerar, congelamentos, data do reset) têm que vir de <code>/gamification/levels</code> e da config, não ficar escritos fixos, porque a admin edita tudo. O texto das perguntas pode ser fixo.</li>
-    <li>Pontuar no mesmo ponto onde grava o evento (idempotente), nunca no front. Eventos que servem de gatilho: <code>ContentCheck</code>, <code>ExerciseAnswer</code>, <code>StudentAnswer</code>/<code>SimulationSession</code>, <code>UserAccessLog</code>.</li>
-    <li>Ranking calcula por turma (soma de <code>seasonPoints</code> dos matriculados na turma). Um aluno em duas turmas aparece nas duas.</li>
-    <li>Backfill do histórico existente: não definido. Como os pontos zeram no ano, só vale se o início for antes de 01/01.</li>
-  </ul>
-</section>
       </div>
     </main>
   </div>
