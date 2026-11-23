@@ -32,26 +32,111 @@
       </div>
     </aside>
     <main class="content admin-content">
-      <div class="gm-note"><b>Tela sugerida, fora do pedido original.</b> Só desenhei pra equipe não depender de dev pra mudar X, Y e pontuação. Se preferirem valores fixos no código, esta tela sai (decisão 12).</div>
       <h2 class="section-title">Gamificação</h2>
-      <div class="gm-card decisao" data-n="12">
-        <h3 class="gm-h" style="font-size:17px">Níveis e benefícios</h3>
-        <div class="gm-tbl-wrap"><table class="gm-tbl"><thead><tr><th>#</th><th>Nome do nível</th><th>Pontos mínimos</th><th>Benefício</th></tr></thead><tbody><tr><td>1</td><td><input class="input" value="Aprendiz"></td><td><input class="input" value="0" style="max-width:110px"></td><td><input class="input" value="Acesso à plataforma. Todo aluno começa aqui."></td></tr><tr><td>2</td><td><input class="input" value="Camisa dourada"></td><td><input class="input" value="1.000" style="max-width:110px"></td><td><input class="input" value="Camisa dourada do Mago do Pism (benefício citado pela equipe, entrega a definir)."></td></tr><tr><td>3</td><td><input class="input" value="Placa de diamante"></td><td><input class="input" value="3.000" style="max-width:110px"></td><td><input class="input" value="Placa de diamante do Mago do Pism (benefício citado pela equipe, entrega a definir)."></td></tr><tr><td>4</td><td><input class="input" value="Nível exemplo 4"></td><td><input class="input" value="6.000" style="max-width:110px"></td><td><input class="input" value="Benefício de exemplo: mentoria em grupo exclusiva."></td></tr><tr><td>5</td><td><input class="input" value="Nível exemplo 5"></td><td><input class="input" value="10.000" style="max-width:110px"></td><td><input class="input" value="Benefício de exemplo: desconto na rematrícula."></td></tr></tbody></table></div>
-        <div class="gm-actions" style="margin-top:16px"><button class="btn-primary btn-ghost" style="height:44px;font-size:15px">Adicionar nível</button></div>
+      <nav class="gm-anchors" aria-label="Seções">
+        <a href="#niveis">Níveis e benefícios</a><a href="#pontos">Pontos por ação</a><a href="#foguinho">Foguinho</a><a href="#reset">Reset anual</a><a href="#avisos">Avisos</a>
+      </nav>
+
+      <div class="gm-card gm-sec" id="niveis">
+        <div class="gm-sec-head"><h3 class="gm-h">Níveis e benefícios</h3></div>
+        <p class="gm-hint">Os alunos veem só os níveis cadastrados aqui. Os brindes são enviados pelo Mago do Pism.</p>
+        <div class="gm-tbl-wrap"><table class="gm-tbl"><thead><tr><th>#</th><th>Nome do nível</th><th>Pontos mínimos</th><th>Benefício</th><th></th></tr></thead><tbody><tr><td data-label="#">1</td><td data-label="Nome do nível"><input class="input" value="Aprendiz"></td><td data-label="Pontos mínimos"><input class="input" value="0" style="max-width:110px"></td><td data-label="Benefício"><input class="input" value="Acesso à plataforma. Todo aluno começa aqui."></td><td><span class="gm-tag lock">Nível base</span></td></tr><tr><td data-label="#">2</td><td data-label="Nome do nível"><input class="input" value="Camisa dourada"></td><td data-label="Pontos mínimos"><input class="input" value="1.000" style="max-width:110px"></td><td data-label="Benefício"><input class="input" value="Camisa dourada exclusiva. Enviada pelo Mago do Pism."></td><td><button class="btn-primary btn-ghost btn-primary--minor" style="height:36px;font-size:13px;padding:0 12px" aria-label="Remover nível Camisa dourada">Remover</button></td></tr><tr><td data-label="#">3</td><td data-label="Nome do nível"><input class="input" value="Placa de diamante"></td><td data-label="Pontos mínimos"><input class="input" value="3.000" style="max-width:110px"></td><td data-label="Benefício"><input class="input" value="Placa de diamante exclusiva. Enviada pelo Mago do Pism."></td><td><button class="btn-primary btn-ghost btn-primary--minor" style="height:36px;font-size:13px;padding:0 12px" aria-label="Remover nível Placa de diamante">Remover</button></td></tr></tbody></table></div>
+        <div class="gm-addbox">
+          <p class="gm-sub-h">Adicionar nível</p>
+          <div class="gm-addgrid"><input class="input" placeholder="Nome do nível" aria-label="Nome do nível"><input class="input" placeholder="Pontos" aria-label="Pontos mínimos"><input class="input" placeholder="Benefício" aria-label="Benefício"><button class="btn-primary">Adicionar nível</button></div>
+        </div>
+        <h4 class="gm-sub-h" style="margin-top:28px">Entrega dos brindes</h4>
+        <p class="gm-hint" style="margin-bottom:10px">Alunos que atingiram um nível com brinde. Marque como enviado quando o Mago do Pism despachar.</p>
+        <div class="gm-tbl-wrap"><table class="gm-tbl"><thead><tr><th>Aluno</th><th>Nível</th><th>Atingiu em</th><th>Entrega</th></tr></thead><tbody><tr><td data-label="Aluno">Karla Moreira</td><td data-label="Nível">Camisa dourada</td><td data-label="Atingiu em">14/10/2026</td><td data-label="Entrega"><select class="input gm-st-sel" aria-label="Status da entrega de Karla Moreira"><option>Pendente</option><option selected>Enviado</option></select></td></tr><tr><td data-label="Aluno">Rafael Oliveira</td><td data-label="Nível">Camisa dourada</td><td data-label="Atingiu em">02/11/2026</td><td data-label="Entrega"><select class="input gm-st-sel" aria-label="Status da entrega de Rafael Oliveira"><option selected>Pendente</option><option>Enviado</option></select></td></tr><tr><td data-label="Aluno">Beatriz Santos</td><td data-label="Nível">Camisa dourada</td><td data-label="Atingiu em">09/11/2026</td><td data-label="Entrega"><select class="input gm-st-sel" aria-label="Status da entrega de Beatriz Santos"><option selected>Pendente</option><option>Enviado</option></select></td></tr></tbody></table></div>
       </div>
-      <div class="gm-card decisao" data-n="4">
-        <h3 class="gm-h" style="font-size:17px">Pontos por ação</h3>
-        <div class="gm-tbl-wrap"><table class="gm-tbl"><thead><tr><th>Ação</th><th>Pontos</th><th>Ativa</th></tr></thead><tbody><tr><td>Assistir uma aula</td><td><input class="input" value="10" style="max-width:110px"></td><td><span class="gm-switch"><i></i></span></td></tr><tr><td>Responder lista de exercícios</td><td><input class="input" value="30" style="max-width:110px"></td><td><span class="gm-switch"><i></i></span></td></tr><tr><td>Concluir um simulado</td><td><input class="input" value="100" style="max-width:110px"></td><td><span class="gm-switch"><i></i></span></td></tr><tr><td>Presença em aula ao vivo</td><td><input class="input" value="20" style="max-width:110px"></td><td><span class="gm-switch"><i></i></span></td></tr><tr><td>Marco de 7 dias de foguinho</td><td><input class="input" value="50" style="max-width:110px"></td><td><span class="gm-switch"><i></i></span></td></tr></tbody></table></div>
+
+      <div class="gm-card gm-sec" id="pontos">
+        <div class="gm-sec-head"><h3 class="gm-h">Pontos por ação</h3></div>
+        <p class="gm-hint">Quantos pontos o aluno ganha em cada ação. Desligue uma ação pra ela deixar de pontuar.</p>
+        <div class="gm-tbl-wrap"><table class="gm-tbl"><thead><tr><th>Ação</th><th>Pontos</th><th>Ativa</th></tr></thead><tbody><tr><td data-label="Ação">Assistir uma aula</td><td data-label="Pontos"><input class="input" value="10" style="max-width:110px"></td><td data-label="Ativa"><span class="gm-switch" role="switch" aria-checked="true"><i></i></span></td></tr><tr><td data-label="Ação">Responder uma lista de exercícios</td><td data-label="Pontos"><input class="input" value="30" style="max-width:110px"></td><td data-label="Ativa"><span class="gm-switch" role="switch" aria-checked="true"><i></i></span></td></tr><tr><td data-label="Ação">Concluir um simulado</td><td data-label="Pontos"><input class="input" value="100" style="max-width:110px"></td><td data-label="Ativa"><span class="gm-switch" role="switch" aria-checked="true"><i></i></span></td></tr><tr><td data-label="Ação">Presença em aula ao vivo</td><td data-label="Pontos"><input class="input" value="20" style="max-width:110px"></td><td data-label="Ativa"><span class="gm-switch" role="switch" aria-checked="true"><i></i></span></td></tr></tbody></table></div>
       </div>
-      <div class="gm-card decisao" data-n="7">
-        <h3 class="gm-h" style="font-size:17px">Foguinho</h3>
-        <div class="gm-form-grid">
-          <label><span class="field-label">Ação que conta como dia ativo</span><input class="input" value="Qualquer aula ou questão" disabled /></label>
-          <label><span class="field-label">Dias sem estudar até zerar</span><input class="input" value="1 dia" /></label>
-          <label><span class="field-label">Congelar foguinho (por mês)</span><input class="input" value="0" /></label>
+
+      <div class="gm-card gm-sec" id="foguinho">
+        <div class="gm-sec-head"><h3 class="gm-h">Foguinho</h3></div>
+        <p class="gm-hint">Regras da sequência de dias de estudo.</p>
+        <p class="gm-sub-h" style="margin-top:0">O que conta como dia ativo</p>
+        <div class="gm-checks"><label class="gm-check"><input type="checkbox" checked>Assistir aula</label><label class="gm-check"><input type="checkbox" checked>Fazer questão</label><label class="gm-check"><input type="checkbox" checked>Responder lista</label><label class="gm-check"><input type="checkbox" checked>Fazer simulado</label><label class="gm-check"><input type="checkbox" checked>Participar de aula ao vivo</label></div>
+        <div class="gm-two-col" style="margin-top:24px">
+          <div class="gm-field"><span class="field-label">Dias sem estudar pra zerar o foguinho</span><div class="gm-inline" style="margin-top:6px"><input class="input" type="number" value="1" min="1" aria-label="Dias sem estudar pra zerar"><span>dia(s)</span></div></div>
+          <div class="gm-field"><span class="field-label">Congelar foguinho (dias de tolerância)</span><div class="gm-inline" style="margin-top:6px"><span class="gm-switch" role="switch" aria-checked="true"><i></i></span><input class="input" type="number" value="2" min="0" aria-label="Congelamentos por mês"><span>por mês</span></div></div>
+        </div>
+        <h4 class="gm-sub-h" style="margin-top:28px">Marcos e pontos extras</h4>
+        <div class="gm-tbl-wrap"><table class="gm-tbl"><thead><tr><th>Dias seguidos</th><th>Pontos extras</th><th>Ativo</th><th></th></tr></thead><tbody><tr><td data-label="Dias seguidos"><input class="input" value="7" style="max-width:90px"></td><td data-label="Pontos extras"><input class="input" value="50" style="max-width:110px"></td><td data-label="Ativo"><span class="gm-switch" role="switch" aria-checked="true"><i></i></span></td><td><button class="btn-primary btn-ghost btn-primary--minor" style="height:36px;font-size:13px;padding:0 12px">Remover</button></td></tr><tr><td data-label="Dias seguidos"><input class="input" value="14" style="max-width:90px"></td><td data-label="Pontos extras"><input class="input" value="100" style="max-width:110px"></td><td data-label="Ativo"><span class="gm-switch" role="switch" aria-checked="true"><i></i></span></td><td><button class="btn-primary btn-ghost btn-primary--minor" style="height:36px;font-size:13px;padding:0 12px">Remover</button></td></tr><tr><td data-label="Dias seguidos"><input class="input" value="30" style="max-width:90px"></td><td data-label="Pontos extras"><input class="input" value="200" style="max-width:110px"></td><td data-label="Ativo"><span class="gm-switch" role="switch" aria-checked="true"><i></i></span></td><td><button class="btn-primary btn-ghost btn-primary--minor" style="height:36px;font-size:13px;padding:0 12px">Remover</button></td></tr><tr><td data-label="Dias seguidos"><input class="input" value="100" style="max-width:90px"></td><td data-label="Pontos extras"><input class="input" value="500" style="max-width:110px"></td><td data-label="Ativo"><span class="gm-switch" role="switch" aria-checked="true"><i></i></span></td><td><button class="btn-primary btn-ghost btn-primary--minor" style="height:36px;font-size:13px;padding:0 12px">Remover</button></td></tr></tbody></table></div>
+        <div class="gm-actions" style="margin-top:16px"><button class="btn-primary btn-ghost" style="height:44px;font-size:15px">Adicionar marco</button></div>
+      </div>
+
+      <div class="gm-card gm-sec" id="reset">
+        <div class="gm-sec-head"><h3 class="gm-h">Reset anual</h3></div>
+        <p class="gm-hint">Os pontos do ano zeram automaticamente. O ranking final de cada turma é guardado antes de zerar.</p>
+        <div class="gm-row-switch"><span>Zerar pontos todo ano<small>Próximo reset: 31/12/2026, 23:59 (horário de Brasília)</small></span><span class="gm-switch" role="switch" aria-checked="true"><i></i></span></div>
+        <div class="gm-form-grid" style="margin-top:16px">
+          <label class="gm-field"><span class="field-label">Dia</span><input class="input" value="31" /></label>
+          <label class="gm-field"><span class="field-label">Mês</span><input class="input" value="12 (dezembro)" /></label>
+          <label class="gm-field"><span class="field-label">Aviso ao aluno</span><input class="input" value="Seus pontos zeram em 31/12" /></label>
+        </div>
+        <div class="gm-ask gm-qbox decisao" data-n="1"><b>E os selos e o nível conquistados?</b><p>Decisão em aberto: o que acontece com eles na virada?</p>
+          <div class="gm-radios"><label><input type="radio" name="selos"> Ficam no histórico do aluno (o nível recalcula pelos pontos novos)</label><label><input type="radio" name="selos"> Também zeram</label></div></div>
+      </div>
+
+      <div class="gm-card gm-sec" id="avisos">
+        <div class="gm-sec-head"><h3 class="gm-h">Avisos</h3><a href="../alunos/conquistas-email-foguinho.html" class="text-primary" style="color:var(--brand-blue);font-size:14px;font-weight:600">Ver e-mail de exemplo</a></div>
+        <p class="gm-hint">Aviso pro aluno quando o foguinho está em risco (ainda não estudou hoje).</p>
+        <div class="gm-row-switch"><span>Na plataforma<small>Aviso dentro do app (toast e card do início)</small></span><span class="gm-switch" role="switch" aria-checked="true"><i></i></span></div>
+        <div class="gm-row-switch"><span>Por e-mail<small>Com botão "Estudar agora" e link de descadastrar</small></span><span class="gm-switch" role="switch" aria-checked="true"><i></i></span></div>
+        <div class="gm-two-col" style="margin-top:18px">
+          <label class="gm-field"><span class="field-label">Horário de envio (Brasília)</span><input class="input" type="time" value="20:00" style="max-width:160px" /></label>
+          <label class="gm-field"><span class="field-label">Assunto do e-mail</span><input class="input" value="Seu foguinho de {dias} dias está em risco" /></label>
         </div>
       </div>
+
       <div class="gm-actions"><button class="btn-primary">Salvar alterações</button></div>
+      <section class="gm-dev" aria-label="Pro dev">
+  <h3>Pro dev</h3>
+  <p>Nada disso existe no mdp-api hoje (conferido: sem tabela, módulo ou endpoint de pontos, nível, sequência ou ranking). O que já existe e dá pra reaproveitar: BullMQ (<code>calculate-score</code>), <code>nodemailer</code> e <code>@aws-sdk/client-sesv2</code> pro e-mail, módulo <code>notifications</code>.</p>
+  <h4>Dados novos (Prisma)</h4>
+  <ul>
+    <li><code>GamificationConfig</code> (uma linha só, editada na admin): <code>activeDayActions[]</code> (aula, questão, lista, simulado, aula ao vivo), <code>daysToBreak</code>, <code>freezeEnabled</code>, <code>freezesPerMonth</code>, <code>resetEnabled</code>, <code>resetMonth</code>/<code>resetDay</code> (31/12), <code>riskChannels</code> (plataforma, e-mail), <code>riskSendTime</code> (HH:mm, fuso de Brasília), <code>riskEmailSubject</code>.</li>
+    <li><code>PointRule</code>: action (enum), points, active. <code>StreakMilestone</code>: days, bonusPoints, active.</li>
+    <li><code>GamificationLevel</code>: id, name, minPoints, benefit, iconKey, order, active. A admin cria, edita e remove (botão Adicionar nível).</li>
+    <li><code>PointEvent</code>: id, userId, action, points, refType/refId, season (ano), createdAt. Único por (userId, action, refId) pra não pontuar duas vezes a mesma aula.</li>
+    <li><code>UserGamification</code>: userId, seasonPoints (zera na virada), levelId, currentStreak, longestStreak, lastActiveDate, freezesUsedMonth, rankingOptIn (só se a decisão 3 for sim).</li>
+    <li><code>UserBadge</code>: userId, levelId, season, reachedAt, <code>deliveryStatus</code> (PENDING | SENT), <code>sentAt</code>. Entrega feita pelo Mago do Pism, a admin só marca o status.</li>
+    <li><code>SeasonSnapshot</code>: guarda o ranking e os pontos finais de cada turma antes do reset (decisão 1 define se os selos continuam visíveis).</li>
+  </ul>
+  <h4>Endpoints novos</h4>
+  <ul>
+    <li><code>GET /gamification/me</code>: pontos do ano, nível atual e próximo, foguinho, semana, selos, data do reset.</li>
+    <li><code>GET /gamification/me/events?page=</code>: histórico de pontos.</li>
+    <li><code>GET /gamification/levels</code>: trilha (só níveis ativos).</li>
+    <li><code>GET /gamification/ranking?classId=&amp;limit=10</code>: <code>{ items: [{ position, displayName, avatarUrl, points }], me: { position, points } }</code>. Só nome e avatar, nada de e-mail ou CPF. Empate divide a posição (1, 2, 3, 4, 4, 6). Formato do nome e opt-out dependem das decisões 2 e 3. Cache curto.</li>
+    <li><code>PATCH /gamification/me/ranking-optin</code>: só se a decisão 3 for sim.</li>
+    <li><code>GET|PUT /admin/gamification/config</code>: dia ativo, dias pra zerar, congelar, reset anual, canais e horário.</li>
+    <li><code>POST|PATCH|DELETE /admin/gamification/levels</code>, <code>PUT /admin/gamification/point-rules</code>, <code>POST|PATCH|DELETE /admin/gamification/milestones</code>.</li>
+    <li><code>GET /admin/gamification/deliveries?status=</code> e <code>PATCH /admin/gamification/deliveries/:id</code> (<code>{ status: "SENT" }</code>): quem atingiu nível e falta enviar o brinde.</li>
+  </ul>
+  <h4>Jobs (BullMQ)</h4>
+  <ul>
+    <li>Fechamento diário (fuso de Brasília): zera foguinho de quem passou de <code>daysToBreak</code> sem congelamento, credita bônus de marco.</li>
+    <li>Aviso de foguinho em risco: roda no <code>riskSendTime</code> configurado (reagendar ao salvar a config). Seleciona quem tem foguinho aceso e ainda não fez ação de dia ativo hoje. Cria notificação na plataforma e/ou envia e-mail, conforme os canais.</li>
+    <li>Reset anual: cron <code>0 0 1 1 *</code> em America/Sao_Paulo (ou a data da config). Grava <code>SeasonSnapshot</code>, zera <code>seasonPoints</code>, recalcula nível. Idempotente (se rodar duas vezes, não zera de novo) e com log.</li>
+  </ul>
+  <h4>E-mail de foguinho em risco</h4>
+  <ul>
+    <li>Template HTML de 600px (tabelas e CSS inline, ícone em PNG, não SVG, porque cliente de e-mail corta SVG). Assunto vem da config. Botão "Estudar agora" abre o app. Rodapé com link de descadastrar (token por usuário) e flag <code>emailGamificationOptOut</code> respeitada no job. Tela de referência: <code>alunos/conquistas-email-foguinho.html</code>.</li>
+    <li>WhatsApp não foi pedido, fica fora.</li>
+  </ul>
+  <h4>Atenção</h4>
+  <ul>
+    <li>Pontuar no mesmo ponto onde grava o evento (idempotente), nunca no front. Eventos que servem de gatilho: <code>ContentCheck</code>, <code>ExerciseAnswer</code>, <code>StudentAnswer</code>/<code>SimulationSession</code>, <code>UserAccessLog</code>.</li>
+    <li>Ranking calcula por turma (soma de <code>seasonPoints</code> dos matriculados na turma). Um aluno em duas turmas aparece nas duas.</li>
+    <li>Backfill do histórico existente: não definido. Como os pontos zeram no ano, só vale se o início for antes de 01/01.</li>
+  </ul>
+</section>
     </main>
   </div>
 </body>
