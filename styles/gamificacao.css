@@ -84,7 +84,7 @@
 .gm-hero-badge {
   width: 88px; height: 88px; border-radius: var(--radius-pill); flex-shrink: 0;
   display: inline-flex; align-items: center; justify-content: center;
-  background: var(--brand-blue); color: var(--neutral-0); box-shadow: var(--shadow-card);
+  background: var(--brand-blue); color: var(--neutral-0);
 }
 .gm-hero-badge svg { width: 44px; height: 44px; }
 .gm-hero-main { flex: 1; min-width: 240px; }
@@ -147,7 +147,7 @@
 .gm-badge i {
   display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;
   width: 72px; height: 72px; border-radius: var(--radius-pill);
-  background: var(--brand-blue); color: var(--neutral-0); font-style: normal; box-shadow: var(--shadow-soft);
+  background: var(--brand-blue); color: var(--neutral-0); font-style: normal;
 }
 .gm-badge i svg { width: 34px; height: 34px; }
 .gm-badge b { display: block; font-size: 13px; color: var(--text-primary); }
@@ -183,7 +183,7 @@
 .gm-modal { position: relative; width: 100%; max-width: 440px; background: var(--neutral-0); border-radius: var(--radius-2xl); box-shadow: var(--shadow-deep); padding: 36px 32px 28px; text-align: center; }
 .gm-modal-close { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border: none; border-radius: var(--radius-pill); background: var(--neutral-150); color: var(--text-secondary); display: inline-flex; align-items: center; justify-content: center; }
 .gm-modal-close svg { width: 18px; height: 18px; }
-.gm-modal-badge { width: 112px; height: 112px; margin: 0 auto 18px; border-radius: var(--radius-pill); background: var(--brand-blue); color: var(--neutral-0); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 8px var(--neutral-150), var(--shadow-card); }
+.gm-modal-badge { width: 112px; height: 112px; margin: 0 auto 18px; border-radius: var(--radius-pill); background: var(--brand-blue); color: var(--neutral-0); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 8px var(--neutral-150); }
 .gm-modal-badge svg { width: 56px; height: 56px; }
 .gm-modal-kicker { margin: 0 0 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--brand-blue); }
 .gm-modal h3 { margin: 0 0 8px; font-size: 26px; font-weight: 700; color: var(--text-primary); }
