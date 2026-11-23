@@ -342,3 +342,32 @@
   .gm-tbl td .input { max-width: 62% !important; }
   .gm-tbl td .gm-st-sel { width: 62%; }
 }
+
+/* ── FAQ (Conquistas) ── */
+.gm-faq { padding: 8px 24px; }
+.gm-faq-item { border-bottom: 1px solid var(--neutral-300); }
+.gm-faq-item:last-child { border-bottom: none; }
+.gm-faq-item summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; cursor: pointer; list-style: none; font-size: 16px; font-weight: 600; color: var(--text-primary); }
+.gm-faq-item summary::-webkit-details-marker { display: none; }
+.gm-faq-item summary svg { width: 20px; height: 20px; color: var(--brand-blue); flex-shrink: 0; transition: transform .2s; }
+.gm-faq-item[open] summary svg { transform: rotate(180deg); }
+.gm-faq-body { padding: 0 0 18px; font-size: 14px; line-height: 1.6; color: var(--text-secondary); max-width: 720px; }
+.gm-faq-body p { margin: 0 0 8px; }
+.gm-faq-body ul { margin: 0 0 8px; padding-left: 20px; }
+.gm-faq-body b { color: var(--text-primary); }
+@media (max-width: 600px) { .gm-faq { padding: 4px 16px; } .gm-faq-item summary { font-size: 15px; } }
+
+/* ── Prêmios conquistados (admin) ── */
+.gm-pstats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
+.gm-pstat { padding: 14px 16px; border-radius: var(--radius-lg); background: var(--neutral-150); }
+.gm-pstat b { display: block; font-size: 24px; line-height: 28px; color: var(--brand-blue); }
+.gm-pstat span { font-size: 13px; color: var(--text-muted); }
+.gm-filters { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+.gm-filters .input { height: 44px; font-size: 15px; border-width: 1px; margin-top: 6px; }
+@media (max-width: 700px) { .gm-filters { grid-template-columns: 1fr; } .gm-pstat b { font-size: 20px; } .gm-pstat { padding: 12px; } }
+.gm-prize { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; color: var(--text-primary); }
+.gm-prize svg { width: 18px; height: 18px; color: var(--brand-blue); }
+.gm-st-date { display: block; margin-top: 4px; font-size: 12px; color: var(--text-muted); }
+.gm-td-act { text-align: right; white-space: nowrap; }
+.gm-act { height: 38px; font-size: 13px; padding: 0 14px; }
+@media (max-width: 700px) { .gm-td-act { justify-content: stretch !important; } .gm-td-act .gm-act { width: 100%; } .gm-st-date { display: inline; margin: 0 0 0 8px; } }
