@@ -32,7 +32,7 @@
     </aside>
     <main class="content student-content-zero" style="overflow-y:auto;">
       <div class="gm-page">
-        <div class="gm-note"><b>Protótipo inicial de gamificação.</b> Pontos, nomes dos níveis e benefícios são valores de exemplo. Tracejado roxo com número = decisão ainda em aberto.</div>
+        <div class="gm-note"><b>Protótipo inicial de gamificação.</b> Pontos, nomes dos níveis e benefícios são valores de exemplo.</div>
         <h2 class="gm-h" style="font-size:24px">Conquistas</h2><nav class="gm-tabs" aria-label="Conquistas"><a href="conquistas.html" class="is-active">Meu progresso</a><a href="conquistas-ranking.html" class="">Ranking</a></nav>
         <div>
 <div class="gm-card gm-hero">
@@ -50,7 +50,7 @@
           <h2 class="gm-h">Trilha de níveis</h2>
           <p class="gm-sub">Quanto mais você estuda, mais benefícios desbloqueia.</p>
           <div style="padding:6px"><ol class="gm-track"><li class="gm-step is-done"><span class="gm-step-ico"><svg class="gm-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg></span><div class="gm-step-body"><div class="gm-step-head"><h4 class="gm-step-name">Aprendiz</h4><span class="gm-tag done"><svg class="gm-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Conquistado</span></div><div class="gm-step-pts">A partir de 0 pts</div><p class="gm-step-benefit">Acesso à plataforma. Todo aluno começa aqui.</p></div></li><li class="gm-step is-done is-current"><span class="gm-step-ico"><svg class="gm-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg></span><div class="gm-step-body"><div class="gm-step-head"><h4 class="gm-step-name">Camisa dourada</h4><span class="gm-tag now">Seu nível</span></div><div class="gm-step-pts">A partir de 1.000 pts</div><p class="gm-step-benefit">Camisa dourada exclusiva. Enviada pelo Mago do Pism.</p></div></li><li class="gm-step is-locked"><span class="gm-step-ico"><svg class="gm-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg></span><div class="gm-step-body"><div class="gm-step-head"><h4 class="gm-step-name">Placa de diamante</h4><span class="gm-tag lock"><svg class="gm-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Próximo</span></div><div class="gm-step-pts">A partir de 3.000 pts</div><p class="gm-step-benefit">Placa de diamante exclusiva. Enviada pelo Mago do Pism.</p><div class="progress-bar"><span style="width:62%"></span></div><div class="gm-step-pts" style="margin-top:6px">2.240 / 3.000 pts · faltam 760</div></div></li></ol></div>
-          <div class="gm-ask decisao" data-n="1"><b>No dia 31/12 os pontos zeram.</b> O nível e os selos já conquistados ficam no histórico do aluno, ou também zeram?</div>
+          <div class="gm-ask"><b>No dia 31/12 os pontos zeram.</b> O nível e os selos que você já conquistou continuam no seu histórico.</div>
         </div>
         <div class="gm-section gm-two">
 <div class="gm-card" style="margin-top:0">
@@ -81,17 +81,16 @@
     <li><code>PointRule</code>: action (enum), points, active. <code>StreakMilestone</code>: days, bonusPoints, active.</li>
     <li><code>GamificationLevel</code>: id, name, minPoints, benefit, iconKey, order, active. A admin cria, edita e remove (botão Adicionar nível).</li>
     <li><code>PointEvent</code>: id, userId, action, points, refType/refId, season (ano), createdAt. Único por (userId, action, refId) pra não pontuar duas vezes a mesma aula.</li>
-    <li><code>UserGamification</code>: userId, seasonPoints (zera na virada), levelId, currentStreak, longestStreak, lastActiveDate, freezesUsedMonth, rankingOptIn (só se a decisão 3 for sim).</li>
+    <li><code>UserGamification</code>: userId, seasonPoints (zera na virada), levelId, currentStreak, longestStreak, lastActiveDate, freezesUsedMonth, sem opt-out do ranking (todos os alunos da turma aparecem).</li>
     <li><code>UserBadge</code>: userId, levelId, season, reachedAt, <code>deliveryStatus</code> (PENDING | SENT), <code>sentAt</code>. Entrega feita pelo Mago do Pism, a admin só marca o status.</li>
-    <li><code>SeasonSnapshot</code>: guarda o ranking e os pontos finais de cada turma antes do reset (decisão 1 define se os selos continuam visíveis).</li>
+    <li><code>SeasonSnapshot</code>: guarda o ranking e os pontos finais de cada turma antes do reset (selos e nível conquistados ficam no histórico do aluno; só os pontos do ano zeram).</li>
   </ul>
   <h4>Endpoints novos</h4>
   <ul>
     <li><code>GET /gamification/me</code>: pontos do ano, nível atual e próximo, foguinho, semana, selos, data do reset.</li>
     <li><code>GET /gamification/me/events?page=</code>: histórico de pontos.</li>
     <li><code>GET /gamification/levels</code>: trilha (só níveis ativos).</li>
-    <li><code>GET /gamification/ranking?classId=&amp;limit=10</code>: <code>{ items: [{ position, displayName, avatarUrl, points }], me: { position, points } }</code>. Só nome e avatar, nada de e-mail ou CPF. Empate divide a posição (1, 2, 3, 4, 4, 6). Formato do nome e opt-out dependem das decisões 2 e 3. Cache curto.</li>
-    <li><code>PATCH /gamification/me/ranking-optin</code>: só se a decisão 3 for sim.</li>
+    <li><code>GET /gamification/ranking?classId=&amp;limit=10</code>: <code>{ items: [{ position, displayName, avatarUrl, points }], me: { position, points } }</code>. Só nome e avatar, nada de e-mail ou CPF. Empate divide a posição (1, 2, 3, 4, 4, 6). <code>displayName</code> é o nome completo e não há opt-out. Cache curto.</li>
     <li><code>GET|PUT /admin/gamification/config</code>: dia ativo, dias pra zerar, congelar, reset anual, canais e horário.</li>
     <li><code>POST|PATCH|DELETE /admin/gamification/levels</code>, <code>PUT /admin/gamification/point-rules</code>, <code>POST|PATCH|DELETE /admin/gamification/milestones</code>.</li>
     <li><code>GET /admin/gamification/deliveries?status=</code> e <code>PATCH /admin/gamification/deliveries/:id</code> (<code>{ status: "SENT" }</code>): quem atingiu nível e falta enviar o brinde.</li>

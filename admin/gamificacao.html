@@ -79,8 +79,7 @@
           <label class="gm-field"><span class="field-label">Mês</span><input class="input" value="12 (dezembro)" /></label>
           <label class="gm-field"><span class="field-label">Aviso ao aluno</span><input class="input" value="Seus pontos zeram em 31/12" /></label>
         </div>
-        <div class="gm-ask gm-qbox decisao" data-n="1"><b>E os selos e o nível conquistados?</b><p>Decisão em aberto: o que acontece com eles na virada?</p>
-          <div class="gm-radios"><label><input type="radio" name="selos"> Ficam no histórico do aluno (o nível recalcula pelos pontos novos)</label><label><input type="radio" name="selos"> Também zeram</label></div></div>
+        <div class="gm-ask"><b>Selos e nível conquistados.</b> Ficam no histórico do aluno depois da virada. Só os pontos do ano zeram, e o nível atual recalcula pelos pontos novos.</div>
       </div>
 
       <div class="gm-card gm-sec" id="avisos">
@@ -104,17 +103,16 @@
     <li><code>PointRule</code>: action (enum), points, active. <code>StreakMilestone</code>: days, bonusPoints, active.</li>
     <li><code>GamificationLevel</code>: id, name, minPoints, benefit, iconKey, order, active. A admin cria, edita e remove (botão Adicionar nível).</li>
     <li><code>PointEvent</code>: id, userId, action, points, refType/refId, season (ano), createdAt. Único por (userId, action, refId) pra não pontuar duas vezes a mesma aula.</li>
-    <li><code>UserGamification</code>: userId, seasonPoints (zera na virada), levelId, currentStreak, longestStreak, lastActiveDate, freezesUsedMonth, rankingOptIn (só se a decisão 3 for sim).</li>
+    <li><code>UserGamification</code>: userId, seasonPoints (zera na virada), levelId, currentStreak, longestStreak, lastActiveDate, freezesUsedMonth, sem opt-out do ranking (todos os alunos da turma aparecem).</li>
     <li><code>UserBadge</code>: userId, levelId, season, reachedAt, <code>deliveryStatus</code> (PENDING | SENT), <code>sentAt</code>. Entrega feita pelo Mago do Pism, a admin só marca o status.</li>
-    <li><code>SeasonSnapshot</code>: guarda o ranking e os pontos finais de cada turma antes do reset (decisão 1 define se os selos continuam visíveis).</li>
+    <li><code>SeasonSnapshot</code>: guarda o ranking e os pontos finais de cada turma antes do reset (selos e nível conquistados ficam no histórico do aluno; só os pontos do ano zeram).</li>
   </ul>
   <h4>Endpoints novos</h4>
   <ul>
     <li><code>GET /gamification/me</code>: pontos do ano, nível atual e próximo, foguinho, semana, selos, data do reset.</li>
     <li><code>GET /gamification/me/events?page=</code>: histórico de pontos.</li>
     <li><code>GET /gamification/levels</code>: trilha (só níveis ativos).</li>
-    <li><code>GET /gamification/ranking?classId=&amp;limit=10</code>: <code>{ items: [{ position, displayName, avatarUrl, points }], me: { position, points } }</code>. Só nome e avatar, nada de e-mail ou CPF. Empate divide a posição (1, 2, 3, 4, 4, 6). Formato do nome e opt-out dependem das decisões 2 e 3. Cache curto.</li>
-    <li><code>PATCH /gamification/me/ranking-optin</code>: só se a decisão 3 for sim.</li>
+    <li><code>GET /gamification/ranking?classId=&amp;limit=10</code>: <code>{ items: [{ position, displayName, avatarUrl, points }], me: { position, points } }</code>. Só nome e avatar, nada de e-mail ou CPF. Empate divide a posição (1, 2, 3, 4, 4, 6). <code>displayName</code> é o nome completo e não há opt-out. Cache curto.</li>
     <li><code>GET|PUT /admin/gamification/config</code>: dia ativo, dias pra zerar, congelar, reset anual, canais e horário.</li>
     <li><code>POST|PATCH|DELETE /admin/gamification/levels</code>, <code>PUT /admin/gamification/point-rules</code>, <code>POST|PATCH|DELETE /admin/gamification/milestones</code>.</li>
     <li><code>GET /admin/gamification/deliveries?status=</code> e <code>PATCH /admin/gamification/deliveries/:id</code> (<code>{ status: "SENT" }</code>): quem atingiu nível e falta enviar o brinde.</li>
