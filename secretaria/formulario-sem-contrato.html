@@ -20,9 +20,12 @@
      Nada de número fixo no código. O checkout lista no cartão de 1× até o N salvo (o InstallmentSelector já monta a faixa a
      partir do pricing) e o MethodSelector já mostra "ou em até {max}x". O boleto não tem parcelamento com pagamento exigido:
      só à vista, sem seletor. O teto de parcelas vale só pro cartão, e o corte mensal (cai 1× por mês após a data-base) também.
-     Pro dev: o back envia e-mail de confirmação da matrícula quando o webhook ativa a matrícula (e no cartão aprovado na hora).
-     No mdp-api (60c4acc9) o PaymentsService.handleWebhook só muda pra ACTIVE e cria as faturas, sem e-mail, e não existe
-     template de matrícula confirmada. Precisa criar, uma vez por matrícula. -->
+     Pro dev: quando o pagamento é confirmado e a matrícula vira ACTIVE (webhook ou cartão aprovado na hora), o back manda UM
+     e-mail único que é recibo + confirmação, uma vez só por matrícula (decisão do Vinícius, 24/11/2026). No mdp-api (60c4acc9)
+     o PaymentsService.handleWebhook só muda pra ACTIVE e cria as faturas, sem e-mail, e não existe template de matrícula
+     confirmada. Precisa criar, idempotente, sem mandar também o payment-receipt.hbs da 1ª fatura. Desenho em
+     publico/email-matricula-confirmada.html.
+     Pro dev: boleto gerado e depois trocado por Pix ou cartão NÃO é cancelado ao trocar de método (decisão do Vinícius). -->
 <style>
   .wiz-grid { display:grid; grid-template-columns: 1fr 360px; gap:22px; align-items:start; }
   @media (max-width:1100px){ .wiz-grid { grid-template-columns:1fr; } }

@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>E-mail · Matrícula confirmada (recibo + confirmação) · Mago do Pism</title>
+<link rel="stylesheet" href="../styles/tokens.css"/>
+<!-- Proposta: e-mail que sai quando o pagamento é confirmado e a matrícula vira ACTIVE (formulário com pagamento exigido).
+     Base: mdp-api 60c4acc9, payment-receipt.hbs (invoices), enrollment_payment_reminder.hbs e create_password.hbs. Mesmo
+     esqueleto: tabela central branca, logo (public/images/logo.png = assets/logo-proposta.png), "Olá, {nome}!", texto corrido,
+     botão azul de cantos 8px, divisor e rodapé "© {ano} - Mago do Pism - Todos os direitos reservados.".
+     Tracejado roxo numerado = decisão nova (26 a 32), continua a numeração de matricula-pagamento-exigido.html.
+     Estados: setEstado('pix'|'cartao'|'boleto'|'pix-boleto-antigo'), setContrato(true|false), setAcesso('secretaria'|'senha')
+     Decidido (Vinícius, 24/11/2026): recibo e confirmação saem num e-mail só, um por matrícula. Boleto gerado e depois trocado
+     por Pix ou cartão não é cancelado (fica lá até vencer).
+     Pro dev: e-mail único recibo + confirmação, enviado UMA vez por matrícula, quando ela vira ACTIVE com pagamento confirmado:
+     webhook order.paid/charge.paid no PaymentsService.handleWebhook (e o equivalente da Iugu) e cartão aprovado na hora. Hoje
+     esse caminho só muda o status e cria as faturas, sem e-mail. Idempotente: guardar a data do envio na matrícula (ex.:
+     confirmationEmailSentAt) e só mandar se estiver vazio, porque webhook repete. Não mandar o payment-receipt.hbs da 1ª fatura
+     junto (seria o segundo e-mail). Template novo, ex.: enrollments/presentation/views/enrollment_confirmed.hbs, com as
+     variáveis: name (1º nome do responsável), studentName, courseName, groupName (opcional), invoiceNo, method, cardLast4
+     (cartão), installments, installmentAmount, amount, originalAmount/discount (à vista), paidAt, contractLink (só com
+     contrato), hasPendingBoleto + boletoDueDate, appUrl, apiUrl, currentYear. Destinatário: enrollment.customer.email.
+     Pro dev: boleto antigo NÃO é cancelado quando o aluno troca pra Pix ou cartão. Se existir boleto em aberto da mesma
+     matrícula na hora do envio, o e-mail mostra o aviso 31 (não pagar, vence sozinho). Se for pago mesmo assim, o caso cai no
+     mesmo tratamento de pagamento em duplicidade (estorno pela secretaria).
+     Pro dev: link do contrato (29). O getDocumentPdfUrl do ZapSign devolve signed_file, que pelo que sei é URL temporária. Não
+     colar ela no e-mail: apontar pra página de confirmação da matrícula (que já busca o PDF na hora) ou pra um endpoint que
+     redireciona pro PDF atualizado.
+     Pro dev: e-mail não carrega fonte web. Os templates de hoje não definem font-family (cai no padrão do leitor); aqui o corpo
+     usa Arial/Helvetica pra ficar previsível. As cores do hbs (#595756 texto, #a6a29f rodapé, #F5F0EB divisor, #278556 sucesso,
+     #0E93F2 botão) não existem como token: no protótipo usei --text-primary, --text-faint, --neutral-200, --color-success e
+     --brand-blue. No hbs vale o hex, inline. -->
+<style>
+  body { background:var(--neutral-200); }
+  .decisao { position:relative; outline:2px dashed var(--color-warn); outline-offset:4px; border-radius:var(--radius-md); }
+  .decisao::before { content:attr(data-n); position:absolute; top:-12px; right:-8px; z-index:5; min-width:24px; height:24px; padding:0 6px; display:inline-flex; align-items:center; justify-content:center; border-radius:var(--radius-pill); background:var(--color-warn); color:var(--neutral-0); font-size:12px; font-weight:700; font-family:var(--font-body); }
+  .hidden { display:none !important; }
+  .folga { padding-right:32px; }
+
+  /* Moldura de leitor de e-mail (só pra apresentar, não vai no hbs) */
+  .inbox { max-width:760px; margin:32px auto; background:var(--neutral-0); border-radius:var(--radius-lg); box-shadow:var(--shadow-soft); overflow:hidden; }
+  .inbox-head { padding:18px 24px; border-bottom:1px solid var(--border-default); font-family:var(--font-body); }
+  .inbox-subject { font-size:19px; font-weight:700; color:var(--neutral-900); margin:0 0 10px; display:inline-block; }
+  .inbox-meta { display:flex; flex-wrap:wrap; gap:4px 16px; font-size:13px; color:var(--text-secondary); }
+  .inbox-meta b { color:var(--neutral-900); font-weight:600; }
+  .inbox-body { padding:8px 0 24px; }
+
+  /* Corpo do e-mail: mesmo esqueleto dos .hbs (tabela central, 600px) */
+  .mail { width:100%; max-width:600px; margin:0 auto; border-collapse:collapse; font-family:Arial, Helvetica, sans-serif; color:var(--text-primary); }
+  .mail td { padding:0 24px; }
+  .mail .logo { text-align:center; padding-top:32px; }
+  .mail .logo img { height:120px; }
+  .mail p { margin:0 0 16px; font-size:16px; line-height:1.5; }
+  .mail .hello { font-size:18px; margin:24px 0 12px; }
+  .ok { display:inline-block; padding:6px 12px; border-radius:var(--radius-pill); background:rgba(39,133,86,0.10); color:var(--color-success); font-weight:700; font-size:14px; margin:0 0 16px; }
+
+  /* Recibo */
+  .recibo { width:100%; border:1px solid var(--border-default); border-radius:var(--radius-md); border-collapse:separate; border-spacing:0; margin:4px 0 8px; }
+  .recibo td { padding:10px 16px; font-size:14px; border-bottom:1px solid var(--neutral-200); vertical-align:top; }
+  .recibo tr:last-child td { border-bottom:none; }
+  .recibo .t { background:var(--neutral-100); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.4px; color:var(--text-muted); border-radius:var(--radius-md) var(--radius-md) 0 0; }
+  .recibo .k { color:var(--text-muted); width:42%; }
+  .recibo .v { color:var(--neutral-900); font-weight:600; text-align:right; }
+  .recibo .desc .v { color:var(--color-success); }
+  .recibo .tot td { background:var(--neutral-100); font-size:16px; border-radius:0 0 var(--radius-md) var(--radius-md); }
+  .recibo .tot .v { font-size:20px; color:var(--neutral-900); }
+  .nota { font-size:13px !important; color:var(--text-secondary); line-height:1.5; }
+
+  /* Blocos */
+  .bloco { border:1px solid var(--border-default); border-radius:var(--radius-md); padding:16px; margin:16px 0; }
+  .bloco h3 { margin:0 0 6px; font-size:15px; color:var(--neutral-900); }
+  .bloco p { font-size:14px; margin:0 0 12px; }
+  .bloco p:last-child { margin-bottom:0; }
+  .btn-mail { display:inline-block; background:var(--brand-blue); color:var(--neutral-0); padding:15px 30px; font-size:16px; font-weight:600; border-radius:var(--radius-md); box-shadow:0 4px 8px 0 rgba(0,0,0,0.2); text-decoration:none; }
+  .btn-mail.outline { background:var(--neutral-0); color:var(--brand-blue); border:2px solid var(--brand-blue); box-shadow:none; padding:11px 22px; font-size:15px; }
+  .aviso-boleto { margin:16px 0; padding:14px 16px; background:rgba(234,179,8,0.08); border-left:3px solid #eab308; border-radius:6px; font-size:14px; line-height:1.5; color:var(--text-secondary); }
+  .aviso-boleto strong { color:#a16207; }
+  .divisor { height:1px; background:var(--neutral-200); margin:24px 0 16px; }
+  .duvidas { text-align:center; font-size:14px !important; color:var(--text-secondary); }
+  .rodape { text-align:center; font-size:14px !important; color:var(--text-faint); }
+
+  @media (max-width:600px){
+    .inbox { margin:0; border-radius:0; box-shadow:none; }
+    .inbox-head { padding:14px 16px; }
+    .inbox-subject { font-size:17px; }
+    .mail td { padding:0 16px; }
+    .mail .logo img { height:96px; }
+    .recibo td { padding:9px 12px; }
+    .recibo tbody, .recibo tr, .recibo td { display:block; width:auto !important; }
+    .recibo tr:not(.tot) { border-bottom:1px solid var(--neutral-200); }
+    .recibo tr:last-child, .recibo tr:nth-last-child(2) { border-bottom:none; }
+    .recibo td { border-bottom:none; }
+    .recibo tr:not(.tot) td.k { padding-bottom:0; font-size:12px; }
+    .recibo tr:not(.tot) td.v { text-align:left; padding-top:2px; }
+    .recibo tr.tot { display:flex; justify-content:space-between; align-items:center; background:var(--neutral-100); border-radius:0 0 var(--radius-md) var(--radius-md); }
+    .recibo .tot td { background:none; font-size:15px; }
+    .btn-mail { display:block; text-align:center; padding:15px 16px; }
+    .btn-mail.outline { display:block; text-align:center; }
+  }
+</style>
+</head><body>
+
+<div class="inbox">
+  <div class="inbox-head">
+    <h1 class="inbox-subject decisao folga" data-n="26" id="assunto">Matrícula confirmada: Arthur Souza no Intensivo PISM 2027</h1>
+    <div class="inbox-meta">
+      <span>De: <b>Mago do Pism</b></span>
+      <span class="decisao folga" data-n="32">Para: <b>marta.souza@email.com</b> (responsável)</span>
+      <span id="dataEnvio">24/11/2026 · 14:32</span>
+    </div>
+  </div>
+
+  <div class="inbox-body">
+    <table class="mail" role="presentation"><tbody>
+      <tr><td class="logo"><img src="../assets/logo-proposta.png" alt="Mago do Pism"/></td></tr>
+      <tr><td>
+        <p class="hello">Olá, Marta!</p>
+        <div class="ok decisao folga" data-n="27">✓ Matrícula confirmada</div>
+        <p id="lead"></p>
+
+        <!-- Recibo -->
+        <table class="recibo decisao" data-n="28" role="presentation"><tbody>
+          <tr><td class="t" colspan="2">Recibo de pagamento</td></tr>
+          <tr><td class="k">Aluno</td><td class="v">Arthur Souza</td></tr>
+          <tr><td class="k">Curso</td><td class="v">Intensivo PISM 2027</td></tr>
+          <tr><td class="k">Turma</td><td class="v">Manhã · Juiz de Fora</td></tr>
+          <tr><td class="k">Fatura</td><td class="v">2026-0042</td></tr>
+          <tr><td class="k">Forma de pagamento</td><td class="v" id="rForma"></td></tr>
+          <tr id="rParcRow"><td class="k">Parcelamento</td><td class="v" id="rParc"></td></tr>
+          <tr id="rOrigRow"><td class="k">Valor original</td><td class="v">R$ 1.050,00</td></tr>
+          <tr id="rDescRow" class="desc"><td class="k">Desconto à vista (10%)</td><td class="v">−R$ 105,00</td></tr>
+          <tr><td class="k" id="rDataK">Pago em</td><td class="v" id="rData"></td></tr>
+          <tr class="tot"><td class="k" id="rTotK">Valor pago</td><td class="v" id="rTot">R$ 945,00</td></tr>
+        </tbody></table>
+        <p class="nota" id="notaCartao"></p>
+
+        <!-- Boleto gerado antes e não cancelado (decisão do Vinícius) -->
+        <div class="aviso-boleto decisao" data-n="31" id="avisoBoleto">
+          <strong>Não pague o boleto gerado antes.</strong> Você chegou a gerar um boleto para esta matrícula, mas o pagamento já foi feito no <span id="avisoMetodo">Pix</span>. O boleto não precisa ser pago e vence sozinho em 27/11/2026. Se pagar por engano, fale com a secretaria.
+        </div>
+
+        <!-- Contrato assinado (só quando o formulário exige contrato) -->
+        <div class="bloco decisao" data-n="29" id="blocoContrato">
+          <h3>Contrato assinado</h3>
+          <p>O contrato de matrícula foi assinado por você em 24/11/2026. Guarde uma cópia.</p>
+          <a href="#" class="btn-mail outline">Baixar contrato assinado (PDF)</a>
+        </div>
+
+        <!-- Próximo passo -->
+        <div class="bloco decisao" data-n="30">
+          <h3>Próximo passo: acessar a plataforma</h3>
+          <p id="acessoTxt"></p>
+          <a href="#" class="btn-mail" id="acessoBtn"></a>
+        </div>
+
+        <div class="divisor"></div>
+        <p class="duvidas">Dúvidas? Fale com a secretaria: <strong>(31) 99721-2639</strong> · secretariadomago@gmail.com</p>
+        <p class="rodape">© 2026 - Mago do Pism - Todos os direitos reservados.</p>
+      </td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<script>
+  const st = { estado:'pix', contrato:false, acesso:'secretaria' };
+  const METODO = {
+    pix:    { forma:'Pix', data:'24/11/2026 às 14:32', envio:'24/11/2026 · 14:32' },
+    cartao: { forma:'Cartão de crédito final 1111', data:'24/11/2026 às 14:32', envio:'24/11/2026 · 14:32' },
+    boleto: { forma:'Boleto bancário', data:'26/11/2026 às 09:10', envio:'26/11/2026 · 09:10' },
+  };
+  function render(){
+    const boletoAntigo = st.estado === 'pix-boleto-antigo';
+    const m = boletoAntigo ? 'pix' : st.estado;
+    const cartao = m === 'cartao';
+    const d = METODO[m];
+    document.getElementById('dataEnvio').textContent = d.envio;
+    document.getElementById('lead').innerHTML = (m === 'boleto'
+      ? 'O banco confirmou o pagamento do boleto e a matrícula de <strong>Arthur Souza</strong> no <strong>Intensivo PISM 2027</strong> está confirmada.'
+      : 'Recebemos o pagamento e a matrícula de <strong>Arthur Souza</strong> no <strong>Intensivo PISM 2027</strong> está confirmada.')
+      + ' Este e-mail também é o seu recibo.';
+    document.getElementById('rForma').textContent = d.forma;
+    document.getElementById('rParcRow').classList.toggle('hidden', !cartao);
+    document.getElementById('rParc').textContent = '4× de R$ 262,50 (total R$ 1.050,00)';
+    document.getElementById('rOrigRow').classList.toggle('hidden', cartao);
+    document.getElementById('rDescRow').classList.toggle('hidden', cartao);
+    document.getElementById('rDataK').textContent = m === 'boleto' ? 'Pagamento confirmado em' : 'Pago em';
+    document.getElementById('rData').textContent = d.data;
+    document.getElementById('rTotK').textContent = cartao ? 'Pago agora (1ª de 4)' : 'Valor pago (à vista)';
+    document.getElementById('rTot').textContent = cartao ? 'R$ 262,50' : 'R$ 945,00';
+    const nota = document.getElementById('notaCartao');
+    nota.classList.toggle('hidden', !cartao);
+    nota.textContent = 'As próximas 3 parcelas de R$ 262,50 serão debitadas automaticamente no cartão final 1111, todo dia 10.';
+    document.getElementById('avisoBoleto').classList.toggle('hidden', !boletoAntigo);
+    document.getElementById('blocoContrato').classList.toggle('hidden', !st.contrato);
+    const senha = st.acesso === 'senha';
+    document.getElementById('acessoTxt').innerHTML = senha
+      ? 'Crie a senha de acesso do Arthur para entrar na plataforma do Mago do Pism. O link vale por 48 horas.'
+      : 'A secretaria libera o acesso do Arthur antes do início das aulas. Você vai receber um e-mail <strong>"Crie sua senha"</strong>: é só criar a senha e entrar pelo botão abaixo.';
+    document.getElementById('acessoBtn').textContent = senha ? 'Criar senha e acessar' : 'Acessar a plataforma';
+  }
+  window.setEstado  = (e) => { st.estado = e; render(); window.scrollTo(0,0); };
+  window.setContrato = (v) => { st.contrato = v; render(); };
+  window.setAcesso  = (a) => { st.acesso = a; render(); };
+  render();
+</script>
+</body></html>

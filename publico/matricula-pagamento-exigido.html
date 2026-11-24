@@ -19,10 +19,14 @@
      "ou em até {max}x") e esconde o seletor de parcelas quando o método é Pix ou boleto e o pagamento é exigido. O boleto não tem
      parcelamento com pagamento exigido: hoje o InstallmentSelector oferece à vista ou o maior parcelamento do teto no boleto, e
      isso sai nesse caso (só a opção à vista, gerada direto). O teto de parcelas vale só pro cartão.
-     Pro dev: o back envia e-mail de confirmação da matrícula quando o webhook ativa a matrícula (order.paid/charge.paid em
-     PaymentsService.handleWebhook e o equivalente da Iugu), e também no cartão aprovado na hora. Conferido no mdp-api (60c4acc9):
-     hoje esse caminho só muda o status pra ACTIVE e cria as faturas, não manda e-mail, e não há template de matrícula confirmada
-     (só payment-refunded.hbs no módulo payments). Precisa criar o template e o envio, uma vez por matrícula (idempotente). -->
+     Pro dev: quando o pagamento é confirmado e a matrícula vira ACTIVE, o back manda UM e-mail único que é recibo + confirmação
+     (decisão do Vinícius, 24/11/2026), uma vez só por matrícula. Dispara no webhook (order.paid/charge.paid em
+     PaymentsService.handleWebhook e o equivalente da Iugu) e no cartão aprovado na hora. Conferido no mdp-api (60c4acc9): hoje esse
+     caminho só muda o status pra ACTIVE e cria as faturas, não manda e-mail, e não há template de matrícula confirmada. Precisa
+     criar o template e o envio, idempotente (webhook repete), sem mandar também o payment-receipt.hbs da 1ª fatura. Desenho e
+     variáveis em publico/email-matricula-confirmada.html.
+     Pro dev: boleto gerado e depois trocado por Pix ou cartão NÃO é cancelado ao trocar de método (decisão do Vinícius). Fica em
+     aberto até vencer. O e-mail de confirmação avisa pra não pagar (decisão 31 em email-matricula-confirmada.html). -->
 <style>
   /* Method buttons — vertical list (cf. MethodSelector.tsx) */
   .method-btn {
