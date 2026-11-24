@@ -5,7 +5,10 @@
 <link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
 <!-- Proposta: link público de formulário com "Exigir pagamento para finalizar o cadastro".
      Base: CheckoutPage.tsx + PixPanel/InvoicePixPanel + InvoiceCardPanel + EnrollmentConfirmationClient.
-     Tracejado roxo numerado = decisão em aberto. Estados: setEstado('pix'|'cartao'|'recusado'|'pendente'|'sucesso'), setContrato(true|false) -->
+     Tracejado roxo numerado = decisão em aberto. Estados: setEstado('pix'|'cartao'|'recusado'|'pendente'|'sucesso'), setContrato(true|false)
+     Decidido (Vinícius, 24/11/2026): com pagamento exigido, Pix é só à vista (sem seletor de parcelas) e cartão parcela até o teto do formulário (aqui 3×).
+     Pro dev: o teto de parcelas hoje é único pra todos os métodos. Precisa de teto por método (cartão até N×, Pix 1×),
+     e o checkout esconde o seletor de parcelas quando o método é Pix e o pagamento é exigido. -->
 <style>
   /* Method buttons — vertical list (cf. MethodSelector.tsx) */
   .method-btn {
@@ -111,7 +114,7 @@
             <button type="button" class="method-btn" data-method="pix">
               <div class="method-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M7 2.5L11.5 7 7 11.5 2.5 7zm10 0L21.5 7 17 11.5 12.5 7zM7 12.5L11.5 17 7 21.5 2.5 17zm10 0l4.5 4.5-4.5 4.5-4.5-4.5z"/></svg></div>
               <div class="method-info"><strong>Pix</strong><em>Aprovação imediata</em></div>
-              <div class="method-badge"><span class="discount-badge">10% off à vista</span><span class="or-text">ou 3× sem juros</span></div>
+              <div class="method-badge"><span class="discount-badge">10% off à vista</span><span class="or-text">sem parcelamento</span></div>
             </button>
             <button type="button" class="method-btn" data-method="credit_card">
               <div class="method-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></div>
@@ -122,7 +125,7 @@
         </section>
 
         <!-- Forma de parcelamento (InstallmentSelector.tsx) -->
-        <section class="sec-card">
+        <section class="sec-card" id="parcSection">
           <h3 class="sec-card-title">Forma de parcelamento</h3>
           <div class="installments" id="installments"></div>
           <p style="font-size:11px; color:var(--text-muted); margin:12px 0 0;">As parcelas serão cobradas todo dia 10, com vencimento a partir de 10/01/2027.</p>
@@ -131,6 +134,7 @@
         <!-- Pix (PixPanel.tsx / InvoicePixPanel.tsx) + status de espera novo -->
         <section class="sec-card" id="pixPanel">
           <h3 class="sec-card-title">Pagar com Pix</h3>
+          <p class="decisao folga" data-n="14" style="font-size:12px; color:var(--text-muted); margin:0 0 12px; display:inline-block;">No Pix o pagamento é à vista. Para parcelar em até 3×, escolha cartão de crédito.</p>
           <div class="pix-block" id="pixAtivo">
             <div class="pix-qr" aria-label="QR Code Pix"></div>
             <div style="text-align:center;">
@@ -218,8 +222,8 @@
 </div>
 
 <script>
+  // Pagamento exigido: Pix só à vista (sem seletor de parcelas), cartão até o teto do formulário
   const OPTS = {
-    pix: [ { n:1, label:'1x à vista', sub:'R$ 945,00 · 10% off' }, { n:3, label:'3x', sub:'R$ 350,00/mês · sem juros' } ],
     credit_card: [ { n:1, label:'1x à vista', sub:'R$ 945,00 · 10% off' }, { n:2, label:'2x', sub:'R$ 525,00/mês no cartão' }, { n:3, label:'3x', sub:'R$ 350,00/mês no cartão' } ],
   };
   const st = { contrato:false, metodo:'pix', n:1 };
@@ -232,8 +236,10 @@
     }).join('');
   }
   function renderMetodo(){
+    if (st.metodo === 'pix') st.n = 1;
+    document.getElementById('parcSection').classList.toggle('hidden', st.metodo === 'pix');
     document.querySelectorAll('.method-btn').forEach(b => b.classList.toggle('is-selected', b.dataset.method === st.metodo));
-    document.getElementById('installments').innerHTML = OPTS[st.metodo].map(o =>
+    document.getElementById('installments').innerHTML = (OPTS[st.metodo] || []).map(o =>
       `<button type="button" class="opt${o.n === st.n ? ' is-selected' : ''}"><strong>${o.label}</strong><span>${o.sub}</span></button>`).join('');
     const avista = st.n === 1;
     document.getElementById('sumOrig').classList.toggle('hidden', !avista);

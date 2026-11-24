@@ -4,7 +4,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
 <!-- Proposta: opções "Exigir contrato" e "Exigir pagamento para finalizar o cadastro" no wizard.
-     Tracejado roxo numerado = decisão em aberto pro Vinícius. Estados: setOpcoes(contrato, pagamento), goStep('basico'|'zapsign'|'valor'|'revisao') -->
+     Tracejado roxo numerado = decisão em aberto pro Vinícius. Estados: setOpcoes(contrato, pagamento), goStep('basico'|'zapsign'|'valor'|'revisao')
+     Decidido (Vinícius, 24/11/2026): com "Exigir pagamento" marcado, o Pix é sempre só à vista (1×) e o cartão parcela até o teto definido.
+     Sem pagamento exigido, o comportamento de hoje fica igual (teto único pra todos os métodos).
+     Pro dev: hoje o teto de parcelas do formulário é um só pra todos os métodos. O back precisa de teto por método
+     (cartão até N×, Pix 1×) e o checkout tem que respeitar: Pix sem opção de parcelar, cartão até N×. -->
 <style>
   .wiz-grid { display:grid; grid-template-columns: 1fr 360px; gap:22px; align-items:start; }
   @media (max-width:1100px){ .wiz-grid { grid-template-columns:1fr; } }
@@ -296,8 +300,8 @@
       <h2>Valor & forma de pagamento</h2>
       <p class="sub" id="valorSub"></p>
 
-      <div class="note-info decisao" data-n="5" id="notaPagamento" style="display:none;">
-        <strong style="color:var(--neutral-900);">Pagamento exigido neste formulário:</strong> no link aparecem só Pix e cartão de crédito. O responsável paga a 1ª cobrança na hora: Pix à vista ou a 1ª parcela, cartão à vista ou a 1ª de até o teto abaixo.
+      <div class="note-info" id="notaPagamento" style="display:none;">
+        <strong style="color:var(--neutral-900);">Pagamento exigido neste formulário:</strong> no link aparecem só Pix e cartão de crédito. O Pix é sempre à vista, sem parcelar. O cartão pode ser à vista ou parcelado até o teto abaixo, com a 1ª parcela paga na hora.
       </div>
 
       <div class="field">
@@ -307,13 +311,13 @@
       <div class="field">
         <label>Forma de pagamento</label>
         <div class="pay-mode">
-          <div class="opt"><strong>À vista</strong><span>PIX, cartão de crédito ou boleto único</span></div>
-          <div class="opt is-selected"><strong>Parcelado</strong><span>O responsável escolhe pagar à vista ou parcelar em até o número de parcelas definido abaixo</span></div>
+          <div class="opt"><strong>À vista</strong><span id="txtAvista">PIX, cartão de crédito ou boleto único</span></div>
+          <div class="opt is-selected"><strong>Parcelado</strong><span id="txtParcelado">O responsável escolhe pagar à vista ou parcelar em até o número de parcelas definido abaixo</span></div>
         </div>
       </div>
       <div class="field">
-        <label>Número máximo de parcelas</label>
-        <div class="hint" style="margin:0 0 6px;">O teto diminui 1× a cada mês que passa da data-base de vencimento.</div>
+        <label id="lblTeto">Número máximo de parcelas</label>
+        <div class="hint" style="margin:0 0 6px;" id="hintTeto">O teto diminui 1× a cada mês que passa da data-base de vencimento.</div>
         <div class="installments-grid"><button>2×</button><button class="is-selected">3×</button><button>4×</button><button>6×</button><button>9×</button><button>10×</button><button>12×</button></div>
       </div>
       <div class="field">
@@ -357,7 +361,7 @@
         </div>
         <div>
           <div class="rev-label">Valor & pagamento</div>
-          <div class="rev-box"><div class="rev-amount">R$ 1.050,00</div><div class="rev-mono">em até 3×</div><div class="rev-mono">Desconto à vista: 10%</div></div>
+          <div class="rev-box"><div class="rev-amount">R$ 1.050,00</div><div class="rev-mono" id="revParc">em até 3×</div><div class="rev-mono">Desconto à vista: 10%</div></div>
         </div>
         <div>
           <div class="rev-label">Validade</div>
@@ -365,7 +369,7 @@
         </div>
       </div>
 
-      <div class="note-warn">⚠ O parcelamento máximo cai para 2× a partir de 01/02/2027, e segue reduzindo 1× a cada mês.</div>
+      <div class="note-warn" id="avisoTeto">⚠ O parcelamento máximo cai para 2× a partir de 01/02/2027, e segue reduzindo 1× a cada mês.</div>
       <div class="note-warn decisao" data-n="4" id="aposCriar"></div>
 
       <div class="wiz-actions">
@@ -388,7 +392,7 @@
         <div class="row" id="p-row-normal"><span class="lbl">Modelo normal</span><span class="val">Curso Intensivo PISM 2027</span></div>
         <div class="row" id="p-row-irmaos"><span class="lbl">Modelo irmãos</span><span class="val">Curso Intensivo PISM 2027 · Irmãos</span></div>
         <div class="row"><span class="lbl">Valor</span><span class="val">R$ 1.050,00</span></div>
-        <div class="row"><span class="lbl">Pagamento</span><span class="val">em até 3×</span></div>
+        <div class="row"><span class="lbl">Pagamento</span><span class="val" id="p-parc">em até 3×</span></div>
       </div>
       <div class="url-preview"><div class="lbl">Link público que será gerado</div><div class="url">https://magodopism.com.br/matricula/escolha?enrollmentForm=intensivo-2027</div></div>
     </div>
@@ -435,9 +439,19 @@
     const nota = document.getElementById('notaPagamento');
     nota.style.display = state.pagamento ? '' : 'none';
 
+    // Pagamento exigido: Pix só à vista, teto de parcelas vale só pro cartão
+    const P = state.pagamento;
+    document.getElementById('txtAvista').textContent = P ? 'Pix ou cartão de crédito, pago na hora' : 'PIX, cartão de crédito ou boleto único';
+    document.getElementById('txtParcelado').textContent = P ? 'Pix só à vista. No cartão, o responsável escolhe à vista ou parcelado em até o número definido abaixo' : 'O responsável escolhe pagar à vista ou parcelar em até o número de parcelas definido abaixo';
+    document.getElementById('lblTeto').textContent = P ? 'Número máximo de parcelas no cartão' : 'Número máximo de parcelas';
+    document.getElementById('hintTeto').textContent = P ? 'Vale só para o cartão de crédito. O Pix fica sempre à vista neste formulário. O teto diminui 1× a cada mês que passa da data-base de vencimento.' : 'O teto diminui 1× a cada mês que passa da data-base de vencimento.';
+    document.getElementById('revParc').textContent = P ? 'Cartão em até 3× · Pix só à vista' : 'em até 3×';
+    document.getElementById('p-parc').textContent = P ? 'cartão em até 3× · Pix à vista' : 'em até 3×';
+    document.getElementById('avisoTeto').textContent = P ? '⚠ O parcelamento máximo no cartão cai para 2× a partir de 01/02/2027, e segue reduzindo 1× a cada mês. O Pix continua à vista.' : '⚠ O parcelamento máximo cai para 2× a partir de 01/02/2027, e segue reduzindo 1× a cada mês.';
+
     document.getElementById('revEtapas').innerHTML =
       `<div class="rev-opt ${state.contrato ? 'on' : 'off'}">${state.contrato ? CHECK : XMARK}<span><strong>Contrato</strong> ${state.contrato ? 'exigido: assinatura no ZapSign antes do pagamento' : 'não exigido: do cadastro direto ao pagamento'}</span></div>` +
-      `<div class="rev-opt ${state.pagamento ? 'on' : 'off'}">${state.pagamento ? CHECK : XMARK}<span><strong>Pagamento</strong> ${state.pagamento ? 'exigido: matrícula só é confirmada com o pagamento aprovado (Pix ou cartão)' : 'não exigido: 1ª fatura enviada por e-mail'}</span></div>`;
+      `<div class="rev-opt ${state.pagamento ? 'on' : 'off'}">${state.pagamento ? CHECK : XMARK}<span><strong>Pagamento</strong> ${state.pagamento ? 'exigido: matrícula só é confirmada com o pagamento aprovado (Pix à vista ou cartão)' : 'não exigido: 1ª fatura enviada por e-mail'}</span></div>`;
     document.getElementById('revModelos').style.display = state.contrato ? '' : 'none';
 
     const apos = state.contrato
