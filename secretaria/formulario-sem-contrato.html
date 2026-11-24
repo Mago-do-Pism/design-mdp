@@ -13,17 +13,22 @@
      pagamento ser confirmado (webhook), aí vira ACTIVE e o responsável recebe um e-mail de confirmação.
      Decidido (Vinícius, 24/11/2026, depois): com pagamento exigido o boleto é só à vista, igual ao Pix. O máximo de parcelas
      que o secretário escolhe (1× a 12×) vale só pro cartão.
-     Decisões novas: 20 a 23 aqui e 15 a 19, 24 e 25 em publico/matricula-pagamento-exigido.html.
+     Decidido (Vinícius, 24/11/2026, depois): cartão parcelado é cobrado de uma vez no valor total; o parcelamento é só na fatura
+     do titular. Sem nota de "boleto à vista, para parcelar escolha cartão" no link do aluno.
+     Decisões novas: 20 a 23 aqui, 15 a 19, 24 e 33 em publico/matricula-pagamento-exigido.html e 26 a 32 no e-mail.
+     (O 25, nota do boleto à vista, saiu.)
      Pro dev: hoje o teto de parcelas do formulário é um só pra todos os métodos (installments, opções 2/3/4/6/9/10/12 no
      StepAmountPayment). O back precisa de teto por método, configurável pelo secretário em cada formulário: cartão de 1 a N
      (N escolhido no wizard, grade de 1× a 12×, editável também na revisão), Pix e boleto fixos em 1× com pagamento exigido.
      Nada de número fixo no código. O checkout lista no cartão de 1× até o N salvo (o InstallmentSelector já monta a faixa a
      partir do pricing) e o MethodSelector já mostra "ou em até {max}x". O boleto não tem parcelamento com pagamento exigido:
      só à vista, sem seletor. O teto de parcelas vale só pro cartão, e o corte mensal (cai 1× por mês após a data-base) também.
+     Pro dev: com pagamento exigido, cartão em N× = UMA cobrança do valor total no gateway com installments = N (fatura de cartão
+     consolidado, installmentNumber nulo e installmentTotal = N). Nada de N faturas mensais nem débito "todo dia 10" no cartão.
      Pro dev: quando o pagamento é confirmado e a matrícula vira ACTIVE (webhook ou cartão aprovado na hora), o back manda UM
      e-mail único que é recibo + confirmação, uma vez só por matrícula (decisão do Vinícius, 24/11/2026). No mdp-api (60c4acc9)
      o PaymentsService.handleWebhook só muda pra ACTIVE e cria as faturas, sem e-mail, e não existe template de matrícula
-     confirmada. Precisa criar, idempotente, sem mandar também o payment-receipt.hbs da 1ª fatura. Desenho em
+     confirmada. Precisa criar, idempotente, sem mandar também o payment-receipt.hbs da fatura paga. Desenho em
      publico/email-matricula-confirmada.html.
      Pro dev: boleto gerado e depois trocado por Pix ou cartão NÃO é cancelado ao trocar de método (decisão do Vinícius). -->
 <style>
@@ -332,7 +337,7 @@
       <p class="sub" id="valorSub"></p>
 
       <div class="note-info decisao" data-n="21" id="notaPagamento" style="display:none;">
-        <strong style="color:var(--neutral-900);">Pagamento exigido neste formulário:</strong> no link aparecem Pix, cartão de crédito e boleto. Pix e boleto são sempre à vista, sem parcelar. O máximo de parcelas que você escolhe abaixo vale só pro cartão: o responsável paga de 1× até esse número, e a 1ª parcela é paga pelo link. No boleto, a matrícula só fica ativa quando o pagamento compensar (até 2 dias úteis) e o responsável recebe um e-mail de confirmação.
+        <strong style="color:var(--neutral-900);">Pagamento exigido neste formulário:</strong> no link aparecem Pix, cartão de crédito e boleto. Pix e boleto são sempre à vista, sem parcelar. O máximo de parcelas que você escolhe abaixo vale só pro cartão: o responsável escolhe de 1× até esse número e o valor total é cobrado de uma vez no cartão (o parcelamento fica na fatura do cartão dele). No boleto, a matrícula só fica ativa quando o pagamento compensar (até 2 dias úteis) e o responsável recebe um e-mail de confirmação.
       </div>
 
       <div class="field">
