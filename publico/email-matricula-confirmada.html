@@ -7,9 +7,10 @@
      esqueleto: tabela central branca, logo (public/images/logo.png = assets/logo-proposta.png), "Olá, {nome}!", texto corrido,
      botão azul de cantos 8px, divisor e rodapé "© {ano} - Mago do Pism - Todos os direitos reservados.".
      Tracejado roxo numerado = decisão nova (26 a 32), continua a numeração de matricula-pagamento-exigido.html.
-     Estados: setEstado('pix'|'cartao'|'boleto'|'pix-boleto-antigo'), setContrato(true|false), setAcesso('secretaria'|'senha')
+     Estados: setEstado('pix'|'cartao'|'boleto'|'pix-boleto-antigo'), setContrato(true|false)
      Decidido (Vinícius, 24/11/2026): recibo e confirmação saem num e-mail só, um por matrícula. Boleto gerado e depois trocado
      por Pix ou cartão não é cancelado (fica lá até vencer).
+     Decidido (Vinícius, 24/11/2026): sem bloco de acesso à plataforma nem link de criar senha neste e-mail.
      Pro dev: e-mail único recibo + confirmação, enviado UMA vez por matrícula, quando ela vira ACTIVE com pagamento confirmado:
      webhook order.paid/charge.paid no PaymentsService.handleWebhook (e o equivalente da Iugu) e cartão aprovado na hora. Hoje
      esse caminho só muda o status e cria as faturas, sem e-mail. Idempotente: guardar a data do envio na matrícula (ex.:
@@ -144,12 +145,6 @@
           <a href="#" class="btn-mail outline">Baixar contrato assinado (PDF)</a>
         </div>
 
-        <!-- Próximo passo -->
-        <div class="bloco decisao" data-n="30">
-          <h3>Próximo passo: acessar a plataforma</h3>
-          <p id="acessoTxt"></p>
-          <a href="#" class="btn-mail" id="acessoBtn"></a>
-        </div>
 
         <div class="divisor"></div>
         <p class="duvidas">Dúvidas? Fale com a secretaria: <strong>(31) 99721-2639</strong> · secretariadomago@gmail.com</p>
@@ -160,7 +155,7 @@
 </div>
 
 <script>
-  const st = { estado:'pix', contrato:false, acesso:'secretaria' };
+  const st = { estado:'pix', contrato:false };
   const METODO = {
     pix:    { forma:'Pix', data:'24/11/2026 às 14:32', envio:'24/11/2026 · 14:32' },
     cartao: { forma:'Cartão de crédito final 1111', data:'24/11/2026 às 14:32', envio:'24/11/2026 · 14:32' },
@@ -190,15 +185,9 @@
     nota.textContent = 'As próximas 3 parcelas de R$ 262,50 serão debitadas automaticamente no cartão final 1111, todo dia 10.';
     document.getElementById('avisoBoleto').classList.toggle('hidden', !boletoAntigo);
     document.getElementById('blocoContrato').classList.toggle('hidden', !st.contrato);
-    const senha = st.acesso === 'senha';
-    document.getElementById('acessoTxt').innerHTML = senha
-      ? 'Crie a senha de acesso do Arthur para entrar na plataforma do Mago do Pism. O link vale por 48 horas.'
-      : 'A secretaria libera o acesso do Arthur antes do início das aulas. Você vai receber um e-mail <strong>"Crie sua senha"</strong>: é só criar a senha e entrar pelo botão abaixo.';
-    document.getElementById('acessoBtn').textContent = senha ? 'Criar senha e acessar' : 'Acessar a plataforma';
   }
   window.setEstado  = (e) => { st.estado = e; render(); window.scrollTo(0,0); };
   window.setContrato = (v) => { st.contrato = v; render(); };
-  window.setAcesso  = (a) => { st.acesso = a; render(); };
   render();
 </script>
 </body></html>
