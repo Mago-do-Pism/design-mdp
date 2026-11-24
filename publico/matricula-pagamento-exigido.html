@@ -5,17 +5,20 @@
 <link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
 <!-- Proposta: link público de formulário com "Exigir pagamento para finalizar o cadastro".
      Base: CheckoutPage.tsx + MethodSelector + PixPanel/InvoicePixPanel + InvoiceCardPanel + BoletoPanel + EnrollmentConfirmationClient.
-     Tracejado roxo numerado = decisão em aberto (15 a 19 são as novas do boleto, 24/11/2026).
+     Tracejado roxo numerado = decisão em aberto (15 a 19 são as novas do boleto, 24/11/2026; 25 é o boleto só à vista).
      Estados: setEstado('pix'|'cartao'|'recusado'|'pendente'|'boleto'|'boleto-pendente'|'sucesso'|'sucesso-boleto'), setContrato(true|false), setTeto(n)
      Decidido (Vinícius, 24/11/2026): com pagamento exigido, Pix é só à vista (sem seletor de parcelas) e o cartão lista de 1× até o
      máximo que o secretário configurou no formulário. Não é fixo: aqui o exemplo é 6× (TETO no script), o 3× anterior era só exemplo.
      Decidido (Vinícius, 24/11/2026, depois): o boleto continua no link com pagamento exigido. A matrícula fica pendente até o
      pagamento ser confirmado (webhook), aí vira ACTIVE e o responsável recebe um e-mail de confirmação. Sem botão "Já paguei".
+     Decidido (Vinícius, 24/11/2026, depois): com pagamento exigido o boleto é só à vista, igual ao Pix (sem seletor de parcelas).
+     O máximo de parcelas configurado pelo secretário vale só pro cartão.
      Pro dev: o teto de parcelas hoje é único pra todos os métodos. Precisa de teto por método, configurável pelo secretário em
-     cada formulário (cartão 1..N com N salvo no formulário, Pix 1×), sem número fixo no front nem no back. O checkout lista no
-     cartão de 1× até o N vigente (o InstallmentSelector já monta a faixa pelo pricing e o MethodSelector já mostra "ou em até {max}x")
-     e esconde o seletor de parcelas quando o método é Pix e o pagamento é exigido. Boleto segue como hoje
-     (InstallmentSelector: à vista ou o maior parcelamento do teto) até o Vinícius responder a decisão 15.
+     cada formulário (cartão 1..N com N salvo no formulário, Pix 1×, boleto 1×), sem número fixo no front nem no back. O checkout
+     lista no cartão de 1× até o N vigente (o InstallmentSelector já monta a faixa pelo pricing e o MethodSelector já mostra
+     "ou em até {max}x") e esconde o seletor de parcelas quando o método é Pix ou boleto e o pagamento é exigido. O boleto não tem
+     parcelamento com pagamento exigido: hoje o InstallmentSelector oferece à vista ou o maior parcelamento do teto no boleto, e
+     isso sai nesse caso (só a opção à vista, gerada direto). O teto de parcelas vale só pro cartão.
      Pro dev: o back envia e-mail de confirmação da matrícula quando o webhook ativa a matrícula (order.paid/charge.paid em
      PaymentsService.handleWebhook e o equivalente da Iugu), e também no cartão aprovado na hora. Conferido no mdp-api (60c4acc9):
      hoje esse caminho só muda o status pra ACTIVE e cria as faturas, não manda e-mail, e não há template de matrícula confirmada
@@ -145,7 +148,7 @@
           </div>
         </section>
 
-        <!-- Forma de parcelamento (InstallmentSelector.tsx) -->
+        <!-- Forma de parcelamento (InstallmentSelector.tsx). Com pagamento exigido só aparece no cartão: Pix e boleto são à vista -->
         <section class="sec-card" id="parcSection">
           <h3 class="sec-card-title">Forma de parcelamento</h3>
           <div class="installments decisao" data-n="24" id="installments"></div>
@@ -179,10 +182,12 @@
           </div>
         </section>
 
-        <!-- Boleto (BoletoPanel.tsx) com pagamento exigido: sem o botão "Boleto gerado — ver confirmação" (equivale ao "Já paguei"),
-             aviso de que o cadastro só finaliza na confirmação e status de espera que atualiza sozinho (mesmo do Pix) -->
+        <!-- Boleto (BoletoPanel.tsx) com pagamento exigido: só à vista (sem seletor de parcelas, igual ao Pix), sem o botão
+             "Boleto gerado — ver confirmação" (equivale ao "Já paguei"), aviso de que o cadastro só finaliza na confirmação e
+             status de espera que atualiza sozinho (mesmo do Pix) -->
         <section class="sec-card" id="boletoPanel">
           <h3 class="sec-card-title">Pagar com Boleto Bancário</h3>
+          <p class="decisao folga" data-n="25" style="font-size:12px; color:var(--text-muted); margin:0 0 12px; display:inline-block;"><span id="boletoNotaTxt"></span></p>
           <div style="display:flex; flex-direction:column; gap:12px;">
             <div style="font-weight:700; font-size:14px; color:var(--neutral-900);" id="boletoValor">R$ 945,00 — matrícula à vista</div>
             <div style="background:var(--neutral-100); border-radius:8px; padding:12px 14px; font-family:monospace; font-size:12px; word-break:break-all; color:var(--neutral-800);">23793.38128 60007.590752 70102.063102 9 89150000094500</div>
@@ -273,14 +278,13 @@
     const avista = { n:1, label:'1x à vista', sub:'R$ 945,00 · 10% off' };
     const cartao = [avista];
     for (let n = 2; n <= TETO; n++) cartao.push({ n, label:`${n}x`, sub:`${brl(parcela(n))}/mês no cartão` });
-    // Boleto como hoje no InstallmentSelector: à vista ou o maior parcelamento do teto (decisão 15)
-    const boleto = TETO > 1 ? [avista, { n:TETO, label:`${TETO}x`, sub:`${brl(parcela(TETO))}/mês · 1-2 dias úteis` }] : [avista];
-    OPTS = { credit_card: cartao, boleto };
+    // Pix e boleto só à vista com pagamento exigido: o teto vale só pro cartão (decisão 25)
+    OPTS = { credit_card: cartao };
     document.getElementById('badgeCartao').textContent = TETO > 1 ? `ou em até ${TETO}x sem juros` : 'só à vista';
-    document.getElementById('badgeBoleto').textContent = TETO > 1 ? `ou ${TETO}x sem juros` : 'só à vista';
-    document.getElementById('pixNotaTxt').textContent = TETO > 1
-      ? `No Pix o pagamento é à vista. Para parcelar, escolha cartão de crédito (de 1× até ${TETO}×) ou boleto.`
-      : 'No Pix o pagamento é à vista.';
+    document.getElementById('badgeBoleto').textContent = 'sem parcelamento';
+    const parcelar = TETO > 1 ? ` Para parcelar, escolha cartão de crédito (de 1× até ${TETO}×).` : '';
+    document.getElementById('pixNotaTxt').textContent = 'No Pix o pagamento é à vista.' + parcelar;
+    document.getElementById('boletoNotaTxt').textContent = 'No boleto o pagamento é à vista.' + parcelar;
   }
   const EMAIL = (contrato) => `Enviamos para <strong>marta.souza@email.com</strong> o e-mail de confirmação da matrícula${contrato ? ', com o contrato assinado' : ''} e o recibo de pagamento.`;
   const st = { contrato:false, metodo:'pix', n:1 };
@@ -293,8 +297,8 @@
     }).join('');
   }
   function renderMetodo(){
-    if (st.metodo === 'pix') st.n = 1;
-    document.getElementById('parcSection').classList.toggle('hidden', st.metodo === 'pix');
+    if (st.metodo !== 'credit_card') st.n = 1;
+    document.getElementById('parcSection').classList.toggle('hidden', st.metodo !== 'credit_card');
     document.querySelectorAll('.method-btn').forEach(b => b.classList.toggle('is-selected', b.dataset.method === st.metodo));
     document.getElementById('installments').innerHTML = (OPTS[st.metodo] || []).map(o =>
       `<button type="button" class="opt${o.n === st.n ? ' is-selected' : ''}"><strong>${o.label}</strong><span>${o.sub}</span></button>`).join('');
@@ -311,7 +315,6 @@
     document.getElementById('cardNota').classList.toggle('hidden', avista);
     document.getElementById('cardNota').textContent = `As próxima${resto > 1 ? 's' : ''} ${resto} parcela${resto > 1 ? 's' : ''} ser${resto > 1 ? 'ão debitadas' : 'á debitada'} automaticamente no cartão, todo dia 10.`;
     document.getElementById('pixValor').textContent = avista ? 'R$ 945,00 — matrícula à vista' : `${pv} — 1ª mensalidade`;
-    document.getElementById('boletoValor').textContent = avista ? 'R$ 945,00 — matrícula à vista' : `${pv} — 1ª mensalidade`;
     document.getElementById('boletoPanel').classList.toggle('hidden', st.metodo !== 'boleto');
     document.getElementById('pixPanel').classList.toggle('hidden', st.metodo !== 'pix');
     document.getElementById('cardPanel').classList.toggle('hidden', st.metodo !== 'credit_card');

@@ -11,13 +11,15 @@
      Estado extra: setTeto(n) muda o máximo do cartão.
      Decidido (Vinícius, 24/11/2026, depois): o boleto continua no link com pagamento exigido. A matrícula fica pendente até o
      pagamento ser confirmado (webhook), aí vira ACTIVE e o responsável recebe um e-mail de confirmação.
-     Decisões novas: 20 a 23 aqui e 15 a 19 e 24 em publico/matricula-pagamento-exigido.html.
+     Decidido (Vinícius, 24/11/2026, depois): com pagamento exigido o boleto é só à vista, igual ao Pix. O máximo de parcelas
+     que o secretário escolhe (1× a 12×) vale só pro cartão.
+     Decisões novas: 20 a 23 aqui e 15 a 19, 24 e 25 em publico/matricula-pagamento-exigido.html.
      Pro dev: hoje o teto de parcelas do formulário é um só pra todos os métodos (installments, opções 2/3/4/6/9/10/12 no
      StepAmountPayment). O back precisa de teto por método, configurável pelo secretário em cada formulário: cartão de 1 a N
-     (N escolhido no wizard, grade de 1× a 12×, editável também na revisão), Pix fixo em 1× com pagamento exigido. Nada de
-     número fixo no código. O checkout lista no cartão de 1× até o N salvo (o InstallmentSelector já monta a faixa a partir do
-     pricing) e o MethodSelector já mostra "ou em até {max}x". Boleto segue o teto do cartão como hoje (à vista ou o maior
-     parcelamento), até o Vinícius responder a decisão 15. O corte mensal do teto (cai 1× por mês após a data-base) vale sobre o N.
+     (N escolhido no wizard, grade de 1× a 12×, editável também na revisão), Pix e boleto fixos em 1× com pagamento exigido.
+     Nada de número fixo no código. O checkout lista no cartão de 1× até o N salvo (o InstallmentSelector já monta a faixa a
+     partir do pricing) e o MethodSelector já mostra "ou em até {max}x". O boleto não tem parcelamento com pagamento exigido:
+     só à vista, sem seletor. O teto de parcelas vale só pro cartão, e o corte mensal (cai 1× por mês após a data-base) também.
      Pro dev: o back envia e-mail de confirmação da matrícula quando o webhook ativa a matrícula (e no cartão aprovado na hora).
      No mdp-api (60c4acc9) o PaymentsService.handleWebhook só muda pra ACTIVE e cria as faturas, sem e-mail, e não existe
      template de matrícula confirmada. Precisa criar, uma vez por matrícula. -->
@@ -327,7 +329,7 @@
       <p class="sub" id="valorSub"></p>
 
       <div class="note-info decisao" data-n="21" id="notaPagamento" style="display:none;">
-        <strong style="color:var(--neutral-900);">Pagamento exigido neste formulário:</strong> no link aparecem Pix, cartão de crédito e boleto. O Pix é sempre à vista, sem parcelar. No cartão, você escolhe abaixo o máximo de parcelas e o responsável paga de 1× até esse número. O boleto segue o mesmo máximo (à vista ou o maior parcelamento). A 1ª parcela é paga pelo link. No boleto, a matrícula só fica ativa quando o pagamento compensar (até 2 dias úteis) e o responsável recebe um e-mail de confirmação.
+        <strong style="color:var(--neutral-900);">Pagamento exigido neste formulário:</strong> no link aparecem Pix, cartão de crédito e boleto. Pix e boleto são sempre à vista, sem parcelar. O máximo de parcelas que você escolhe abaixo vale só pro cartão: o responsável paga de 1× até esse número, e a 1ª parcela é paga pelo link. No boleto, a matrícula só fica ativa quando o pagamento compensar (até 2 dias úteis) e o responsável recebe um e-mail de confirmação.
       </div>
 
       <div class="field">
@@ -347,17 +349,17 @@
         <div class="hint" style="margin:0 0 6px;">O teto diminui 1× a cada mês que passa da data-base de vencimento.</div>
         <div class="installments-grid" id="gridUnico" role="group" aria-labelledby="lblTeto"></div>
       </div>
-      <!-- Com pagamento exigido: teto por forma de pagamento. Cartão editável de 1× a 12×, Pix fixo à vista, boleto segue o cartão -->
+      <!-- Com pagamento exigido: teto por forma de pagamento. Cartão editável de 1× a 12×, Pix e boleto fixos à vista -->
       <div class="field decisao" data-n="23" id="fieldTetoMetodo">
         <label id="lblTetoMetodo">Parcelas no link, por forma de pagamento</label>
-        <div class="hint" style="margin:0 0 8px;">Você escolhe o máximo do cartão. O teto diminui 1× a cada mês que passa da data-base de vencimento.</div>
+        <div class="hint" style="margin:0 0 8px;">O máximo vale só pro cartão. Pix e boleto são sempre à vista. O teto do cartão diminui 1× a cada mês que passa da data-base de vencimento.</div>
         <div class="teto-metodo">
           <div class="tm-row">
             <div class="tm-head"><strong id="lblCartao">Cartão de crédito · máximo de parcelas</strong><span class="tm-val" id="tmCartaoVal"></span></div>
             <div class="installments-grid" id="gridCartao" role="group" aria-labelledby="lblCartao"></div>
             <div class="hint" style="margin-top:8px;" id="tmCartaoTxt"></div>
           </div>
-          <div class="tm-row"><div class="tm-head"><strong>Boleto</strong><span id="tmBoletoTxt"></span></div></div>
+          <div class="tm-row"><div class="tm-head"><strong>Boleto</strong><span>Sempre à vista (1×) neste formulário</span></div></div>
           <div class="tm-row"><div class="tm-head"><strong>Pix</strong><span>Sempre à vista (1×) neste formulário</span></div></div>
         </div>
       </div>
@@ -482,14 +484,14 @@
     const nota = document.getElementById('notaPagamento');
     nota.style.display = state.pagamento ? '' : 'none';
 
-    // Pagamento exigido: Pix só à vista, máximo do cartão escolhido pelo secretário (1 a N), boleto segue o cartão
+    // Pagamento exigido: Pix e boleto só à vista, máximo do cartão escolhido pelo secretário (1 a N)
     const P = state.pagamento, T = state.teto;
     if (!P && !OPC_HOJE.includes(T)) state.teto = OPC_HOJE.find(n => n >= T) || 12;
     document.getElementById('fieldTetoUnico').style.display = P ? 'none' : '';
     document.getElementById('fieldTetoMetodo').style.display = P ? '' : 'none';
     renderTeto();
     document.getElementById('txtAvista').textContent = P ? 'Pix, cartão de crédito ou boleto único, pago pelo link' : 'PIX, cartão de crédito ou boleto único';
-    document.getElementById('txtParcelado').textContent = P ? 'Pix só à vista. No cartão, o responsável escolhe de 1× até o máximo que você definir abaixo' : 'O responsável escolhe pagar à vista ou parcelar em até o número de parcelas definido abaixo';
+    document.getElementById('txtParcelado').textContent = P ? 'Pix e boleto só à vista. No cartão, o responsável escolhe de 1× até o máximo que você definir abaixo' : 'O responsável escolhe pagar à vista ou parcelar em até o número de parcelas definido abaixo';
 
     document.getElementById('revEtapas').innerHTML =
       `<div class="rev-opt ${state.contrato ? 'on' : 'off'}">${state.contrato ? CHECK : XMARK}<span><strong>Contrato</strong> ${state.contrato ? 'exigido: assinatura no ZapSign antes do pagamento' : 'não exigido: do cadastro direto ao pagamento'}</span></div>` +
@@ -497,7 +499,7 @@
       (state.pagamento ? `<div class="decisao" data-n="22" style="margin:8px 0 2px; padding:8px 10px; border-radius:6px;"><div class="rev-label" style="margin-bottom:4px;">Formas no link</div>` +
         `<div class="rev-opt on">${CHECK}<span><strong>Pix</strong> só à vista</span></div>` +
         `<div class="rev-opt on">${CHECK}<span><strong>Cartão de crédito</strong> de 1× até <select class="rev-select" id="revTetoSel" aria-label="Máximo de parcelas no cartão">${OPC_CARTAO.map(n => `<option value="${n}">${n}×</option>`).join('')}</select>, o responsável escolhe</span></div>` +
-        `<div class="rev-opt on">${CHECK}<span><strong>Boleto</strong> <span id="revBoletoTxt"></span>, matrícula ativa quando compensar (até 2 dias úteis)</span></div></div>` : '');
+        `<div class="rev-opt on">${CHECK}<span><strong>Boleto</strong> só à vista, matrícula ativa quando compensar (até 2 dias úteis)</span></div></div>` : '');
     const sel = document.getElementById('revTetoSel');
     if (sel) sel.addEventListener('change', e => setTeto(+e.target.value));
     renderTeto();
@@ -536,16 +538,13 @@
     document.getElementById('tmCartaoTxt').textContent = T === 1
       ? 'No link o cartão aparece só à vista.'
       : `No link, o responsável vê as opções de 1× até ${T}× e escolhe uma.`;
-    const boleto = T === 1 ? 'só à vista' : `à vista ou em ${T}×`;
-    document.getElementById('tmBoletoTxt').textContent = T === 1 ? 'Só à vista (segue o máximo do cartão)' : `À vista ou em ${T}× (segue o máximo do cartão, como hoje)`;
-    const rb = document.getElementById('revBoletoTxt'); if (rb) rb.textContent = boleto;
     const rs = document.getElementById('revTetoSel'); if (rs) rs.value = String(T);
-    document.getElementById('revParc').textContent = P ? `Cartão de 1× até ${T}× · boleto ${boleto} · Pix só à vista` : `em até ${T}×`;
-    document.getElementById('p-parc').textContent = P ? `cartão 1× a ${T}× · boleto ${boleto} · Pix à vista` : `em até ${T}×`;
+    document.getElementById('revParc').textContent = P ? `Cartão de 1× até ${T}× · Pix e boleto só à vista` : `em até ${T}×`;
+    document.getElementById('p-parc').textContent = P ? `cartão 1× a ${T}× · Pix e boleto à vista` : `em até ${T}×`;
     const aviso = document.getElementById('avisoTeto');
     aviso.style.display = T > 1 ? '' : 'none';
     aviso.textContent = P
-      ? `⚠ O parcelamento máximo no cartão e no boleto cai para ${T-1}× a partir de 01/02/2027, e segue reduzindo 1× a cada mês. O Pix continua à vista.`
+      ? `⚠ O parcelamento máximo no cartão cai para ${T-1}× a partir de 01/02/2027, e segue reduzindo 1× a cada mês. Pix e boleto continuam à vista.`
       : `⚠ O parcelamento máximo cai para ${T-1}× a partir de 01/02/2027, e segue reduzindo 1× a cada mês.`;
   }
   document.getElementById('gridUnico').addEventListener('click', ev => { const b = ev.target.closest('button'); if (b) setTeto(+b.dataset.n); });
