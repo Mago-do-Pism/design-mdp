@@ -15,7 +15,13 @@
      que o secretário escolhe (1× a 12×) vale só pro cartão.
      Decidido (Vinícius, 24/11/2026, depois): cartão parcelado é cobrado de uma vez no valor total; o parcelamento é só na fatura
      do titular. Sem nota de "boleto à vista, para parcelar escolha cartão" no link do aluno.
-     Decisões novas: 20 a 23 aqui, 15 a 19, 24 e 33 em publico/matricula-pagamento-exigido.html e 26 a 32 no e-mail.
+     Decidido (Vinícius, 24/11/2026, depois): campo novo "Nome do curso" (courseName), separado do nome interno do formulário. O nome
+     interno é só da secretaria; o nome do curso aparece pro aluno (e-mail de matrícula confirmada e telas públicas). Preenchido no
+     passo 1, perto do Nome. Decisão 34 (campo no passo 1) e 35 (tela de Revisão). A lista de formulários não mostra o campo:
+     lá continua o nome interno.
+     Decidido (Vinícius, 24/11/2026, depois): o link do contrato do ZapSign não expira, então "Baixar contrato (PDF)" aponta direto
+     pro link do ZapSign. O back NÃO guarda o PDF nem serve link próprio.
+     Decisões novas: 34 e 35 aqui (campo Nome do curso), 36 e 37 nas telas públicas e no e-mail, 20 a 23 aqui, 15 a 19, 24 e 33 em publico/matricula-pagamento-exigido.html e 26 a 32 no e-mail.
      (O 25, nota do boleto à vista, saiu.)
      Pro dev: hoje o teto de parcelas do formulário é um só pra todos os métodos (installments, opções 2/3/4/6/9/10/12 no
      StepAmountPayment). O back precisa de teto por método, configurável pelo secretário em cada formulário: cartão de 1 a N
@@ -30,7 +36,13 @@
      o PaymentsService.handleWebhook só muda pra ACTIVE e cria as faturas, sem e-mail, e não existe template de matrícula
      confirmada. Precisa criar, idempotente, sem mandar também o payment-receipt.hbs da fatura paga. Desenho em
      publico/email-matricula-confirmada.html.
-     Pro dev: boleto gerado e depois trocado por Pix ou cartão NÃO é cancelado ao trocar de método (decisão do Vinícius). -->
+     Pro dev: boleto gerado e depois trocado por Pix ou cartão NÃO é cancelado ao trocar de método (decisão do Vinícius).
+     Pro dev: campo novo no formulário de matrícula (enrollment form): courseName, texto, OBRIGATÓRIO, preenchido pela secretaria
+     no passo 1 do wizard (e editável depois, já que o slug é o único dado que trava). O back persiste junto do formulário e
+     expõe o courseName no payload do webhook e nas variáveis do e-mail de matrícula confirmada. O e-mail usa esse campo no
+     assunto ("Matrícula confirmada: {studentName} no {courseName}") e no corpo; não derivar do nome interno. Formulários
+     antigos sem o campo: migração com valor inicial igual ao nome interno, pra o obrigatório não quebrar o que já existe.
+     Pro dev: o contrato assinado NÃO passa pelo back: o botão "Baixar contrato (PDF)" usa o link do ZapSign direto. -->
 <style>
   .wiz-grid { display:grid; grid-template-columns: 1fr 360px; gap:22px; align-items:start; }
   @media (max-width:1100px){ .wiz-grid { grid-template-columns:1fr; } }
@@ -265,8 +277,13 @@
 
       <div class="field">
         <label>Nome interno do formulário <span style="color:var(--color-danger);">*</span></label>
+        <input type="text" value="Intensivo 2027 · link principal" placeholder="Ex: Intensivo PISM 2027 · link principal"/>
+        <div class="hint">Só você e a secretaria veem esse nome.</div>
+      </div>
+      <div class="field decisao" data-n="34" id="fieldCurso">
+        <label>Nome do curso <span style="color:var(--color-danger);">*</span></label>
         <input type="text" value="Intensivo PISM 2027" placeholder="Ex: Intensivo PISM 2027"/>
-        <div class="hint">Só você e a secretaria veem esse nome. O responsável vê o nome do curso/turma na página pública.</div>
+        <div class="hint">Aparece pro aluno no e-mail de matrícula confirmada.</div>
       </div>
       <div class="field">
         <label>Slug do link <span style="font-weight:400;color:var(--text-muted);">(opcional)</span></label>
@@ -400,7 +417,9 @@
       <div class="rev-grid">
         <div>
           <div class="rev-label">Identificação</div>
-          <div class="rev-box"><div class="rev-title">Intensivo PISM 2027</div><div class="rev-mono">magodopism.com.br/matricula/escolha?enrollmentForm=intensivo-2027</div></div>
+          <div class="rev-box"><div class="rev-title">Intensivo 2027 · link principal</div><div class="rev-mono">magodopism.com.br/matricula/escolha?enrollmentForm=intensivo-2027</div></div>
+          <div class="decisao" data-n="35" style="margin-top:12px;"><div class="rev-label">Nome do curso <span style="text-transform:none;letter-spacing:0;font-weight:400;">(aparece pro aluno)</span></div>
+          <div class="rev-box"><div class="rev-title" style="margin:0;">Intensivo PISM 2027</div></div></div>
         </div>
         <div class="decisao" data-n="3">
           <div class="rev-label">Etapas do link público</div>
@@ -435,7 +454,8 @@
     <div class="preview-card">
       <div class="head"><h3>Pré-visualização</h3><div class="small">Atualiza enquanto você preenche</div></div>
       <div class="body">
-        <div class="row"><span class="lbl">Nome</span><span class="val">Intensivo PISM 2027</span></div>
+        <div class="row"><span class="lbl">Nome</span><span class="val">Intensivo 2027 · link principal</span></div>
+        <div class="row"><span class="lbl">Curso (aluno)</span><span class="val">Intensivo PISM 2027</span></div>
         <div class="decisao esq" data-n="6" style="border-radius:4px;">
           <div class="row"><span class="lbl">Contrato</span><span class="val" id="p-contrato"></span></div>
           <div class="row"><span class="lbl">Exige pagamento</span><span class="val" id="p-pagamento"></span></div>

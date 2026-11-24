@@ -34,6 +34,11 @@
      caminho só muda o status pra ACTIVE e cria as faturas, não manda e-mail, e não há template de matrícula confirmada. Precisa
      criar o template e o envio, idempotente (webhook repete), sem mandar também o payment-receipt.hbs da fatura paga. Desenho e
      variáveis em publico/email-matricula-confirmada.html.
+     Decidido (Vinícius, 24/11/2026, depois): o nome do curso mostrado aqui (resumo e tela de sucesso) é o valor do campo novo
+     "Nome do curso" (courseName) do formulário, não o nome interno. "Intensivo PISM 2027" é só exemplo (decisão 36). O botão
+     "Baixar contrato (PDF)" aponta direto pro link do ZapSign, que não expira (o back não guarda o PDF).
+     Pro dev: courseName é campo novo obrigatório do formulário (ver secretaria/formulario-sem-contrato.html); o checkout e a
+     tela de sucesso leem dele.
      Pro dev: boleto gerado e depois trocado por Pix ou cartão NÃO é cancelado ao trocar de método (decisão do Vinícius). Fica em
      aberto até vencer. O e-mail de confirmação avisa pra não pagar (decisão 31 em email-matricula-confirmada.html). -->
 <style>
@@ -239,7 +244,8 @@
           <div style="width:44px; height:44px; border-radius:8px; background:var(--brand-blue); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0;">A</div>
           <div>
             <div style="font-weight:700; color:var(--neutral-900); font-size:13px;">Arthur Souza</div>
-            <div style="font-size:11px; color:var(--text-muted);">Intensivo PISM 2027</div>
+            <div class="decisao" data-n="36" style="font-size:11px; color:var(--text-muted); display:inline-block; outline-offset:2px; padding:0 36px 0 6px; margin-top:6px;" title="Valor do campo Nome do curso">Intensivo PISM 2027</div>
+            <div style="font-size:10px; color:var(--color-warn);">= campo "Nome do curso" (exemplo)</div>
           </div>
         </div>
         <div class="summary-line" id="sumOrig"><span>Valor original</span><span>R$ 1.050,00</span></div>
@@ -260,7 +266,7 @@
   <div class="pub-card wide" style="text-align:center;">
     <div class="confirm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
     <h1 style="font-size:30px; margin-bottom:8px;">Matrícula confirmada! 🎉</h1>
-    <p style="font-size:15px; color:var(--text-secondary); margin:0 0 28px;"><span id="sucessoPag">Pagamento de <strong>R$ 945,00</strong> aprovado via <strong>Pix</strong> em <strong>24/11/2026 · 14:32</strong>.</span><br/><strong>Arthur</strong> já está cadastrado(a) no <strong>Intensivo PISM 2027</strong>.</p>
+    <p style="font-size:15px; color:var(--text-secondary); margin:0 0 28px;"><span id="sucessoPag">Pagamento de <strong>R$ 945,00</strong> aprovado via <strong>Pix</strong> em <strong>24/11/2026 · 14:32</strong>.</span><br/><strong>Arthur</strong> já está cadastrado(a) no <strong class="decisao" data-n="36" style="outline-offset:2px; padding:0 34px 0 6px; margin:0 4px;" title="Valor do campo Nome do curso">Intensivo PISM 2027</strong>.<br/><span style="font-size:11px; color:var(--color-warn);">Intensivo PISM 2027 = valor do campo "Nome do curso" (exemplo)</span></p>
     <div class="confirm-steps">
       <h3>Próximos passos</h3>
       <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px;">

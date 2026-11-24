@@ -6,7 +6,7 @@
      Base: mdp-api 60c4acc9, payment-receipt.hbs (invoices), enrollment_payment_reminder.hbs e create_password.hbs. Mesmo
      esqueleto: tabela central branca, logo (public/images/logo.png = assets/logo-proposta.png), "Olá, {nome}!", texto corrido,
      botão azul de cantos 8px, divisor e rodapé "© {ano} - Mago do Pism - Todos os direitos reservados.".
-     Tracejado roxo numerado = decisão nova (26 a 32), continua a numeração de matricula-pagamento-exigido.html.
+     Tracejado roxo numerado = decisão nova (26 a 32, e 37 pro curso), continua a numeração de matricula-pagamento-exigido.html.
      Estados: setEstado('pix'|'cartao'|'boleto'|'pix-boleto-antigo'), setContrato(true|false)
      Decidido (Vinícius, 24/11/2026): recibo e confirmação saem num e-mail só, um por matrícula. Boleto gerado e depois trocado
      por Pix ou cartão não é cancelado (fica lá até vencer).
@@ -18,7 +18,9 @@
      titular. O recibo mostra o valor total pago no cartão e "em Nx no cartão" só como informação. Sem "1ª parcela", sem
      "pago agora" e sem aviso de parcelas futuras debitadas por mês.
      Decidido (Vinícius, 24/11/2026, depois): o botão do contrato aponta direto pro PDF do contrato assinado (ZapSign), não pra
-     página de confirmação. Texto: "Baixar contrato (PDF)".
+     página de confirmação. Texto: "Baixar contrato (PDF)". O link do ZapSign não expira, então vai o link do ZapSign mesmo.
+     Decidido (Vinícius, 24/11/2026, depois): {nome do curso} = campo novo "Nome do curso" (courseName) do formulário, preenchido
+     pela secretaria no passo 1 do wizard. NÃO é o nome interno do formulário. "Intensivo PISM 2027" aqui é só exemplo (decisão 37).
      Pro dev: e-mail único recibo + confirmação, enviado UMA vez por matrícula, quando ela vira ACTIVE com pagamento confirmado:
      webhook order.paid/charge.paid no PaymentsService.handleWebhook (e o equivalente da Iugu) e cartão aprovado na hora. Hoje
      esse caminho só muda o status e cria as faturas, sem e-mail. Idempotente: guardar a data do envio na matrícula (ex.:
@@ -35,12 +37,11 @@
      Pro dev: boleto antigo NÃO é cancelado quando o aluno troca pra Pix ou cartão. Se existir boleto em aberto da mesma
      matrícula na hora do envio, o e-mail mostra o aviso 31 (não pagar, vence sozinho). Se for pago mesmo assim, o caso cai no
      mesmo tratamento de pagamento em duplicidade (estorno pela secretaria).
-     Pro dev: botão do contrato (29) vai DIRETO pro PDF do contrato assinado, não pra página de confirmação. O back precisa
-     fornecer essa URL (contractPdfUrl). PONTO DE ATENÇÃO: o getDocumentPdfUrl do ZapSign devolve signed_file, que pelo que sei
-     é URL temporária (não conferi o prazo). Se expira, o link do e-mail morre depois de um tempo. Nesse caso o back deve baixar
-     o PDF assinado quando o documento é finalizado (webhook do ZapSign), guardar no storage e servir por um link estável (ex.:
-     endpoint público com token da matrícula que devolve o arquivo ou redireciona pra uma URL assinada nova a cada clique).
-     Não colar a signed_file crua no e-mail.
+     Pro dev: botão do contrato (29) vai DIRETO pro PDF do contrato assinado, não pra página de confirmação. contractPdfUrl é o
+     link do ZapSign (getDocumentPdfUrl). Decisão do Vinícius: o link do ZapSign não expira, então o back NÃO guarda o PDF nem
+     serve link próprio, só repassa a URL no e-mail.
+     Pro dev: courseName vem do campo novo obrigatório "Nome do curso" do formulário de matrícula (back persiste e expõe no
+     webhook e no e-mail). Assunto e corpo usam esse campo, nunca o nome interno do formulário.
      Pro dev: e-mail não carrega fonte web. Os templates de hoje não definem font-family (cai no padrão do leitor); aqui o corpo
      usa Arial/Helvetica pra ficar previsível. As cores do hbs (#595756 texto, #a6a29f rodapé, #F5F0EB divisor, #278556 sucesso,
      #0E93F2 botão) não existem como token: no protótipo usei --text-primary, --text-faint, --neutral-200, --color-success e
@@ -49,6 +50,7 @@
   body { background:var(--neutral-200); }
   .decisao { position:relative; outline:2px dashed var(--color-warn); outline-offset:4px; border-radius:var(--radius-md); }
   .decisao::before { content:attr(data-n); position:absolute; top:-12px; right:-8px; z-index:5; min-width:24px; height:24px; padding:0 6px; display:inline-flex; align-items:center; justify-content:center; border-radius:var(--radius-pill); background:var(--color-warn); color:var(--neutral-0); font-size:12px; font-weight:700; font-family:var(--font-body); }
+  .decisao.esq::before { right:auto; left:-12px; }
   .hidden { display:none !important; }
   .folga { padding-right:32px; }
 
@@ -121,7 +123,7 @@
   <div class="inbox-head">
     <!-- Assunto com variáveis: {nome do aluno} = studentName, {nome do curso} = courseName. Muda a cada matrícula. -->
     <h1 class="inbox-subject decisao folga" data-n="26" id="assunto">Matrícula confirmada: <span class="var">{nome do aluno}</span> no <span class="var">{nome do curso}</span></h1>
-    <p class="var-nota">Aluno e curso no assunto são variáveis. No corpo abaixo, nomes e valores são só exemplo.</p>
+    <p class="var-nota">Aluno e curso no assunto são variáveis. O curso é o valor do campo "Nome do curso" do formulário (passo 1 do wizard), não o nome interno. No corpo abaixo, nomes e valores são só exemplo.</p>
     <div class="inbox-meta">
       <span>De: <b>Mago do Pism</b></span>
       <span class="decisao folga" data-n="32">Para: <b>marta.souza@email.com</b> (responsável)</span>
@@ -141,7 +143,7 @@
         <table class="recibo decisao" data-n="28" role="presentation"><tbody>
           <tr><td class="t" colspan="2">Recibo de pagamento</td></tr>
           <tr><td class="k">Aluno</td><td class="v">Arthur Souza</td></tr>
-          <tr><td class="k">Curso</td><td class="v">Intensivo PISM 2027</td></tr>
+          <tr><td class="k">Curso</td><td class="v"><span class="decisao" data-n="37" style="outline-offset:2px; display:inline-block; margin:6px 14px 0 4px; padding-right:22px;"><span class="var" style="font-size:0.9em;" title="Valor do campo Nome do curso">Intensivo PISM 2027</span></span></td></tr>
           <tr><td class="k">Turma</td><td class="v">Manhã · Juiz de Fora</td></tr>
           <tr><td class="k">Fatura</td><td class="v">2026-0042</td></tr>
           <tr><td class="k">Forma de pagamento</td><td class="v" id="rForma"></td></tr>
@@ -161,7 +163,7 @@
         <div class="bloco decisao" data-n="29" id="blocoContrato">
           <h3>Contrato assinado</h3>
           <p>O contrato de matrícula foi assinado por você em 24/11/2026. Guarde uma cópia.</p>
-          <!-- href = contractPdfUrl: PDF do contrato assinado (ZapSign), link estável servido pelo back -->
+          <!-- href = contractPdfUrl: PDF do contrato assinado (ZapSign), link do ZapSign, vai direto -->
           <a href="#contrato-assinado.pdf" class="btn-mail outline">Baixar contrato (PDF)</a>
         </div>
 
@@ -188,8 +190,8 @@
     const d = METODO[m];
     document.getElementById('dataEnvio').textContent = d.envio;
     document.getElementById('lead').innerHTML = (m === 'boleto'
-      ? 'O banco confirmou o pagamento do boleto e a matrícula de <strong>Arthur Souza</strong> no <strong>Intensivo PISM 2027</strong> está confirmada.'
-      : 'Recebemos o pagamento e a matrícula de <strong>Arthur Souza</strong> no <strong>Intensivo PISM 2027</strong> está confirmada.')
+      ? 'O banco confirmou o pagamento do boleto e a matrícula de <strong>Arthur Souza</strong> no <span class="var" title="Valor do campo Nome do curso">Intensivo PISM 2027</span> está confirmada.'
+      : 'Recebemos o pagamento e a matrícula de <strong>Arthur Souza</strong> no <span class="var" title="Valor do campo Nome do curso">Intensivo PISM 2027</span> está confirmada.')
       + ' Este e-mail também é o seu recibo.';
     document.getElementById('rForma').textContent = d.forma;
     document.getElementById('rParcRow').classList.toggle('hidden', !cartao);
