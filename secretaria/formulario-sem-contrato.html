@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Formulário sem contrato / pagamento na hora · Secretaria · Mago do Pism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
+<!-- Proposta: opções "Exigir contrato" e "Exigir pagamento para finalizar o cadastro" no wizard.
+     Tracejado roxo numerado = decisão em aberto pro Vinícius. Estados: setOpcoes(contrato, pagamento), goStep('basico'|'zapsign'|'valor'|'revisao') -->
+<style>
+  .wiz-grid { display:grid; grid-template-columns: 1fr 360px; gap:22px; align-items:start; }
+  @media (max-width:1100px){ .wiz-grid { grid-template-columns:1fr; } }
+
+  /* Stepper */
+  .wiz-steps { display:flex; align-items:center; gap:0; padding:18px 22px; background:white; border:1px solid var(--border-default); border-radius:10px; margin-bottom:18px; }
+  .wiz-steps .step { display:flex; align-items:center; gap:10px; flex:1; min-width:0; }
+  .wiz-steps .step .num { width:26px; height:26px; border-radius:50%; background:var(--neutral-200); color:var(--text-muted); display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; transition:.2s; }
+  .wiz-steps .step .lbl { font-size:12.5px; font-weight:600; color:var(--text-muted); white-space:nowrap; }
+  .wiz-steps .step.is-active .num { background:var(--brand-blue); color:white; }
+  .wiz-steps .step.is-active .lbl { color:var(--neutral-900); }
+  .wiz-steps .step.is-done .num { background:var(--color-success); color:white; }
+  .wiz-steps .step.is-done .lbl { color:var(--neutral-900); }
+  .wiz-steps .conn { flex:1; height:2px; background:var(--neutral-200); margin:0 12px; min-width:30px; }
+  .wiz-steps .conn.is-done { background:var(--color-success); }
+
+  /* Card */
+  .wiz-card { background:white; border:1px solid var(--border-default); border-radius:10px; padding:22px 26px; }
+  .wiz-card h2 { font-family:var(--font-akagi); font-size:18px; color:var(--neutral-900); margin:0 0 4px; }
+  .wiz-card .sub { font-size:13px; color:var(--text-muted); margin-bottom:22px; }
+
+  .wiz-card.hidden { display:none; }
+
+  /* Field */
+  .field { display:block; margin-bottom:16px; }
+  .field > label { display:block; font-size:12px; font-weight:600; color:var(--neutral-900); margin-bottom:6px; }
+  .field > .hint { font-size:11.5px; color:var(--text-muted); margin-top:4px; }
+  .field input[type=text], .field input[type=number], .field input[type=date], .field select, .field textarea {
+    width:100%; padding:9px 12px; border:1px solid var(--border-default); border-radius:6px; font:inherit; font-size:13px; color:var(--neutral-900); background:white; outline:0; transition:.15s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color:var(--brand-blue); box-shadow:0 0 0 3px rgba(14,147,242,0.12); }
+  .field textarea { resize:vertical; min-height:70px; }
+
+  .field-row { display:grid; gap:12px; }
+  .field-row.cols-2 { grid-template-columns:1fr 1fr; }
+  .field-row.cols-3 { grid-template-columns:1fr 1fr 1fr; }
+
+  /* Model picker */
+  .model-search { position:relative; margin-bottom:14px; }
+  .model-search input { width:100%; padding:10px 12px 10px 36px; border:1px solid var(--border-default); border-radius:7px; font:inherit; font-size:13px; outline:0; }
+  .model-search svg { position:absolute; left:11px; top:50%; transform:translateY(-50%); width:14px; height:14px; color:var(--text-muted); }
+
+  .model-list { display:flex; flex-direction:column; gap:8px; max-height:320px; overflow-y:auto; padding-right:4px; }
+  .model-card { display:flex; align-items:center; gap:14px; padding:12px 14px; border:1.5px solid var(--border-default); border-radius:8px; background:white; cursor:pointer; transition:.15s; }
+  .model-card:hover { border-color:var(--brand-blue); background:#f8fbfe; }
+  .model-card.is-selected { border-color:var(--brand-blue); background:#f0f8ff; box-shadow:0 0 0 3px rgba(14,147,242,0.1); }
+  .model-card .thumb { width:32px; height:42px; border-radius:4px; border:1px solid var(--border-default); flex-shrink:0; position:relative; background:linear-gradient(180deg,#fafafa,#eef4fc); }
+  .model-card .thumb::before { content:""; position:absolute; left:4px; right:4px; top:6px; height:1.5px; background:var(--neutral-300); box-shadow: 0 3px 0 var(--neutral-300), 0 6px 0 var(--neutral-300), 0 9px 0 var(--neutral-300), 0 12px 0 var(--neutral-300), 0 15px 0 var(--neutral-300), 0 18px 0 var(--neutral-300), 0 21px 0 var(--neutral-300); }
+  .model-card .thumb .ext { position:absolute; bottom:2px; left:2px; right:2px; height:10px; background:var(--brand-blue); color:white; font-size:7px; font-weight:700; border-radius:2px; display:inline-flex; align-items:center; justify-content:center; letter-spacing:0.4px; font-family:var(--font-mono); }
+  .model-card .thumb .ext.pdf { background:#c0392b; }
+  .model-card .info { flex:1; min-width:0; }
+  .model-card .info strong { display:block; font-size:13.5px; color:var(--neutral-900); font-weight:600; }
+  .model-card .info .meta { font-size:11px; color:var(--text-muted); font-family:var(--font-mono); margin-top:2px; }
+  .model-card .radio { width:18px; height:18px; border:2px solid var(--neutral-300); border-radius:50%; flex-shrink:0; position:relative; }
+  .model-card.is-selected .radio { border-color:var(--brand-blue); }
+  .model-card.is-selected .radio::after { content:""; position:absolute; inset:3px; background:var(--brand-blue); border-radius:50%; }
+
+  /* Pagamento */
+  .pay-mode { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+  .pay-mode .opt { padding:14px 16px; border:1.5px solid var(--border-default); border-radius:8px; cursor:pointer; transition:.15s; background:white; }
+  .pay-mode .opt:hover { border-color:var(--brand-blue); }
+  .pay-mode .opt.is-selected { border-color:var(--brand-blue); background:#f0f8ff; }
+  .pay-mode .opt strong { display:block; font-size:13.5px; color:var(--neutral-900); margin-bottom:2px; }
+  .pay-mode .opt span { font-size:11.5px; color:var(--text-muted); }
+
+  .input-prefix { display:flex; align-items:center; border:1px solid var(--border-default); border-radius:6px; overflow:hidden; }
+  .input-prefix .prefix { padding:9px 12px; background:var(--neutral-50); color:var(--text-muted); font-size:12px; font-weight:600; border-right:1px solid var(--border-default); }
+  .input-prefix input { border:0; padding:9px 12px; flex:1; font:inherit; font-size:13px; outline:0; width:100%; }
+
+  .parc-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; }
+  .parc-grid button { padding:10px 0; border:1.5px solid var(--border-default); background:white; border-radius:6px; font-size:12.5px; font-weight:600; cursor:pointer; color:var(--text-secondary); transition:.12s; }
+  .parc-grid button:hover { border-color:var(--brand-blue); }
+  .parc-grid button.is-selected { background:var(--brand-blue); color:white; border-color:var(--brand-blue); }
+
+  .calc-box { background:linear-gradient(180deg, #f8fbfe, #f0f8ff); border:1px solid #cfe6fa; border-radius:8px; padding:14px 16px; margin-top:14px; }
+  .calc-box .row { display:flex; justify-content:space-between; padding:4px 0; font-size:12.5px; }
+  .calc-box .row.tot { font-weight:700; font-size:14px; color:var(--neutral-900); padding-top:8px; margin-top:6px; border-top:1px dashed #cfe6fa; }
+  .calc-box .row .v { font-family:var(--font-akagi); font-weight:600; }
+
+  /* Subseção dentro do card */
+  .subsec { margin:22px 0 12px; padding-top:18px; border-top:1px solid var(--neutral-200); }
+  .subsec:first-of-type { margin-top:0; padding-top:0; border-top:0; }
+  .subsec h3 { font-size:13px; font-weight:700; color:var(--neutral-900); margin:0 0 3px; }
+  .subsec .sub2 { font-size:11.5px; color:var(--text-muted); margin-bottom:12px; }
+
+  /* Chips de seleção múltipla */
+  .chip-select { display:flex; gap:8px; flex-wrap:wrap; }
+  .chip-select .chip { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border:1.5px solid var(--border-default); border-radius:999px; font-size:12.5px; font-weight:600; color:var(--text-secondary); cursor:pointer; background:white; transition:.15s; user-select:none; }
+  .chip-select .chip.is-selected { border-color:var(--brand-blue); background:#f0f8ff; color:var(--brand-blue); }
+  .chip-select .chip input { display:none; }
+
+  /* Toggle simples (checkbox + label) que revela campos */
+  .toggle-check-row { display:flex; align-items:center; gap:8px; margin-bottom:12px; font-size:12.5px; color:var(--neutral-900); font-weight:600; cursor:pointer; }
+  .toggle-check-row input[type=checkbox] { width:16px; height:16px; accent-color:var(--brand-blue); cursor:pointer; }
+
+  /* Cronograma de corte de parcelamento */
+
+  /* Action bar */
+  .wiz-actions { display:flex; justify-content:space-between; gap:8px; margin-top:24px; padding-top:18px; border-top:1px solid var(--neutral-200); }
+  .wiz-actions .right { display:inline-flex; gap:8px; }
+
+  /* Sidebar preview */
+  .preview-card { position:sticky; top:14px; background:white; border:1px solid var(--border-default); border-radius:10px; overflow:hidden; }
+  .preview-card .head { padding:14px 18px; background:var(--neutral-50); border-bottom:1px solid var(--border-default); }
+  .preview-card .head h3 { margin:0; font-size:13px; color:var(--neutral-900); font-family:var(--font-akagi); }
+  .preview-card .head .small { font-size:11px; color:var(--text-muted); margin-top:2px; }
+  .preview-card .body { padding:16px 18px; }
+  .preview-card .row { display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px dashed var(--neutral-200); font-size:12.5px; }
+  .preview-card .row:last-of-type { border-bottom:0; }
+  .preview-card .row .lbl { color:var(--text-muted); flex-shrink:0; }
+  .preview-card .row .val { color:var(--neutral-900); font-weight:600; text-align:right; word-break:break-word; }
+  .preview-card .row .val.muted { color:var(--text-muted); font-style:italic; font-weight:500; }
+  .preview-card .url-preview { padding:14px 18px; background:#f0f8ff; border-top:1px solid var(--border-default); }
+  .preview-card .url-preview .lbl { font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; font-weight:700; margin-bottom:5px; }
+  .preview-card .url-preview .url { font-family:var(--font-mono); font-size:11.5px; color:var(--brand-blue); word-break:break-all; line-height:1.4; }
+
+  /* ZapSign tag */
+  .zs-tag { display:inline-flex; align-items:center; gap:5px; padding:2px 8px; background:rgba(14,147,242,0.1); color:var(--brand-blue); border-radius:4px; font-size:10.5px; font-weight:700; letter-spacing:0.3px; text-transform:uppercase; font-family:var(--font-mono); }
+
+  /* Toast */
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--neutral-900); color:white; padding:11px 18px; border-radius:8px; font-size:13px; font-weight:500; box-shadow:0 8px 30px rgba(0,0,0,0.18); display:inline-flex; align-items:center; gap:9px; transition: transform .25s ease, opacity .25s ease; opacity:0; pointer-events:none; z-index:90; }
+  .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+  .toast svg { width:15px; height:15px; color:#5fd49a; }
+
+  /* Success state */
+  .success-state { text-align:center; padding:40px 30px; }
+  .success-state .ic { width:64px; height:64px; border-radius:50%; background:var(--color-success); color:white; display:inline-flex; align-items:center; justify-content:center; margin-bottom:16px; }
+  .success-state .ic svg { width:32px; height:32px; }
+  .success-state h2 { font-size:22px; margin-bottom:8px; }
+  .success-state p { color:var(--text-muted); margin-bottom:20px; font-size:14px; }
+  .success-state .url-final { background:#f0f8ff; border:1.5px solid var(--brand-blue); border-radius:8px; padding:14px 18px; max-width:560px; margin:0 auto 20px; display:flex; align-items:center; gap:10px; }
+  .success-state .url-final .url { flex:1; text-align:left; font-family:var(--font-mono); font-size:13px; color:var(--brand-blue); word-break:break-all; }
+  .success-state .url-final button { padding:8px 14px; background:var(--brand-blue); color:white; border:0; border-radius:5px; font-size:12.5px; font-weight:600; cursor:pointer; flex-shrink:0; }
+
+  /* ── Marcação de decisão em aberto (tracejado roxo = --color-warn), mesma regra de styles/gamificacao.css ── */
+  .decisao { position:relative; outline:2px dashed var(--color-warn); outline-offset:4px; border-radius:var(--radius-lg); }
+  .decisao::before { content:attr(data-n); position:absolute; top:-12px; right:-10px; z-index:5; min-width:24px; height:24px; padding:0 6px; display:inline-flex; align-items:center; justify-content:center; border-radius:var(--radius-pill); background:var(--color-warn); color:var(--neutral-0); font-size:12px; font-weight:700; }
+
+  .decisao.esq::before { right:auto; left:-12px; }
+
+  /* Opções do link público (checkbox no padrão .toggle-check-row + hint) */
+  .opt-check { display:flex; gap:10px; align-items:flex-start; padding:12px 14px; border:1.5px solid var(--border-default); border-radius:8px; background:white; cursor:pointer; margin-bottom:10px; }
+  .opt-check.is-on { border-color:var(--brand-blue); background:#f0f8ff; }
+  .opt-check input { width:16px; height:16px; accent-color:var(--brand-blue); margin-top:2px; flex-shrink:0; cursor:pointer; }
+  .opt-check strong { display:block; font-size:13px; color:var(--neutral-900); margin-bottom:2px; }
+  .opt-check span { display:block; font-size:11.5px; color:var(--text-muted); line-height:1.45; }
+
+  /* Mini fluxo do link público */
+  .flow-mini { display:flex; align-items:center; gap:6px; flex-wrap:wrap; padding:10px 12px; background:var(--neutral-50); border:1px solid var(--border-default); border-radius:7px; font-size:12px; color:var(--text-secondary); }
+  .flow-mini .lbl { font-weight:700; color:var(--text-muted); text-transform:uppercase; font-size:10.5px; letter-spacing:.4px; margin-right:4px; }
+  .flow-mini .pill { font-size:11px; }
+  .flow-mini .arr { color:var(--text-muted); }
+
+  .rev-label { font-size:11px; color:var(--text-muted); text-transform:uppercase; font-weight:700; letter-spacing:0.5px; margin-bottom:6px; }
+  .rev-box { background:var(--neutral-50); border:1px solid var(--border-default); border-radius:7px; padding:14px; }
+  .rev-title { font-weight:700; font-size:14px; margin-bottom:4px; color:var(--neutral-900); }
+  .rev-mono { font-size:11.5px; color:var(--text-muted); font-family:var(--font-mono); }
+  .rev-amount { font-family:var(--font-akagi); font-size:18px; font-weight:700; color:var(--neutral-900); margin-bottom:4px; }
+  .rev-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:18px; }
+  .rev-opt { display:flex; gap:8px; align-items:flex-start; font-size:12.5px; color:var(--neutral-800); padding:4px 0; }
+  .rev-opt svg { width:16px; height:16px; flex-shrink:0; margin-top:1px; }
+  .rev-opt.on svg { color:var(--color-success); }
+  .rev-opt.off svg { color:var(--text-muted); }
+
+  .note-warn { margin-top:14px; padding:14px 16px; background:#fff7e8; border:1px solid #f7d99c; border-radius:8px; font-size:12.5px; color:var(--neutral-800); line-height:1.5; }
+  .note-info { margin:-4px 0 16px; padding:11px 14px; background:var(--neutral-50); border:1px dashed var(--border-default); border-radius:7px; font-size:12px; color:var(--text-secondary); line-height:1.5; }
+
+  .installments-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; }
+  .installments-grid button { padding:10px 0; border:1.5px solid var(--border-default); background:white; border-radius:6px; font-size:12.5px; font-weight:600; cursor:pointer; color:var(--text-secondary); font-family:inherit; }
+  .installments-grid button.is-selected { background:var(--brand-blue); color:white; border-color:var(--brand-blue); }
+
+  /* Stepper no mobile: só número, rótulo do passo ativo */
+  .wiz-steps-count { display:none; font-size:12px; font-weight:700; color:var(--text-muted); margin-right:12px; white-space:nowrap; }
+  @media (max-width:700px){
+    .wiz-steps { padding:14px; }
+    .wiz-steps .step { flex:0 0 auto; }
+    .wiz-steps .step .lbl { display:none; }
+    .wiz-steps .step.is-active .lbl { display:inline; }
+    .wiz-steps .conn { min-width:10px; margin:0 6px; }
+    .wiz-card { padding:18px 16px; }
+    .pay-mode { grid-template-columns:1fr; }
+    .field-row.cols-2 { grid-template-columns:1fr; }
+    .wiz-actions { flex-wrap:wrap; }
+    .wiz-actions .right { flex:1; justify-content:flex-end; }
+    .sec-page-head { flex-wrap:wrap; gap:10px; }
+  }
+</style>
+</head><body><div class="app-shell">
+<aside class="sidebar">
+  <div class="sidebar-logo" role="img" aria-label="Mago do Pism" style="background:url('../assets/logo-azul.png') center/contain no-repeat; filter:brightness(0) invert(1);"></div>
+  <nav class="sidebar-nav">
+    <a href="painel.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Painel</span></a>
+    <a href="clientes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2.3 1.5-4 3.7-4 1.6 0 2.8.9 3.3 2.2"/></svg><span>Clientes</span></a>
+    <a href="formularios.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></svg><span>Formulários</span></a>
+    <a href="faturas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg><span>Contas a Receber</span></a>
+    <a href="inadimplentes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.8" fill="currentColor"/></svg><span>Inadimplência</span></a>
+    <a href="cobranca.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg><span>Régua de Cobrança</span></a>
+  </nav>
+</aside>
+
+<main class="main"><div class="sec-page">
+<nav class="sec-breadcrumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><a href="painel.html">Principal</a><span class="sep">/</span><a href="formularios.html">Formulários</a><span class="sep">/</span><span>Novo formulário</span></nav>
+
+<div class="sec-page-head">
+  <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Criar formulário</h1>
+  <div class="sec-actions"><a href="formularios.html" class="sec-btn outline">Cancelar</a></div>
+</div>
+
+<!-- Stepper: montado pelo JS. Sem "Exigir contrato", o passo Modelo ZapSign some e fica 3 passos -->
+<nav class="wiz-steps" id="stepper" aria-label="Etapas do formulário"></nav>
+
+<div class="wiz-grid">
+  <div>
+    <!-- PASSO — Dados básicos (textos iguais ao StepBasicData.tsx) -->
+    <section class="wiz-card" data-pane="basico">
+      <h2>Dados básicos do formulário</h2>
+      <p class="sub">Como você vai identificar este formulário internamente, e como o link público vai aparecer.</p>
+
+      <div class="field">
+        <label>Nome interno do formulário <span style="color:var(--color-danger);">*</span></label>
+        <input type="text" value="Intensivo PISM 2027" placeholder="Ex: Intensivo PISM 2027"/>
+        <div class="hint">Só você e a secretaria veem esse nome. O responsável vê o nome do curso/turma na página pública.</div>
+      </div>
+      <div class="field">
+        <label>Slug do link <span style="font-weight:400;color:var(--text-muted);">(opcional)</span></label>
+        <div class="input-prefix"><span class="prefix">/matricula/escolha?enrollmentForm=</span><input type="text" value="intensivo-2027"/></div>
+        <div class="hint">Identifica o formulário no link público. Opcional: em branco, é gerado a partir do nome.</div>
+      </div>
+      <div class="field">
+        <label>Validade do link <span style="font-weight:400;color:var(--text-muted);">(opcional)</span></label>
+        <input type="date" value=""/>
+        <div class="hint">Deixe em branco para link permanente sem validade.</div>
+      </div>
+      <div class="field">
+        <label>Observações internas</label>
+        <textarea placeholder="Notas só para a secretaria…"></textarea>
+      </div>
+
+      <!-- NOVO: etapas do link público -->
+      <div class="subsec decisao" data-n="1" style="border-top:0; padding-top:4px;">
+        <h3>Etapas do link público</h3>
+        <div class="sub2">Defina o que o responsável precisa fazer para concluir a matrícula por este link.</div>
+
+        <label class="opt-check" id="opt-contrato">
+          <input type="checkbox" id="chk-contrato" checked/>
+          <div>
+            <strong>Exigir contrato</strong>
+            <span>O responsável assina o contrato no ZapSign antes do pagamento. Desmarcado, o link vai direto do cadastro para o pagamento e o passo "Modelo ZapSign" sai deste assistente.</span>
+          </div>
+        </label>
+
+        <label class="opt-check" id="opt-pagamento">
+          <input type="checkbox" id="chk-pagamento"/>
+          <div>
+            <strong>Exigir pagamento para finalizar o cadastro</strong>
+            <span>O responsável paga na hora (Pix ou cartão) e a matrícula só é confirmada quando o pagamento for aprovado. Desmarcado, ele só escolhe a forma de pagamento e recebe a 1ª fatura por e-mail.</span>
+          </div>
+        </label>
+
+        <div class="flow-mini decisao" data-n="2" id="flowMini"></div>
+      </div>
+
+      <div class="wiz-actions">
+        <span></span>
+        <div class="right"><button class="sec-btn dark" data-next>Próximo: escolher modelo →</button></div>
+      </div>
+    </section>
+
+    <!-- PASSO — Modelo ZapSign (só existe com "Exigir contrato"). Igual ao app, resumido -->
+    <section class="wiz-card hidden" data-pane="zapsign">
+      <h2>Modelo do ZapSign <span class="zs-tag">ZapSign</span></h2>
+      <p class="sub">Escolha os modelos de contrato que serão gerados quando o responsável preencher o formulário — um para matrícula normal, outro para matrícula com desconto de irmãos.</p>
+      <h3 style="font-size:13px; font-weight:700; color:var(--neutral-900); margin:0 0 10px;">Modelo — matrícula normal *</h3>
+      <div class="model-list" style="margin-bottom:18px;">
+        <label class="model-card is-selected"><div class="thumb"><span class="ext">DOCX</span></div><div class="info"><strong>Curso Intensivo PISM 2027</strong><div class="meta">152f8416-…-1aaf785dd335</div></div><div class="radio"></div></label>
+      </div>
+      <h3 style="font-size:13px; font-weight:700; color:var(--neutral-900); margin:0 0 10px;">Modelo — desconto de irmãos *</h3>
+      <div class="model-list">
+        <label class="model-card is-selected"><div class="thumb"><span class="ext">DOCX</span></div><div class="info"><strong>Curso Intensivo PISM 2027 · Irmãos</strong><div class="meta">3a1f9c52-…-7e44b2ad88a1</div></div><div class="radio"></div></label>
+      </div>
+      <div class="wiz-actions">
+        <button class="sec-btn outline" data-back>← Voltar</button>
+        <div class="right"><button class="sec-btn dark" data-next>Próximo: definir valor →</button></div>
+      </div>
+    </section>
+
+    <!-- PASSO — Valor & pagamento (campos iguais ao StepAmountPayment.tsx, sem mudança de regra) -->
+    <section class="wiz-card hidden" data-pane="valor">
+      <h2>Valor & forma de pagamento</h2>
+      <p class="sub" id="valorSub"></p>
+
+      <div class="note-info decisao" data-n="5" id="notaPagamento" style="display:none;">
+        <strong style="color:var(--neutral-900);">Pagamento exigido neste formulário:</strong> no link aparecem só Pix e cartão de crédito. O responsável paga a 1ª cobrança na hora: Pix à vista ou a 1ª parcela, cartão à vista ou a 1ª de até o teto abaixo.
+      </div>
+
+      <div class="field">
+        <label>Valor total <span style="color:var(--color-danger);">*</span></label>
+        <div class="input-prefix"><span class="prefix">R$</span><input type="text" value="1.050,00"/></div>
+      </div>
+      <div class="field">
+        <label>Forma de pagamento</label>
+        <div class="pay-mode">
+          <div class="opt"><strong>À vista</strong><span>PIX, cartão de crédito ou boleto único</span></div>
+          <div class="opt is-selected"><strong>Parcelado</strong><span>O responsável escolhe pagar à vista ou parcelar em até o número de parcelas definido abaixo</span></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Número máximo de parcelas</label>
+        <div class="hint" style="margin:0 0 6px;">O teto diminui 1× a cada mês que passa da data-base de vencimento.</div>
+        <div class="installments-grid"><button>2×</button><button class="is-selected">3×</button><button>4×</button><button>6×</button><button>9×</button><button>10×</button><button>12×</button></div>
+      </div>
+      <div class="field">
+        <label>Data-base de vencimento da 1ª parcela <span style="color:var(--color-danger);">*</span></label>
+        <input type="date" value="2027-01-10"/>
+      </div>
+      <div class="field">
+        <label class="toggle-check-row" style="margin-bottom:0;"><input type="checkbox" checked/>Desconto à vista (1×)</label>
+        <div class="field-row cols-2" style="margin-top:10px;">
+          <div class="field"><label>Tipo</label><select><option>Percentual (%)</option></select></div>
+          <div class="field"><label>Valor</label><input type="text" value="10"/></div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="toggle-check-row" style="margin-bottom:0;"><input type="checkbox"/>Desconto de irmãos</label>
+      </div>
+
+      <div class="wiz-actions">
+        <button class="sec-btn outline" data-back>← Voltar</button>
+        <div class="right"><button class="sec-btn dark" data-next>Próximo: revisar →</button></div>
+      </div>
+    </section>
+
+    <!-- PASSO — Revisar -->
+    <section class="wiz-card hidden" data-pane="revisao">
+      <h2>Revisar & criar formulário</h2>
+      <p class="sub">Confira os dados antes de gerar o link público. O slug não pode mudar depois de criado.</p>
+
+      <div class="rev-grid">
+        <div>
+          <div class="rev-label">Identificação</div>
+          <div class="rev-box"><div class="rev-title">Intensivo PISM 2027</div><div class="rev-mono">magodopism.com.br/matricula/escolha?enrollmentForm=intensivo-2027</div></div>
+        </div>
+        <div class="decisao" data-n="3">
+          <div class="rev-label">Etapas do link público</div>
+          <div class="rev-box" id="revEtapas"></div>
+        </div>
+        <div id="revModelos">
+          <div class="rev-label">Modelos ZapSign</div>
+          <div class="rev-box"><div class="rev-title">Normal: Curso Intensivo PISM 2027</div><div class="rev-mono">Irmãos: Curso Intensivo PISM 2027 · Irmãos</div></div>
+        </div>
+        <div>
+          <div class="rev-label">Valor & pagamento</div>
+          <div class="rev-box"><div class="rev-amount">R$ 1.050,00</div><div class="rev-mono">em até 3×</div><div class="rev-mono">Desconto à vista: 10%</div></div>
+        </div>
+        <div>
+          <div class="rev-label">Validade</div>
+          <div class="rev-box"><div class="rev-title" style="margin:0;">Sem validade</div></div>
+        </div>
+      </div>
+
+      <div class="note-warn">⚠ O parcelamento máximo cai para 2× a partir de 01/02/2027, e segue reduzindo 1× a cada mês.</div>
+      <div class="note-warn decisao" data-n="4" id="aposCriar"></div>
+
+      <div class="wiz-actions">
+        <button class="sec-btn outline" data-back>← Voltar</button>
+        <div class="right"><button class="sec-btn dark">Criar formulário</button></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Pré-visualização (PreviewCard.tsx + 2 linhas novas) -->
+  <aside>
+    <div class="preview-card">
+      <div class="head"><h3>Pré-visualização</h3><div class="small">Atualiza enquanto você preenche</div></div>
+      <div class="body">
+        <div class="row"><span class="lbl">Nome</span><span class="val">Intensivo PISM 2027</span></div>
+        <div class="decisao esq" data-n="6" style="border-radius:4px;">
+          <div class="row"><span class="lbl">Contrato</span><span class="val" id="p-contrato"></span></div>
+          <div class="row"><span class="lbl">Pagamento na hora</span><span class="val" id="p-pagamento"></span></div>
+        </div>
+        <div class="row" id="p-row-normal"><span class="lbl">Modelo normal</span><span class="val">Curso Intensivo PISM 2027</span></div>
+        <div class="row" id="p-row-irmaos"><span class="lbl">Modelo irmãos</span><span class="val">Curso Intensivo PISM 2027 · Irmãos</span></div>
+        <div class="row"><span class="lbl">Valor</span><span class="val">R$ 1.050,00</span></div>
+        <div class="row"><span class="lbl">Pagamento</span><span class="val">em até 3×</span></div>
+      </div>
+      <div class="url-preview"><div class="lbl">Link público que será gerado</div><div class="url">https://magodopism.com.br/matricula/escolha?enrollmentForm=intensivo-2027</div></div>
+    </div>
+  </aside>
+</div>
+</div></main></div>
+
+<script>
+  const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+  const XMARK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
+  const state = { contrato: true, pagamento: false, passo: 'basico' };
+  const LABEL = { basico: 'Dados básicos', zapsign: 'Modelo ZapSign', valor: 'Valor & pagamento', revisao: 'Revisar & criar' };
+  const NEXT_LABEL = { zapsign: 'Próximo: escolher modelo →', valor: 'Próximo: definir valor →', revisao: 'Próximo: revisar →' };
+
+  function passos(){ return state.contrato ? ['basico','zapsign','valor','revisao'] : ['basico','valor','revisao']; }
+
+  function renderStepper(){
+    const ps = passos(), idx = ps.indexOf(state.passo);
+    const el = document.getElementById('stepper');
+    el.innerHTML = ps.map((p,i) => {
+      const cls = i < idx ? ' is-done' : (i === idx ? ' is-active' : '');
+      const conn = i < ps.length-1 ? `<div class="conn${i < idx ? ' is-done' : ''}"></div>` : '';
+      return `<div class="step${cls}"><div class="num">${i < idx ? '✓' : i+1}</div><div class="lbl">${LABEL[p]}</div></div>${conn}`;
+    }).join('');
+  }
+
+  function pill(txt, cls){ return `<span class="pill ${cls}">${txt}</span>`; }
+  function renderOpcoes(){
+    document.getElementById('chk-contrato').checked = state.contrato;
+    document.getElementById('chk-pagamento').checked = state.pagamento;
+    document.getElementById('opt-contrato').classList.toggle('is-on', state.contrato);
+    document.getElementById('opt-pagamento').classList.toggle('is-on', state.pagamento);
+
+    const etapas = ['Cadastro'];
+    if (state.contrato) etapas.push('Contrato');
+    etapas.push(state.pagamento ? 'Pagamento na hora' : 'Escolha da forma de pagamento');
+    document.getElementById('flowMini').innerHTML = '<span class="lbl">O responsável vê</span>' +
+      etapas.map((e,i) => pill(e, i === etapas.length-1 && state.pagamento ? 'success' : 'info')).join('<span class="arr">→</span>') +
+      '<span class="arr">→</span>' + pill(state.pagamento ? 'Matrícula ativa ao aprovar o pagamento' : 'Matrícula confirmada', 'muted');
+
+    document.getElementById('valorSub').textContent = state.contrato
+      ? 'Esses valores serão preenchidos automaticamente nas variáveis do contrato e exibidos para o responsável antes da assinatura.'
+      : 'Esses valores serão exibidos para o responsável na etapa de pagamento do link público.';
+    const nota = document.getElementById('notaPagamento');
+    nota.style.display = state.pagamento ? '' : 'none';
+
+    document.getElementById('revEtapas').innerHTML =
+      `<div class="rev-opt ${state.contrato ? 'on' : 'off'}">${state.contrato ? CHECK : XMARK}<span><strong>Contrato</strong> ${state.contrato ? 'exigido: assinatura no ZapSign antes do pagamento' : 'não exigido: do cadastro direto ao pagamento'}</span></div>` +
+      `<div class="rev-opt ${state.pagamento ? 'on' : 'off'}">${state.pagamento ? CHECK : XMARK}<span><strong>Pagamento</strong> ${state.pagamento ? 'exigido: matrícula só é confirmada com o pagamento aprovado (Pix ou cartão)' : 'não exigido: 1ª fatura enviada por e-mail'}</span></div>`;
+    document.getElementById('revModelos').style.display = state.contrato ? '' : 'none';
+
+    const apos = state.contrato
+      ? 'Cada responsável que preencher gera um novo contrato no ZapSign com o modelo e valor definidos aqui.'
+      : 'Cada responsável que preencher vai do cadastro direto ao pagamento, sem contrato.';
+    const pag = state.pagamento
+      ? ' A matrícula só fica ativa quando o pagamento for aprovado. Quem sair sem pagar fica com a matrícula pendente e recebe o lembrete de pagamento.'
+      : '';
+    document.getElementById('aposCriar').innerHTML = `<strong>Após criar:</strong> o link ficará ativo imediatamente. ${apos}${pag}`;
+
+    document.getElementById('p-contrato').textContent = state.contrato ? 'exigido' : 'não exigido';
+    document.getElementById('p-pagamento').textContent = state.pagamento ? 'exigido (Pix ou cartão)' : 'não';
+    document.getElementById('p-row-normal').style.display = state.contrato ? '' : 'none';
+    document.getElementById('p-row-irmaos').style.display = state.contrato ? '' : 'none';
+
+    // rótulo do botão "Próximo" de cada passo segue o passo seguinte de verdade
+    const ps = passos();
+    document.querySelectorAll('[data-pane]').forEach(sec => {
+      const btn = sec.querySelector('[data-next]'); if (!btn) return;
+      const nxt = ps[ps.indexOf(sec.dataset.pane)+1]; if (nxt) btn.textContent = NEXT_LABEL[nxt];
+    });
+    if (!ps.includes(state.passo)) state.passo = 'basico';
+    renderStepper();
+  }
+
+  // API do protótipo (usada pelos prints)
+  window.setOpcoes = (contrato, pagamento) => { state.contrato = contrato; state.pagamento = pagamento; renderOpcoes(); };
+  window.goStep = (p) => {
+    state.passo = p;
+    document.querySelectorAll('[data-pane]').forEach(s => s.classList.toggle('hidden', s.dataset.pane !== p));
+    renderStepper(); window.scrollTo(0,0);
+  };
+
+  document.getElementById('chk-contrato').addEventListener('change', e => setOpcoes(e.target.checked, state.pagamento));
+  document.getElementById('chk-pagamento').addEventListener('change', e => setOpcoes(state.contrato, e.target.checked));
+  document.querySelectorAll('[data-next]').forEach(b => b.addEventListener('click', () => { const ps = passos(); goStep(ps[ps.indexOf(state.passo)+1]); }));
+  document.querySelectorAll('[data-back]').forEach(b => b.addEventListener('click', () => { const ps = passos(); goStep(ps[ps.indexOf(state.passo)-1]); }));
+
+  renderOpcoes(); goStep('basico');
+</script>
+</body></html>

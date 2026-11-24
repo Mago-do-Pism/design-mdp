@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Matrícula com pagamento exigido · Mago do Pism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
+<!-- Proposta: link público de formulário com "Exigir pagamento para finalizar o cadastro".
+     Base: CheckoutPage.tsx + PixPanel/InvoicePixPanel + InvoiceCardPanel + EnrollmentConfirmationClient.
+     Tracejado roxo numerado = decisão em aberto. Estados: setEstado('pix'|'cartao'|'recusado'|'pendente'|'sucesso'), setContrato(true|false) -->
+<style>
+  /* Method buttons — vertical list (cf. MethodSelector.tsx) */
+  .method-btn {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    border: 2px solid var(--border-default); border-radius: 10px;
+    background: white; cursor: pointer; text-align: left; width: 100%;
+    font-family: inherit;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .method-btn:hover  { border-color: var(--brand-blue-soft); }
+  .method-btn.is-selected { border-color: var(--brand-blue); background: rgba(14,147,242,0.04); }
+  .method-icon {
+    width: 44px; height: 44px; border-radius: 8px;
+    background: var(--neutral-100); color: var(--brand-blue);
+    display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .method-btn.is-selected .method-icon { background: rgba(14,147,242,0.12); }
+  .method-info          { flex: 1; min-width: 0; }
+  .method-info strong   { display: block; font-weight: 700; font-size: 15px; color: var(--neutral-900); margin-bottom: 2px; }
+  .method-info em       { font-style: normal; font-size: 13px; color: var(--text-muted); }
+  .method-badge         { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+  .discount-badge       { padding: 2px 8px; border-radius: 4px; background: rgba(39,133,86,0.10); color: var(--color-success); font-weight: 700; font-size: 12px; }
+  .or-text              { font-size: 12px; color: var(--text-muted); }
+
+  /* Form controls */
+  .form-control {
+    width: 100%; height: 42px; padding: 0 12px;
+    border: 1px solid var(--border-default); border-radius: 8px;
+    font-size: 14px; color: var(--text-primary); background: white; font-family: inherit;
+  }
+  .form-control:focus { outline: none; border-color: var(--brand-blue); box-shadow: 0 0 0 3px rgba(14,147,242,0.12); }
+
+  /* Pay-now card subtle highlight when active */
+  #payNowCard.is-active { border-color: var(--brand-blue); background: rgba(14,147,242,0.03); }
+
+  .decisao { position:relative; outline:2px dashed var(--color-warn); outline-offset:4px; border-radius:var(--radius-lg); }
+  .decisao::before { content:attr(data-n); position:absolute; top:-12px; right:-8px; z-index:5; min-width:24px; height:24px; padding:0 6px; display:inline-flex; align-items:center; justify-content:center; border-radius:var(--radius-pill); background:var(--color-warn); color:var(--neutral-0); font-size:12px; font-weight:700; }
+  .hidden { display:none !important; }
+  .decisao.folga { padding:4px 32px 4px 8px; }
+
+  /* Status de espera do Pix (novo) */
+  .pix-wait { display:flex; align-items:center; gap:12px; padding:12px 14px; border:1px solid var(--border-default); border-radius:8px; background:white; margin-top:14px; }
+  .pix-wait .spin { width:20px; height:20px; border-radius:50%; border:3px solid var(--neutral-200); border-top-color:var(--brand-blue); animation:spin 1s linear infinite; flex-shrink:0; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .pix-wait strong { display:block; font-size:13px; color:var(--neutral-900); }
+  .pix-wait span { font-size:12px; color:var(--text-muted); }
+
+  .alert-err { color:var(--color-danger); font-size:13px; margin:0; padding:10px 12px; background:rgba(208,62,62,0.06); border:1px solid rgba(208,62,62,0.2); border-radius:6px; }
+  .banner-pend { display:flex; gap:12px; align-items:flex-start; padding:14px 16px; background:rgba(232,156,63,0.10); border:1px solid rgba(232,156,63,0.35); border-radius:10px; font-size:13px; color:var(--neutral-800); line-height:1.5; }
+  .banner-pend .ic { width:20px; height:20px; color:#c97a14; flex-shrink:0; margin-top:1px; }
+  .banner-pend strong { color:var(--neutral-900); }
+
+  .pub-h1 { font-family:var(--font-display); font-weight:600; font-size:24px; color:var(--neutral-900); margin:0 0 4px; }
+  .pub-lead { font-size:13px; color:var(--text-muted); margin:0; }
+
+  .confirm-steps { background:linear-gradient(135deg, rgba(14,147,242,0.06), rgba(255,201,15,0.10)); border:1px solid var(--border-default); border-radius:12px; padding:24px; margin-bottom:24px; text-align:left; }
+  .confirm-steps h3 { margin:0 0 14px; font-family:var(--font-akagi); font-size:13px; text-transform:uppercase; color:var(--text-muted); letter-spacing:0.4px; }
+  .confirm-steps li { display:flex; gap:14px; align-items:start; }
+  .confirm-steps .n { width:32px; height:32px; border-radius:50%; background:var(--brand-blue); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0; }
+
+  @media (max-width:700px){
+    .pub-header .pub-help { display:none; }
+    .pub-content { padding-left:16px; padding-right:16px; }
+    .method-btn { flex-wrap:wrap; }
+    .method-badge { width:100%; align-items:flex-start; padding-left:58px; flex-direction:row; flex-wrap:wrap; gap:8px; }
+    .pub-h1 { font-size:21px; }
+    .pub-card { padding:32px 20px !important; }
+  }
+</style>
+</head><body><div class="pub-shell">
+
+<header class="pub-header">
+  <img src="../assets/logo-azul.png" alt="Mago do Pism"/>
+  <span class="pub-title">Matrícula · Mago do Pism</span>
+  <span class="pub-help">Precisa de ajuda? <a href="#" style="color:var(--brand-blue); font-weight:600;">(31) 99721-2639</a></span>
+</header>
+
+<div class="pub-stepper" id="stepperWrap"><div class="pub-stepper-inner decisao" data-n="7" id="stepper"></div></div>
+
+<!-- ═════ CHECKOUT (pix, cartao, recusado, pendente) ═════ -->
+<main class="pub-content" id="telaCheckout">
+  <div style="width:100%; max-width:1100px;">
+    <div style="text-align:center; margin-bottom:24px;">
+      <h1 class="pub-h1">Última etapa: pagamento</h1>
+      <p class="pub-lead decisao folga" data-n="8" style="display:inline-block;">Para concluir a matrícula, faça o pagamento agora. Ela é confirmada assim que o pagamento for aprovado.</p>
+    </div>
+
+    <div class="checkout-shell">
+      <div style="display:flex; flex-direction:column; gap:16px;">
+
+        <!-- Pendente: voltou pelo link/lembrete sem ter pago -->
+        <div class="banner-pend decisao" data-n="13" id="bannerPend">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+          <div><strong>Sua matrícula ainda não foi confirmada.</strong> O cadastro está salvo, falta só o pagamento. Escolha a forma abaixo para concluir.</div>
+        </div>
+
+        <!-- Forma de pagamento (MethodSelector.tsx). Boleto não aparece quando o pagamento é exigido -->
+        <section class="sec-card">
+          <h3 class="sec-card-title">Escolha a forma de pagamento</h3>
+          <div style="display:flex; flex-direction:column; gap:10px;" class="decisao" data-n="9">
+            <button type="button" class="method-btn" data-method="pix">
+              <div class="method-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M7 2.5L11.5 7 7 11.5 2.5 7zm10 0L21.5 7 17 11.5 12.5 7zM7 12.5L11.5 17 7 21.5 2.5 17zm10 0l4.5 4.5-4.5 4.5-4.5-4.5z"/></svg></div>
+              <div class="method-info"><strong>Pix</strong><em>Aprovação imediata</em></div>
+              <div class="method-badge"><span class="discount-badge">10% off à vista</span><span class="or-text">ou 3× sem juros</span></div>
+            </button>
+            <button type="button" class="method-btn" data-method="credit_card">
+              <div class="method-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></div>
+              <div class="method-info"><strong>Cartão de crédito</strong><em>Visa, Master, Elo e outros</em></div>
+              <div class="method-badge"><span class="discount-badge">10% off à vista</span><span class="or-text">ou em até 3x sem juros</span></div>
+            </button>
+          </div>
+        </section>
+
+        <!-- Forma de parcelamento (InstallmentSelector.tsx) -->
+        <section class="sec-card">
+          <h3 class="sec-card-title">Forma de parcelamento</h3>
+          <div class="installments" id="installments"></div>
+          <p style="font-size:11px; color:var(--text-muted); margin:12px 0 0;">As parcelas serão cobradas todo dia 10, com vencimento a partir de 10/01/2027.</p>
+        </section>
+
+        <!-- Pix (PixPanel.tsx / InvoicePixPanel.tsx) + status de espera novo -->
+        <section class="sec-card" id="pixPanel">
+          <h3 class="sec-card-title">Pagar com Pix</h3>
+          <div class="pix-block" id="pixAtivo">
+            <div class="pix-qr" aria-label="QR Code Pix"></div>
+            <div style="text-align:center;">
+              <div style="font-weight:700; font-size:14px; color:var(--neutral-900);" id="pixValor">R$ 945,00 — matrícula à vista</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">QR Code expira em <strong>29min 41s</strong></div>
+            </div>
+            <code class="pix-code">00020126360014BR.GOV.BCB.PIX0114004566677-01030-5204000053039865802BR5925KRAMBECK CLASS LTDA6009JUIZ DE FORA62070503***6304B12F</code>
+            <button type="button" class="pub-btn outline" style="width:100%;">Copiar código Pix Copia &amp; Cola</button>
+            <p style="font-size:12px; color:var(--text-muted); text-align:center; margin:4px 0 0;">Abra o app do seu banco · escolha pagar com Pix · escaneie o QR ou cole o código.</p>
+          </div>
+          <div class="pix-block hidden" id="pixExpirado" style="text-align:center;">
+            <p style="color:var(--text-muted); margin:0;">QR Code expirado.</p>
+            <button type="button" class="pub-btn primary">Gerar novo Pix</button>
+          </div>
+          <div class="pix-wait decisao" data-n="10" id="pixWait">
+            <div class="spin" aria-hidden="true"></div>
+            <div><strong>Aguardando o pagamento</strong><span>Esta tela atualiza sozinha quando o banco confirmar. Pode deixar ela aberta.</span></div>
+          </div>
+          <div style="margin-top:14px; padding:14px 16px; background:rgba(39,133,86,0.06); border-left:3px solid var(--color-success); border-radius:6px; font-size:12px; color:var(--text-secondary);">
+            <strong style="color:var(--color-success);">⚡ Pix instantâneo:</strong> assim que o banco confirmar o pagamento, sua matrícula é confirmada.
+          </div>
+        </section>
+
+        <!-- Cartão (InvoiceCardPanel.tsx) -->
+        <section class="sec-card" id="cardPanel">
+          <h3 class="sec-card-title">Pagar com Cartão de Crédito</h3>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div class="pub-field"><label>Número do cartão <span class="req">*</span></label><input type="text" class="form-control" value="4111 1111 1111 1111" inputmode="numeric"/></div>
+            <div class="pub-field"><label>Nome no cartão <span class="req">*</span></label><input type="text" class="form-control" value="MARTA SOUZA" autocomplete="cc-name"/></div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="pub-field"><label>Validade <span class="req">*</span></label><input type="text" class="form-control" value="08/29"/></div>
+              <div class="pub-field"><label>CVV <span class="req">*</span></label><input type="text" class="form-control" value="123"/></div>
+            </div>
+            <p role="alert" class="alert-err" id="cardErro">Cartão recusado. Verifique os dados ou tente outro cartão.</p>
+            <button type="button" class="pub-btn primary" style="margin-top:4px;" id="cardBtn">Pagar R$ 350,00 (1ª de 3×)</button>
+            <p class="decisao folga" data-n="11" style="font-size:11px; color:var(--text-muted); text-align:center; margin:2px 0 0;" id="cardNota">As próximas 2 parcelas serão debitadas automaticamente no cartão, todo dia 10.</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Resumo (CheckoutSummary.tsx com payNow = true) -->
+      <aside class="summary">
+        <h3>Resumo da matrícula</h3>
+        <div style="display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--neutral-200);">
+          <div style="width:44px; height:44px; border-radius:8px; background:var(--brand-blue); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0;">A</div>
+          <div>
+            <div style="font-weight:700; color:var(--neutral-900); font-size:13px;">Arthur Souza</div>
+            <div style="font-size:11px; color:var(--text-muted);">Intensivo PISM 2027</div>
+          </div>
+        </div>
+        <div class="summary-line" id="sumOrig"><span>Valor original</span><span>R$ 1.050,00</span></div>
+        <div class="summary-line" id="sumDesc" style="color:var(--color-success);"><span>Desconto à vista (10%)</span><span>−R$ 105,00</span></div>
+        <div class="summary-line" id="sumTot"><span>Total em 3×</span><span>R$ 1.050,00</span></div>
+        <div class="summary-total"><span class="label">A pagar agora</span><span class="value" id="sumVal">R$ 945,00</span></div>
+        <p style="font-size:11px; color:var(--text-muted); margin:8px 0 0;" id="sumNext">Próximas 2 parcelas de R$ 350,00 todo dia 10</p>
+        <div style="margin-top:18px; padding:12px 14px; background:var(--neutral-100); border-radius:8px; display:flex; align-items:center; gap:10px;">
+          <span style="font-size:18px;">🔒</span>
+          <div style="font-size:11px; color:var(--text-secondary); line-height:1.4;">Pagamento processado com segurança via Iugu.</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<!-- ═════ SUCESSO (EnrollmentConfirmationClient.tsx com payment preenchido) ═════ -->
+<main class="pub-content hidden" id="telaSucesso" style="padding-top:48px;">
+  <div class="pub-card wide" style="text-align:center;">
+    <div class="confirm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <h1 style="font-size:30px; margin-bottom:8px;">Matrícula confirmada! 🎉</h1>
+    <p style="font-size:15px; color:var(--text-secondary); margin:0 0 28px;">Pagamento de <strong>R$ 945,00</strong> aprovado via <strong>Pix</strong> em <strong>24/11/2026 · 14:32</strong>.<br/><strong>Arthur</strong> já está cadastrado(a) no <strong>Intensivo PISM 2027</strong>.</p>
+    <div class="confirm-steps">
+      <h3>Próximos passos</h3>
+      <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px;">
+        <li><span class="n">1</span><div><div style="font-weight:700; color:var(--neutral-900); font-size:14px;">Verifique seu e-mail</div><div style="font-size:12px; color:var(--text-muted); margin-top:8px;" class="decisao folga" data-n="12" id="sucessoEmail">Enviamos para <strong>marta.souza@email.com</strong> o recibo de pagamento.</div></div></li>
+        <li><span class="n">2</span><div><div style="font-weight:700; color:var(--neutral-900); font-size:14px;">O curso entrará em contato</div><div style="font-size:12px; color:var(--text-muted);">Nosso curso entrará em contato em breve para esclarecer os próximos passos: início das aulas, materiais e demais informações.</div></div></li>
+      </ul>
+    </div>
+    <ul class="invoice-list" style="text-align:left; margin-bottom:24px;">
+      <li><span class="num">1</span><div><div class="who">Matrícula Intensivo PISM 2027 · à vista</div><div class="when">Pago em 24/11/2026</div></div><span class="val">R$ 945,00</span><span class="pill success">PAGO</span></li>
+    </ul>
+    <div id="sucessoContrato" class="hidden" style="margin-bottom:8px;"><a href="#" class="pub-btn outline large">📥 Baixar contrato (PDF)</a></div>
+    <p style="font-size:11px; color:var(--text-muted); margin:24px 0 0;">Dúvidas? Fale com a secretaria: <strong>(31) 99721-2639</strong> · secretariadomago@gmail.com</p>
+  </div>
+</main>
+</div>
+
+<script>
+  const OPTS = {
+    pix: [ { n:1, label:'1x à vista', sub:'R$ 945,00 · 10% off' }, { n:3, label:'3x', sub:'R$ 350,00/mês · sem juros' } ],
+    credit_card: [ { n:1, label:'1x à vista', sub:'R$ 945,00 · 10% off' }, { n:2, label:'2x', sub:'R$ 525,00/mês no cartão' }, { n:3, label:'3x', sub:'R$ 350,00/mês no cartão' } ],
+  };
+  const st = { contrato:false, metodo:'pix', n:1 };
+
+  function renderStepper(ativo){
+    const passos = st.contrato ? ['Cadastro','Contrato','Pagamento'] : ['Cadastro','Pagamento'];
+    document.getElementById('stepper').innerHTML = passos.map((p,i) => {
+      const last = i === passos.length-1;
+      return `<div class="pub-step ${last ? 'is-active' : 'is-done'}"><span class="dot">${last ? i+1 : '✓'}</span><span>${p}</span></div>`;
+    }).join('');
+  }
+  function renderMetodo(){
+    document.querySelectorAll('.method-btn').forEach(b => b.classList.toggle('is-selected', b.dataset.method === st.metodo));
+    document.getElementById('installments').innerHTML = OPTS[st.metodo].map(o =>
+      `<button type="button" class="opt${o.n === st.n ? ' is-selected' : ''}"><strong>${o.label}</strong><span>${o.sub}</span></button>`).join('');
+    const avista = st.n === 1;
+    document.getElementById('sumOrig').classList.toggle('hidden', !avista);
+    document.getElementById('sumDesc').classList.toggle('hidden', !avista);
+    document.getElementById('sumTot').classList.toggle('hidden', avista);
+    document.getElementById('sumVal').textContent = avista ? 'R$ 945,00' : 'R$ 350,00';
+    document.getElementById('sumNext').classList.toggle('hidden', avista);
+    document.getElementById('cardBtn').textContent = avista ? 'Pagar R$ 945,00 à vista' : `Pagar R$ 350,00 (1ª de ${st.n}×)`;
+    document.getElementById('cardNota').classList.toggle('hidden', avista);
+    document.getElementById('pixValor').textContent = avista ? 'R$ 945,00 — matrícula à vista' : 'R$ 350,00 — 1ª mensalidade';
+    document.getElementById('pixPanel').classList.toggle('hidden', st.metodo !== 'pix');
+    document.getElementById('cardPanel').classList.toggle('hidden', st.metodo !== 'credit_card');
+  }
+
+  window.setContrato = (v) => { st.contrato = v; renderStepper(); document.getElementById('sucessoContrato').classList.toggle('hidden', !v);
+    document.getElementById('sucessoEmail').innerHTML = v ? 'Enviamos para <strong>marta.souza@email.com</strong> o contrato assinado e o recibo de pagamento.' : 'Enviamos para <strong>marta.souza@email.com</strong> o recibo de pagamento.'; };
+  window.setEstado = (e) => {
+    const sucesso = e === 'sucesso';
+    document.getElementById('telaCheckout').classList.toggle('hidden', sucesso);
+    document.getElementById('telaSucesso').classList.toggle('hidden', !sucesso);
+    document.getElementById('stepperWrap').classList.toggle('hidden', sucesso);
+    document.getElementById('bannerPend').classList.toggle('hidden', e !== 'pendente');
+    document.getElementById('cardErro').classList.toggle('hidden', e !== 'recusado');
+    document.getElementById('pixExpirado').classList.toggle('hidden', e !== 'pendente');
+    document.getElementById('pixAtivo').classList.toggle('hidden', e === 'pendente');
+    document.getElementById('pixWait').classList.toggle('hidden', e === 'pendente');
+    if (e === 'pix' || e === 'pendente') { st.metodo = 'pix'; st.n = 1; }
+    if (e === 'cartao' || e === 'recusado') { st.metodo = 'credit_card'; st.n = 3; }
+    renderMetodo(); window.scrollTo(0,0);
+  };
+
+  document.querySelectorAll('.method-btn').forEach(b => b.addEventListener('click', () => { st.metodo = b.dataset.method; st.n = 1; renderMetodo(); }));
+  document.getElementById('installments').addEventListener('click', ev => {
+    const btn = ev.target.closest('.opt'); if (!btn) return;
+    st.n = OPTS[st.metodo][[...btn.parentNode.children].indexOf(btn)].n; renderMetodo();
+  });
+  setContrato(false); setEstado('pix');
+</script>
+</body></html>
