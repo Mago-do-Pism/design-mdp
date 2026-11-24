@@ -16,7 +16,7 @@
      O máximo de parcelas configurado pelo secretário vale só pro cartão.
      Decidido (Vinícius, 24/11/2026, depois): cartão parcelado é cobrado de uma vez, no valor total. O parcelamento é só na fatura
      do cartão do titular. Nada de "1ª parcela", "pagar agora a 1ª" ou "próximas parcelas todo dia 10" no cartão.
-     Decidido (Vinícius, 24/11/2026, depois): sem nota "No boleto o pagamento é à vista. Para parcelar, escolha cartão" no painel
+     Decidido (Vinícius, 24/11/2026, depois): sem nota "No boleto/No Pix o pagamento é à vista. Para parcelar, escolha cartão" no painel
      do boleto. O boleto continua sem seletor de parcelas.
      Pro dev: o teto de parcelas hoje é único pra todos os métodos. Precisa de teto por método, configurável pelo secretário em
      cada formulário (cartão 1..N com N salvo no formulário, Pix 1×, boleto 1×), sem número fixo no front nem no back. O checkout
@@ -176,7 +176,6 @@
         <!-- Pix (PixPanel.tsx / InvoicePixPanel.tsx) + status de espera novo -->
         <section class="sec-card" id="pixPanel">
           <h3 class="sec-card-title">Pagar com Pix</h3>
-          <p class="decisao folga" data-n="14" style="font-size:12px; color:var(--text-muted); margin:0 0 12px; display:inline-block;"><span id="pixNotaTxt"></span></p>
           <div class="pix-block" id="pixAtivo">
             <div class="pix-qr" aria-label="QR Code Pix"></div>
             <div style="text-align:center;">
@@ -299,8 +298,6 @@
     OPTS = { credit_card: cartao };
     document.getElementById('badgeCartao').textContent = TETO > 1 ? `ou em até ${TETO}x sem juros` : 'só à vista';
     document.getElementById('badgeBoleto').textContent = 'sem parcelamento';
-    const parcelar = TETO > 1 ? ` Para parcelar, escolha cartão de crédito (de 1× até ${TETO}×).` : '';
-    document.getElementById('pixNotaTxt').textContent = 'No Pix o pagamento é à vista.' + parcelar;
   }
   const EMAIL = (contrato) => `Enviamos para <strong>marta.souza@email.com</strong> o e-mail de confirmação da matrícula${contrato ? ', com o contrato assinado' : ''} e o recibo de pagamento.`;
   const st = { contrato:false, metodo:'pix', n:1 };
