@@ -4,11 +4,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../styles/tokens.css"/><link rel="stylesheet" href="../styles/platform.css"/><link rel="stylesheet" href="../styles/secretaria.css"/>
 <!-- Proposta: link público de formulário com "Exigir pagamento para finalizar o cadastro".
-     Base: CheckoutPage.tsx + PixPanel/InvoicePixPanel + InvoiceCardPanel + EnrollmentConfirmationClient.
-     Tracejado roxo numerado = decisão em aberto. Estados: setEstado('pix'|'cartao'|'recusado'|'pendente'|'sucesso'), setContrato(true|false)
+     Base: CheckoutPage.tsx + MethodSelector + PixPanel/InvoicePixPanel + InvoiceCardPanel + BoletoPanel + EnrollmentConfirmationClient.
+     Tracejado roxo numerado = decisão em aberto (15 a 19 são as novas do boleto, 24/11/2026).
+     Estados: setEstado('pix'|'cartao'|'recusado'|'pendente'|'boleto'|'boleto-pendente'|'sucesso'|'sucesso-boleto'), setContrato(true|false)
      Decidido (Vinícius, 24/11/2026): com pagamento exigido, Pix é só à vista (sem seletor de parcelas) e cartão parcela até o teto do formulário (aqui 3×).
+     Decidido (Vinícius, 24/11/2026, depois): o boleto continua no link com pagamento exigido. A matrícula fica pendente até o
+     pagamento ser confirmado (webhook), aí vira ACTIVE e o responsável recebe um e-mail de confirmação. Sem botão "Já paguei".
      Pro dev: o teto de parcelas hoje é único pra todos os métodos. Precisa de teto por método (cartão até N×, Pix 1×),
-     e o checkout esconde o seletor de parcelas quando o método é Pix e o pagamento é exigido. -->
+     e o checkout esconde o seletor de parcelas quando o método é Pix e o pagamento é exigido. Boleto segue como hoje
+     (InstallmentSelector: à vista ou o maior parcelamento do teto) até o Vinícius responder a decisão 15.
+     Pro dev: o back envia e-mail de confirmação da matrícula quando o webhook ativa a matrícula (order.paid/charge.paid em
+     PaymentsService.handleWebhook e o equivalente da Iugu), e também no cartão aprovado na hora. Conferido no mdp-api (60c4acc9):
+     hoje esse caminho só muda o status pra ACTIVE e cria as faturas, não manda e-mail, e não há template de matrícula confirmada
+     (só payment-refunded.hbs no módulo payments). Precisa criar o template e o envio, uma vez por matrícula (idempotente). -->
 <style>
   /* Method buttons — vertical list (cf. MethodSelector.tsx) */
   .method-btn {
@@ -58,6 +66,10 @@
   .pix-wait strong { display:block; font-size:13px; color:var(--neutral-900); }
   .pix-wait span { font-size:12px; color:var(--text-muted); }
 
+  /* Aviso do boleto: mesmo bloco de "Atenção" do InvoiceBoletoPanel.tsx */
+  .boleto-aviso { margin-top:14px; padding:14px 16px; background:rgba(234,179,8,0.08); border-left:3px solid #eab308; border-radius:6px; font-size:12px; color:var(--text-secondary); line-height:1.5; }
+  .boleto-aviso strong { color:#a16207; }
+
   .alert-err { color:var(--color-danger); font-size:13px; margin:0; padding:10px 12px; background:rgba(208,62,62,0.06); border:1px solid rgba(208,62,62,0.2); border-radius:6px; }
   .banner-pend { display:flex; gap:12px; align-items:flex-start; padding:14px 16px; background:rgba(232,156,63,0.10); border:1px solid rgba(232,156,63,0.35); border-radius:10px; font-size:13px; color:var(--neutral-800); line-height:1.5; }
   .banner-pend .ic { width:20px; height:20px; color:#c97a14; flex-shrink:0; margin-top:1px; }
@@ -104,10 +116,10 @@
         <!-- Pendente: voltou pelo link/lembrete sem ter pago -->
         <div class="banner-pend decisao" data-n="13" id="bannerPend">
           <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
-          <div><strong>Sua matrícula ainda não foi confirmada.</strong> O cadastro está salvo, falta só o pagamento. Escolha a forma abaixo para concluir.</div>
+          <div id="bannerPendTxt"><strong>Sua matrícula ainda não foi confirmada.</strong> O cadastro está salvo, falta só o pagamento. Escolha a forma abaixo para concluir.</div>
         </div>
 
-        <!-- Forma de pagamento (MethodSelector.tsx). Boleto não aparece quando o pagamento é exigido -->
+        <!-- Forma de pagamento (MethodSelector.tsx). Com pagamento exigido continuam as 3 formas: Pix, cartão e boleto -->
         <section class="sec-card">
           <h3 class="sec-card-title">Escolha a forma de pagamento</h3>
           <div style="display:flex; flex-direction:column; gap:10px;" class="decisao" data-n="9">
@@ -120,6 +132,12 @@
               <div class="method-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></div>
               <div class="method-info"><strong>Cartão de crédito</strong><em>Visa, Master, Elo e outros</em></div>
               <div class="method-badge"><span class="discount-badge">10% off à vista</span><span class="or-text">ou em até 3x sem juros</span></div>
+            </button>
+            <!-- Boleto: mesmo botão do MethodSelector.tsx (ícone e texto iguais) -->
+            <button type="button" class="method-btn decisao" data-n="15" data-method="boleto">
+              <div class="method-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M2 4h1v16H2zm2 0h2v16H4zm3 0h1v16H7zm2 0h3v16H9zm4 0h1v16h-1zm2 0h2v16h-2zm3 0h1v16h-1zm2 0h1v16h-1z"/></svg></div>
+              <div class="method-info"><strong>Boleto bancário</strong><em>1–2 dias úteis para compensar</em></div>
+              <div class="method-badge"><span class="discount-badge">10% off à vista</span><span class="or-text">ou 3x sem juros</span></div>
             </button>
           </div>
         </section>
@@ -134,7 +152,7 @@
         <!-- Pix (PixPanel.tsx / InvoicePixPanel.tsx) + status de espera novo -->
         <section class="sec-card" id="pixPanel">
           <h3 class="sec-card-title">Pagar com Pix</h3>
-          <p class="decisao folga" data-n="14" style="font-size:12px; color:var(--text-muted); margin:0 0 12px; display:inline-block;">No Pix o pagamento é à vista. Para parcelar em até 3×, escolha cartão de crédito.</p>
+          <p class="decisao folga" data-n="14" style="font-size:12px; color:var(--text-muted); margin:0 0 12px; display:inline-block;">No Pix o pagamento é à vista. Para parcelar em até 3×, escolha cartão de crédito ou boleto.</p>
           <div class="pix-block" id="pixAtivo">
             <div class="pix-qr" aria-label="QR Code Pix"></div>
             <div style="text-align:center;">
@@ -155,6 +173,25 @@
           </div>
           <div style="margin-top:14px; padding:14px 16px; background:rgba(39,133,86,0.06); border-left:3px solid var(--color-success); border-radius:6px; font-size:12px; color:var(--text-secondary);">
             <strong style="color:var(--color-success);">⚡ Pix instantâneo:</strong> assim que o banco confirmar o pagamento, sua matrícula é confirmada.
+          </div>
+        </section>
+
+        <!-- Boleto (BoletoPanel.tsx) com pagamento exigido: sem o botão "Boleto gerado — ver confirmação" (equivale ao "Já paguei"),
+             aviso de que o cadastro só finaliza na confirmação e status de espera que atualiza sozinho (mesmo do Pix) -->
+        <section class="sec-card" id="boletoPanel">
+          <h3 class="sec-card-title">Pagar com Boleto Bancário</h3>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="font-weight:700; font-size:14px; color:var(--neutral-900);" id="boletoValor">R$ 945,00 — matrícula à vista</div>
+            <div style="background:var(--neutral-100); border-radius:8px; padding:12px 14px; font-family:monospace; font-size:12px; word-break:break-all; color:var(--neutral-800);">23793.38128 60007.590752 70102.063102 9 89150000094500</div>
+            <button type="button" class="pub-btn outline">📋 Copiar linha digitável</button>
+            <a href="#" class="pub-btn outline" style="text-align:center; text-decoration:none;">📄 Abrir boleto em PDF</a>
+          </div>
+          <div class="pix-wait decisao" data-n="17" id="boletoWait">
+            <div class="spin" aria-hidden="true"></div>
+            <div><strong>Aguardando a confirmação do pagamento</strong><span>Esta tela atualiza sozinha quando o boleto compensar. Pode fechar: a confirmação também chega por e-mail.</span></div>
+          </div>
+          <div class="boleto-aviso decisao" data-n="16">
+            <strong>📄 Vencimento em 3 dias úteis.</strong> Seu cadastro só é finalizado quando o pagamento for confirmado. Depois que você pagar, a compensação pode levar até 2 dias úteis. Assim que confirmar, a matrícula de <strong style="color:var(--neutral-900);">Arthur</strong> fica ativa e você recebe um e-mail de confirmação em <strong style="color:var(--neutral-900);">marta.souza@email.com</strong>.
           </div>
         </section>
 
@@ -204,16 +241,16 @@
   <div class="pub-card wide" style="text-align:center;">
     <div class="confirm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
     <h1 style="font-size:30px; margin-bottom:8px;">Matrícula confirmada! 🎉</h1>
-    <p style="font-size:15px; color:var(--text-secondary); margin:0 0 28px;">Pagamento de <strong>R$ 945,00</strong> aprovado via <strong>Pix</strong> em <strong>24/11/2026 · 14:32</strong>.<br/><strong>Arthur</strong> já está cadastrado(a) no <strong>Intensivo PISM 2027</strong>.</p>
+    <p style="font-size:15px; color:var(--text-secondary); margin:0 0 28px;"><span id="sucessoPag">Pagamento de <strong>R$ 945,00</strong> aprovado via <strong>Pix</strong> em <strong>24/11/2026 · 14:32</strong>.</span><br/><strong>Arthur</strong> já está cadastrado(a) no <strong>Intensivo PISM 2027</strong>.</p>
     <div class="confirm-steps">
       <h3>Próximos passos</h3>
       <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px;">
-        <li><span class="n">1</span><div><div style="font-weight:700; color:var(--neutral-900); font-size:14px;">Verifique seu e-mail</div><div style="font-size:12px; color:var(--text-muted); margin-top:8px;" class="decisao folga" data-n="12" id="sucessoEmail">Enviamos para <strong>marta.souza@email.com</strong> o recibo de pagamento.</div></div></li>
+        <li><span class="n">1</span><div><div style="font-weight:700; color:var(--neutral-900); font-size:14px;">Verifique seu e-mail</div><div style="font-size:12px; color:var(--text-muted); margin-top:8px;" class="decisao folga" data-n="19" id="sucessoEmail"></div></div></li>
         <li><span class="n">2</span><div><div style="font-weight:700; color:var(--neutral-900); font-size:14px;">O curso entrará em contato</div><div style="font-size:12px; color:var(--text-muted);">Nosso curso entrará em contato em breve para esclarecer os próximos passos: início das aulas, materiais e demais informações.</div></div></li>
       </ul>
     </div>
     <ul class="invoice-list" style="text-align:left; margin-bottom:24px;">
-      <li><span class="num">1</span><div><div class="who">Matrícula Intensivo PISM 2027 · à vista</div><div class="when">Pago em 24/11/2026</div></div><span class="val">R$ 945,00</span><span class="pill success">PAGO</span></li>
+      <li><span class="num">1</span><div><div class="who">Matrícula Intensivo PISM 2027 · à vista</div><div class="when" id="sucessoQuando">Pago em 24/11/2026</div></div><span class="val">R$ 945,00</span><span class="pill success">PAGO</span></li>
     </ul>
     <div id="sucessoContrato" class="hidden" style="margin-bottom:8px;"><a href="#" class="pub-btn outline large">📥 Baixar contrato (PDF)</a></div>
     <p style="font-size:11px; color:var(--text-muted); margin:24px 0 0;">Dúvidas? Fale com a secretaria: <strong>(31) 99721-2639</strong> · secretariadomago@gmail.com</p>
@@ -225,7 +262,10 @@
   // Pagamento exigido: Pix só à vista (sem seletor de parcelas), cartão até o teto do formulário
   const OPTS = {
     credit_card: [ { n:1, label:'1x à vista', sub:'R$ 945,00 · 10% off' }, { n:2, label:'2x', sub:'R$ 525,00/mês no cartão' }, { n:3, label:'3x', sub:'R$ 350,00/mês no cartão' } ],
+    // Boleto como hoje no InstallmentSelector: à vista ou o maior parcelamento do teto (decisão 15)
+    boleto: [ { n:1, label:'1x à vista', sub:'R$ 945,00 · 10% off' }, { n:3, label:'3x', sub:'R$ 350,00/mês · 1-2 dias úteis' } ],
   };
+  const EMAIL = (contrato) => `Enviamos para <strong>marta.souza@email.com</strong> o e-mail de confirmação da matrícula${contrato ? ', com o contrato assinado' : ''} e o recibo de pagamento.`;
   const st = { contrato:false, metodo:'pix', n:1 };
 
   function renderStepper(ativo){
@@ -250,24 +290,37 @@
     document.getElementById('cardBtn').textContent = avista ? 'Pagar R$ 945,00 à vista' : `Pagar R$ 350,00 (1ª de ${st.n}×)`;
     document.getElementById('cardNota').classList.toggle('hidden', avista);
     document.getElementById('pixValor').textContent = avista ? 'R$ 945,00 — matrícula à vista' : 'R$ 350,00 — 1ª mensalidade';
+    document.getElementById('boletoValor').textContent = avista ? 'R$ 945,00 — matrícula à vista' : 'R$ 350,00 — 1ª mensalidade';
+    document.getElementById('boletoPanel').classList.toggle('hidden', st.metodo !== 'boleto');
     document.getElementById('pixPanel').classList.toggle('hidden', st.metodo !== 'pix');
     document.getElementById('cardPanel').classList.toggle('hidden', st.metodo !== 'credit_card');
   }
 
   window.setContrato = (v) => { st.contrato = v; renderStepper(); document.getElementById('sucessoContrato').classList.toggle('hidden', !v);
-    document.getElementById('sucessoEmail').innerHTML = v ? 'Enviamos para <strong>marta.souza@email.com</strong> o contrato assinado e o recibo de pagamento.' : 'Enviamos para <strong>marta.souza@email.com</strong> o recibo de pagamento.'; };
+    document.getElementById('sucessoEmail').innerHTML = EMAIL(v); };
   window.setEstado = (e) => {
-    const sucesso = e === 'sucesso';
+    const sucesso = e === 'sucesso' || e === 'sucesso-boleto';
+    const boletoPend = e === 'boleto-pendente';
+    document.getElementById('sucessoPag').innerHTML = e === 'sucesso-boleto'
+      ? 'Pagamento de <strong>R$ 945,00</strong> confirmado via <strong>Boleto</strong> em <strong>26/11/2026 · 09:10</strong>.'
+      : 'Pagamento de <strong>R$ 945,00</strong> aprovado via <strong>Pix</strong> em <strong>24/11/2026 · 14:32</strong>.';
+    document.getElementById('sucessoQuando').textContent = e === 'sucesso-boleto' ? 'Pago em 26/11/2026' : 'Pago em 24/11/2026';
+    const banner = document.getElementById('bannerPend');
+    banner.classList.toggle('hidden', e !== 'pendente' && !boletoPend);
+    banner.dataset.n = boletoPend ? '18' : '13';
+    document.getElementById('bannerPendTxt').innerHTML = boletoPend
+      ? '<strong>Seu boleto já foi gerado e ainda não foi compensado.</strong> Se você já pagou, é só aguardar: a compensação leva até 2 dias úteis e a confirmação chega por e-mail. Se ainda não pagou, use o boleto abaixo.'
+      : '<strong>Sua matrícula ainda não foi confirmada.</strong> O cadastro está salvo, falta só o pagamento. Escolha a forma abaixo para concluir.';
     document.getElementById('telaCheckout').classList.toggle('hidden', sucesso);
     document.getElementById('telaSucesso').classList.toggle('hidden', !sucesso);
     document.getElementById('stepperWrap').classList.toggle('hidden', sucesso);
-    document.getElementById('bannerPend').classList.toggle('hidden', e !== 'pendente');
     document.getElementById('cardErro').classList.toggle('hidden', e !== 'recusado');
     document.getElementById('pixExpirado').classList.toggle('hidden', e !== 'pendente');
     document.getElementById('pixAtivo').classList.toggle('hidden', e === 'pendente');
     document.getElementById('pixWait').classList.toggle('hidden', e === 'pendente');
     if (e === 'pix' || e === 'pendente') { st.metodo = 'pix'; st.n = 1; }
     if (e === 'cartao' || e === 'recusado') { st.metodo = 'credit_card'; st.n = 3; }
+    if (e === 'boleto' || boletoPend) { st.metodo = 'boleto'; st.n = 1; }
     renderMetodo(); window.scrollTo(0,0);
   };
 

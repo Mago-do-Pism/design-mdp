@@ -7,8 +7,15 @@
      Tracejado roxo numerado = decisão em aberto pro Vinícius. Estados: setOpcoes(contrato, pagamento), goStep('basico'|'zapsign'|'valor'|'revisao')
      Decidido (Vinícius, 24/11/2026): com "Exigir pagamento" marcado, o Pix é sempre só à vista (1×) e o cartão parcela até o teto definido.
      Sem pagamento exigido, o comportamento de hoje fica igual (teto único pra todos os métodos).
+     Decidido (Vinícius, 24/11/2026, depois): o boleto continua no link com pagamento exigido. A matrícula fica pendente até o
+     pagamento ser confirmado (webhook), aí vira ACTIVE e o responsável recebe um e-mail de confirmação.
+     Decisões novas desta rodada: 20 a 22 aqui e 15 a 19 em publico/matricula-pagamento-exigido.html.
      Pro dev: hoje o teto de parcelas do formulário é um só pra todos os métodos. O back precisa de teto por método
-     (cartão até N×, Pix 1×) e o checkout tem que respeitar: Pix sem opção de parcelar, cartão até N×. -->
+     (cartão até N×, Pix 1×) e o checkout tem que respeitar: Pix sem opção de parcelar, cartão até N×. Boleto segue o teto
+     como hoje (à vista ou o maior parcelamento), até o Vinícius responder a decisão 15.
+     Pro dev: o back envia e-mail de confirmação da matrícula quando o webhook ativa a matrícula (e no cartão aprovado na hora).
+     No mdp-api (60c4acc9) o PaymentsService.handleWebhook só muda pra ACTIVE e cria as faturas, sem e-mail, e não existe
+     template de matrícula confirmada. Precisa criar, uma vez por matrícula. -->
 <style>
   .wiz-grid { display:grid; grid-template-columns: 1fr 360px; gap:22px; align-items:start; }
   @media (max-width:1100px){ .wiz-grid { grid-template-columns:1fr; } }
@@ -260,11 +267,11 @@
           </div>
         </label>
 
-        <label class="opt-check" id="opt-pagamento">
+        <label class="opt-check decisao" data-n="20" id="opt-pagamento">
           <input type="checkbox" id="chk-pagamento"/>
           <div>
             <strong>Exigir pagamento para finalizar o cadastro</strong>
-            <span>O responsável paga na hora (Pix ou cartão) e a matrícula só é confirmada quando o pagamento for aprovado. Desmarcado, ele só escolhe a forma de pagamento e recebe a 1ª fatura por e-mail.</span>
+            <span>O responsável paga pelo link (Pix, cartão ou boleto) e a matrícula só é confirmada quando o pagamento for aprovado. No boleto, ela fica pendente até compensar e o responsável recebe um e-mail de confirmação. Desmarcado, ele só escolhe a forma de pagamento e recebe a 1ª fatura por e-mail.</span>
           </div>
         </label>
 
@@ -300,8 +307,8 @@
       <h2>Valor & forma de pagamento</h2>
       <p class="sub" id="valorSub"></p>
 
-      <div class="note-info" id="notaPagamento" style="display:none;">
-        <strong style="color:var(--neutral-900);">Pagamento exigido neste formulário:</strong> no link aparecem só Pix e cartão de crédito. O Pix é sempre à vista, sem parcelar. O cartão pode ser à vista ou parcelado até o teto abaixo, com a 1ª parcela paga na hora.
+      <div class="note-info decisao" data-n="21" id="notaPagamento" style="display:none;">
+        <strong style="color:var(--neutral-900);">Pagamento exigido neste formulário:</strong> no link aparecem Pix, cartão de crédito e boleto. O Pix é sempre à vista, sem parcelar. Cartão e boleto podem ser à vista ou parcelados até o teto abaixo, com a 1ª parcela paga pelo link. No boleto, a matrícula só fica ativa quando o pagamento compensar (até 2 dias úteis) e o responsável recebe um e-mail de confirmação.
       </div>
 
       <div class="field">
@@ -387,7 +394,7 @@
         <div class="row"><span class="lbl">Nome</span><span class="val">Intensivo PISM 2027</span></div>
         <div class="decisao esq" data-n="6" style="border-radius:4px;">
           <div class="row"><span class="lbl">Contrato</span><span class="val" id="p-contrato"></span></div>
-          <div class="row"><span class="lbl">Pagamento na hora</span><span class="val" id="p-pagamento"></span></div>
+          <div class="row"><span class="lbl">Exige pagamento</span><span class="val" id="p-pagamento"></span></div>
         </div>
         <div class="row" id="p-row-normal"><span class="lbl">Modelo normal</span><span class="val">Curso Intensivo PISM 2027</span></div>
         <div class="row" id="p-row-irmaos"><span class="lbl">Modelo irmãos</span><span class="val">Curso Intensivo PISM 2027 · Irmãos</span></div>
@@ -428,10 +435,10 @@
 
     const etapas = ['Cadastro'];
     if (state.contrato) etapas.push('Contrato');
-    etapas.push(state.pagamento ? 'Pagamento na hora' : 'Escolha da forma de pagamento');
+    etapas.push(state.pagamento ? 'Pagamento (Pix, cartão ou boleto)' : 'Escolha da forma de pagamento');
     document.getElementById('flowMini').innerHTML = '<span class="lbl">O responsável vê</span>' +
       etapas.map((e,i) => pill(e, i === etapas.length-1 && state.pagamento ? 'success' : 'info')).join('<span class="arr">→</span>') +
-      '<span class="arr">→</span>' + pill(state.pagamento ? 'Matrícula ativa ao aprovar o pagamento' : 'Matrícula confirmada', 'muted');
+      '<span class="arr">→</span>' + pill(state.pagamento ? 'Matrícula ativa ao confirmar o pagamento + e-mail' : 'Matrícula confirmada', 'muted');
 
     document.getElementById('valorSub').textContent = state.contrato
       ? 'Esses valores serão preenchidos automaticamente nas variáveis do contrato e exibidos para o responsável antes da assinatura.'
@@ -441,29 +448,33 @@
 
     // Pagamento exigido: Pix só à vista, teto de parcelas vale só pro cartão
     const P = state.pagamento;
-    document.getElementById('txtAvista').textContent = P ? 'Pix ou cartão de crédito, pago na hora' : 'PIX, cartão de crédito ou boleto único';
-    document.getElementById('txtParcelado').textContent = P ? 'Pix só à vista. No cartão, o responsável escolhe à vista ou parcelado em até o número definido abaixo' : 'O responsável escolhe pagar à vista ou parcelar em até o número de parcelas definido abaixo';
-    document.getElementById('lblTeto').textContent = P ? 'Número máximo de parcelas no cartão' : 'Número máximo de parcelas';
-    document.getElementById('hintTeto').textContent = P ? 'Vale só para o cartão de crédito. O Pix fica sempre à vista neste formulário. O teto diminui 1× a cada mês que passa da data-base de vencimento.' : 'O teto diminui 1× a cada mês que passa da data-base de vencimento.';
-    document.getElementById('revParc').textContent = P ? 'Cartão em até 3× · Pix só à vista' : 'em até 3×';
-    document.getElementById('p-parc').textContent = P ? 'cartão em até 3× · Pix à vista' : 'em até 3×';
-    document.getElementById('avisoTeto').textContent = P ? '⚠ O parcelamento máximo no cartão cai para 2× a partir de 01/02/2027, e segue reduzindo 1× a cada mês. O Pix continua à vista.' : '⚠ O parcelamento máximo cai para 2× a partir de 01/02/2027, e segue reduzindo 1× a cada mês.';
+    document.getElementById('txtAvista').textContent = P ? 'Pix, cartão de crédito ou boleto único, pago pelo link' : 'PIX, cartão de crédito ou boleto único';
+    document.getElementById('txtParcelado').textContent = P ? 'Pix só à vista. No cartão ou no boleto, o responsável escolhe à vista ou parcelado em até o número definido abaixo' : 'O responsável escolhe pagar à vista ou parcelar em até o número de parcelas definido abaixo';
+    document.getElementById('lblTeto').textContent = P ? 'Número máximo de parcelas no cartão e no boleto' : 'Número máximo de parcelas';
+    document.getElementById('hintTeto').textContent = P ? 'Vale para cartão de crédito e boleto. O Pix fica sempre à vista neste formulário. O teto diminui 1× a cada mês que passa da data-base de vencimento.' : 'O teto diminui 1× a cada mês que passa da data-base de vencimento.';
+    document.getElementById('revParc').textContent = P ? 'Cartão e boleto em até 3× · Pix só à vista' : 'em até 3×';
+    document.getElementById('p-parc').textContent = P ? 'cartão e boleto até 3× · Pix à vista' : 'em até 3×';
+    document.getElementById('avisoTeto').textContent = P ? '⚠ O parcelamento máximo no cartão e no boleto cai para 2× a partir de 01/02/2027, e segue reduzindo 1× a cada mês. O Pix continua à vista.' : '⚠ O parcelamento máximo cai para 2× a partir de 01/02/2027, e segue reduzindo 1× a cada mês.';
 
     document.getElementById('revEtapas').innerHTML =
       `<div class="rev-opt ${state.contrato ? 'on' : 'off'}">${state.contrato ? CHECK : XMARK}<span><strong>Contrato</strong> ${state.contrato ? 'exigido: assinatura no ZapSign antes do pagamento' : 'não exigido: do cadastro direto ao pagamento'}</span></div>` +
-      `<div class="rev-opt ${state.pagamento ? 'on' : 'off'}">${state.pagamento ? CHECK : XMARK}<span><strong>Pagamento</strong> ${state.pagamento ? 'exigido: matrícula só é confirmada com o pagamento aprovado (Pix à vista ou cartão)' : 'não exigido: 1ª fatura enviada por e-mail'}</span></div>`;
+      `<div class="rev-opt ${state.pagamento ? 'on' : 'off'}">${state.pagamento ? CHECK : XMARK}<span><strong>Pagamento</strong> ${state.pagamento ? 'exigido: matrícula só é confirmada com o pagamento aprovado' : 'não exigido: 1ª fatura enviada por e-mail'}</span></div>` +
+      (state.pagamento ? `<div class="decisao" data-n="22" style="margin:8px 0 2px; padding:8px 10px; border-radius:6px;"><div class="rev-label" style="margin-bottom:4px;">Formas no link</div>` +
+        `<div class="rev-opt on">${CHECK}<span><strong>Pix</strong> só à vista</span></div>` +
+        `<div class="rev-opt on">${CHECK}<span><strong>Cartão de crédito</strong> à vista ou em até 3×</span></div>` +
+        `<div class="rev-opt on">${CHECK}<span><strong>Boleto</strong> à vista ou 3×, matrícula ativa quando compensar (até 2 dias úteis)</span></div></div>` : '');
     document.getElementById('revModelos').style.display = state.contrato ? '' : 'none';
 
     const apos = state.contrato
       ? 'Cada responsável que preencher gera um novo contrato no ZapSign com o modelo e valor definidos aqui.'
       : 'Cada responsável que preencher vai do cadastro direto ao pagamento, sem contrato.';
     const pag = state.pagamento
-      ? ' A matrícula só fica ativa quando o pagamento for aprovado. Quem sair sem pagar fica com a matrícula pendente e recebe o lembrete de pagamento.'
+      ? ' A matrícula só fica ativa quando o pagamento for aprovado, e aí o responsável recebe um e-mail de confirmação. No boleto, ela fica pendente até compensar. Quem sair sem pagar fica com a matrícula pendente e recebe o lembrete de pagamento.'
       : '';
     document.getElementById('aposCriar').innerHTML = `<strong>Após criar:</strong> o link ficará ativo imediatamente. ${apos}${pag}`;
 
     document.getElementById('p-contrato').textContent = state.contrato ? 'exigido' : 'não exigido';
-    document.getElementById('p-pagamento').textContent = state.pagamento ? 'exigido (Pix ou cartão)' : 'não';
+    document.getElementById('p-pagamento').textContent = state.pagamento ? 'exigido (Pix, cartão ou boleto)' : 'não';
     document.getElementById('p-row-normal').style.display = state.contrato ? '' : 'none';
     document.getElementById('p-row-irmaos').style.display = state.contrato ? '' : 'none';
 
