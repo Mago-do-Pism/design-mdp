@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EPIT 1 · Alunos · Levas de importação · Admin · Mago do Pism</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+</head>
+<body>
+  <div class="app-shell"><aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+            <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos</span></a>
+        <a href="alunos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
+        <a href="modulos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
+        <a href="gravacoes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M7 21h10"/><path d="M9 17v4"/><path d="M15 17v4"/><polygon points="10 8 15 11 10 14 10 8" fill="currentColor" stroke="none"/></svg><span>Gravações</span></a>
+        <a href="presenca.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Presença</span></a>
+        <a href="equipe.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Equipe</span></a>
+        <a href="avisos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Avisos</span></a>
+        <a href="simulados.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg><span>Simulados</span></a>
+        <a href="nivelamentos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Nivelamentos</span></a>
+        <a href="listas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Listas</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+    <main class="content admin-content">
+      <style>
+        a { color: inherit; text-decoration: none; }
+        .cd-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:12px; }
+<style>
+a { color: inherit; text-decoration: none; }
+.cd-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:12px; }
+.cd-back svg { width:16px; height:16px; }
+.cd-tabs { display:flex; gap:4px; border-bottom:1px solid var(--border-default); margin:20px 0 28px; max-width:1086px; }
+.cd-tab { background:transparent; border:none; padding:12px 16px; font-family:var(--font-body); font-weight:500; font-size:14px; color:#a0a0a0; cursor:pointer; position:relative; margin-bottom:-1px; }
+.cd-tab.is-active { color:var(--brand-blue); }
+.cd-tab.is-active::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:3px; background:var(--brand-blue); border-radius:4px 4px 0 0; }
+.blk { max-width:760px; padding:24px 0; border-bottom:1px solid var(--border-default); }
+.blk:last-child { border-bottom:0; }
+.body-1 { font-size:15px; font-weight:600; color:var(--text-primary); margin-bottom:6px; }
+.caption { font-size:13px; color:var(--text-muted); margin-bottom:14px; }
+.btn-minor { height:36px; padding:0 16px; border-radius:8px; border:1.5px solid var(--brand-blue); background:var(--bg-card); color:var(--brand-blue); font-family:var(--font-body); font-weight:600; font-size:13px; cursor:pointer; white-space:nowrap; }
+.btn-minor:hover { background:rgba(14,147,242,.06); }
+.btn-minor.solid { background:var(--brand-blue); color:#fff; }
+.btn-minor.danger { border-color:var(--color-danger); color:var(--color-danger); }
+/* decisão minha: tracejado roxo */
+.nv { outline:2px dashed var(--color-warn); outline-offset:4px; border-radius:10px; position:relative; }
+.nv-n { position:absolute; top:-12px; left:-12px; width:22px; height:22px; border-radius:50%; background:var(--color-warn); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; z-index:3; }
+.batches { border:1px solid var(--border-default); border-radius:12px; overflow:hidden; background:var(--bg-card); }
+.batch { display:grid; grid-template-columns:20px 1fr auto; gap:14px; align-items:center; padding:16px 18px; border-bottom:1px solid var(--border-default); }
+.batch:last-child { border-bottom:0; }
+.dot { width:12px; height:12px; border-radius:50%; justify-self:center; }
+.dot.sent { background:var(--color-success-stroke); box-shadow:0 0 0 4px rgba(33,194,48,.15); }
+.dot.pending { background:var(--text-faint); box-shadow:0 0 0 4px rgba(160,160,160,.18); }
+.batch-title { font-weight:600; font-size:14px; color:var(--text-primary); }
+.batch-meta { font-size:12.5px; color:var(--text-muted); margin-top:2px; }
+.batch-status { font-size:13px; margin-top:6px; font-weight:600; }
+.batch-status.sent { color:var(--color-success); }
+.batch-status.pending { color:var(--text-secondary); }
+.batch-status small { display:block; font-weight:400; color:var(--text-muted); font-size:12px; margin-top:1px; }
+.batch.legacy { background:var(--bg-surface); }
+.legend { display:flex; gap:18px; flex-wrap:wrap; margin-top:12px; font-size:12px; color:var(--text-muted); align-items:center; }
+.legend i { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:-1px; }
+.empty { border:1px dashed var(--border-default); border-radius:12px; padding:34px 20px; text-align:center; color:var(--text-muted); font-size:14px; background:var(--bg-card); }
+.empty strong { display:block; color:var(--text-primary); font-size:15px; margin-bottom:4px; }
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:100; display:none; align-items:center; justify-content:center; }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--bg-card); border-radius:var(--radius-xl); padding:30px 32px; width:520px; max-width:95vw; box-shadow:var(--shadow-deep); }
+.modal-title { margin:0 0 10px; font-weight:700; font-size:18px; color:var(--text-primary); }
+.modal p { margin:0 0 12px; font-size:14px; color:var(--text-secondary); line-height:1.5; }
+.sum { border:1px solid var(--border-default); border-radius:10px; padding:4px 14px; margin:14px 0; background:var(--bg-surface); }
+.sum div { display:flex; justify-content:space-between; gap:12px; padding:9px 0; font-size:13.5px; border-bottom:1px solid var(--border-default); }
+.sum div:last-child { border-bottom:0; }
+.sum b { color:var(--text-primary); }
+.warnbox { border-radius:10px; background:rgba(151,71,255,.07); border:1px solid rgba(151,71,255,.28); padding:11px 13px; font-size:13px; color:var(--text-primary); margin:12px 0; line-height:1.45; }
+.modal-actions { display:flex; gap:12px; justify-content:flex-end; margin-top:18px; }
+.btn-cancel { padding:0 20px; height:40px; border-radius:8px; border:1px solid var(--border-default); background:var(--bg-card); font-family:var(--font-body); font-weight:600; font-size:14px; color:var(--text-secondary); cursor:pointer; }
+.btn-save { padding:0 24px; height:40px; border-radius:8px; border:none; background:var(--brand-blue); font-family:var(--font-body); font-weight:700; font-size:14px; color:#fff; cursor:pointer; }
+.state { display:none; } .state.on { display:block; }
+@media (max-width:900px) {
+  .sidebar { min-height:0; padding:10px 0; flex-direction:row; align-items:center; overflow-x:auto; box-shadow:0 2px 12px rgba(14,147,242,.15); }
+  .sidebar-logo { width:56px; height:40px; margin:0 8px 0 12px; flex-shrink:0; }
+  .sidebar-nav { flex-direction:row; flex:none; gap:2px; }
+  .sidebar-item { white-space:nowrap; padding:8px 12px; font-size:0; gap:0; }
+  .sidebar-foot { margin:0 8px 0 0; padding:0; border:0; flex-shrink:0; }
+  .admin-content { padding:16px 14px 32px; }
+  .cd-tabs { overflow-x:auto; margin:14px 0 18px; }
+  .cd-tab { white-space:nowrap; }
+  .batch { grid-template-columns:20px 1fr; }
+  .batch .act { grid-column:2; }
+  .batch .act .btn-minor { width:100%; }
+  .modal { padding:22px 18px; }
+  .modal-actions { flex-direction:column-reverse; }
+  .modal-actions button { width:100%; }
+}
+</style>
+
+<a href="cursos.html" class="cd-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Cursos</a>
+<h2 class="section-title" style="margin:0">EPIT 1</h2>
+<div class="cd-tabs" role="tablist">
+  <button class="cd-tab">Conteúdo</button><button class="cd-tab">Estatísticas</button><button class="cd-tab">Editar dados</button>
+  <button class="cd-tab is-active" aria-selected="true">Alunos</button><button class="cd-tab">Links</button><button class="cd-tab">Avisos</button>
+</div>
+
+<div class="state" id="s-lista">
+ <div class="blk">
+  <div class="body-1">Importações e e-mails de acesso</div>
+  <div class="caption">Cada planilha importada vira uma importação. O e-mail para criar a senha sai por importação e quem já criou a senha é pulado.</div>
+  <div class="nv"><span class="nv-n">1</span><div class="batches"><div class="batch">
+  <span class="dot pending"></span>
+  <div><div class="batch-title">Importação de 27/11/2026 às 17:42</div><div class="batch-meta">38 alunos · alunos-leva-3.xlsx · por Vinícius</div>
+  <div class="batch-status pending">E-mail de acesso ainda não enviado</div></div>
+  <div class="act"><button class="btn-minor solid" onclick="openM('enviar')">Enviar e-mail</button></div></div><div class="batch">
+  <span class="dot sent"></span>
+  <div><div class="batch-title">Importação de 26/11/2026 às 10:15</div><div class="batch-meta">52 alunos · alunos-leva-2.xlsx · por Vinícius</div>
+  <div class="batch-status sent">E-mail enviado em 26/11/2026 às 10:40<small>48 receberam, 4 já tinham criado a senha</small></div></div>
+  <div class="act"><button class="btn-minor" onclick="openM('reenviar')">Reenviar</button></div></div><div class="batch">
+  <span class="dot sent"></span>
+  <div><div class="batch-title">Importação de 25/11/2026 às 09:03</div><div class="batch-meta">120 alunos · alunos-leva-1.xlsx · por Vinícius</div>
+  <div class="batch-status sent">E-mail enviado em 25/11/2026 às 09:30<small>118 receberam, 2 já tinham criado a senha</small></div></div>
+  <div class="act"><button class="btn-minor" onclick="openM('reenviar')">Reenviar</button></div></div><div class="nv" style="outline-offset:-3px"><span class="nv-n" style="left:auto;right:8px;top:6px">2</span><div class="batch legacy">
+  <span class="dot pending"></span>
+  <div><div class="batch-title">Alunos de antes do registro de importações</div><div class="batch-meta">214 alunos · matriculados antes de 25/11/2026</div>
+  <div class="batch-status pending">Sem registro de envio<small>Não dá pra saber quem já recebeu.</small></div></div>
+  <div class="act"><button class="btn-minor" onclick="openM('antigos')">Enviar só a quem não tem senha</button></div></div></div></div></div>
+  <div class="legend"><span><i style="background:var(--color-success-stroke)"></i>E-mail enviado</span><span><i style="background:var(--text-faint)"></i>E-mail ainda não enviado</span></div>
+ </div>
+ <div class="blk"><div class="body-1">Exportar alunos</div><div class="caption">Exporta as informações dos alunos em uma planilha</div><button class="btn-minor">Exportar alunos</button></div>
+ <div class="blk"><div class="body-1">Exportar engajamento</div><div class="caption">Exporta acessos, aulas, simulados e exercícios dos alunos no período</div><button class="btn-minor">Exportar engajamento</button></div>
+ <div class="blk"><div class="body-1">Migrar alunos</div><div class="caption">Matricular os alunos desse curso em outro curso</div><button class="btn-minor">Migrar alunos</button></div>
+ <div class="blk"><div class="body-1">Gerenciar alunos</div><div class="caption">Remover todos os alunos do curso</div><button class="btn-minor danger">Remover todos os alunos</button></div>
+</div>
+
+<div class="state" id="s-vazio">
+ <div class="blk">
+  <div class="body-1">Importações e e-mails de acesso</div>
+  <div class="caption">Cada planilha importada vira uma importação. O e-mail para criar a senha sai por importação e quem já criou a senha é pulado.</div>
+  <div class="empty"><strong>Nenhuma importação neste curso ainda</strong>Importe uma planilha em Alunos &gt; Importar e ela aparece aqui.</div>
+ </div>
+ <div class="blk"><div class="body-1">Exportar alunos</div><div class="caption">Exporta as informações dos alunos em uma planilha</div><button class="btn-minor">Exportar alunos</button></div>
+</div>
+
+</main></div>
+
+<div class="modal-overlay" id="m-enviar"><div class="modal">
+  <h3 class="modal-title">Enviar e-mail de acesso</h3>
+  <p>Importação de 27/11/2026 às 17:42 (alunos-leva-3.xlsx).</p>
+  <div class="sum"><div><span>Alunos na importação</span><b>38</b></div><div><span>Vão receber o e-mail</span><b>35</b></div><div><span>Já criaram a senha, não recebem</span><b>3</b></div></div>
+  <p>Só quem está nesta importação recebe. As outras importações não são afetadas.</p>
+  <div class="modal-actions"><button class="btn-cancel" onclick="closeM()">Cancelar</button><button class="btn-save" onclick="closeM()">Enviar para 35 alunos</button></div>
+</div></div>
+
+<div class="modal-overlay" id="m-reenviar"><div class="modal">
+  <h3 class="modal-title">Reenviar e-mail de acesso?</h3>
+  <p>Importação de 26/11/2026 às 10:15 (alunos-leva-2.xlsx).</p>
+  <div class="warnbox">O e-mail desta importação já saiu em 26/11/2026 às 10:40. Reenviar manda de novo só pra quem ainda não criou a senha.</div>
+  <div class="sum"><div><span>Ainda sem senha</span><b>9</b></div><div><span>Já criaram a senha, não recebem</span><b>43</b></div></div>
+  <div class="modal-actions"><button class="btn-cancel" onclick="closeM()">Cancelar</button><button class="btn-save" onclick="closeM()">Reenviar para 9 alunos</button></div>
+</div></div>
+
+<div class="modal-overlay" id="m-antigos"><div class="modal">
+  <h3 class="modal-title">Enviar e-mail de acesso</h3>
+  <p>Alunos matriculados antes do registro de importações (214 alunos).</p>
+  <div class="warnbox">Não há registro de quem já recebeu o e-mail antes. Vai pra quem ainda não criou a senha, e isso pode incluir gente que já recebeu.</div>
+  <div class="sum"><div><span>Ainda sem senha</span><b>31</b></div><div><span>Já criaram a senha, não recebem</span><b>183</b></div></div>
+  <div class="modal-actions"><button class="btn-cancel" onclick="closeM()">Cancelar</button><button class="btn-save" onclick="closeM()">Enviar para 31 alunos</button></div>
+</div></div>
+
+<script>
+function show(id){document.querySelectorAll('.state').forEach(e=>e.classList.remove('on'));document.getElementById('s-'+id).classList.add('on');}
+function openM(n){document.getElementById('m-'+n).classList.add('open');}
+function closeM(){document.querySelectorAll('.modal-overlay').forEach(e=>e.classList.remove('open'));}
+const h=(location.hash||'#lista').slice(1);
+if(h==='vazio'){show('vazio');}else{show('lista');if(['enviar','reenviar','antigos'].includes(h))openM(h);}
+</script>
+</body></html>
