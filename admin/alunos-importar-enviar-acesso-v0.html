@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Importar e enviar acesso (v0) · Alunos · Admin · Mago do Pism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/tokens.css" />
+  <link rel="stylesheet" href="../styles/platform.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+  <style>
+    a { color: inherit; text-decoration: none; }
+    .course-chip {
+      display: inline-flex; align-items: center; justify-content: center;
+      height: 32px; padding: 0 12px; border-radius: 8px;
+      font-weight: 500; font-size: 13px;
+      border: 1.5px solid var(--brand-blue); color: var(--brand-blue);
+      white-space: nowrap;
+    }
+    .course-chip.green { border-color: var(--color-success); color: var(--color-success); }
+    .course-chip.purple { border-color: var(--color-warn); color: var(--color-warn); }
+    .chips-row { display: flex; gap: 6px; align-items: center; flex-wrap: nowrap; }
+    .extra-chip {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 6px;
+      border: 1.5px solid var(--brand-blue); color: var(--brand-blue);
+      font-size: 12px; font-weight: 600;
+    }
+    .cell-star { display: inline-flex; align-items: center; gap: 5px; color: var(--brand-blue); font-weight: 600; }
+    .cell-star svg { width: 16px; height: 16px; fill: var(--brand-blue); }
+
+    .nv { outline:2px dashed var(--color-warn); outline-offset:4px; border-radius:10px; position:relative; }
+    .nv-n { position:absolute; top:-12px; left:-12px; width:22px; height:22px; border-radius:50%; background:var(--color-warn); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; z-index:3; }
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:100; display:none; align-items:center; justify-content:center; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:var(--bg-card); border-radius:var(--radius-xl); padding:30px 32px; width:520px; max-width:95vw; box-shadow:var(--shadow-deep); }
+    .modal-title { margin:0 0 14px; font-weight:700; font-size:18px; color:var(--text-primary); }
+    .modal p { margin:0 0 12px; font-size:14px; color:var(--text-secondary); line-height:1.5; }
+    .fl { font-size:13px; color:var(--text-muted); margin-bottom:8px; } .fl a { color:var(--brand-blue); }
+    .file { display:flex; align-items:center; gap:10px; border:1px solid var(--border-default); border-radius:10px; padding:10px 12px; font-size:13.5px; color:var(--text-primary); }
+    .file small { color:var(--text-muted); margin-left:auto; }
+    .ctag { display:inline-block; padding:5px 12px; border-radius:999px; background:rgba(14,147,242,.1); color:var(--brand-blue); font-weight:600; font-size:13px; margin:0 6px 6px 0; }
+    .sum { border:1px solid var(--border-default); border-radius:10px; padding:4px 14px; margin:14px 0; background:var(--bg-surface); }
+    .sum div { display:flex; justify-content:space-between; gap:12px; padding:9px 0; font-size:13.5px; border-bottom:1px solid var(--border-default); }
+    .sum div:last-child { border-bottom:0; } .sum b { color:var(--text-primary); }
+    .okline { display:flex; align-items:center; gap:10px; margin-bottom:6px; color:var(--color-success); font-weight:700; font-size:15px; }
+    .okline i { width:12px; height:12px; border-radius:50%; background:var(--color-success-stroke); box-shadow:0 0 0 4px rgba(33,194,48,.15); }
+    .hint { font-size:12.5px; color:var(--text-muted); margin-top:4px; }
+    .modal-actions { display:flex; gap:12px; justify-content:flex-end; margin-top:18px; }
+    .btn-cancel { padding:0 20px; height:40px; border-radius:8px; border:1px solid var(--border-default); background:var(--bg-card); font-family:var(--font-body); font-weight:600; font-size:14px; color:var(--text-secondary); cursor:pointer; }
+    .btn-save { padding:0 24px; height:40px; border-radius:8px; border:none; background:var(--brand-blue); font-family:var(--font-body); font-weight:700; font-size:14px; color:#fff; cursor:pointer; }
+    .toast { position:fixed; right:24px; bottom:24px; z-index:120; background:var(--bg-card); border:1px solid var(--color-success-stroke); border-left:5px solid var(--color-success-stroke); border-radius:10px; padding:14px 18px; box-shadow:var(--shadow-deep); font-size:14px; color:var(--text-primary); display:none; max-width:calc(100vw - 32px); }
+    .toast.open { display:block; } .toast small { display:block; color:var(--text-muted); margin-top:2px; font-size:12.5px; }
+    @media (max-width:900px) { .modal { padding:22px 18px; } .modal-actions { flex-direction:column-reverse; } .modal-actions button { width:100%; } .toast { right:16px; left:16px; bottom:16px; } }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-logo" role="img" aria-label="Mago do Pism"></div>
+      <nav class="sidebar-nav">
+        <a href="inicio.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg><span>Início</span></a>
+        <a href="cursos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg><span>Cursos</span></a>
+        <a href="alunos.html" class="sidebar-item is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Alunos</span></a>
+        <a href="modulos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Módulos</span></a>
+        <a href="gravacoes.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M7 21h10"/><path d="M9 17v4"/><path d="M15 17v4"/><polygon points="10 8 15 11 10 14 10 8" fill="currentColor" stroke="none"/></svg><span>Gravações</span></a>
+        <a href="presenca.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Presença</span></a>
+        <a href="equipe.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Equipe</span></a>
+        <a href="avisos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Avisos</span></a>
+        <a href="simulados.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg><span>Simulados</span></a>
+        <a href="nivelamentos.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Nivelamentos</span></a>
+        <a href="listas.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Listas</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
+      </div>
+    </aside>
+
+    <main class="content admin-content">
+      <h2 class="section-title">Alunos</h2>
+
+      <div class="toolbar">
+        <div class="search-field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Buscar nome ou e-mail" />
+        </div>
+        <button class="btn-primary compact" style="margin-left:0;">Importar</button>
+        <button class="btn-primary compact" style="margin-left:0;">Criar aluno</button>
+        <button class="icon-btn" aria-label="Filtros">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+        </button>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Dados do aluno</th>
+              <th>Matrícula</th>
+              <th>Satisfação</th>
+              <th>Jornada</th>
+              <th>Cursos</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="cell-user">
+                  <div class="cell-user-avatar" style="background-image:url('../assets/aluno-1.png')"></div>
+                  <div><div class="cell-user-name">Karla Moreira</div><div class="cell-mail">karla.moreira@email.com</div></div>
+                </div>
+              </td>
+              <td>12/07/2024</td>
+              <td><span class="cell-star"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4,9</span></td>
+              <td>128 aulas</td>
+              <td><div class="chips-row"><span class="course-chip green">EPI T1</span><span class="course-chip">EPII T2</span></div></td>
+              <td><div class="row-actions"><a href="aluno-detalhe.html" class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></a></div></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="cell-user">
+                  <div class="cell-user-avatar" style="background-image:url('../assets/aluno-1.png')"></div>
+                  <div><div class="cell-user-name">Matheus Carvalho Neto</div><div class="cell-mail">matheus.carvalho@email.com</div></div>
+                </div>
+              </td>
+              <td>13/07/2024</td>
+              <td><span class="cell-star"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4,7</span></td>
+              <td>45 aulas</td>
+              <td><div class="chips-row"><span class="course-chip green">EPI T1</span></div></td>
+              <td><div class="row-actions"><a href="aluno-detalhe.html" class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></a></div></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="cell-user">
+                  <div class="cell-user-avatar" style="background-image:url('../assets/aluno-1.png')"></div>
+                  <div><div class="cell-user-name">Deneval Santos</div><div class="cell-mail">deneval.santos@email.com</div></div>
+                </div>
+              </td>
+              <td>17/07/2024</td>
+              <td><span class="cell-star"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4,2</span></td>
+              <td>22 aulas</td>
+              <td><div class="chips-row"><span class="course-chip">EPII T2</span></div></td>
+              <td><div class="row-actions"><a href="aluno-detalhe.html" class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></a></div></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="cell-user">
+                  <div class="cell-user-avatar" style="background-image:url('../assets/aluno-1.png')"></div>
+                  <div><div class="cell-user-name">Isaque Albuquerque</div><div class="cell-mail">isaque.albuquerque@email.com</div></div>
+                </div>
+              </td>
+              <td>12/08/2024</td>
+              <td><span class="cell-star"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>5,0</span></td>
+              <td>17 aulas</td>
+              <td><div class="chips-row"><span class="course-chip green">EPI T1</span><span class="course-chip">EPII T2</span></div></td>
+              <td><div class="row-actions"><a href="aluno-detalhe.html" class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></a></div></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="cell-user">
+                  <div class="cell-user-avatar" style="background-image:url('../assets/aluno-1.png')"></div>
+                  <div><div class="cell-user-name">Margarida Carvalho</div><div class="cell-mail">margarida.carvalho@email.com</div></div>
+                </div>
+              </td>
+              <td>09/09/2024</td>
+              <td><span class="cell-star"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4,8</span></td>
+              <td>43 aulas</td>
+              <td><div class="chips-row"><span class="course-chip green">EPI T1</span><span class="course-chip">EPII T2</span><span class="extra-chip">+1</span></div></td>
+              <td><div class="row-actions"><a href="aluno-detalhe.html" class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></a></div></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="cell-user">
+                  <div class="cell-user-avatar" style="background-image:url('../assets/aluno-1.png')"></div>
+                  <div><div class="cell-user-name">Talita Franco</div><div class="cell-mail">talita.franco@email.com</div></div>
+                </div>
+              </td>
+              <td>13/08/2024</td>
+              <td><span class="cell-star"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4,8</span></td>
+              <td>24 aulas</td>
+              <td><div class="chips-row"><span class="course-chip green">EPI T1</span></div></td>
+              <td><div class="row-actions"><a href="aluno-detalhe.html" class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></a></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+<div class="modal-overlay" id="m-importar"><div class="modal">
+  <h3 class="modal-title">Importar alunos</h3>
+  <div class="fl">Arquivo de importação <a href="#">(Baixar modelo)</a></div>
+  <div class="file">📄 alunos-leva-3.xlsx <small>0,04 MB</small></div>
+  <div class="fl" style="margin-top:16px">Cursos</div>
+  <div><span class="ctag">EPIT 1 ✕</span></div>
+  <div class="modal-actions"><button class="btn-cancel">Cancelar</button><button class="btn-save">Importar</button></div>
+</div></div>
+
+<div class="modal-overlay" id="m-sucesso"><div class="modal">
+  <div class="okline"><i></i>38 alunos importados no EPIT 1</div>
+  <p>Quer mandar agora o e-mail para eles criarem a senha?</p>
+  <div class="nv" style="padding:0 2px"><span class="nv-n">1</span>
+  <div class="sum"><div><span>Importados agora</span><b>38</b></div><div><span>Vão receber o e-mail</span><b>35</b></div><div><span>Já criaram a senha, não recebem</span><b>3</b></div></div></div>
+  <p style="margin-top:14px">Só estes alunos recebem. Quem já estava no curso não é afetado.</p>
+  <div class="nv" style="margin-top:14px;padding:10px 12px"><span class="nv-n">2</span><div class="hint" style="margin:0">Se preferir mandar depois, é só fechar. Esta importação fica salva em Cursos &gt; EPIT 1 &gt; Alunos, com o botão "Enviar e-mail".</div></div>
+  <div class="modal-actions"><button class="btn-cancel" onclick="show('toastnao')">Agora não</button><button class="btn-save" onclick="show('enviado')">Enviar e-mail para 35 alunos</button></div>
+</div></div>
+
+<div class="modal-overlay" id="m-multi"><div class="modal">
+  <div class="okline"><i></i>38 alunos importados em 2 cursos</div>
+  <p>Quer mandar agora o e-mail para eles criarem a senha?</p>
+  <div class="nv" style="padding:0 2px"><span class="nv-n">3</span>
+  <div class="sum"><div><span>EPIT 1 · vão receber</span><b>35 de 38</b></div><div><span>EPIT 2 · vão receber</span><b>36 de 38</b></div><div><span>Alunos que vão receber 1 e-mail só</span><b>36</b></div></div></div>
+  <p>Quem está nos dois cursos recebe um e-mail só. Quem já criou a senha não recebe.</p>
+  <div class="modal-actions"><button class="btn-cancel">Agora não</button><button class="btn-save">Enviar e-mail para 36 alunos</button></div>
+</div></div>
+
+<div class="toast" id="t-enviado"><b>E-mail de acesso enviado para 35 alunos</b><small>Registrado na importação de 27/11/2026 às 17:42.</small></div>
+<div class="toast" id="t-nao"><b>38 alunos importados</b><small>O e-mail ainda não foi enviado. Envie em Cursos &gt; EPIT 1 &gt; Alunos.</small></div>
+
+<script>
+function show(n){document.querySelectorAll('.modal-overlay,.toast').forEach(e=>e.classList.remove('open'));
+ const m={importar:'m-importar',sucesso:'m-sucesso',multi:'m-multi',enviado:'t-enviado',toastnao:'t-nao'}[n]; if(m)document.getElementById(m).classList.add('open');}
+show((location.hash||'#importar').slice(1));
+</script>
+</body>
+</html>
