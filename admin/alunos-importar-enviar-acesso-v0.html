@@ -18,7 +18,6 @@
       white-space: nowrap;
     }
     .course-chip.green { border-color: var(--color-success); color: var(--color-success); }
-    .course-chip.purple { border-color: var(--color-warn); color: var(--color-warn); }
     .chips-row { display: flex; gap: 6px; align-items: center; flex-wrap: nowrap; }
     .extra-chip {
       display: inline-flex; align-items: center; justify-content: center;
@@ -28,30 +27,58 @@
     }
     .cell-star { display: inline-flex; align-items: center; gap: 5px; color: var(--brand-blue); font-weight: 600; }
     .cell-star svg { width: 16px; height: 16px; fill: var(--brand-blue); }
+    .btn-grey { height:40px; padding:0 24px; border-radius:8px; border:0; background:var(--neutral-700); color:#fff; font-family:var(--font-body); font-weight:500; font-size:14px; cursor:pointer; white-space:nowrap; }
 
+    /* topo do mobile: no app o menu some e vira um botão de hambúrguer */
+    .m-top { display:none; }
+    @media (max-width:900px) {
+      .app-shell { display:block; }
+      .sidebar { display:none; }
+      .m-top { display:flex; align-items:center; padding:16px 24px 0; }
+      .m-top button { background:none; border:0; padding:0; color:var(--brand-blue); line-height:0; }
+      .m-top svg { width:24px; height:24px; }
+      .toolbar { flex-wrap:wrap; gap:8px; } .btn-grey { padding:0 14px; }
+      .toolbar .search-field { flex:1 1 100%; }
+    }
+
+    /* tracejado roxo: decisão minha */
     .nv { outline:2px dashed var(--color-warn); outline-offset:4px; border-radius:10px; position:relative; }
     .nv-n { position:absolute; top:-12px; left:-12px; width:22px; height:22px; border-radius:50%; background:var(--color-warn); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; z-index:3; }
-    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:100; display:none; align-items:center; justify-content:center; }
+
+    /* modal igual ao CustomModal do app: título azul, X, corpo e rodapé com 48px de respiro */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:100; display:none; align-items:center; justify-content:center; padding:8px; }
     .modal-overlay.open { display:flex; }
-    .modal { background:var(--bg-card); border-radius:var(--radius-xl); padding:30px 32px; width:520px; max-width:95vw; box-shadow:var(--shadow-deep); }
-    .modal-title { margin:0 0 14px; font-weight:700; font-size:18px; color:var(--text-primary); }
-    .modal p { margin:0 0 12px; font-size:14px; color:var(--text-secondary); line-height:1.5; }
-    .fl { font-size:13px; color:var(--text-muted); margin-bottom:8px; } .fl a { color:var(--brand-blue); }
-    .file { display:flex; align-items:center; gap:10px; border:1px solid var(--border-default); border-radius:10px; padding:10px 12px; font-size:13.5px; color:var(--text-primary); }
-    .file small { color:var(--text-muted); margin-left:auto; }
-    .ctag { display:inline-block; padding:5px 12px; border-radius:999px; background:rgba(14,147,242,.1); color:var(--brand-blue); font-weight:600; font-size:13px; margin:0 6px 6px 0; }
-    .sum { border:1px solid var(--border-default); border-radius:10px; padding:4px 14px; margin:14px 0; background:var(--bg-surface); }
-    .sum div { display:flex; justify-content:space-between; gap:12px; padding:9px 0; font-size:13.5px; border-bottom:1px solid var(--border-default); }
-    .sum div:last-child { border-bottom:0; } .sum b { color:var(--text-primary); }
-    .okline { display:flex; align-items:center; gap:10px; margin-bottom:6px; color:var(--color-success); font-weight:700; font-size:15px; }
-    .okline i { width:12px; height:12px; border-radius:50%; background:var(--color-success-stroke); box-shadow:0 0 0 4px rgba(33,194,48,.15); }
-    .hint { font-size:12.5px; color:var(--text-muted); margin-top:4px; }
-    .modal-actions { display:flex; gap:12px; justify-content:flex-end; margin-top:18px; }
-    .btn-cancel { padding:0 20px; height:40px; border-radius:8px; border:1px solid var(--border-default); background:var(--bg-card); font-family:var(--font-body); font-weight:600; font-size:14px; color:var(--text-secondary); cursor:pointer; }
-    .btn-save { padding:0 24px; height:40px; border-radius:8px; border:none; background:var(--brand-blue); font-family:var(--font-body); font-weight:700; font-size:14px; color:#fff; cursor:pointer; }
-    .toast { position:fixed; right:24px; bottom:24px; z-index:120; background:var(--bg-card); border:1px solid var(--color-success-stroke); border-left:5px solid var(--color-success-stroke); border-radius:10px; padding:14px 18px; box-shadow:var(--shadow-deep); font-size:14px; color:var(--text-primary); display:none; max-width:calc(100vw - 32px); }
-    .toast.open { display:block; } .toast small { display:block; color:var(--text-muted); margin-top:2px; font-size:12.5px; }
-    @media (max-width:900px) { .modal { padding:22px 18px; } .modal-actions { flex-direction:column-reverse; } .modal-actions button { width:100%; } .toast { right:16px; left:16px; bottom:16px; } }
+    .modal { background:var(--bg-card); border-radius:8px; width:500px; max-width:100%; max-height:calc(100vh - 16px); overflow:auto; }
+    .modal-head { display:flex; align-items:center; justify-content:space-between; padding:48px 48px 16px; }
+    .modal-title { margin:0; font-family:var(--font-body); font-weight:400; font-size:24px; color:var(--brand-blue); }
+    .modal-x { background:none; border:0; padding:0; line-height:0; color:var(--neutral-700); cursor:pointer; }
+    .modal-x svg { width:24px; height:24px; }
+    .modal-body { padding:0 48px; }
+    .modal-foot { padding:16px 48px 48px; display:flex; gap:16px; }
+    .modal-foot > * { flex:1; }
+    .modal-foot.stack { flex-direction:column-reverse; } .modal-foot.stack > * { flex:none; }
+    .mbtn { height:50px; border-radius:10px; font-family:var(--font-body); font-size:18px; cursor:pointer; padding:0 16px; }
+    .mbtn.out { background:#fff; color:var(--brand-blue); border:1px solid var(--brand-blue); }
+    .mbtn.solid { background:var(--brand-blue); color:#fff; border:0; }
+    .caption { font-size:14px; letter-spacing:.3px; color:var(--text-secondary); margin-bottom:8px; }
+    .caption a { color:var(--brand-blue); text-decoration:underline; }
+    .filebox { display:flex; align-items:center; gap:16px; background:var(--neutral-150); border-radius:10px; padding:16px 24px; }
+    .filebox .ext { width:40px; height:40px; border-radius:8px; background:#9E9E9E; color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .filebox .nm { font-size:14px; color:var(--text-primary); } .filebox .sz { font-size:12px; color:var(--text-secondary); }
+    .filebox .rm { margin-left:auto; width:24px; height:24px; color:var(--color-danger); flex-shrink:0; }
+    .mfield { height:50px; border:2px solid var(--neutral-350); border-radius:8px; display:flex; align-items:center; padding:0 16px; color:var(--text-muted); font-size:16px; margin-bottom:16px; }
+    .chosen { display:flex; align-items:center; background:var(--neutral-150); border-radius:10px; padding:16px 24px; font-size:14px; color:var(--text-primary); text-transform:uppercase; }
+    .chosen svg { margin-left:auto; width:20px; height:20px; color:var(--color-danger); }
+    .sumbox { background:var(--neutral-150); border-radius:10px; padding:4px 24px; }
+    .sumbox div { display:flex; justify-content:space-between; gap:12px; padding:12px 0; font-size:14px; border-bottom:1px solid var(--border-default); }
+    .sumbox div:last-child { border-bottom:0; } .sumbox b { color:var(--text-primary); font-weight:600; }
+    .txt { font-size:14px; color:var(--text-secondary); line-height:1.5; margin:0 0 16px; }
+    .txt b { color:var(--text-primary); font-weight:600; }
+    .hint { font-size:12.5px; color:var(--text-muted); line-height:1.45; }
+    /* Snackbar do app: faixa verde com ícone de check, centrada embaixo */
+    .toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:120; display:none; align-items:center; gap:10px; background:var(--color-success); color:#fff; padding:20px 24px; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,.1); font-size:16px; max-width:calc(100vw - 32px); box-sizing:border-box; }
+    .toast.open { display:flex; } .toast svg { width:24px; height:24px; flex-shrink:0; }
+    @media (max-width:480px) { .toast { left:16px; right:16px; transform:none; max-width:none; } }
   </style>
 </head>
 <body>
@@ -76,6 +103,7 @@
       </div>
     </aside>
 
+    <div class="m-top"><button aria-label="Abrir menu"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12H20M4 6H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
     <main class="content admin-content">
       <h2 class="section-title">Alunos</h2>
 
@@ -84,7 +112,8 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <input type="text" placeholder="Buscar nome ou e-mail" />
         </div>
-        <button class="btn-primary compact" style="margin-left:0;">Importar</button>
+        <button class="btn-grey">Exportar</button>
+        <button class="btn-grey">Importar</button>
         <button class="btn-primary compact" style="margin-left:0;">Criar aluno</button>
         <button class="icon-btn" aria-label="Filtros">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
@@ -188,36 +217,41 @@
     </main>
   </div>
 
-<div class="modal-overlay" id="m-importar"><div class="modal">
-  <h3 class="modal-title">Importar alunos</h3>
-  <div class="fl">Arquivo de importação <a href="#">(Baixar modelo)</a></div>
-  <div class="file">📄 alunos-leva-3.xlsx <small>0,04 MB</small></div>
-  <div class="fl" style="margin-top:16px">Cursos</div>
-  <div><span class="ctag">EPIT 1 ✕</span></div>
-  <div class="modal-actions"><button class="btn-cancel">Cancelar</button><button class="btn-save">Importar</button></div>
+<div class="modal-overlay" id="m-importar"><div class="modal" role="dialog">
+  <div class="modal-head"><h3 class="modal-title">Importar alunos</h3><button class="modal-x" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="modal-body">
+    <div class="caption">Arquivo de importação <a href="#">(Baixar modelo)</a></div>
+    <div class="filebox"><div class="ext" style="background:#4CAF50">XLSX</div><div><div class="nm">alunos-leva-3.xlsx</div><div class="sz">0.04 MB</div></div><span class="rm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg></span></div>
+    <div class="caption" style="margin-top:20px">Matrículas</div>
+    <div class="mfield">Pesquisar curso</div>
+    <div class="chosen">EPIT 1 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg></div>
+  </div>
+  <div class="modal-foot"><button class="mbtn out">Cancelar</button><button class="mbtn solid" onclick="show('sucesso')">Importar</button></div>
 </div></div>
 
-<div class="modal-overlay" id="m-sucesso"><div class="modal">
-  <div class="okline"><i></i>38 alunos importados no EPIT 1</div>
-  <p>Quer mandar agora o e-mail para eles criarem a senha?</p>
-  <div class="nv" style="padding:0 2px"><span class="nv-n">1</span>
-  <div class="sum"><div><span>Importados agora</span><b>38</b></div><div><span>Vão receber o e-mail</span><b>35</b></div><div><span>Já criaram a senha, não recebem</span><b>3</b></div></div></div>
-  <p style="margin-top:14px">Só estes alunos recebem. Quem já estava no curso não é afetado.</p>
-  <div class="nv" style="margin-top:14px;padding:10px 12px"><span class="nv-n">2</span><div class="hint" style="margin:0">Se preferir mandar depois, é só fechar. Esta importação fica salva em Cursos &gt; EPIT 1 &gt; Alunos, com o botão "Enviar e-mail".</div></div>
-  <div class="modal-actions"><button class="btn-cancel" onclick="show('toastnao')">Agora não</button><button class="btn-save" onclick="show('enviado')">Enviar e-mail para 35 alunos</button></div>
+<div class="modal-overlay" id="m-sucesso"><div class="modal" role="dialog">
+  <div class="modal-head"><h3 class="modal-title">Alunos importados</h3><button class="modal-x" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="modal-body">
+    <p class="txt"><b>38 alunos</b> importados no EPIT 1. Quer mandar agora o e-mail pra eles criarem a senha?</p>
+    <div class="nv"><span class="nv-n">1</span><div class="sumbox"><div><span>Importados agora</span><b>38</b></div><div><span>Vão receber o e-mail</span><b>35</b></div><div><span>Já criaram a senha, não recebem</span><b>3</b></div></div></div>
+    <p class="txt" style="margin-top:16px">Só estes alunos recebem. Quem já estava no curso não é afetado.</p>
+    <div class="nv" style="padding:10px 12px"><span class="nv-n">2</span><div class="hint">Se preferir mandar depois, é só fechar. Esta importação fica salva em Cursos &gt; EPIT 1 &gt; Alunos, com o botão "Enviar e-mail".</div></div>
+  </div>
+  <div class="modal-foot stack"><button class="mbtn out" onclick="show('toastnao')">Agora não</button><button class="mbtn solid" onclick="show('enviado')">Enviar e-mail para 35 alunos</button></div>
 </div></div>
 
-<div class="modal-overlay" id="m-multi"><div class="modal">
-  <div class="okline"><i></i>38 alunos importados em 2 cursos</div>
-  <p>Quer mandar agora o e-mail para eles criarem a senha?</p>
-  <div class="nv" style="padding:0 2px"><span class="nv-n">3</span>
-  <div class="sum"><div><span>EPIT 1 · vão receber</span><b>35 de 38</b></div><div><span>EPIT 2 · vão receber</span><b>36 de 38</b></div><div><span>Alunos que vão receber 1 e-mail só</span><b>36</b></div></div></div>
-  <p>Quem está nos dois cursos recebe um e-mail só. Quem já criou a senha não recebe.</p>
-  <div class="modal-actions"><button class="btn-cancel">Agora não</button><button class="btn-save">Enviar e-mail para 36 alunos</button></div>
+<div class="modal-overlay" id="m-multi"><div class="modal" role="dialog">
+  <div class="modal-head"><h3 class="modal-title">Alunos importados</h3><button class="modal-x" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="modal-body">
+    <p class="txt"><b>38 alunos</b> importados em 2 cursos. Quer mandar agora o e-mail pra eles criarem a senha?</p>
+    <div class="nv"><span class="nv-n">3</span><div class="sumbox"><div><span>EPIT 1 · vão receber</span><b>35 de 38</b></div><div><span>EPIT 2 · vão receber</span><b>36 de 38</b></div><div><span>Alunos que recebem 1 e-mail só</span><b>36</b></div></div></div>
+    <p class="txt" style="margin-top:16px">Quem está nos dois cursos recebe um e-mail só. Quem já criou a senha não recebe.</p>
+  </div>
+  <div class="modal-foot stack"><button class="mbtn out">Agora não</button><button class="mbtn solid">Enviar e-mail para 36 alunos</button></div>
 </div></div>
 
-<div class="toast" id="t-enviado"><b>E-mail de acesso enviado para 35 alunos</b><small>Registrado na importação de 27/11/2026 às 17:42.</small></div>
-<div class="toast" id="t-nao"><b>38 alunos importados</b><small>O e-mail ainda não foi enviado. Envie em Cursos &gt; EPIT 1 &gt; Alunos.</small></div>
+<div class="toast" id="t-enviado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l3 3 5-6"/></svg><span>E-mail de acesso enviado para 35 alunos</span></div>
+<div class="toast" id="t-nao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l3 3 5-6"/></svg><span>38 alunos importados. Envie o e-mail em Cursos &gt; EPIT 1 &gt; Alunos.</span></div>
 
 <script>
 function show(n){document.querySelectorAll('.modal-overlay,.toast').forEach(e=>e.classList.remove('open'));

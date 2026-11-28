@@ -29,6 +29,7 @@
         <a href="perfil.html" class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>Meu Perfil</span></a>
       </div>
     </aside>
+    <div class="m-top"><button aria-label="Abrir menu"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12H20M4 6H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
     <main class="content admin-content">
       <style>
         a { color: inherit; text-decoration: none; }
@@ -69,35 +70,38 @@ a { color: inherit; text-decoration: none; }
 .legend i { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:-1px; }
 .empty { border:1px dashed var(--border-default); border-radius:12px; padding:34px 20px; text-align:center; color:var(--text-muted); font-size:14px; background:var(--bg-card); }
 .empty strong { display:block; color:var(--text-primary); font-size:15px; margin-bottom:4px; }
-.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:100; display:none; align-items:center; justify-content:center; }
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:100; display:none; align-items:center; justify-content:center; padding:8px; }
 .modal-overlay.open { display:flex; }
-.modal { background:var(--bg-card); border-radius:var(--radius-xl); padding:30px 32px; width:520px; max-width:95vw; box-shadow:var(--shadow-deep); }
-.modal-title { margin:0 0 10px; font-weight:700; font-size:18px; color:var(--text-primary); }
-.modal p { margin:0 0 12px; font-size:14px; color:var(--text-secondary); line-height:1.5; }
-.sum { border:1px solid var(--border-default); border-radius:10px; padding:4px 14px; margin:14px 0; background:var(--bg-surface); }
-.sum div { display:flex; justify-content:space-between; gap:12px; padding:9px 0; font-size:13.5px; border-bottom:1px solid var(--border-default); }
-.sum div:last-child { border-bottom:0; }
-.sum b { color:var(--text-primary); }
-.warnbox { border-radius:10px; background:rgba(151,71,255,.07); border:1px solid rgba(151,71,255,.28); padding:11px 13px; font-size:13px; color:var(--text-primary); margin:12px 0; line-height:1.45; }
-.modal-actions { display:flex; gap:12px; justify-content:flex-end; margin-top:18px; }
-.btn-cancel { padding:0 20px; height:40px; border-radius:8px; border:1px solid var(--border-default); background:var(--bg-card); font-family:var(--font-body); font-weight:600; font-size:14px; color:var(--text-secondary); cursor:pointer; }
-.btn-save { padding:0 24px; height:40px; border-radius:8px; border:none; background:var(--brand-blue); font-family:var(--font-body); font-weight:700; font-size:14px; color:#fff; cursor:pointer; }
+.modal { background:var(--bg-card); border-radius:8px; width:500px; max-width:100%; max-height:calc(100vh - 16px); overflow:auto; }
+.modal-head { display:flex; align-items:center; justify-content:space-between; padding:48px 48px 16px; }
+.modal-title { margin:0; font-family:var(--font-body); font-weight:400; font-size:24px; color:var(--brand-blue); }
+.modal-x { background:none; border:0; padding:0; line-height:0; color:var(--neutral-700); cursor:pointer; }
+.modal-x svg { width:24px; height:24px; }
+.modal-body { padding:0 48px; }
+.modal-body p { margin:0 0 16px; font-size:14px; color:var(--text-secondary); line-height:1.5; }
+.modal-foot { padding:16px 48px 48px; display:flex; flex-direction:column-reverse; gap:16px; }
+.mbtn { height:50px; border-radius:10px; font-family:var(--font-body); font-size:18px; cursor:pointer; padding:0 16px; }
+.mbtn.out { background:#fff; color:var(--brand-blue); border:1px solid var(--brand-blue); }
+.mbtn.solid { background:var(--brand-blue); color:#fff; border:0; }
+.sum { background:var(--neutral-150); border-radius:10px; padding:4px 24px; margin:0 0 16px; }
+.sum div { display:flex; justify-content:space-between; gap:12px; padding:12px 0; font-size:14px; border-bottom:1px solid var(--border-default); }
+.sum div:last-child { border-bottom:0; } .sum b { color:var(--text-primary); font-weight:600; }
+.warnbox { border-radius:10px; background:rgba(151,71,255,.07); border:1px solid rgba(151,71,255,.28); padding:12px 16px; font-size:14px; color:var(--text-primary); margin:0 0 16px; line-height:1.45; }
+/* topo do mobile: no app o menu some e vira um botão de hambúrguer */
+.m-top { display:none; }
 .state { display:none; } .state.on { display:block; }
 @media (max-width:900px) {
-  .sidebar { min-height:0; padding:10px 0; flex-direction:row; align-items:center; overflow-x:auto; box-shadow:0 2px 12px rgba(14,147,242,.15); }
-  .sidebar-logo { width:56px; height:40px; margin:0 8px 0 12px; flex-shrink:0; }
-  .sidebar-nav { flex-direction:row; flex:none; gap:2px; }
-  .sidebar-item { white-space:nowrap; padding:8px 12px; font-size:0; gap:0; }
-  .sidebar-foot { margin:0 8px 0 0; padding:0; border:0; flex-shrink:0; }
-  .admin-content { padding:16px 14px 32px; }
+  .app-shell { display:block; }
+  .sidebar { display:none; }
+  .m-top { display:flex; align-items:center; padding:16px 24px 0; }
+  .m-top button { background:none; border:0; padding:0; color:var(--brand-blue); line-height:0; }
+  .m-top svg { width:24px; height:24px; }
+  .admin-content { padding:16px 24px 32px; }
   .cd-tabs { overflow-x:auto; margin:14px 0 18px; }
   .cd-tab { white-space:nowrap; }
   .batch { grid-template-columns:20px 1fr; }
   .batch .act { grid-column:2; }
   .batch .act .btn-minor { width:100%; }
-  .modal { padding:22px 18px; }
-  .modal-actions { flex-direction:column-reverse; }
-  .modal-actions button { width:100%; }
 }
 </style>
 
@@ -148,28 +152,34 @@ a { color: inherit; text-decoration: none; }
 
 </main></div>
 
-<div class="modal-overlay" id="m-enviar"><div class="modal">
-  <h3 class="modal-title">Enviar e-mail de acesso</h3>
+<div class="modal-overlay" id="m-enviar"><div class="modal" role="dialog">
+  <div class="modal-head"><h3 class="modal-title">Enviar e-mail de acesso</h3><button class="modal-x" aria-label="Fechar" onclick="closeM()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="modal-body">
   <p>Importação de 27/11/2026 às 17:42 (alunos-leva-3.xlsx).</p>
   <div class="sum"><div><span>Alunos na importação</span><b>38</b></div><div><span>Vão receber o e-mail</span><b>35</b></div><div><span>Já criaram a senha, não recebem</span><b>3</b></div></div>
   <p>Só quem está nesta importação recebe. As outras importações não são afetadas.</p>
-  <div class="modal-actions"><button class="btn-cancel" onclick="closeM()">Cancelar</button><button class="btn-save" onclick="closeM()">Enviar para 35 alunos</button></div>
+  </div>
+  <div class="modal-foot"><button class="mbtn out" onclick="closeM()">Cancelar</button><button class="mbtn solid" onclick="closeM()">Enviar para 35 alunos</button></div>
 </div></div>
 
-<div class="modal-overlay" id="m-reenviar"><div class="modal">
-  <h3 class="modal-title">Reenviar e-mail de acesso?</h3>
+<div class="modal-overlay" id="m-reenviar"><div class="modal" role="dialog">
+  <div class="modal-head"><h3 class="modal-title">Reenviar e-mail de acesso?</h3><button class="modal-x" aria-label="Fechar" onclick="closeM()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="modal-body">
   <p>Importação de 26/11/2026 às 10:15 (alunos-leva-2.xlsx).</p>
   <div class="warnbox">O e-mail desta importação já saiu em 26/11/2026 às 10:40. Reenviar manda de novo só pra quem ainda não criou a senha.</div>
   <div class="sum"><div><span>Ainda sem senha</span><b>9</b></div><div><span>Já criaram a senha, não recebem</span><b>43</b></div></div>
-  <div class="modal-actions"><button class="btn-cancel" onclick="closeM()">Cancelar</button><button class="btn-save" onclick="closeM()">Reenviar para 9 alunos</button></div>
+  </div>
+  <div class="modal-foot"><button class="mbtn out" onclick="closeM()">Cancelar</button><button class="mbtn solid" onclick="closeM()">Reenviar para 9 alunos</button></div>
 </div></div>
 
-<div class="modal-overlay" id="m-antigos"><div class="modal">
-  <h3 class="modal-title">Enviar e-mail de acesso</h3>
+<div class="modal-overlay" id="m-antigos"><div class="modal" role="dialog">
+  <div class="modal-head"><h3 class="modal-title">Enviar e-mail de acesso</h3><button class="modal-x" aria-label="Fechar" onclick="closeM()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="modal-body">
   <p>Alunos matriculados antes do registro de importações (214 alunos).</p>
   <div class="warnbox">Não há registro de quem já recebeu o e-mail antes. Vai pra quem ainda não criou a senha, e isso pode incluir gente que já recebeu.</div>
   <div class="sum"><div><span>Ainda sem senha</span><b>31</b></div><div><span>Já criaram a senha, não recebem</span><b>183</b></div></div>
-  <div class="modal-actions"><button class="btn-cancel" onclick="closeM()">Cancelar</button><button class="btn-save" onclick="closeM()">Enviar para 31 alunos</button></div>
+  </div>
+  <div class="modal-foot"><button class="mbtn out" onclick="closeM()">Cancelar</button><button class="mbtn solid" onclick="closeM()">Enviar para 31 alunos</button></div>
 </div></div>
 
 <script>
